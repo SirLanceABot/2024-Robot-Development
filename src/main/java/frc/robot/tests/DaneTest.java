@@ -4,7 +4,7 @@ import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ExampleSubsystem;
 
-public class ExampleTest implements Test
+public class DaneTest implements Test
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -23,7 +23,7 @@ public class ExampleTest implements Test
 
 
     // *** CLASS CONSTRUCTOR ***
-    public ExampleTest(RobotContainer robotContainer)
+    public DaneTest(RobotContainer robotContainer)
     {
         this.robotContainer = robotContainer;
         this.exampleSubsystem = robotContainer.exampleSubsystem;

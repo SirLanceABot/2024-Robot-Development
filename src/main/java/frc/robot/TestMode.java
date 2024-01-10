@@ -7,8 +7,9 @@ import frc.robot.tests.Test;
 // 1. Put your test code in your own frc.robot.tests.[yourname]Test.java file
 // 2. Uncomment one of the IMPORT statements below
 // 3. Uncomment one of the INITIALIZATION statements below
-// 4. Test your code
-// 5. Undo the changes to this file when finished with testing
+// 4. Use the RobotContainer class to construct needed objects
+// 5. Test your code
+// 6. Undo the changes to this file when finished with testing
 
 
 // *** IMPORT statements ***

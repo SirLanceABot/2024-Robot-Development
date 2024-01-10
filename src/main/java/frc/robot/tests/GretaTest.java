@@ -2,9 +2,8 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ExampleSubsystem;
 
-public class ExampleTest implements Test
+public class GretaTest implements Test
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -19,14 +18,12 @@ public class ExampleTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final ExampleSubsystem exampleSubsystem;
 
 
     // *** CLASS CONSTRUCTOR ***
-    public ExampleTest(RobotContainer robotContainer)
+    public GretaTest(RobotContainer robotContainer)
     {
         this.robotContainer = robotContainer;
-        this.exampleSubsystem = robotContainer.exampleSubsystem;
     }
 
     /**
