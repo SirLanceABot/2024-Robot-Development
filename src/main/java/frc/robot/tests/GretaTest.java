@@ -23,7 +23,11 @@ public class GretaTest implements Test
     // *** CLASS CONSTRUCTOR ***
     public GretaTest(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /**

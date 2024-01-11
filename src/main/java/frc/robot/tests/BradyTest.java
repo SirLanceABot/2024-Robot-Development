@@ -23,7 +23,11 @@ public class BradyTest implements Test
     // *** CLASS CONSTRUCTOR ***
     public BradyTest(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /**

@@ -25,8 +25,12 @@ public class ExampleTest implements Test
     // *** CLASS CONSTRUCTOR ***
     public ExampleTest(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
         this.exampleSubsystem = robotContainer.exampleSubsystem;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /**

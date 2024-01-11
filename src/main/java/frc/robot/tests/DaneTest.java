@@ -2,7 +2,6 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ExampleSubsystem;
 
 public class DaneTest implements Test
 {
@@ -19,14 +18,16 @@ public class DaneTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final ExampleSubsystem exampleSubsystem;
 
 
     // *** CLASS CONSTRUCTOR ***
     public DaneTest(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
-        this.exampleSubsystem = robotContainer.exampleSubsystem;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /**

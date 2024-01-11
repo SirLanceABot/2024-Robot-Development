@@ -3,7 +3,7 @@ package frc.robot.tests;
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
 
-public class RThomasTest 
+public class RThomasTest implements Test
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -23,7 +23,11 @@ public class RThomasTest
     // *** CLASS CONSTRUCTOR ***
     public RThomasTest(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /**
