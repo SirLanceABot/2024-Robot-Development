@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-// import edu.wpi.first.wpilibj.GenericHID.getRawAxis;
-public class Xbox
+
+public abstract class Xbox extends Controller4237
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -183,14 +183,13 @@ public class Xbox
     // *** CLASS CONSTRUCTOR ***
     Xbox(int port)
     {
-        // super(port);
         joystick = new Joystick(port);
         
-        System.out.println(fullClassName + ": Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         initXbox();
        
-        System.out.println(fullClassName + ": Constructor Finished"); 
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     
@@ -243,7 +242,7 @@ public class Xbox
         return value;
     }
 
-     /**
+    /**
      * This methods returns the value of the axis
      * @param axis
      * @return the value of the specified axis
@@ -258,7 +257,6 @@ public class Xbox
      * @param button the button to return
      * @return whether or not the specified is button is being pressed
      */
-
     public boolean getRawButton(Button button)
     {
         return getRawButton(button.value);
@@ -276,13 +274,11 @@ public class Xbox
         }
         else
             return joystick.getRawButton(button);
-            //return getRawButton(button);
     }
 
     public Dpad getDpad()
     {
         return Dpad.getEnum(joystick.getPOV());
-        // return Dpad.getEnum(getPOV());
     }
 
     /**
@@ -389,11 +385,6 @@ public class Xbox
     {
         setAxisSettings(axis, axisSettings.axisDeadzone, axisSettings.axisMinOutput, axisSettings.axisMaxOutput, axisSettings.axisIsFlipped, axisSettings.axisScale);
     }
-    
-    // public void setRumble(double intensity)
-    // {
-    //     joystick.setRumble(GenericHID.RumbleType.kBothRumble, intensity);
-    // }
 
     public void setRumble(double duration, double leftPower, double rightPower)
     {
@@ -499,21 +490,9 @@ public class Xbox
         rumbleCounter = 0;
     }
 
-    // Moved these to DriverController and OperatorController
-    // public DoubleSupplier getAxisSupplier(Axis axis)
-    // {
-    //     return () -> getRawAxis(axis);
-    // }
-
-    // public BooleanSupplier getButtonSupplier(Button button)
-    // {
-    //     return () -> getRawButton(button);
-    // }
-
-    // public BooleanSupplier getDpadSupplier(Dpad dpad)
-    // {
-    //     return () -> getDpad() == dpad;
-    // }
+    public abstract void readPeriodicInputs();
+    public abstract void writePeriodicOutputs();
+    public abstract void runPeriodicTask();
     
     @Override
     public String toString()

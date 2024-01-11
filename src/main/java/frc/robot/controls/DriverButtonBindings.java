@@ -65,6 +65,8 @@ public class DriverButtonBindings
     // *** CLASS CONSTRUCTOR ***
     public DriverButtonBindings(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
         
         if(robotContainer.driverController != null)
@@ -85,6 +87,8 @@ public class DriverButtonBindings
             configRumble();
             configDefaultCommands();
         }
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
     
     private void configAButton()

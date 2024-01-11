@@ -1,11 +1,22 @@
 package frc.robot.controls;
 
+import java.lang.invoke.MethodHandles;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.WPIUtilJNI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AdaptiveSlewRateLimiter 
 {
+    // This string gets the full name of the class, including the package name
+    private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
+
+    // *** STATIC INITIALIZATION BLOCK ***
+    // This block of code is run first when the class is loaded
+    static
+    {
+        System.out.println("Loading: " + fullClassName);
+    }
+
     private final double accelRateLimit;
     private final double decelRateLimit;
     private double prevVal;
@@ -19,11 +30,15 @@ public class AdaptiveSlewRateLimiter
      */
     public AdaptiveSlewRateLimiter(double accelRateLimit, double decelRateLimit) 
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.accelRateLimit = Math.abs(accelRateLimit);
         this.decelRateLimit = Math.abs(decelRateLimit);
         
         prevVal = 0;
         prevTime = WPIUtilJNI.now() * 1.0e-6;
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
      /**

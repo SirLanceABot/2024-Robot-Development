@@ -32,8 +32,11 @@ public class ExampleSensor extends Sensor4237
 
     public ExampleSensor()
     {   
-        registerPeriodicIO(); // register this for PeriodicIO
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         periodicData = new PeriodicData();
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     /** example getter

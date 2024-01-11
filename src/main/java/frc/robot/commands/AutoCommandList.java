@@ -39,6 +39,8 @@ public class AutoCommandList extends SequentialCommandGroup
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
         this.drivetrain = robotContainer.drivetrain;
         this.gyro = robotContainer.gyro;
@@ -46,13 +48,16 @@ public class AutoCommandList extends SequentialCommandGroup
         build();
 
         System.out.println(this);
+        
+        System.out.println("  Constructor Finished:  " + fullClassName);
     }
 
 
     // *** CLASS & INSTANCE METHODS ***
     private void build()
     {
-        add(new StopDrive(drivetrain));
+        if(drivetrain != null)
+            add(new StopDrive(drivetrain));
     }
 
 

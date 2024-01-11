@@ -26,7 +26,7 @@ public interface PeriodicTask
      * Static method to periodically update all of the systems in the array list.
      * Call this method from the robotPeriodic() method in the Robot class.
      */
-    public static void runTasks()
+    public static void runPeriodicTasks()
     {
         for(PeriodicTask periodicTask : allPeriodicTasks)
             periodicTask.runPeriodicTask();

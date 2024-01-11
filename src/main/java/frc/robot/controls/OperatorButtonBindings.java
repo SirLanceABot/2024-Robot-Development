@@ -2,10 +2,8 @@ package frc.robot.controls;
 
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
-import frc.robot.commands.SwerveDrive;
 
 
 // ------------------------------------------------------------------------------------------
@@ -65,9 +63,11 @@ public class OperatorButtonBindings
     // *** CLASS CONSTRUCTOR ***
     public OperatorButtonBindings(RobotContainer robotContainer)
     {
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         this.robotContainer = robotContainer;
         
-        if(robotContainer.driverController != null)
+        if(robotContainer.operatorController != null)
         {
             configAButton();
             configBButton();
@@ -85,6 +85,8 @@ public class OperatorButtonBindings
             configRumble();
             configDefaultCommands();
         }
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
     
     private void configAButton()

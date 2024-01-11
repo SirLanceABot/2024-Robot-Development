@@ -4,9 +4,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import frc.robot.PeriodicIO;
 
-public class DriverController extends Xbox implements PeriodicIO
+public class DriverController extends Xbox
 {
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
@@ -19,27 +18,27 @@ public class DriverController extends Xbox implements PeriodicIO
     
 
     // *** INNER ENUMS and INNER CLASSES ***
-    private class PeriodicIO
+    private class PeriodicData
     {
         private double[] axis = new double[6];
         private boolean[] button = new boolean[14];  // skip 0 and 11
         private Dpad dpad;
     }
 
-    private PeriodicIO periodicIO = new PeriodicIO();
+    private PeriodicData periodicData = new PeriodicData();
 
     // *** CLASS CONSTRUCTOR ***
     public DriverController(int port)
     {
         super(port);
 
-        System.out.println(fullClassName + ": Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         registerPeriodicIO();
         configureAxes();
         createRumbleEvents();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS *** 
@@ -55,11 +54,6 @@ public class DriverController extends Xbox implements PeriodicIO
         createRumbleEvent(1.0, 0.25, 1.0, 1.0);
     }
 
-    // public void rumbleNow()
-    // {
-    //     super.createRumbleEvent(DriverStation.getMatchTime(), 1.0, 1.0, 1.0);
-    // }
-
     public void configureAxes()
     {
         setAxisSettings(Axis.kLeftX, 0.05, 0.0, 5.0, true, AxisScale.kCubed);
@@ -72,35 +66,31 @@ public class DriverController extends Xbox implements PeriodicIO
 
     public DoubleSupplier getAxisSupplier(Axis axis)
     {
-        // return () -> periodicIO.axis[axis.value];
-        // return () -> getRawAxis(axis);
         return getAxisSupplier(axis, 1.0);
     }
 
     public DoubleSupplier getAxisSupplier(Axis axis, double scaleFactor)
     {
-        return () -> periodicIO.axis[axis.value] * scaleFactor;
+        return () -> periodicData.axis[axis.value] * scaleFactor;
     }
 
     public BooleanSupplier getButtonSupplier(Button button)
     {
-        return () -> periodicIO.button[button.value];
-        // return () -> getRawButton(button);
+        return () -> periodicData.button[button.value];
     }
 
     public BooleanSupplier getDpadSupplier(Dpad dpad)
     {
-        return () -> periodicIO.dpad == dpad;
-        // return () -> getDpad() == dpad;
+        return () -> periodicData.dpad == dpad;
     }
 
     public BooleanSupplier movingLeftOrRightAxes()
     {
         return () -> {
-            boolean leftMove = Math.abs(periodicIO.axis[Xbox.Axis.kLeftX.value]) > 0.0 
-                || Math.abs(periodicIO.axis[Xbox.Axis.kLeftY.value]) > 0.0;
-            boolean rightMove = Math.abs(periodicIO.axis[Xbox.Axis.kRightX.value]) > 0.0 
-                || Math.abs(periodicIO.axis[Xbox.Axis.kRightY.value]) > 0.0;
+            boolean leftMove = Math.abs(periodicData.axis[Xbox.Axis.kLeftX.value]) > 0.0 
+                || Math.abs(periodicData.axis[Xbox.Axis.kLeftY.value]) > 0.0;
+            boolean rightMove = Math.abs(periodicData.axis[Xbox.Axis.kRightX.value]) > 0.0 
+                || Math.abs(periodicData.axis[Xbox.Axis.kRightY.value]) > 0.0;
             return leftMove || rightMove;};
     }
 
@@ -108,19 +98,25 @@ public class DriverController extends Xbox implements PeriodicIO
     public void readPeriodicInputs()
     {
         for(int a = 0; a <= 5; a++)
-            periodicIO.axis[a] = getRawAxis(a);
+            periodicData.axis[a] = getRawAxis(a);
 
         for(int b = 1; b <= 13; b++)
         {
             if(b != 11)
-                periodicIO.button[b] = getRawButton(b);
+                periodicData.button[b] = getRawButton(b);
         }
 
-        periodicIO.dpad = getDpad();
+        periodicData.dpad = getDpad();
     }
 
     @Override
     public void writePeriodicOutputs()
+    {
+
+    }
+
+    @Override
+    public void runPeriodicTask()
     {
         checkRumbleEvent();
     }
@@ -129,9 +125,6 @@ public class DriverController extends Xbox implements PeriodicIO
     public String toString()
     {
         String str = "";
-
-        // str = str + ""
-
 
         return str;
     }

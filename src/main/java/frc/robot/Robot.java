@@ -74,7 +74,7 @@ public class Robot extends TimedRobot
         CommandScheduler.getInstance().run();
         
         // Run periodic tasks
-        PeriodicTask.runTasks();
+        PeriodicTask.runPeriodicTasks();
 
         // Update all of the periodic outputs.
         PeriodicIO.writeOutputs();

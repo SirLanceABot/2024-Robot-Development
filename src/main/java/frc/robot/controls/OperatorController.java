@@ -4,11 +4,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import frc.robot.PeriodicIO;
 
-//import edu.wpi.first.wpilibj.DriverStation;
-
-public class OperatorController extends Xbox implements PeriodicIO
+public class OperatorController extends Xbox
 {
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
@@ -21,28 +18,27 @@ public class OperatorController extends Xbox implements PeriodicIO
     
 
     // *** INNER ENUMS and INNER CLASSES ***
-
-    private class PeriodicIO
+    private class PeriodicData
     {
         private double[] axis = new double[6];
         private boolean[] button = new boolean[14];  // skip 0 and 11
         private Dpad dpad;
     }
 
-    private PeriodicIO periodicIO = new PeriodicIO();
+    private PeriodicData periodicData = new PeriodicData();
     
     // *** CLASS CONSTRUCTOR ***
     public OperatorController(int port)
     {
         super(port);
 
-        System.out.println(fullClassName + ": Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         registerPeriodicIO();
         configureAxes();
         createRumbleEvents();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS *** 
@@ -70,35 +66,32 @@ public class OperatorController extends Xbox implements PeriodicIO
 
     public DoubleSupplier getAxisSupplier(Axis axis)
     {
-        return () -> periodicIO.axis[axis.value];
-        // return () -> getRawAxis(axis);
+        return () -> periodicData.axis[axis.value];
     }
 
     public BooleanSupplier getButtonSupplier(Button button)
     {
-        return () -> periodicIO.button[button.value];
-        // return () -> getRawButton(button);
+        return () -> periodicData.button[button.value];
     }
 
     public BooleanSupplier getDpadSupplier(Dpad dpad)
     {
-        return () -> periodicIO.dpad == dpad;
-        // return () -> getDpad() == dpad;
+        return () -> periodicData.dpad == dpad;
     }
 
     @Override
     public void readPeriodicInputs()
     {
         for(int a = 0; a <= 5; a++)
-            periodicIO.axis[a] = getRawAxis(a);
+            periodicData.axis[a] = getRawAxis(a);
 
         for(int b = 1; b <= 13; b++)
         {
             if(b != 11) // skip over subscripts 0 and 11
-                periodicIO.button[b] = getRawButton(b);
+                periodicData.button[b] = getRawButton(b);
         }
 
-        periodicIO.dpad = getDpad();
+        periodicData.dpad = getDpad();
     }
 
     @Override
@@ -108,12 +101,13 @@ public class OperatorController extends Xbox implements PeriodicIO
     }
 
     @Override
+    public void runPeriodicTask()
+    {}
+
+    @Override
     public String toString()
     {
         String str = "";
-
-        // str = str + ""
-
 
         return str;
     }

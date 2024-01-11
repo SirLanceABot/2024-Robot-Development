@@ -1,12 +1,9 @@
 package frc.robot.controls;
 
 import java.lang.invoke.MethodHandles;
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj.Joystick;
 
-public class Logitech
+public abstract class Logitech extends Controller4237
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -114,20 +111,18 @@ public class Logitech
     private final double[] axisMinOutput = new double[NUMBER_OF_AXES];
     private final boolean[] axisIsFlipped = new boolean[NUMBER_OF_AXES];
     private final AxisScale[] axisScale = new AxisScale[NUMBER_OF_AXES];
-    //private final Button[] buttons = new Button[11];
 
 
     // *** CLASS CONSTRUCTOR ***
     Logitech(int port)
     {
-        // super(port);
         joystick = new Joystick(port);
 
-        System.out.println(fullClassName + ": Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
       
         initLogitech();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
 
@@ -155,8 +150,7 @@ public class Logitech
 
         if(axisIsFlipped[axis])
         {
-        //FIXME: please code value = -value; do not use the time-wasting obscure way (double obscure since the even worse way had to be explained with a comment)
-            value *= -1; //value = value * -1;
+            value = -value;
         }
 
         if(axis == Axis.kSlider.value)
@@ -318,17 +312,11 @@ public class Logitech
         setAxisSettings(axis, axisSettings.axisDeadzone, axisSettings.axisMinOutput, axisSettings.axisMaxOutput, axisSettings.axisIsFlipped, axisSettings.axisScale);
     }
 
-    // Moved these to DriverController and OperatorController
-    // public DoubleSupplier getAxisSupplier(Axis axis)
-    // {
-    //     return () -> getRawAxis(axis);
-    // }
-
-    // public BooleanSupplier getButtonSupplier(Button button)
-    // {
-    //     return () -> getRawButton(button);
-    // }
-
+    public abstract void readPeriodicInputs();
+    public abstract void writePeriodicOutputs();
+    public abstract void runPeriodicTask();
+    
+    @Override
     public String toString()
     {
         String str = "";
