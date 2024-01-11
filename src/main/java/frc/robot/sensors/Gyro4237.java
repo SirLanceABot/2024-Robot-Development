@@ -1,15 +1,15 @@
 package frc.robot.sensors;
 
 import java.lang.invoke.MethodHandles;
-
-// FIXME uncomment this next line
-// import com.ctre.phoenix.sensors.WPI_Pigeon2;
-
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.GyroTrimConfigs;
+import com.ctre.phoenix6.configs.MountPoseConfigs;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.configs.Pigeon2FeaturesConfigs;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
-
-// knock knock
 
 public class Gyro4237 extends Sensor4237
 {
@@ -28,8 +28,7 @@ public class Gyro4237 extends Sensor4237
         kStart, kTry, kDone;
     }
 
-
-    private class PeriodicIO
+    private class PeriodicData
     {
         // Inputs
         private double yaw;
@@ -40,25 +39,64 @@ public class Gyro4237 extends Sensor4237
         // Outputs
     }
 
-    private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
+    // private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
+    private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
     private ResetState resetState = ResetState.kDone;
     private Timer timer = new Timer();
 
-    private final PeriodicIO periodicIO = new PeriodicIO();
+    private final PeriodicData periodicData = new PeriodicData();
 
     public Gyro4237()
     {
         //reset();
-        initPigeon();
+        configGyro();
         // periodicIO.angle = gyro.getYaw();
-        periodicIO.rotation2d = gyro.getRotation2d();
-
+        periodicData.rotation2d = gyro.getRotation2d();
     }
 
-    public void initPigeon()
+    private void configGyro()
     {
-        gyro.configFactoryDefault();
-        gyro.configMountPose(Constants.Gyro.FORWARD_AXIS, Constants.Gyro.UP_AXIS); //forward axis and up axis
+        Pigeon2Configuration configs = new Pigeon2Configuration();
+        MountPoseConfigs mountPoseConfigs = new MountPoseConfigs();
+        Pigeon2FeaturesConfigs featuresConfigs = new Pigeon2FeaturesConfigs();
+        GyroTrimConfigs gyroTrimConfigs = new GyroTrimConfigs();
+
+        StatusCode statusCode;
+        int count = 0;
+
+        do
+        {
+            // Reset to factory defaults
+            statusCode = gyro.getConfigurator().apply(configs);
+            count++;
+        }
+        while(!statusCode.isOK() && count < 5);
+
+        mountPoseConfigs.withMountPoseRoll(0.0);
+        mountPoseConfigs.withMountPosePitch(0.0);
+        mountPoseConfigs.withMountPoseYaw(0.0);
+        configs.withMountPose(mountPoseConfigs);
+
+        featuresConfigs.withDisableNoMotionCalibration(false);
+        featuresConfigs.withDisableTemperatureCompensation(false);
+        featuresConfigs.withEnableCompass(false);
+        configs.withPigeon2Features(featuresConfigs);
+
+        gyroTrimConfigs.withGyroScalarX(0.0);
+        gyroTrimConfigs.withGyroScalarY(0.0);
+        gyroTrimConfigs.withGyroScalarZ(0.0);
+
+        count = 0;
+        do
+        {
+            // Apply gyro configurations
+            statusCode = gyro.getConfigurator().apply(configs);
+            count++;
+        }
+        while(!statusCode.isOK() && count < 5);
+
+        // gyro.configFactoryDefault();
+        // gyro.configMountPose(Constants.Gyro.FORWARD_AXIS, Constants.Gyro.UP_AXIS); //forward axis and up axis
         gyro.reset();
         Timer.delay(0.5);
         gyro.setYaw(180.0);  // 2022 robot started with front facing away from the driver station, 2023 will not
@@ -68,66 +106,72 @@ public class Gyro4237 extends Sensor4237
     public void reset()
     {
         resetState = ResetState.kStart;
-        // gyro.reset();
     }
 
     public double getRoll()
     {
-        return periodicIO.roll; // x-axis
+        return periodicData.roll; // x-axis
     }
 
     public double getPitch()
     {
-        return periodicIO.pitch; // y-axis
+        return periodicData.pitch; // y-axis
     }
 
     public double getYaw()
     {
-        return periodicIO.yaw; // z-axis
+        return periodicData.yaw; // z-axis
     }
 
     public Rotation2d getRotation2d()
     {
-        return periodicIO.rotation2d;
-        // return gyro.getRotation2d();
+        return periodicData.rotation2d;
     }
 
     @Override
     public void readPeriodicInputs()
     {
-        if (resetState == ResetState.kDone)
+        if(resetState == ResetState.kDone)
         {
-            periodicIO.yaw = gyro.getYaw();
-            periodicIO.pitch = gyro.getPitch();
-            periodicIO.roll = gyro.getRoll();
+            periodicData.yaw = gyro.getYaw().getValueAsDouble();
+            periodicData.pitch = gyro.getPitch().getValueAsDouble();
+            periodicData.roll = gyro.getRoll().getValueAsDouble();
 
-            periodicIO.rotation2d = gyro.getRotation2d();
+            periodicData.rotation2d = gyro.getRotation2d();
         }
-
-        
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        if(resetState == ResetState.kStart)
-        {
-            gyro.reset();
-            timer.reset();
-            timer.start();
-            gyro.setYaw(180.0);
-            resetState = ResetState.kTry;
-        }
-        else if (resetState == ResetState.kTry && timer.hasElapsed(Constants.Gyro.RESET_GYRO_DELAY))
-            resetState = ResetState.kDone;
+        
+    }
 
-        // System.out.println(periodicIO.angle + "   " + periodicIO.rotation2d.getDegrees());
+    @Override
+    public void runPeriodicTask()
+    {
+        switch(resetState)
+        {
+            case kStart:
+                gyro.reset();
+                timer.reset();
+                timer.start();
+                gyro.setYaw(180.0);
+                resetState = ResetState.kTry;
+                break;
+            case kTry:
+                if(timer.hasElapsed(Constants.Gyro.RESET_GYRO_DELAY))
+                    resetState = ResetState.kDone;
+                break;
+            case kDone:
+                break;
+        }
     }
 
     @Override
     public String toString()
     {
-        return String.format("Gyro %f \n", periodicIO.yaw);
+        return String.format("Gyro %f \n", periodicData.yaw);
     }
 
     

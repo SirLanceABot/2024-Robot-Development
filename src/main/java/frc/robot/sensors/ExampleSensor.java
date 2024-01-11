@@ -7,9 +7,8 @@ package frc.robot.sensors;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.PeriodicIO;
 
-public class ExampleSensor  implements PeriodicIO
+public class ExampleSensor extends Sensor4237
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -21,18 +20,20 @@ public class ExampleSensor  implements PeriodicIO
         System.out.println("Loading: " + fullClassName);
     }
 
-    public class PeriodicIO
+    private class PeriodicData
     {
-        //INPUTS
+        // INPUTS
         private double x;
+
+        // OUTPUTS
     }
 
-    private PeriodicIO periodicIO;
+    private PeriodicData periodicData;
 
     public ExampleSensor()
     {   
         registerPeriodicIO(); // register this for PeriodicIO
-        periodicIO = new PeriodicIO();
+        periodicData = new PeriodicData();
     }
 
     /** example getter
@@ -41,18 +42,30 @@ public class ExampleSensor  implements PeriodicIO
     */
     public double getX()
     {
-        return periodicIO.x;
+        return periodicData.x;
     }
 
     @Override
     public void readPeriodicInputs() 
     {
-        periodicIO.x = 3.14159;
+        periodicData.x = 3.14159;
     }
 
     @Override
     public void writePeriodicOutputs() 
     {
-        SmartDashboard.putNumber("Pi", periodicIO.x);
-    }  
+        SmartDashboard.putNumber("Pi", periodicData.x);
+    }
+
+    @Override
+    public void runPeriodicTask()
+    {
+
+    }
+
+    @Override
+    public String toString()
+    {
+        return null;
+    }
 }

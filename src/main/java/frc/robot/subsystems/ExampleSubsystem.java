@@ -17,7 +17,7 @@ public class ExampleSubsystem extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
     
-    private class PeriodicIO
+    private class PeriodicData
     {
         // INPUTS
 
@@ -25,7 +25,7 @@ public class ExampleSubsystem extends Subsystem4237
 
     }
 
-    private PeriodicIO periodicIO = new PeriodicIO();
+    private PeriodicData periodicData = new PeriodicData();
 
     /** 
      * Creates a new ExampleSubsystem. 

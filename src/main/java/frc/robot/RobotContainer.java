@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
-
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -49,8 +48,8 @@ public class RobotContainer
     private boolean useBindings				= false;
 
     private boolean useDataLog				= false;
-    
-    
+
+
     public final boolean fullRobot;
 
     public final ExampleSubsystem exampleSubsystem;

@@ -1,17 +1,10 @@
 package frc.robot.shuffleboard;
 
 import java.lang.invoke.MethodHandles;
-
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.RobotContainer;
@@ -20,29 +13,21 @@ public class SensorTab
 {
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
-    private ShuffleboardTab sensorTab = Shuffleboard.getTab("Sensor");
-    private Gyro4237 gyro;
-    private Drivetrain drivetrain;
-    // private SwerveModule swerveModule;
-    private Translation2d startingPosition;
-    private Double encoderValue = 0.0;
-    private GenericEntry shoulderEncoderBox;
-    private GenericEntry grabberEncoderBottomBox;
-    private GenericEntry grabberEncoderTopBox;
-    private GenericEntry grabberMotorBottomCurrentBox;
-    private GenericEntry grabberMotorTopCurrentBox;
-    private GenericEntry gyroBox;
-    private GenericEntry armEncoderBox;
-    private GenericEntry flsEncoderBox;
-    private GenericEntry frsEncoderBox;
-    private GenericEntry blsEncoderBox;
-    private GenericEntry brsEncoderBox;
     // *** STATIC INITIALIZATION BLOCK ***
     // This block of code is run first when the class is loaded
     static
     {
         System.out.println("Loading: " + fullClassName);
     }
+
+    private ShuffleboardTab sensorTab = Shuffleboard.getTab("Sensor");
+    private Gyro4237 gyro;
+    private Drivetrain drivetrain;
+    private GenericEntry gyroBox;
+    private GenericEntry flsEncoderBox;
+    private GenericEntry frsEncoderBox;
+    private GenericEntry blsEncoderBox;
+    private GenericEntry brsEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)

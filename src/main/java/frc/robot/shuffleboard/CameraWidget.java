@@ -38,7 +38,7 @@ public class CameraWidget
     public boolean showControls;
     public String rotation;
     
-    public CameraWidget(ShuffleboardTab cameraTab)
+    CameraWidget(ShuffleboardTab cameraTab)
     {
         System.out.println(fullClassName + " : Constructor Started");
 

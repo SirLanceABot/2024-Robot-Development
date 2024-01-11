@@ -5,7 +5,6 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
-
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot
     Robot()
     {}
 
-
     /**
      * This method runs when the robot first starts up.
      */
@@ -58,10 +56,7 @@ public class Robot extends TimedRobot
     public void robotInit()
     {
         System.out.println("Robot Init");
-        
-        
     }
-
 
     /**
      * This method runs periodically (20ms) while the robot is powered on.
@@ -78,6 +73,9 @@ public class Robot extends TimedRobot
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
         
+        // Run periodic tasks
+        PeriodicTask.runTasks();
+
         // Update all of the periodic outputs.
         PeriodicIO.writeOutputs();
     }
@@ -114,7 +112,6 @@ public class Robot extends TimedRobot
                     // System.out.println(robotContainer.mainShuffleboard.autoCommandList);
                 }
             }
-            
         }
     }
 

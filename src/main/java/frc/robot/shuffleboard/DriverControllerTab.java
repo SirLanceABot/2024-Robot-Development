@@ -45,7 +45,6 @@ public class DriverControllerTab
     // private final AxisObjects rightYObjects = new AxisObjects();
 
     private final DriverController driverController;
-
     private ShuffleboardTab driverControllerTab = Shuffleboard.getTab("Driver Controller");
 
 
