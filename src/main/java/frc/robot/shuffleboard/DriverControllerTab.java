@@ -51,13 +51,12 @@ public class DriverControllerTab
     // *** CLASS CONSTRUCTOR ***
     DriverControllerTab( DriverController driverController)
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         this.driverController = driverController;
-
         initDriverControllerTab();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS ***

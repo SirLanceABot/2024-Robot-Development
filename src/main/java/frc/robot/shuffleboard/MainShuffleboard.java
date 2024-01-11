@@ -32,7 +32,7 @@ public class MainShuffleboard
     // *** CLASS CONSTRUCTOR ***
     public MainShuffleboard(RobotContainer robotContainer)
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         boolean useFullRobot = robotContainer.fullRobot; 
         useDriverControllerTab = useDriverControllerTab && robotContainer.driverController != null;
@@ -44,7 +44,7 @@ public class MainShuffleboard
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     

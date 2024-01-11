@@ -54,7 +54,7 @@ public class AutonomousTab
     // *** CLASS CONSTRUCTOR ***
     AutonomousTab()
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         createStartingLocationBox();
         createPlayPreloadBox();
@@ -66,7 +66,7 @@ public class AutonomousTab
 
         errorMessageBox = createErrorMessageBox();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS ***

@@ -50,12 +50,12 @@ public class OperatorControllerTab
     // *** CLASS CONSTRUCTOR ***
     OperatorControllerTab(OperatorController operatorController)
     {
-        System.out.println(fullClassName + " : Constructor Started");
-        this.operatorController = operatorController;
+        System.out.println("  Constructor Started:  " + fullClassName);
 
+        this.operatorController = operatorController;
         initOperatorControllerTab();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
 

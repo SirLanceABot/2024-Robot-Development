@@ -1,4 +1,5 @@
 package frc.robot.shuffleboard;
+
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +41,11 @@ public class CameraWidget
     
     CameraWidget(ShuffleboardTab cameraTab)
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         this.cameraTab = cameraTab;
 
-        System.out.println(fullClassName + " : Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     public void setLocation(int row, int column, int height, int width) 

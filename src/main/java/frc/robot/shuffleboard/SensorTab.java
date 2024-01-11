@@ -32,7 +32,7 @@ public class SensorTab
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         this.drivetrain = robotContainer.drivetrain;
         this.gyro = robotContainer.gyro;
@@ -50,7 +50,7 @@ public class SensorTab
             gyroBox = createGyroBox();
         }
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     private GenericEntry createFrontLeftTurnEncoderBox()
@@ -112,6 +112,5 @@ public class SensorTab
         {
             gyroBox.setDouble(gyro.getPitch());
         }
-        
     }
 }

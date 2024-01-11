@@ -37,7 +37,7 @@ public class CameraTab
     // *** CLASS CONSTRUCTOR ***
     CameraTab()
     {
-        System.out.println(fullClassName + " : Constructor Started");
+        System.out.println("  Constructor Started:  " + fullClassName);
 
         // limelight on shuffleboard
         CameraWidget cw = new CameraWidget(cameraTab);
@@ -49,7 +49,7 @@ public class CameraTab
 
         createTimeRemainingBox();
 
-        System.out.println(fullClassName + ": Constructor Finished");
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS ***
@@ -89,8 +89,6 @@ public class CameraTab
 
     public void updateLimeLightMode()
     {
-        // boolean driverMode = (RobotContainer.INTAKE != null) && (!DriverStation.isAutonomous()) ?
-        //     RobotContainer.INTAKE.getIsIntaking() : false;
         boolean isDisabled = DriverStation.isDisabled();
         
         // driverMode = true; // testing force driver mode
@@ -100,14 +98,6 @@ public class CameraTab
         NetworkTableEntry camMode = table.getEntry("camMode");
         NetworkTableEntry stream = table.getEntry("stream");
         NetworkTableEntry ledMode = table.getEntry("ledMode");
-
-        // if(true)
-        // {
-        //     camMode.setNumber(0.); // 0 vision processor
-        //     stream.setNumber(0.);  // 0 for both large side by side
-        //     ledMode.setNumber(0.); // 0 pipeline setting
-        // }
-        // else
 
         if(isDisabled)
         {
@@ -135,6 +125,7 @@ public class CameraTab
         updateLimeLightMode();
     }
 }
+
 /*
 ledMode	Sets limelight’s LED state
 0	use the LED Mode set in the current pipeline
@@ -159,5 +150,3 @@ snapshot	Allows users to take snapshots during a match
 1	Take two snapshots per second
 
 */
-
-//     boolean shooterMode = RobotContainer.SHOOTER.getIsShooting();
