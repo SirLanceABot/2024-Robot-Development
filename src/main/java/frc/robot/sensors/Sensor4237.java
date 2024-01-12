@@ -22,17 +22,17 @@ abstract class Sensor4237 implements PeriodicIO, PeriodicTask
     }
 
     // *** CLASS CONSTRUCTOR ***
-    Sensor4237()
+    Sensor4237(String sensorName)
     {
         super();
 
-        System.out.println("  Constructor Started:  " + fullClassName);
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + sensorName);
 
         // Register this subsystem in the array list for periodic inputs and outputs.
         registerPeriodicIO();
         registerPeriodicTask();
 
-        System.out.println("  Constructor Finished: " + fullClassName);
+        System.out.println("  Constructor Finished: " + fullClassName + " >> " + sensorName);
     }
 
     // Abstract methods to override in subclasses

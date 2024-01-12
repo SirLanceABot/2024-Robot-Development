@@ -36,7 +36,7 @@ public class Drivetrain extends Subsystem4237
      * define all the inputs to be read at once
      * define all the outputs to be written at once
      */
-    private class PeriodicIO 
+    private class PeriodicData 
     {
         // INPUTS
         private double xSpeed;
@@ -108,7 +108,7 @@ public class Drivetrain extends Subsystem4237
     private boolean resetEncoders = false;
     private boolean resetOdometry = false;
 
-    private PeriodicIO periodicIO;
+    private PeriodicData periodicData;
     
     // *** CLASS CONSTRUCTOR ***
     public Drivetrain(Gyro4237 gyro, DataLog log)//, DriverController driverController)
@@ -121,7 +121,7 @@ public class Drivetrain extends Subsystem4237
         // setSafetyEnabled(false);
   
   
-        periodicIO = new PeriodicIO(); // all the periodic I/O appear here
+        periodicData = new PeriodicData(); // all the periodic I/O appear here
         
         this.gyro = gyro;
         this.log = log;
@@ -151,7 +151,7 @@ public class Drivetrain extends Subsystem4237
             dd.backLeftSwerveModule.moduleLocation,
             dd.backRightSwerveModule.moduleLocation);
 
-        periodicIO.odometry = new SwerveDriveOdometry(
+        periodicData.odometry = new SwerveDriveOdometry(
             kinematics, 
             gyro.getRotation2d(),
             new SwerveModulePosition[] 
@@ -201,11 +201,11 @@ public class Drivetrain extends Subsystem4237
         // periodicIO.xSpeed = xSpeed;
         // periodicIO.ySpeed = ySpeed;
 
-        periodicIO.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
-        periodicIO.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
+        periodicData.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
+        periodicData.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
 
-        periodicIO.turn = turn;
-        periodicIO.fieldRelative = fieldRelative;
+        periodicData.turn = turn;
+        periodicData.fieldRelative = fieldRelative;
 
         //ChassisSpeeds chassisSpeeds;
         //SwerveModuleState[] swerveModuleStates;
@@ -294,12 +294,12 @@ public class Drivetrain extends Subsystem4237
 
     public Translation2d getCurrentTranslation()
     {
-        return periodicIO.odometry.getPoseMeters().getTranslation();
+        return periodicData.odometry.getPoseMeters().getTranslation();
     }
 
     public double getDistanceDrivenMeters(Translation2d startingPosition)
     {
-        return periodicIO.odometry.getPoseMeters().getTranslation().getDistance(startingPosition);
+        return periodicData.odometry.getPoseMeters().getTranslation().getDistance(startingPosition);
     }
 
     public void resetEncoders()
@@ -339,10 +339,10 @@ public class Drivetrain extends Subsystem4237
     {
         if(DriverStation.isAutonomousEnabled())
         {
-            periodicIO.frontLeftPosition = frontLeft.getPosition();
-            periodicIO.frontRightPosition =  frontRight.getPosition();
-            periodicIO.backLeftPosition = backLeft.getPosition();
-            periodicIO.backRightPosition = backRight.getPosition();
+            periodicData.frontLeftPosition = frontLeft.getPosition();
+            periodicData.frontRightPosition =  frontRight.getPosition();
+            periodicData.backLeftPosition = backLeft.getPosition();
+            periodicData.backRightPosition = backRight.getPosition();
         }
 
     }
@@ -354,30 +354,30 @@ public class Drivetrain extends Subsystem4237
         {
             case kDrive:
         
-                if(periodicIO.fieldRelative)
-                    periodicIO.chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(periodicIO.xSpeed, periodicIO.ySpeed, periodicIO.turn, gyro.getRotation2d());
+                if(periodicData.fieldRelative)
+                    periodicData.chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn, gyro.getRotation2d());
                 else
-                    periodicIO.chassisSpeeds = new ChassisSpeeds(periodicIO.xSpeed, periodicIO.ySpeed, periodicIO.turn);
+                    periodicData.chassisSpeeds = new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
                 
-                periodicIO.swerveModuleStates = kinematics.toSwerveModuleStates(periodicIO.chassisSpeeds);
+                periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
 
-                SwerveDriveKinematics.desaturateWheelSpeeds(periodicIO.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
                 break;
 
             case kLockwheels:
 
-                periodicIO.swerveModuleStates = new SwerveModuleState[4];
+                periodicData.swerveModuleStates = new SwerveModuleState[4];
             
                 
-                periodicIO.swerveModuleStates[0] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
-                periodicIO.swerveModuleStates[1] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
-                periodicIO.swerveModuleStates[2] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
-                periodicIO.swerveModuleStates[3] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
+                periodicData.swerveModuleStates[0] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
+                periodicData.swerveModuleStates[1] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
+                periodicData.swerveModuleStates[2] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
+                periodicData.swerveModuleStates[3] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
                 //System.out.println("drivetrain.Lockwheels");
                 break;
 
             case kArcadeDrive:
-                SwerveDriveKinematics.desaturateWheelSpeeds(periodicIO.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
                 break;
 
             case kStop:
@@ -394,7 +394,7 @@ public class Drivetrain extends Subsystem4237
     {
         if (DriverStation.isDisabled() && resetOdometry)
         {
-            periodicIO.odometry.resetPosition(
+            periodicData.odometry.resetPosition(
                 new Rotation2d(), /*zero*/
                 new SwerveModulePosition[]
                 {/*zeros distance, angle*/
@@ -408,14 +408,14 @@ public class Drivetrain extends Subsystem4237
         }
         else if (DriverStation.isAutonomousEnabled())
         {
-            periodicIO.odometry.update(
+            periodicData.odometry.update(
                 gyro.getRotation2d(),
                 new SwerveModulePosition[] 
                 {
-                    periodicIO.frontLeftPosition,
-                    periodicIO.frontRightPosition,
-                    periodicIO.backLeftPosition,
-                    periodicIO.backRightPosition
+                    periodicData.frontLeftPosition,
+                    periodicData.frontRightPosition,
+                    periodicData.backLeftPosition,
+                    periodicData.backRightPosition
                 });
 
                 // System.out.println(gyro.getYaw());
@@ -442,10 +442,10 @@ public class Drivetrain extends Subsystem4237
         }
         else 
         {
-            frontLeft.setDesiredState(periodicIO.swerveModuleStates[0]);
-            frontRight.setDesiredState(periodicIO.swerveModuleStates[1]);
-            backLeft.setDesiredState(periodicIO.swerveModuleStates[2]);
-            backRight.setDesiredState(periodicIO.swerveModuleStates[3]);
+            frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
+            frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
+            backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
+            backRight.setDesiredState(periodicData.swerveModuleStates[3]);
         }
         
 
@@ -470,26 +470,26 @@ public class Drivetrain extends Subsystem4237
 
     String EncoderName = new String("/SwerveEncoders/"); // make a prefix tree structure for the ultrasonic data
     // f front; b back; r right; l left; s steer; d drive
-    periodicIO.flsLogEntry = new DoubleLogEntry(log, EncoderName+"fls", "RawCounts");
-    periodicIO.frsLogEntry = new DoubleLogEntry(log, EncoderName+"frs", "RawCounts");
-    periodicIO.blsLogEntry = new DoubleLogEntry(log, EncoderName+"bls", "RawCounts");
-    periodicIO.brsLogEntry = new DoubleLogEntry(log, EncoderName+"brs", "RawCounts");
-    periodicIO.fldLogEntry = new DoubleLogEntry(log, EncoderName+"fld", "RawCounts");
-    periodicIO.frdLogEntry = new DoubleLogEntry(log, EncoderName+"frd", "RawCounts");
-    periodicIO.bldLogEntry = new DoubleLogEntry(log, EncoderName+"bld", "RawCounts");
-    periodicIO.brdLogEntry = new DoubleLogEntry(log, EncoderName+"brd", "RawCounts");
+    periodicData.flsLogEntry = new DoubleLogEntry(log, EncoderName+"fls", "RawCounts");
+    periodicData.frsLogEntry = new DoubleLogEntry(log, EncoderName+"frs", "RawCounts");
+    periodicData.blsLogEntry = new DoubleLogEntry(log, EncoderName+"bls", "RawCounts");
+    periodicData.brsLogEntry = new DoubleLogEntry(log, EncoderName+"brs", "RawCounts");
+    periodicData.fldLogEntry = new DoubleLogEntry(log, EncoderName+"fld", "RawCounts");
+    periodicData.frdLogEntry = new DoubleLogEntry(log, EncoderName+"frd", "RawCounts");
+    periodicData.bldLogEntry = new DoubleLogEntry(log, EncoderName+"bld", "RawCounts");
+    periodicData.brdLogEntry = new DoubleLogEntry(log, EncoderName+"brd", "RawCounts");
    }
 
   void logEncoders()
   {
-    periodicIO.flsLogEntry.append(frontLeft.getTurningEncoderPosition());
-    periodicIO.frsLogEntry.append(frontRight.getTurningEncoderPosition());
-    periodicIO.blsLogEntry.append(backLeft.getTurningEncoderPosition());
-    periodicIO.brsLogEntry.append(backRight.getTurningEncoderPosition());
-    periodicIO.fldLogEntry.append(frontLeft.getDrivingEncoderRate());
-    periodicIO.frdLogEntry.append(frontRight.getDrivingEncoderRate());
-    periodicIO.bldLogEntry.append(backLeft.getDrivingEncoderRate());
-    periodicIO.brdLogEntry.append(backRight.getDrivingEncoderRate());
+    periodicData.flsLogEntry.append(frontLeft.getTurningEncoderPosition());
+    periodicData.frsLogEntry.append(frontRight.getTurningEncoderPosition());
+    periodicData.blsLogEntry.append(backLeft.getTurningEncoderPosition());
+    periodicData.brsLogEntry.append(backRight.getTurningEncoderPosition());
+    periodicData.fldLogEntry.append(frontLeft.getDrivingEncoderRate());
+    periodicData.frdLogEntry.append(frontRight.getDrivingEncoderRate());
+    periodicData.bldLogEntry.append(backLeft.getDrivingEncoderRate());
+    periodicData.brdLogEntry.append(backRight.getDrivingEncoderRate());
   }
 
   public double fls()
@@ -531,15 +531,15 @@ public class Drivetrain extends Subsystem4237
 
         WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(xSpeed, rotation, false);
 
-        periodicIO.swerveModuleStates = new SwerveModuleState[4];
+        periodicData.swerveModuleStates = new SwerveModuleState[4];
         // double m_maxOutput = 2.;
         double maxOutput = Math.abs(xSpeed);
         
         //  assuming fl, fr, bl, br
-        periodicIO.swerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicIO.swerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicIO.swerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicIO.swerveModuleStates[3] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.swerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.swerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.swerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.swerveModuleStates[3] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
         // periodicIO.swerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(0));
         // periodicIO.swerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(0));
         // periodicIO.swerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(0));

@@ -22,17 +22,17 @@ abstract class Controller4237 implements PeriodicIO, PeriodicTask
     }
 
     // *** CLASS CONSTRUCTOR ***
-    Controller4237()
+    Controller4237(String controllerName)
     {
         super();
 
-        System.out.println("  Constructor Started:  " + fullClassName);
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + controllerName);
 
         // Register this subsystem in the array list for periodic inputs and outputs.
         registerPeriodicIO();
         registerPeriodicTask();
 
-        System.out.println("  Constructor Finished: " + fullClassName);
+        System.out.println("  Constructor Finished: " + fullClassName + " >> " + controllerName);
     }
 
     // Abstract methods to override in subclasses

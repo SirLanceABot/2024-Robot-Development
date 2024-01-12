@@ -39,13 +39,13 @@ public class RobotContainer
     private boolean useFullRobot			= false;
 
     private boolean useExampleSubsystem		= false;
-    private boolean useGyro					= false;
-    private boolean useDrivetrain   		= false;
+    private boolean useGyro					= true;
+    private boolean useDrivetrain   		= true;
 
     private boolean useMainShuffleboard		= false;    
-    private boolean useDriverController		= false;
+    private boolean useDriverController		= true;
     private boolean useOperatorController 	= false;
-    private boolean useBindings				= false;
+    private boolean useBindings				= true;
 
     private boolean useDataLog				= false;
 

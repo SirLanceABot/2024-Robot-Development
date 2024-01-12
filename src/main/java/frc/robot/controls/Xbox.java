@@ -183,10 +183,10 @@ public abstract class Xbox extends Controller4237
     // *** CLASS CONSTRUCTOR ***
     Xbox(int port)
     {
-        joystick = new Joystick(port);
-        
+        super("Xbox");
         System.out.println("  Constructor Started:  " + fullClassName);
-
+        
+        joystick = new Joystick(port);
         initXbox();
        
         System.out.println("  Constructor Finished: " + fullClassName);

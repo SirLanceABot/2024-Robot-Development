@@ -48,10 +48,10 @@ public class Gyro4237 extends Sensor4237
 
     public Gyro4237()
     {
+        super("Gyro4237");
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configGyro();
-        
         periodicData.rotation2d = gyro.getRotation2d();
 
         System.out.println("  Constructor Finished: " + fullClassName);

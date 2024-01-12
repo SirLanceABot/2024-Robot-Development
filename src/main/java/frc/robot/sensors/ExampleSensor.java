@@ -32,6 +32,7 @@ public class ExampleSensor extends Sensor4237
 
     public ExampleSensor()
     {   
+        super("Example Sensor");
         System.out.println("  Constructor Started:  " + fullClassName);
 
         periodicData = new PeriodicData();

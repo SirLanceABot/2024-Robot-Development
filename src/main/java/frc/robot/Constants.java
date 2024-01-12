@@ -185,10 +185,10 @@ public final class Constants
             }
             else if (Robot4237.equals("2022 Robot"))
             {
-                FRONT_LEFT_ENCODER_OFFSET   = -102.129; //-338.730;
-                FRONT_RIGHT_ENCODER_OFFSET  = -135.088; //-287.578;
-                BACK_LEFT_ENCODER_OFFSET    = -352.529; //-348.75;
-                BACK_RIGHT_ENCODER_OFFSET   = -15.205;  //-103.271;
+                FRONT_LEFT_ENCODER_OFFSET   = -0.282715;//-102.129; //-338.730;
+                FRONT_RIGHT_ENCODER_OFFSET  = -0.374756;//-135.088; //-287.578;
+                BACK_LEFT_ENCODER_OFFSET    = -0.979736;//-352.529; //-348.75;
+                BACK_RIGHT_ENCODER_OFFSET   = -0.041260;//-15.205;  //-103.271;
             }
             else 
             {

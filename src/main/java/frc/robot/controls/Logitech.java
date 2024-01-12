@@ -116,6 +116,7 @@ public abstract class Logitech extends Controller4237
     // *** CLASS CONSTRUCTOR ***
     Logitech(int port)
     {
+        super("Logitech");
         joystick = new Joystick(port);
 
         System.out.println("  Constructor Started:  " + fullClassName);
