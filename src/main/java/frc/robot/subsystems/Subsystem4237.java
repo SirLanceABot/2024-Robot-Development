@@ -22,12 +22,16 @@ abstract class Subsystem4237 extends SubsystemBase implements PeriodicIO
     }
 
     // *** CLASS CONSTRUCTOR ***
-    Subsystem4237()
+    Subsystem4237(String subsystemName)
     {
         super();
 
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + subsystemName);
+
         // Register this subsystem in the array list for periodic inputs and outputs.
         registerPeriodicIO();
+
+        System.out.println("  Constructor Finished:  " + fullClassName + " >> " + subsystemName);
     }
 
     // Abstract methods to override in subclasses

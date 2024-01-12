@@ -17,6 +17,12 @@ import java.lang.invoke.MethodHandles;
 // FIXME uncomment
 // import com.ctre.phoenix.sensors.CANCoder;
 // import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel;
@@ -55,7 +61,7 @@ class SwerveModule extends RobotDriveBase
     private final CANSparkMax driveMotor;
     private final RelativeEncoder driveMotorEncoder;
     private final boolean driveMotorInverted;
-    private final CANCoder turnEncoder;
+    private final CANcoder turnEncoder;
     private final double turnEncoderOffset;
     // private final TalonFX turnMotor;
     private final CANSparkMax turnMotor;
@@ -91,13 +97,13 @@ class SwerveModule extends RobotDriveBase
     SwerveModule(SwerveModuleConfig smd)
     {
         moduleName = smd.moduleName;
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + moduleName);
 
-        System.out.println(fullClassName + " : Constructor Started >> " + moduleName);
         // driveMotor = new TalonFX(smd.driveMotorChannel, Constants.Drivetrain.CAN_BUS);
         driveMotor = new CANSparkMax(smd.driveMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
         driveMotorEncoder = driveMotor.getEncoder();
         driveMotorInverted = smd.driveMotorInverted;
-        turnEncoder = new CANCoder(smd.turnEncoderChannel, Constants.Drivetrain.CANCODER_CAN_BUS);  
+        turnEncoder = new CANcoder(smd.turnEncoderChannel, Constants.Drivetrain.CANCODER_CAN_BUS);  
         turnEncoderOffset = smd.turnEncoderOffset;
         // turnMotor = new TalonFX(smd.turnMotorChannel, Constants.Drivetrain.CAN_BUS);
         turnMotor = new CANSparkMax(smd.turnMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
@@ -125,6 +131,8 @@ class SwerveModule extends RobotDriveBase
         // to be continuous.
         // FIXME Changing radians to degrees, replaced PI with 180
         turningPIDController.enableContinuousInput(-180, 180);
+
+        System.out.println("  Constructor Finished: " + fullClassName + " >> " + moduleName);
     }
 
 
@@ -266,33 +274,62 @@ class SwerveModule extends RobotDriveBase
         /**
          * Confgure the CANCoders
          */
-        CANCoderConfiguration CANCoderConfigs = new CANCoderConfiguration();
-        ErrorCode errorCode; 
+        CANcoderConfiguration CANcoderConfigs = new CANcoderConfiguration();
+        
+        StatusCode statusCode;
+        int count = 0;
 
-        // Configurations all have in common
-        CANCoderConfigs.velocityMeasurementPeriod = SensorVelocityMeasPeriod.Period_100Ms;
-        CANCoderConfigs.velocityMeasurementWindow = 64;
-        CANCoderConfigs.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        CANCoderConfigs.sensorDirection = false; // CCW
-        CANCoderConfigs.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition; // error on get "On boot up, set position to zero.";
-        // CANCoderConfigs.sensorCoefficient = 0.0015339776873588562; // 4096 ticks to radians
-        CANCoderConfigs.sensorCoefficient = 0.087890625; // 4096 ticks to degrees
-        CANCoderConfigs.unitString = "degrees";
-        CANCoderConfigs.sensorTimeBase = SensorTimeBase.PerSecond;
-        CANCoderConfigs.customParam0 = 0;
-        CANCoderConfigs.customParam1 = 0;
+        do
+        {
+            // Reset to factory defaults
+            statusCode = turnEncoder.getConfigurator().apply(CANcoderConfigs);
+            count++;
+        }
+        while(!statusCode.isOK() && count < 5);
+        
+        MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
+        
+        magnetSensorConfigs.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1);
+        magnetSensorConfigs.withMagnetOffset(turnEncoderOffset);
+        magnetSensorConfigs.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
 
-        // Individual Settings
-        // System.out.println(moduleName);
-        // System.out.println("setStatusFramePeriod " + turnEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, (int)(steerAdjustPeriod*1000.*.8)));
-        CANCoderConfigs.magnetOffsetDegrees = turnEncoderOffset;
 
-        errorCode = turnEncoder.configAllSettings(CANCoderConfigs);
-        // System.out.println("configAllSettings " + errorCode);
-        // System.out.println(CANCoderConfigs.toString());
+        CANcoderConfigs.withMagnetSensor(magnetSensorConfigs);
 
-        // When deploy code set the integrated encoder to the absolute encoder on the CANCoder
-        turnEncoder.setPosition(turnEncoder.getAbsolutePosition());
+        count = 0;
+        do
+        {
+            // Reset to factory defaults
+            statusCode = turnEncoder.getConfigurator().apply(CANcoderConfigs);
+            count++;
+        }
+        while(!statusCode.isOK() && count < 5);
+
+
+        // // Configurations all have in common
+        // CANcoderConfigs.velocityMeasurementPeriod = SensorVelocityMeasPeriod.Period_100Ms;
+        // CANcoderConfigs.velocityMeasurementWindow = 64;
+        // CANcoderConfigs.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        // CANcoderConfigs.sensorDirection = false; // CCW
+        // CANcoderConfigs.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition; // error on get "On boot up, set position to zero.";
+        // // CANCoderConfigs.sensorCoefficient = 0.0015339776873588562; // 4096 ticks to radians
+        // CANcoderConfigs.sensorCoefficient = 0.087890625; // 4096 ticks to degrees
+        // CANcoderConfigs.unitString = "degrees";
+        // CANcoderConfigs.sensorTimeBase = SensorTimeBase.PerSecond;
+        // CANcoderConfigs.customParam0 = 0;
+        // CANcoderConfigs.customParam1 = 0;
+
+        // // Individual Settings
+        // // System.out.println(moduleName);
+        // // System.out.println("setStatusFramePeriod " + turnEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, (int)(steerAdjustPeriod*1000.*.8)));
+        // CANcoderConfigs.magnetOffsetDegrees = turnEncoderOffset;
+
+        // errorCode = turnEncoder.configAllSettings(CANcoderConfigs);
+        // // System.out.println("configAllSettings " + errorCode);
+        // // System.out.println(CANCoderConfigs.toString());
+
+        // // When deploy code set the integrated encoder to the absolute encoder on the CANCoder
+        // turnEncoder.setPosition(turnEncoder.getAbsolutePosition());
     }
 
     public void configOpenLoopRamp(double seconds)
@@ -413,7 +450,7 @@ class SwerveModule extends RobotDriveBase
     {
         // FIXME Changing radians to degrees included making encoder return degrees
         // Used the Phoenix tuner to change the return value to radians
-        return turnEncoder.getAbsolutePosition();
+        return turnEncoder.getAbsolutePosition().getValueAsDouble() * 360.0;
         // Reset facory default in Phoenix Tuner to make the 0 go forward 
         // while wheel bolts facing in, then save, then get absolute value and put in enum
         // return turningEncoder.getAbsolutePosition() - turningEncoderOffset; 
@@ -438,7 +475,7 @@ class SwerveModule extends RobotDriveBase
         // turnMotor.setSelectedSensorPosition(0.0);
         turnMotorEncoder.setPosition(0.0);
         
-        turnEncoder.setPosition(turnEncoder.getAbsolutePosition());
+        turnEncoder.setPosition(turnEncoder.getAbsolutePosition().getValueAsDouble());
     }
 
     public double getDriveMotorPosition()

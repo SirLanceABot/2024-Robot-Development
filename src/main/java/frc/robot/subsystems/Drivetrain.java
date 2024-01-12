@@ -113,6 +113,9 @@ public class Drivetrain extends Subsystem4237
     // *** CLASS CONSTRUCTOR ***
     public Drivetrain(Gyro4237 gyro, DataLog log)//, DriverController driverController)
     {
+        super("Drivetrain");
+        System.out.println("  Constructor Started:  " + fullClassName);
+
         DrivetrainConfig dd = Constants.DrivetrainSetup.DRIVETRAIN_DATA;
         // super();  // call the RobotDriveBase constructor
         // setSafetyEnabled(false);
@@ -160,6 +163,8 @@ public class Drivetrain extends Subsystem4237
             });
 
         // setSafetyEnabled(true);
+
+        System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     // *** CLASS & INSTANCE METHODS ***

@@ -31,7 +31,13 @@ public class ExampleSubsystem extends Subsystem4237
      * Creates a new ExampleSubsystem. 
      */
     public ExampleSubsystem()
-    {}
+    {
+        super("Example Subsystem");
+        System.out.println("  Constructor Started:  " + fullClassName);
+
+        
+        System.out.println("  Constructor Finished: " + fullClassName);
+    }
 
     @Override
     public void readPeriodicInputs()
