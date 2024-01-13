@@ -87,7 +87,7 @@ public class PoseEstimator extends Subsystem4237
         if(drivetrain != null && gyro != null)
         {
             poseEstimator = new SwerveDrivePoseEstimator(
-                drivetrain.kinematics,
+                drivetrain.getKinematics(),
                 gyro.getRotation2d(),
                 drivetrain.getSwerveModulePositions(),
                 drivetrain.getPose());

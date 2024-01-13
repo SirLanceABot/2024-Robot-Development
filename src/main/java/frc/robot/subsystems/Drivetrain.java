@@ -96,8 +96,7 @@ public class Drivetrain extends Subsystem4237
     private final Gyro4237 gyro; //Pigeon2
     private boolean useDataLog = true;
     private final DataLog log;
-    // private final SwerveDriveKinematics kinematics;
-    public final SwerveDriveKinematics kinematics;
+    private final SwerveDriveKinematics kinematics;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(Constants.DrivetrainConstants.X_ACCELERATION_RATE_LIMT, Constants.DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(Constants.DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, Constants.DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -305,6 +304,11 @@ public class Drivetrain extends Subsystem4237
                 backLeft.getPosition(),
                 backRight.getPosition()
             };
+    }
+
+    public SwerveDriveKinematics getKinematics()
+    {
+        return kinematics;
     }
 
     public Translation2d getCurrentTranslation()
