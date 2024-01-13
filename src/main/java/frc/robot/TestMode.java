@@ -44,7 +44,7 @@ public class TestMode
     }
 
     // *** CLASS VARIABLES ***
-    private final Test myTest;
+    private Test myTest = null;
     
 
     public TestMode(RobotContainer robotContainer)
@@ -90,6 +90,9 @@ public class TestMode
     public void exit()
     {
         myTest.exit();
+
+        // Set the Test object to null so that garbage collection will remove the object.
+        myTest = null;
     }    
 
 }
