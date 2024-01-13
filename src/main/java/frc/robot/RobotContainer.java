@@ -5,16 +5,19 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PoseEstimator;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
 import frc.robot.controls.OperatorController;
+import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.shuffleboard.MainShuffleboard;
 
@@ -41,6 +44,12 @@ public class RobotContainer
     private boolean useExampleSubsystem		= false;
     private boolean useGyro					= true;
     private boolean useDrivetrain   		= true;
+    
+    private boolean useCameraOne            = false;
+    private boolean useCameraTwo            = false;
+    private boolean useCameraThree          = false;
+    private boolean useCameraFour           = false;
+    private boolean usePoseEstimator        = false;
 
     private boolean useMainShuffleboard		= false;    
     private boolean useDriverController		= true;
@@ -56,6 +65,12 @@ public class RobotContainer
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
+
+    public final Camera cameraOne;
+    public final Camera cameraTwo;
+    public final Camera cameraThree;
+    public final Camera cameraFour;
+    public final PoseEstimator poseEstimator;
 
     public final MainShuffleboard mainShuffleboard;
     public final DriverController driverController;
@@ -76,17 +91,23 @@ public class RobotContainer
         // Create the needed subsystems
         fullRobot 			= (useFullRobot);
 
-        exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 								: null;
-        gyro 				= (useFullRobot || useGyro)						? new Gyro4237()										: null;	
-        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log) 							: null;
-        compressor			= (true)					                    ? new Compressor(0, PneumaticsModuleType.CTREPCM)		: null;
+        exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
+        gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
+        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
+        compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
 
-        mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)							: null;
-        driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER) 	: null;
-        driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 						: null;
+        cameraOne           = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
+        cameraTwo           = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
+        cameraThree         = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
+        cameraFour          = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
+        poseEstimator       = (useFullRobot || usePoseEstimator)            ? new PoseEstimator(drivetrain, gyro, cameraOne, cameraTwo, cameraThree, cameraFour)    : null;
 
-        operatorController 	= (useFullRobot || useOperatorController) 		? new OperatorController(Constants.Controller.OPERATOR)	: null;
-        operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 						: null;
+        mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
+        driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;
+        driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 					    	: null;
+
+        operatorController 	= (useFullRobot || useOperatorController) 		? new OperatorController(Constants.Controller.OPERATOR) 	: null;
+        operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 	    					: null;
 
 
         if(useFullRobot || useDataLog)
