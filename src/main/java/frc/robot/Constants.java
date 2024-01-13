@@ -4,11 +4,12 @@
 
 package frc.robot;
 
-import java.io.IOException;
+// import java.io.IOException;
 import java.lang.invoke.MethodHandles;
-import java.nio.file.Files;
-import java.nio.file.Path;
+// import java.nio.file.Files;
+// import java.nio.file.Path;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.subsystems.DrivetrainConfig;
 import frc.robot.subsystems.SwerveModuleConfig;
 
@@ -44,18 +45,21 @@ public final class Constants
         <
         Notice an extra free control character that made a new line
         */
-        final Path commentPath = Path.of("/etc/machine-info");
-        String comment = "";
-        try 
-        {  
-            comment = Files.readString(commentPath);
-            System.out.println("The roboRIO comment is >" + comment + "<");
-        } 
-        catch (IOException e) 
-        {
-            // Couldn't read the file
-            System.out.println(e);
-        }
+        // final Path commentPath = Path.of("/etc/machine-info");
+        // String comment = "";
+        // try 
+        // {  
+        //     comment = Files.readString(commentPath);
+        //     System.out.println("The roboRIO comment is >" + comment + "<");
+        // } 
+        // catch (IOException e) 
+        // {
+        //     // Couldn't read the file
+        //     System.out.println(e);
+        // }
+
+        String comment = RobotController.getComments();
+        System.out.println("The roboRIO comment is >" + comment + "<");
       
         // Use the comment variable to decide what to do
         if(comment.contains("2023 Robot"))
