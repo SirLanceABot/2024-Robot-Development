@@ -11,6 +11,7 @@ import frc.robot.RobotContainer;
 
 public class SensorTab
 {
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
     // *** STATIC INITIALIZATION BLOCK ***

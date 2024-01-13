@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 
 class SwerveModule extends RobotDriveBase
 {
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
     // *** STATIC INITIALIZATION BLOCK ***

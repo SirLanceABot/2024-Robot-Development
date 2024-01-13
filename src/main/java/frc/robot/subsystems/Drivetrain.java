@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends Subsystem4237 
 {
-
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
     // *** STATIC INITIALIZATION BLOCK ***

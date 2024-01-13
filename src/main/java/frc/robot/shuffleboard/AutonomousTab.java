@@ -16,8 +16,8 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 
 public class AutonomousTab 
 {
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
-
 
     // *** STATIC INITIALIZATION BLOCK ***
     // This block of code is run first when the class is loaded

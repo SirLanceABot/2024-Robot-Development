@@ -5,6 +5,7 @@ import frc.robot.RobotContainer;
 
 public class MainShuffleboard 
 {
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
     // *** STATIC INITIALIZATION BLOCK ***
