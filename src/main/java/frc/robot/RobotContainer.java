@@ -89,7 +89,7 @@ public class RobotContainer
     RobotContainer()
     {
         // Create the needed subsystems
-        fullRobot 			= (useFullRobot);
+        fullRobot 			    = (useFullRobot);
 
         exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
@@ -122,8 +122,18 @@ public class RobotContainer
 
     public void resetRobot()
     {
-        gyro.reset();
-        System.out.println("Gyro Reset");
+        if(gyro != null)
+        {
+            gyro.reset();
+        }
+    }
+
+    public void stopRobot()
+    {
+        if(drivetrain != null)
+        {
+            drivetrain.stopMotor();
+        }
     }
 }
 
