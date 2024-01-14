@@ -14,7 +14,7 @@ public class AutonomousTabData
         System.out.println("Loading: " + fullClassName);
     }
 
-    //-------------------------------------------------------------------// 
+    //-------------------------------------------------------------------//
 
     public static enum StartingLocation
     {
@@ -31,11 +31,24 @@ public class AutonomousTabData
         kYes, kNo;
     }
 
-    //-------------------------------------------------------------------// 
+    //-------------------------------------------------------------------//
 
+    // IMPORTANT: Any variables added here must be initialized in the copy constructor below
     public StartingLocation startingLocation = StartingLocation.kMiddle;
     public ContainingPreload containingPreload = ContainingPreload.kYes;
     public PlayPreload playPreload = PlayPreload.kYes;
+
+    // Default constructor
+    public AutonomousTabData()
+    {}
+
+    // Copy Constructor
+    public AutonomousTabData(AutonomousTabData atd)
+    {
+        startingLocation = atd.startingLocation;
+        containingPreload = atd.containingPreload;
+        playPreload = atd.playPreload;
+    }
 
     public String toString()
     {
