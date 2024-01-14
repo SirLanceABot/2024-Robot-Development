@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.Constants;
+import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.Constants.SwerveModuleSetup;
 import frc.robot.controls.AdaptiveSlewRateLimiter;
 import frc.robot.sensors.Gyro4237;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -83,24 +85,36 @@ public class Drivetrain extends Subsystem4237
     }
 
     // *** CLASS & INSTANCE VARIABLES ***
-    // private static final Translation2d frontLeftLocation = new Translation2d(Constant.DRIVETRAIN_WHEELBASE_METERS / 2, Constant.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    // private static final Translation2d frontRightLocation = new Translation2d(Constant.DRIVETRAIN_WHEELBASE_METERS / 2, -Constant.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    // private static final Translation2d backLeftLocation = new Translation2d(-Constant.DRIVETRAIN_WHEELBASE_METERS / 2, Constant.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    // private static final Translation2d backRightLocation = new Translation2d(-Constant.DRIVETRAIN_WHEELBASE_METERS / 2, -Constant.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-
-    private final SwerveModule frontLeft;// = new SwerveModule(Port.Module.FRONT_LEFT);
-    private final SwerveModule frontRight;// = new SwerveModule(Port.Module.FRONT_RIGHT);
-    private final SwerveModule backLeft;// = new SwerveModule(Port.Module.BACK_LEFT);
-    private final SwerveModule backRight;// = new SwerveModule(Port.Module.BACK_RIGHT);
-
     private final Gyro4237 gyro; //Pigeon2
     private boolean useDataLog = true;
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
 
-    private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(Constants.DrivetrainConstants.X_ACCELERATION_RATE_LIMT, Constants.DrivetrainConstants.X_DECELERATION_RATE_LIMT);
-    private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(Constants.DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, Constants.DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
+    private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
+    private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
 
+    private final Translation2d FRONT_LEFT_LOCATION = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d BACK_LEFT_LOCATION = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d BACK_RIGHT_LOCATION = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    
+    private final SwerveModuleConfig FRONT_LEFT_SWERVE_MODULE = new SwerveModuleConfig(
+        "Front Left", FRONT_LEFT_LOCATION, Constants.Drivetrain.FRONT_LEFT_DRIVE, true, Constants.Drivetrain.FRONT_LEFT_ENCODER, SwerveModuleSetup.FRONT_LEFT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_LEFT_TURN);
+    private final SwerveModuleConfig FRONT_RIGHT_SWERVE_MODULE = new SwerveModuleConfig(
+        "Front Right", FRONT_RIGHT_LOCATION, Constants.Drivetrain.FRONT_RIGHT_DRIVE, false, Constants.Drivetrain.FRONT_RIGHT_ENCODER, SwerveModuleSetup.FRONT_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_RIGHT_TURN);
+    private final SwerveModuleConfig BACK_LEFT_SWERVE_MODULE = new SwerveModuleConfig(
+        "Back Left", BACK_LEFT_LOCATION, Constants.Drivetrain.BACK_LEFT_DRIVE, true, Constants.Drivetrain.BACK_LEFT_ENCODER, SwerveModuleSetup.BACK_LEFT_ENCODER_OFFSET, Constants.Drivetrain.BACK_LEFT_TURN);
+    private final SwerveModuleConfig BACK_RIGHT_SWERVE_MODULE = new SwerveModuleConfig(
+        "Back Right", BACK_RIGHT_LOCATION, Constants.Drivetrain.BACK_RIGHT_DRIVE, false, Constants.Drivetrain.BACK_RIGHT_ENCODER, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN); 
+    
+    // private final SwerveModule frontLeft;
+    // private final SwerveModule frontRight;
+    // private final SwerveModule backLeft;
+    // private final SwerveModule backRight;
+    private final Module frontLeft;
+    private final Module frontRight;
+    private final Module backLeft;
+    private final Module backRight;
 
     // TODO: Make final by setting to an initial stopped state
     //private SwerveModuleState[] previousSwerveModuleStates = null;
@@ -116,7 +130,7 @@ public class Drivetrain extends Subsystem4237
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        DrivetrainConfig dd = Constants.DrivetrainSetup.DRIVETRAIN_DATA;
+        // DrivetrainConfig dd = Constants.DrivetrainSetup.DRIVETRAIN_DATA;
         // super();  // call the RobotDriveBase constructor
         // setSafetyEnabled(false);
   
@@ -138,18 +152,52 @@ public class Drivetrain extends Subsystem4237
 
 
 
-        frontLeft = new SwerveModule(dd.frontLeftSwerveModule);
-        frontRight = new SwerveModule(dd.frontRightSwerveModule);
-        backLeft = new SwerveModule(dd.backLeftSwerveModule);
-        backRight = new SwerveModule(dd.backRightSwerveModule);
+        // frontLeft = new SwerveModule(dd.frontLeftSwerveModule);
+        // frontRight = new SwerveModule(dd.frontRightSwerveModule);
+        // backLeft = new SwerveModule(dd.backLeftSwerveModule);
+        // backRight = new SwerveModule(dd.backRightSwerveModule);
+        // frontLeft = new SwerveModule(FRONT_LEFT_SWERVE_MODULE);
+        // frontRight = new SwerveModule(FRONT_RIGHT_SWERVE_MODULE);
+        // backLeft = new SwerveModule(BACK_LEFT_SWERVE_MODULE);
+        // backRight = new SwerveModule(BACK_RIGHT_SWERVE_MODULE);
+
+        if(Constants.ROBOT_NAME_4237.equals("2023 Robot"))
+        {
+            frontLeft = new SwerveModule2023(FRONT_LEFT_SWERVE_MODULE);
+            frontRight = new SwerveModule2023(FRONT_RIGHT_SWERVE_MODULE);
+            backLeft = new SwerveModule2023(BACK_LEFT_SWERVE_MODULE);
+            backRight = new SwerveModule2023(BACK_RIGHT_SWERVE_MODULE);
+        }
+        else if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
+        {
+            frontLeft = new SwerveModule2022(FRONT_LEFT_SWERVE_MODULE);
+            frontRight = new SwerveModule2022(FRONT_RIGHT_SWERVE_MODULE);
+            backLeft = new SwerveModule2022(BACK_LEFT_SWERVE_MODULE);
+            backRight = new SwerveModule2022(BACK_RIGHT_SWERVE_MODULE);
+        }
+        else
+        {
+            System.out.println("Unknown Robot " + Constants.ROBOT_NAME_4237);
+            frontLeft = null;
+            frontRight = null;
+            backLeft = null;
+            backRight = null;
+        }
+            
 
         // gyro = new WPI_Pigeon2(Port.Sensor.PIGEON, Port.Motor.CAN_BUS);
 
+        // kinematics = new SwerveDriveKinematics(
+        //     dd.frontLeftSwerveModule.moduleLocation,
+        //     dd.frontRightSwerveModule.moduleLocation,
+        //     dd.backLeftSwerveModule.moduleLocation,
+        //     dd.backRightSwerveModule.moduleLocation);
+
         kinematics = new SwerveDriveKinematics(
-            dd.frontLeftSwerveModule.moduleLocation,
-            dd.frontRightSwerveModule.moduleLocation,
-            dd.backLeftSwerveModule.moduleLocation,
-            dd.backRightSwerveModule.moduleLocation);
+            FRONT_LEFT_LOCATION,
+            FRONT_RIGHT_LOCATION,
+            BACK_LEFT_LOCATION,
+            BACK_RIGHT_LOCATION);
 
         periodicData.odometry = new SwerveDriveOdometry(
             kinematics, 
