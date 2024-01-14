@@ -6,11 +6,12 @@ package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.sensors.Gyro4237;
-import frc.robot.shuffleboard.AutonomousTabData;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.shuffleboard.AutonomousTabData;
+
 
 public class AutoCommandList extends SequentialCommandGroup
 {
@@ -37,13 +38,14 @@ public class AutoCommandList extends SequentialCommandGroup
 
     
     // *** CLASS CONSTRUCTOR ***
-    public AutoCommandList(RobotContainer robotContainer)
+    public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
-        this.drivetrain = robotContainer.drivetrain;
+        // this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
         this.gyro = robotContainer.gyro;
+        this.drivetrain = robotContainer.drivetrain;
+        this.autonomousTabData = autonomousTabData;
 
         build();
 
@@ -54,6 +56,10 @@ public class AutoCommandList extends SequentialCommandGroup
 
 
     // *** CLASS & INSTANCE METHODS ***
+
+    /**
+     * Builds the Autonomous Command List based on the Autonomous Tab selections
+     */
     private void build()
     {
         if(drivetrain != null)
@@ -61,13 +67,17 @@ public class AutoCommandList extends SequentialCommandGroup
     }
 
 
-    // ***** Use these methods in AutonomousMode to execute the AutonomousCommandList
+    /**
+     * Adds the command to the command group as well as the command string to display
+     * @param command The command to add to the command group
+     */
     private void add(Command command)
     {
         addCommands(command);
         commandString += command + "\n";
     }
 
+    @Override
     public String toString()
     {
         return commandString;
