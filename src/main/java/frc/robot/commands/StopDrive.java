@@ -34,7 +34,7 @@ public class StopDrive extends Command
     public void initialize()
     {
         if(drivetrain != null)
-            drivetrain.stopMotor();
+            drivetrain.stopMotors();
     }
 
     @Override

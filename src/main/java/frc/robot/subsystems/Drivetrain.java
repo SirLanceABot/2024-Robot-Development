@@ -336,7 +336,7 @@ public class Drivetrain extends Subsystem4237
     }
 
     //@Override
-    public void stopMotor()
+    public void stopMotors()
     {
         driveMode = DriveMode.kStop;
         // frontLeft.stopModule();
