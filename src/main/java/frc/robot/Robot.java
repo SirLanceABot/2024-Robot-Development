@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandList;
+import frc.robot.shuffleboard.AutonomousTabData;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot
     
     // *** CLASS AND INSTANCE VARIABLES ***
     private final RobotContainer robotContainer = new RobotContainer();
+    private AutonomousTabData autonomousTabData = null;
     private Command autonomousCommand = null;
     private TestMode testMode = null;
     
@@ -97,20 +99,22 @@ public class Robot extends TimedRobot
     @Override
     public void disabledPeriodic()
     {
-        if (robotContainer.mainShuffleboard != null)
+        if(robotContainer.mainShuffleboard != null &&
+            robotContainer.mainShuffleboard.autonomousTab != null)
         {
-            if (robotContainer.mainShuffleboard.autonomousTab != null)
-            {
-                boolean isNewData = robotContainer.mainShuffleboard.autonomousTab.isNewData();
+            // Check if there is new data on the Autonomous Tab (Send Data button is pressed)
+            boolean isNewData = robotContainer.mainShuffleboard.autonomousTab.isNewData();
 
-                if (isNewData)
-                {
-                    // System.out.println(robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData());
-                    // robotContainer.mainShuffleboard.autoCommandList = new AutoCommandList(robotContainer);
-                    autonomousCommand = new AutoCommandList(robotContainer);
-                    robotContainer.resetRobot();
-                    // System.out.println(robotContainer.mainShuffleboard.autoCommandList);
-                }
+            if (isNewData)
+            {
+                // Create a copy of the Autonomous Tab Data that is on the Autonomous Tab
+                autonomousTabData = new AutonomousTabData(robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData());
+
+                // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
+                autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+
+                // Reset the gyro, encoders, and any other sensors
+                robotContainer.resetRobot();
             }
         }
     }
@@ -142,16 +146,10 @@ public class Robot extends TimedRobot
     {
         System.out.println("Autonomous Mode");
 
-        // if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.autoCommandList != null)
-        if(robotContainer.mainShuffleboard != null && autonomousCommand != null)
+        if(autonomousCommand != null)
         {
-            // autonomousCommand = robotContainer.mainShuffleboard.autoCommandList;
             autonomousCommand.schedule();
         }
-		else
-		{
-			autonomousCommand = null;
-		}   
     }
 
     /**
@@ -166,7 +164,9 @@ public class Robot extends TimedRobot
      */
     @Override
     public void autonomousExit()
-    {}
+    {
+        robotContainer.stopRobot();
+    }
 
     /**
      * This method runs one time when the robot enters teleop mode.
@@ -180,10 +180,11 @@ public class Robot extends TimedRobot
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null)
+        if(autonomousCommand != null)
         {
             autonomousCommand.cancel();
             autonomousCommand = null;
+            autonomousTabData = null;
         }
         
         if(robotContainer.compressor != null)
@@ -200,12 +201,11 @@ public class Robot extends TimedRobot
     {
         if(!DriverStation.isFMSAttached())
         {
-            //TODO test this on the practice field
             if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
             {
-                robotContainer.mainShuffleboard.sensorTab.updateEncoderData(); 
+                robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
             }
-        }       
+        }
     }
 
     /**
@@ -213,7 +213,9 @@ public class Robot extends TimedRobot
      */
     @Override
     public void teleopExit()
-    {}
+    {
+        robotContainer.stopRobot();
+    }
 
     /**
      * This method runs one time when the robot enters test mode.
@@ -239,11 +241,6 @@ public class Robot extends TimedRobot
     public void testPeriodic()
     {
         testMode.periodic();
-        // if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
-        // {
-        //     robotContainer.mainShuffleboard.sensorTab.updateEncoderData(); 
-        // }
-        
     }
 
     /**
@@ -256,6 +253,8 @@ public class Robot extends TimedRobot
 
         // Set the TestMode object to null so that garbage collection will remove the object.
         testMode = null;
+        
+        robotContainer.stopRobot();
     }
 
     /**
