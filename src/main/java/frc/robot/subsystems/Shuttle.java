@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import frc.robot.Constants;
+import frc.robot.PeriodicIO;
 
 /**
  *This is shuttle / transfer from intake to shooter
@@ -17,10 +21,13 @@ public class Shuttle extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
-    
+
+    private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
+
     private class PeriodicData
     {
-        // INPUTS
+ 
+        private double shuttleMotorSpeed = 0.0;
 
         // OUTPUTS
 
@@ -46,7 +53,9 @@ public class Shuttle extends Subsystem4237
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        shuttleMotor.set(periodicData.shuttleMotorSpeed);
+    }
 
     @Override
     public void periodic()
@@ -59,6 +68,21 @@ public class Shuttle extends Subsystem4237
     {
         // This method will be called once per scheduler run during simulation
     }
+   
+    /**
+     * shuts off motor
+     */
+    public void off()
+    {
+        periodicData.shuttleMotorSpeed = 0.0;
+    }
 
+    /** 
+     * Turns the motor on 
+     * @param speed (double)*/
+    public void on(double speed)
+    {
+        periodicData.shuttleMotorSpeed = .25;
+    }
 
 }
