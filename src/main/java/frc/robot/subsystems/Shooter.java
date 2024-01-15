@@ -2,9 +2,11 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import frc.robot.Constants;
 import frc.robot.subsystems.PoseEstimator;
 
@@ -31,17 +33,21 @@ public class Shooter extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
+        private double currentDistance;
+        private double currentVelocity;
 
         // OUTPUTS
+       
+        private double outerMotorSpeed;
+        private DoubleLogEntry currentDistanceEntry;
+        private DoubleLogEntry currentVelocityEntry;
 
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
     private final int OuterShooterMotorPort = Constants.Shooter.OUTER_SHOOTER_MOTOR_PORT;
-    private final int InnerShooterMotorPort = Constants.Shooter.INNER_SHOOTER_MOTOR_PORT;
     private final TalonFX outerShooterMotor = new TalonFX(OuterShooterMotorPort);
-    private final TalonFX innerShooterMotor = new TalonFX(InnerShooterMotorPort);
     private RelativeEncoder outerShooterEncoder;
     private RelativeEncoder innerShooterEncoder;
 
@@ -65,6 +71,12 @@ public class Shooter extends Subsystem4237
     {
         // Factory Defaults
         // outerShooterMotor.config
+        outerShooterMotor.setInverted(false);
+        // innerShooterMotor.setInverted(false);
+        // outerShooterMotor.setNeutralMode(NeutralModeValue.Coast);
+        // innerShooterMotor.setNeutralMode(NeutralModeValue.Coast);
+        // outerShooterEncoder = outerShooterMotor.getEncoder();
+        // innerShooterEncoder = innerShooterMotor.getEncoder();
     }
 
     public void resetEncoder()
@@ -74,7 +86,40 @@ public class Shooter extends Subsystem4237
 
     public void calculateDistance()
     {
-        // fieldLocation = PoseEstimator.getEstimatedPose();
+        fieldLocation = poseEstimator.getEstimatedPose();
+    }
+
+    public double getVelocity()
+    {
+        return periodicData.currentVelocity;
+        
+    }
+
+    public double getDistance()
+    {
+        return periodicData.currentDistance;
+    }
+
+    public void forwardInnerMotors()
+    {
+        // periodicData.innerMotorSpeed = 0.1;
+    }
+
+
+    public void reverseInnerMotors()
+    {
+        // periodicData.innerMotorSpeed = -0.1;
+    }
+
+    public void forwardOuterMotors()
+    {
+        periodicData.outerMotorSpeed = 0.1;
+    }
+
+
+    public void reverseOuterMotors()
+    {
+        periodicData.outerMotorSpeed = -0.1;
     }
 
     @Override

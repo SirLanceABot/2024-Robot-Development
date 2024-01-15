@@ -75,11 +75,11 @@ public class RobotContainer
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
-    // public final Shooter shooter;
-    // public final Intake intake;
-    // public final Pivot pivot;
-    // public final IntakePositioning intakePositioning;
-    // public final Shuttle shuttle;
+    public final Shooter shooter;
+    public final Intake intake;
+    public final Pivot pivot;
+    public final IntakePositioning intakePositioning;
+    public final Shuttle shuttle;
     // public final Climb climb;
 
     public final Camera cameraOne;
@@ -111,11 +111,10 @@ public class RobotContainer
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
-        // shooter             = (useShooter)                                  ? new Shooter()                                             : null;
-        // intake              = (useIntake)                                   ? new Intake()                                              : null;
-        // pivot               = (usePivot)                                    ? new Pivot()                                               : null;
-        // intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
-        // shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
+        intake              = (useIntake)                                   ? new Intake()                                              : null;
+        pivot               = (usePivot)                                    ? new Pivot()                                               : null;
+        intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
+        shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
         // climb               = (useClimb)                                    ? new Climb()                                            : null;
 
 
@@ -125,6 +124,8 @@ public class RobotContainer
         cameraThree         = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
         cameraFour          = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
         poseEstimator       = (useFullRobot || usePoseEstimator)            ? new PoseEstimator(drivetrain, gyro, cameraOne, cameraTwo, cameraThree, cameraFour)    : null;
+
+        shooter             = (useFullRobot || (useShooter && usePoseEstimator))      ? new Shooter(poseEstimator)                      : null;
 
         mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
         driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;
