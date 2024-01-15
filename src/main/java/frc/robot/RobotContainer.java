@@ -44,6 +44,12 @@ public class RobotContainer
     private boolean useExampleSubsystem		= false;
     private boolean useGyro					= true;
     private boolean useDrivetrain   		= true;
+    private boolean useShooter              = false;
+    private boolean useIntake               = false; 
+    private boolean usePivot                = false;
+    private boolean useIntakePositioning    = false;
+    private boolean useShuttle              = false;
+    private boolean useClimb                = false;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -65,6 +71,12 @@ public class RobotContainer
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
+    // public final Shooter shooter;
+    // public final Intake intake;
+    // public final Pivot pivot;
+    // public final IntakePositioning intakePositioning;
+    // public final Shuttle shuttle;
+    // public final Climb climb;
 
     public final Camera cameraOne;
     public final Camera cameraTwo;
@@ -95,6 +107,8 @@ public class RobotContainer
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
+        
+
 
         cameraOne           = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
         cameraTwo           = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
