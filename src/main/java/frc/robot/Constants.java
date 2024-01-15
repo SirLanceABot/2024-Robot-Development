@@ -148,6 +148,11 @@ public final class Constants
         public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
     }
 
+    public static class Index
+    {
+        public static final int INDEX_MOTOR_PORT = 0;
+    }
+
     public static class Pivot
     {
         public static final int PIVOT_MOTOR_PORT                = 0;
@@ -163,6 +168,9 @@ public final class Constants
     public static class IntakePositioning
     {
         public static final int INTAKE_POSITIONING_MOTOR_PORT     = 0;
+
+        public static final int INTAKE_UP_POSITION                = 0;
+        public static final int INTAKE_DOWN_POSITION              = 4237;
     }
 
     public static class PowerDistributionHub
