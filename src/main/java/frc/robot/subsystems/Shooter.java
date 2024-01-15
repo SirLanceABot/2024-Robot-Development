@@ -46,8 +46,8 @@ public class Shooter extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    // private final int ShooterMotorPort = Constants.Shooter.SHOOTER_MOTOR_PORT;
-    // private final TalonFX shooterMotor = new TalonFX(ShooterMotorPort);
+    private final int ShooterMotorPort = Constants.Shooter.SHOOTER_MOTOR_PORT;
+    private final TalonFX shooterMotor = new TalonFX(ShooterMotorPort);
     private RelativeEncoder shooterEncoder;
 
     private ResetState resetState = ResetState.kDone;
@@ -62,6 +62,7 @@ public class Shooter extends Subsystem4237
         super("Shooter");
         System.out.println("  Constructor Started:  " + fullClassName);
         this.poseEstimator = poseEstimator;
+        configTalonFX();
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -70,8 +71,8 @@ public class Shooter extends Subsystem4237
     {
         // Factory Defaults
         // outerShooterMotor.config
-        // shooterMotor.setInverted(false);
-        // shooterMotor.setNeutralMode(NeutralModeValue.Coast);
+        shooterMotor.setInverted(false);
+        shooterMotor.setNeutralMode(NeutralModeValue.Coast);
         // outerShooterEncoder = outerShooterMotor.getEncoder();
     }
 

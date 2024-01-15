@@ -59,7 +59,7 @@ public class OwenTest implements Test
         }
         else
         {
-
+            shooter.turnOffShooterMotor();
         }
 
     }

@@ -43,6 +43,7 @@ public class Index extends Subsystem4237
     {
         super("Index");
         System.out.println("  Constructor Started:  " + fullClassName);
+        configTalonFX();
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -57,13 +58,13 @@ public class Index extends Subsystem4237
         // indexEncoder = indexMotor.getEncoder();
     }
 
-    public void forwardIndexMotors()
+    public void forwardIndexMotor()
     {
         periodicData.indexMotorSpeed = 0.1;
     }
 
 
-    public void reverseIndexMotors()
+    public void reverseIndexMotor()
     {
         periodicData.indexMotorSpeed = -0.1;
     }
