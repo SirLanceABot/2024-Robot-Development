@@ -12,7 +12,11 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePositioning;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.Shooter;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
@@ -107,7 +111,13 @@ public class RobotContainer
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
-        
+        // shooter             = (useShooter)                                  ? new Shooter()                                             : null;
+        // intake              = (useIntake)                                   ? new Intake()                                              : null;
+        // pivot               = (usePivot)                                    ? new Pivot()                                               : null;
+        // intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
+        // shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
+        // climb               = (useClimb)                                    ? new Climb()                                            : null;
+
 
 
         cameraOne           = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
