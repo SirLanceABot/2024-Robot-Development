@@ -38,7 +38,7 @@ public class Shooter extends Subsystem4237
 
         // OUTPUTS
        
-        private double outerMotorSpeed;
+        private double shooterMotorSpeed;
         private DoubleLogEntry currentDistanceEntry;
         private DoubleLogEntry currentVelocityEntry;
 
@@ -46,10 +46,9 @@ public class Shooter extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final int OuterShooterMotorPort = Constants.Shooter.OUTER_SHOOTER_MOTOR_PORT;
-    private final TalonFX outerShooterMotor = new TalonFX(OuterShooterMotorPort);
-    private RelativeEncoder outerShooterEncoder;
-    private RelativeEncoder innerShooterEncoder;
+    // private final int ShooterMotorPort = Constants.Shooter.SHOOTER_MOTOR_PORT;
+    // private final TalonFX shooterMotor = new TalonFX(ShooterMotorPort);
+    private RelativeEncoder shooterEncoder;
 
     private ResetState resetState = ResetState.kDone;
     private Pose2d fieldLocation;
@@ -71,12 +70,9 @@ public class Shooter extends Subsystem4237
     {
         // Factory Defaults
         // outerShooterMotor.config
-        outerShooterMotor.setInverted(false);
-        // innerShooterMotor.setInverted(false);
-        // outerShooterMotor.setNeutralMode(NeutralModeValue.Coast);
-        // innerShooterMotor.setNeutralMode(NeutralModeValue.Coast);
+        // shooterMotor.setInverted(false);
+        // shooterMotor.setNeutralMode(NeutralModeValue.Coast);
         // outerShooterEncoder = outerShooterMotor.getEncoder();
-        // innerShooterEncoder = innerShooterMotor.getEncoder();
     }
 
     public void resetEncoder()
@@ -100,26 +96,20 @@ public class Shooter extends Subsystem4237
         return periodicData.currentDistance;
     }
 
-    public void forwardInnerMotors()
+    public void forwardShooterMotor()
     {
-        // periodicData.innerMotorSpeed = 0.1;
+        periodicData.shooterMotorSpeed = 0.1;
     }
 
 
-    public void reverseInnerMotors()
+    public void reverseShooterMotor()
     {
-        // periodicData.innerMotorSpeed = -0.1;
+        periodicData.shooterMotorSpeed = -0.1;
     }
 
-    public void forwardOuterMotors()
+    public void turnOffShooterMotor()
     {
-        periodicData.outerMotorSpeed = 0.1;
-    }
-
-
-    public void reverseOuterMotors()
-    {
-        periodicData.outerMotorSpeed = -0.1;
+        periodicData.shooterMotorSpeed = 0.0;
     }
 
     @Override

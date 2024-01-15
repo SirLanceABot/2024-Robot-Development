@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
 
@@ -30,8 +32,9 @@ public class Index extends Subsystem4237
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private final int IndexShooterMotorPort = Constants.Shooter.INNER_SHOOTER_MOTOR_PORT;
-    private final TalonFX innerShooterMotor = new TalonFX(IndexShooterMotorPort);
+    private final int IndexMotorPort = Constants.Index.INDEX_MOTOR_PORT;
+    private final TalonFX indexMotor = new TalonFX(IndexMotorPort);
+    private RelativeEncoder indexEncoder;
 
     /** 
      * Creates a new Index. 
@@ -43,6 +46,26 @@ public class Index extends Subsystem4237
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
+    }
+
+    private void configTalonFX()
+    {
+        // Factory Defaults
+        // outerShooterMotor.config
+        indexMotor.setInverted(false);
+        indexMotor.setNeutralMode(NeutralModeValue.Coast);
+        // indexEncoder = indexMotor.getEncoder();
+    }
+
+    public void forwardIndexMotors()
+    {
+        periodicData.indexMotorSpeed = 0.1;
+    }
+
+
+    public void reverseIndexMotors()
+    {
+        periodicData.indexMotorSpeed = -0.1;
     }
 
     @Override

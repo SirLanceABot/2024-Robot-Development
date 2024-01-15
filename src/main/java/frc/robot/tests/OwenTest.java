@@ -1,7 +1,10 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+
+import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
 public class OwenTest implements Test
 {
@@ -18,6 +21,8 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final Shooter shooter;
+    private final Joystick joystick = new Joystick(0);
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -26,6 +31,7 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        this.shooter = robotContainer.shooter;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -40,7 +46,23 @@ public class OwenTest implements Test
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        if(joystick.getRawButton(4))
+        {
+            System.out.println("Shooter Forward");
+            shooter.forwardShooterMotor();
+        }
+        else if(joystick.getRawButton(3))
+        {
+            System.out.println("Shooter Reverse");
+            shooter.reverseShooterMotor();
+        }
+        else
+        {
+
+        }
+
+    }
     
     /**
      * This method runs one time after the periodic() method.
