@@ -1,7 +1,11 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.motors.MotorController4237;
+import frc.robot.motors.TalonFX4237;
 
 public class JWoodTest implements Test
 {
@@ -18,6 +22,7 @@ public class JWoodTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final MotorController4237 mc;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -26,6 +31,8 @@ public class JWoodTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        mc = new TalonFX4237(1, Constants.CANIVORE, "JWoodTestMotor");
+        mc.resetFactoryDefaults();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
