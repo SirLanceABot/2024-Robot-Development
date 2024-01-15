@@ -18,7 +18,7 @@ public class Pivot extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
     
-    public enum MovementState
+    public enum PivotMovementState
     {
         kNotMoving, kMoving
     }
@@ -29,8 +29,7 @@ public class Pivot extends Subsystem4237
     
         private double currentPosition;
         private double currentVelocity;
-
-
+        private double currentAngle;
 
         // OUTPUTS
 
@@ -43,7 +42,7 @@ public class Pivot extends Subsystem4237
     private PeriodicIO periodicIO = new PeriodicIO();
 
     private RelativeEncoder relativeEncoder;
-
+    public PivotMovementState pivotMovementState = PivotMovementState.kNotMoving;
     /** 
      * Creates a new ExampleSubsystem. 
      */
@@ -62,13 +61,22 @@ public class Pivot extends Subsystem4237
         // Factory Defaults
         pivotMotor.restoreFactoryDefaults();
 
+
+        // Soft Limits
+        pivotMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Pivot.ENCODER_UPWARD_SOFT_LIMIT);
+        pivotMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Pivot.ENCODER_DOWNWARD_SOFT_LIMIT);
+        pivotMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
     }
+
+    
 
     @Override
     public void readPeriodicInputs()
     {
         periodicIO.currentPosition = relativeEncoder.getPosition();
-        periodicIO.currentVelocity = relativeEncoder.getVelocity();
+
     }
 
     @Override

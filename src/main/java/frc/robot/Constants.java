@@ -157,7 +157,9 @@ public final class Constants
     {
         public static final int PIVOT_MOTOR_PORT                = 0;
 
-        public static final double STARTING_ENCODER_POSITION    = 10.0;
+        public static final double STARTING_ENCODER_POSITION    = 0.0;
+        public static final float ENCODER_UPWARD_SOFT_LIMIT    = 4237.0f;
+        public static final float ENCODER_DOWNWARD_SOFT_LIMIT  = -4237.0f;
     }
 
     public static class Shuttle
