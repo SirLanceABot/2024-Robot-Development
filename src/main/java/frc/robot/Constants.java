@@ -27,8 +27,8 @@ public final class Constants
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
     
     // These are the names of the CAN bus set on the roboRIO and CANivore
-    private static final String CANIVORE = "CANivore";
-    private static final String ROBORIO = "rio";
+    public static final String CANIVORE = "CANivore";
+    public static final String ROBORIO = "rio";
 
     // Set the name of the robot
     private static final String comment = RobotController.getComments();
