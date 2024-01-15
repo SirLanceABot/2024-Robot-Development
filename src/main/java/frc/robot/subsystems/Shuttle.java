@@ -2,7 +2,9 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
 
 import frc.robot.Constants;
 import frc.robot.PeriodicIO;
@@ -22,7 +24,11 @@ public class Shuttle extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
+    // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax shuttleMotor = new CANSparkMax(3, MotorType.kBrushless);
+
+    private SparkLimitSwitch forwardLimit;
+    private SparkLimitSwitch reverseLimit;
 
     private class PeriodicData
     {
@@ -41,10 +47,24 @@ public class Shuttle extends Subsystem4237
     public Shuttle()
     {
         super("Shuttle");
-        System.out.println("  Constructor Started:  " + fullClassName);
+        System.out.println("  Constructor Started: " + fullClassName);
 
+        shuttleMotor.restoreFactoryDefaults();
+        forwardLimit = shuttleMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+        forwardLimit.enableLimitSwitch(true);
+        reverseLimit = shuttleMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
+        reverseLimit.enableLimitSwitch(true);
+
+        shuttleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 15);
+        shuttleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+
+        shuttleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        shuttleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+
+    
         
         System.out.println("  Constructor Finished: " + fullClassName);
+    
     }
 
     @Override
@@ -80,9 +100,14 @@ public class Shuttle extends Subsystem4237
     /** 
      * Turns the motor on 
      * @param speed (double)*/
-    public void on(double speed)
+    public void forward()
     {
-        periodicData.shuttleMotorSpeed = .25;
+        periodicData.shuttleMotorSpeed = 0.1;
+    }
+
+    public void reverse()
+    {
+        periodicData.shuttleMotorSpeed = -0.1;
     }
 
 }
