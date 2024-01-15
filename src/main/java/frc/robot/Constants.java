@@ -131,9 +131,9 @@ public final class Constants
         public static final int SHUTTLE_MOTOR_PORT         = 0;
     }
 
-    public static class IntakeDrop
+    public static class IntakePositioning
     {
-        public static final int INTAKE_DROP_MOTOR_PORT     = 0;
+        public static final int INTAKE_POSITIONING_MOTOR_PORT     = 0;
     }
 
     public static class PowerDistributionHub
