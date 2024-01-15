@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxLimitSwitch;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants;
@@ -28,7 +28,6 @@ public class Pivot extends Subsystem4237
         // INPUTS
     
         private double currentPosition;
-        private double currentAngle;
         private double currentVelocity;
 
 
@@ -43,6 +42,8 @@ public class Pivot extends Subsystem4237
 
     private PeriodicIO periodicIO = new PeriodicIO();
 
+    private RelativeEncoder relativeEncoder;
+
     /** 
      * Creates a new ExampleSubsystem. 
      */
@@ -51,11 +52,12 @@ public class Pivot extends Subsystem4237
         super("Pivot");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        configPortMotor();
+        configPivotMotor();
+        relativeEncoder.setPosition(Constants.Pivot.STARTING_ENCODER_POSITION);
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    private void configPortMotor()
+    private void configPivotMotor()
     {
         // Factory Defaults
         pivotMotor.restoreFactoryDefaults();
@@ -65,7 +67,8 @@ public class Pivot extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        
+        periodicIO.currentPosition = relativeEncoder.getPosition();
+        periodicIO.currentVelocity = relativeEncoder.getVelocity();
     }
 
     @Override

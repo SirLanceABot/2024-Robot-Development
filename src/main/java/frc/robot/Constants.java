@@ -123,7 +123,9 @@ public final class Constants
 
     public static class Pivot
     {
-        public static final int PIVOT_MOTOR_PORT           = 0;
+        public static final int PIVOT_MOTOR_PORT                = 0;
+
+        public static final double STARTING_ENCODER_POSITION    = 10.0;
     }
 
     public static class Shuttle
