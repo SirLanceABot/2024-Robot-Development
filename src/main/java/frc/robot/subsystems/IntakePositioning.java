@@ -22,6 +22,18 @@ public class IntakePositioning extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
+
+    public enum IntakePosition
+    {
+        kUP(Constants.IntakePositioning.INTAKE_UP_POSITION), kDOWN(Constants.IntakePositioning.INTAKE_DOWN_POSITION);
+
+        public final double intakePositioning;
+
+        private IntakePosition(double intakePositioning)
+        {
+            this.intakePositioning = intakePositioning;
+        }
+    }
     
     private class PeriodicData
     {
@@ -71,9 +83,26 @@ public class IntakePositioning extends Subsystem4237
         return periodicData.intakePositioningSpeed;
     }
 
+    public void dropIntake()
+    {
+        periodicData.intakePositioningSpeed = 0.1;
+    }
+
+    public void raiseIntake()
+    {
+        periodicData.intakePositioningSpeed = -0.1;
+    }
+
+    public void intakePositioningOff()
+    {
+        periodicData.intakePositioningSpeed = 0.0;
+    }
+
     @Override
     public void readPeriodicInputs()
-    {}
+    {
+        periodicData.intakePositioningPosition = intakePositioningEncoder.getPosition();
+    }
 
     @Override
     public void writePeriodicOutputs()

@@ -94,7 +94,9 @@ public class Intake extends Subsystem4237
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        
+    }
 
     @Override
     public void periodic()
