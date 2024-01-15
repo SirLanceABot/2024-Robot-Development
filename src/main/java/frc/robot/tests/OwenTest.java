@@ -31,7 +31,7 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        this.shooter = robotContainer.shooter;
+        shooter = this.robotContainer.shooter;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }

@@ -113,13 +113,25 @@ public class Shooter extends Subsystem4237
         periodicData.shooterMotorSpeed = 0.0;
     }
 
+    public void setDistance()
+    {
+
+    }
+
+    // public void setVelocity(double shooterMotorSpeed)
+    // {
+        
+    // }
+
     @Override
     public void readPeriodicInputs()
     {}
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        shooterMotor.set(periodicData.shooterMotorSpeed);
+    }
 
     @Override
     public void periodic()
