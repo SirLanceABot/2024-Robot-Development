@@ -86,6 +86,11 @@ public class Intake extends Subsystem4237
         periodicData.intakeSpeed = -0.3;
     }
 
+    public void on(double speed)
+    {
+        periodicData.intakeSpeed = speed;
+    }
+
     @Override
     public void readPeriodicInputs()
     {

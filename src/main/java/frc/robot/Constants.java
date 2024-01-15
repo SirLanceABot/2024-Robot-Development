@@ -144,8 +144,8 @@ public final class Constants
 
     public static class Shooter
     {
-        public static final int OUTER_SHOOTER_MOTOR_PORT   = 0;
-        public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
+        public static final int SHOOTER_MOTOR_PORT   = 0;
+        // public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
     }
 
     public static class Index
@@ -172,7 +172,7 @@ public final class Constants
         public static final int INTAKE_POSITIONING_MOTOR_PORT     = 0;
 
         public static final int INTAKE_UP_POSITION                = 0;
-        public static final int INTAKE_DOWN_POSITION              = 4237;
+        public static final int INTAKE_DOWN_POSITION              = 42370;
     }
 
     public static class PowerDistributionHub

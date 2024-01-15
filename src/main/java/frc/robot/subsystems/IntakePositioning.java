@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
@@ -71,6 +72,12 @@ public class IntakePositioning extends Subsystem4237
         intakePositioningMotor.setInverted(false); // test later
 
         intakePositioningEncoder = intakePositioningMotor.getEncoder();
+
+        //Soft Limits
+        intakePositioningMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.IntakePositioning.INTAKE_DOWN_POSITION);
+        intakePositioningMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        intakePositioningMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.IntakePositioning.INTAKE_UP_POSITION);
+        intakePositioningMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     }
 
     public double getIntakePositioningPosition()
@@ -96,6 +103,11 @@ public class IntakePositioning extends Subsystem4237
     public void intakePositioningOff()
     {
         periodicData.intakePositioningSpeed = 0.0;
+    }
+
+    public void on(double speed)
+    {
+        periodicData.intakePositioningSpeed = speed;
     }
 
     @Override
