@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import com.revrobotics.CANSparkMax;
+
+// import frc.robot.Constants.Shooter;
+
 /**
  * Use this class as a template to create other subsystems.
  */
@@ -24,6 +28,8 @@ public class Shooter extends Subsystem4237
         // OUTPUTS
 
     }
+
+    // private final int OuterShooterMotorPort = Constants.Shooter.OUTER_SHOOTER_MOTOR_PORT;
 
     // private final CANSparkMax shooterMotor = new CANSparkMax(shooterMotorPort, MotorType.kBrushless);
 

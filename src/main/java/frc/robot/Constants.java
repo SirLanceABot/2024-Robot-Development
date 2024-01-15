@@ -112,28 +112,28 @@ public final class Constants
 
     public static class Intake
     {
-        private static final int INTAKE_MOTOR_PORT          = 0;
+        public static final int INTAKE_MOTOR_PORT          = 0;
     }
 
-    private static class Shooter
+    public static class Shooter
     {
-        private static final int OUTER_SHOOTER_MOTOR_PORT   = 0;
+        public static final int OUTER_SHOOTER_MOTOR_PORT   = 0;
         private static final int INNER_SHOOTER_MOTOR_PORT   = 0;
     }
 
-    private static class Climb
+    public static class Pivot
     {
-        private static final int CLIMB_MOTOR_PORT           = 0;
+        public static final int PIVOT_MOTOR_PORT           = 0;
     }
 
-    private static class Shuttle
+    public static class Shuttle
     {
-        private static final int SHUTTLE_MOTOR_PORT         = 0;
+        public static final int SHUTTLE_MOTOR_PORT         = 0;
     }
 
-    private static class IntakeDrop
+    public static class IntakeDrop
     {
-        private static final int INTAKE_DROP_MOTOR_PORT     = 0;
+        public static final int INTAKE_DROP_MOTOR_PORT     = 0;
     }
 
     public static class PowerDistributionHub
