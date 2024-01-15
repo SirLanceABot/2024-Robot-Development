@@ -2,9 +2,10 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
+// import com.revrobotics.CANSparkMax;
 
-// import frc.robot.Constants.Shooter;
+import frc.robot.Constants;
 
 /**
  * Use this class as a template to create other subsystems.
@@ -29,9 +30,10 @@ public class Shooter extends Subsystem4237
 
     }
 
-    // private final int OuterShooterMotorPort = Constants.Shooter.OUTER_SHOOTER_MOTOR_PORT;
+    private final int OuterShooterMotorPort = Constants.Shooter.OUTER_SHOOTER_MOTOR_PORT;
+    private final int InnerShooterMotorPort = Constants.Shooter.INNER_SHOOTER_MOTOR_PORT;
 
-    // private final CANSparkMax shooterMotor = new CANSparkMax(shooterMotorPort, MotorType.kBrushless);
+    // private final TalonFX shooterMotor;
 
     private PeriodicData periodicData = new PeriodicData();
 

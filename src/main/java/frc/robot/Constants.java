@@ -118,7 +118,7 @@ public final class Constants
     public static class Shooter
     {
         public static final int OUTER_SHOOTER_MOTOR_PORT   = 0;
-        private static final int INNER_SHOOTER_MOTOR_PORT   = 0;
+        public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
     }
 
     public static class Pivot
