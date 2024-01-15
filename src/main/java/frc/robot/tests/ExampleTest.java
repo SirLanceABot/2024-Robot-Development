@@ -2,7 +2,7 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shuttle;
 
 public class ExampleTest implements Test
 {
@@ -19,7 +19,7 @@ public class ExampleTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final ExampleSubsystem exampleSubsystem;
+    private final Shuttle exampleSubsystem;
 
 
     // *** CLASS CONSTRUCTOR ***

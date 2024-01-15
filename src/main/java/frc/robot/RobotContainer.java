@@ -10,7 +10,7 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.controls.DriverButtonBindings;
@@ -61,7 +61,7 @@ public class RobotContainer
 
     public final boolean fullRobot;
 
-    public final ExampleSubsystem exampleSubsystem;
+    public final Shuttle exampleSubsystem;
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
@@ -91,7 +91,7 @@ public class RobotContainer
         // Create the needed subsystems
         fullRobot 			    = (useFullRobot);
 
-        exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
+        exampleSubsystem 	= (useExampleSubsystem)							? new Shuttle() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
