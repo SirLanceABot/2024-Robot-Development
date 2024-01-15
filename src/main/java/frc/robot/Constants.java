@@ -210,10 +210,10 @@ public final class Constants
 
             if(Robot4237.equals("2023 Robot"))
             {
-                FRONT_LEFT_ENCODER_OFFSET   = -209.883; 
-                FRONT_RIGHT_ENCODER_OFFSET  = -171.562; //-133.330; changed at state 
-                BACK_LEFT_ENCODER_OFFSET    = -18.809; 
-                BACK_RIGHT_ENCODER_OFFSET   = -342.422; 
+                FRONT_LEFT_ENCODER_OFFSET   = 0.413818;  //-209.883; 
+                FRONT_RIGHT_ENCODER_OFFSET  = -0.477051; //-171.562;  //-133.330; changed at state 
+                BACK_LEFT_ENCODER_OFFSET    = -0.052979; //-18.809; 
+                BACK_RIGHT_ENCODER_OFFSET   = 0.044922;  //-342.422; 
             }
             else if (Robot4237.equals("2022 Robot"))
             {
