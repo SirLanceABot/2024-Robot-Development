@@ -110,6 +110,32 @@ public final class Constants
         public static final String MOTOR_CAN_BUS = ROBORIO;
     }
 
+    public static class Intake
+    {
+        private static final int INTAKE_MOTOR_PORT          = 0;
+    }
+
+    private static class Shooter
+    {
+        private static final int OUTER_SHOOTER_MOTOR_PORT   = 0;
+        private static final int INNER_SHOOTER_MOTOR_PORT   = 0;
+    }
+
+    private static class Climb
+    {
+        private static final int CLIMB_MOTOR_PORT           = 0;
+    }
+
+    private static class Shuttle
+    {
+        private static final int SHUTTLE_MOTOR_PORT         = 0;
+    }
+
+    private static class IntakeDrop
+    {
+        private static final int INTAKE_DROP_MOTOR_PORT     = 0;
+    }
+
     public static class PowerDistributionHub
     {
         public static final int PDH_CAN_ID              = 1;
