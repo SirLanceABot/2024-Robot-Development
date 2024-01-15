@@ -26,8 +26,10 @@ public class IntakePositioning extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
+        private double intakePositioningPosition = 0.0;
 
         // OUTPUTS
+        private double intakePositioningSpeed = 0.0;
 
     }
 
@@ -44,9 +46,29 @@ public class IntakePositioning extends Subsystem4237
         super("Intake Positioning");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        // configCANSparkMax();
+        configCANSparkMax();
         
         System.out.println("  Constructor Finished: " + fullClassName);
+    }
+
+    private void configCANSparkMax()
+    {
+        // Factory Defaults
+        intakePositioningMotor.restoreFactoryDefaults();
+        // Do Not Invert Motor Direction
+        intakePositioningMotor.setInverted(false); // test later
+
+        intakePositioningEncoder = intakePositioningMotor.getEncoder();
+    }
+
+    public double getIntakePositioningPosition()
+    {
+        return periodicData.intakePositioningPosition;
+    }
+
+    public double getInakePositioningSpeed()
+    {
+        return periodicData.intakePositioningSpeed;
     }
 
     @Override
