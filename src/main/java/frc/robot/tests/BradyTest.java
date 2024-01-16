@@ -2,6 +2,7 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Candle4237;
 
 public class BradyTest implements Test
 {
@@ -18,6 +19,7 @@ public class BradyTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final Candle4237 candle;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -26,6 +28,7 @@ public class BradyTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        candle = new Candle4237();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -40,13 +43,17 @@ public class BradyTest implements Test
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        candle.signalRed();
+    }
     
     /**
      * This method runs one time after the periodic() method.
      */
     public void exit()
-    {}
+    {
+        candle.signalOff();
+    }
 
     // *** METHODS ***
     // Put any additional methods here.
