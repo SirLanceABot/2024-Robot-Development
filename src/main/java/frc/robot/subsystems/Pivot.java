@@ -17,11 +17,6 @@ public class Pivot extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
-    
-    public enum PivotMovementState
-    {
-        kNotMoving, kMoving
-    }
 
     private class PeriodicIO
     {
@@ -33,6 +28,7 @@ public class Pivot extends Subsystem4237
 
         // OUTPUTS
 
+        private double motorSpeed;
 
 
     }
@@ -42,7 +38,6 @@ public class Pivot extends Subsystem4237
     private PeriodicIO periodicIO = new PeriodicIO();
 
     private RelativeEncoder relativeEncoder;
-    public PivotMovementState pivotMovementState = PivotMovementState.kNotMoving;
     /** 
      * Creates a new ExampleSubsystem. 
      */
@@ -60,6 +55,8 @@ public class Pivot extends Subsystem4237
     {
         // Factory Defaults
         pivotMotor.restoreFactoryDefaults();
+        
+        periodicIO.currentPosition = 0.0;
 
 
         // Soft Limits
@@ -70,7 +67,32 @@ public class Pivot extends Subsystem4237
 
     }
 
-    
+    public void moveUp()
+    {
+        periodicIO.motorSpeed = 0.25;
+    }
+
+    public void moveDown()
+    {
+        periodicIO.motorSpeed = -0.25;
+    }
+
+    public void stopPivot()
+    {
+        periodicIO.motorSpeed = 0.0; 
+    }
+
+    public void moveToPosition()
+    {
+        if(periodicIO.currentPosition <= 10.0)
+        {
+            pivotMotor.set(0.25);
+        }
+        else
+        {
+            pivotMotor.set(0.0);
+        }
+    }
 
     @Override
     public void readPeriodicInputs()
@@ -82,13 +104,15 @@ public class Pivot extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-
+        pivotMotor.set(periodicIO.motorSpeed);
+        System.out.println("currentPosition = " + periodicIO.currentPosition);
     }
 
     @Override
     public void periodic()
     {
         // This method will be called once per scheduler run
+        
     }
 
     @Override

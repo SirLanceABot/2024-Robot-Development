@@ -1,7 +1,9 @@
 package frc.robot.tests;
 
+import frc.robot.subsystems.Pivot;
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class DaneTest implements Test
 {
@@ -18,6 +20,8 @@ public class DaneTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final Pivot pivot;
+    private final Joystick joystick;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -27,6 +31,9 @@ public class DaneTest implements Test
 
         this.robotContainer = robotContainer;
 
+        pivot = this.robotContainer.pivot;
+        joystick = new Joystick(0);
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -34,19 +41,36 @@ public class DaneTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+        
+    }
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        if(joystick.getRawButton(1))
+        {
+            pivot.moveUp();
+        }
+        else if(joystick.getRawButton(2))
+        {
+            pivot.moveDown();
+        }
+        else if(joystick.getRawButton(3))
+        {
+            pivot.moveToPosition();
+        }
+    }
     
     /**
      * This method runs one time after the periodic() method.
      */
     public void exit()
-    {}
+    {
+        pivot.stopPivot();
+    }
 
     // *** METHODS ***
     // Put any additional methods here.
