@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 
 import frc.robot.Constants;
@@ -64,6 +65,45 @@ public class Candle4237 extends Subsystem4237
         periodicData.isBlinking = true;
     }
 
+    //sam
+    public void setPurple(boolean shouldBlink)
+    {
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 0, 255, 255, 0.1, ledCount));
+        }
+        else
+        {
+            candle.setLEDs(255, 0, 255, 255, startLed, ledCount);
+        }
+    }
+
+    //sam
+    public void setRed(boolean shouldBlink)
+    {
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 0, 0, 255, startLed, ledCount));
+        }
+        else
+        {
+            candle.setLEDs(255, 0, 0, 255, startLed, ledCount);
+        }
+    }
+
+    //sam
+    public void turnOff()
+    {
+        candle.animate(null, 0);
+        candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
+    }
+
+    //sam
+    public void setRGBFade()
+    {
+        candle.animate(new RgbFadeAnimation(1, 0.1, ledCount));
+    }
+
     public void signalRed()
     {
         periodicData.ledStatus = LedStatus.kRed;
@@ -122,19 +162,19 @@ public class Candle4237 extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        if(periodicData.ledStatus == LedStatus.kOff)
-        {
-            signalOff();
-        }
+        // if(periodicData.ledStatus == LedStatus.kOff)
+        // {
+        //     signalOff();
+        // }
         
-        else if(periodicData.isBlinking)
-        {
-            setBlink();
-        }
-        else
-        {
-        setColor(startLed, ledCount, periodicData.ledStatus);
-        }
+        // else if(periodicData.isBlinking)
+        // {
+        //     setBlink();
+        // }
+        // else
+        // {
+        // setColor(startLed, ledCount, periodicData.ledStatus);
+        // }
     }
 
     @Override
