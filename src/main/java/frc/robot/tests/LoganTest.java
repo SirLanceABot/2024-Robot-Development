@@ -1,6 +1,14 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+
+import frc.robot.subsystems.Intake;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
 
 public class LoganTest implements Test
@@ -18,6 +26,11 @@ public class LoganTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final CANSparkMax intakeMotor = new CANSparkMax(3, MotorType.kBrushless);
+    private RelativeEncoder intakeEncoder;
+    private final Joystick joystick = new Joystick(0);
+    private double encoderPosition;
+    private Intake intake;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -26,6 +39,7 @@ public class LoganTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        intake = this.robotContainer.intake;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -40,9 +54,28 @@ public class LoganTest implements Test
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        if(joystick.getRawButton(1))
+        {
+            encoderPosition = intakeEncoder.getPosition();
+            System.out.println("In.  Encoder Position: " + encoderPosition);
+            intake.intakeForward();
+        }
+        else if(joystick.getRawButton(2))
+        {
+            encoderPosition = intakeEncoder.getPosition();
+            System.out.println("Out.  Encoder Position: " + encoderPosition);
+            intake.intakeReverse();
+        }
+        else
+        {
+            encoderPosition = intakeEncoder.getPosition();
+            System.out.println("Stopped.  Encoder Position: " + encoderPosition);
+            intake.intakeOff();
+        }
+    }
     
-    /**
+    /** 
      * This method runs one time after the periodic() method.
      */
     public void exit()

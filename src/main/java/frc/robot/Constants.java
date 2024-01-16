@@ -139,7 +139,8 @@ public final class Constants
 
     public static class Intake
     {
-        public static final int INTAKE_MOTOR_PORT          = 0;
+        public static final int INTAKE_TOP_MOTOR_PORT          = 0;
+        public static final int INTAKE_BOTTOM_MOTOR_PORT       = 0;
     }
 
     public static class Shooter

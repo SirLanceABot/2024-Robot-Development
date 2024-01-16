@@ -26,17 +26,21 @@ public class Intake extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
-        private double intakePosition = 0.0;
+        private double topIntakePosition = 0.0;
+        private double bottomIntakePosition = 0.0;
 
         // OUTPUTS
-        private double intakeSpeed = 0.0;
+        private double topIntakeSpeed = 0.0;
+        private double bottomIntakeSpeed = 0.0;
 
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax intakeMotor = new CANSparkMax(Constants.Intake.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-    private RelativeEncoder intakeEncoder;
+    private final CANSparkMax topIntakeMotor = new CANSparkMax(Constants.Intake.INTAKE_TOP_MOTOR_PORT, MotorType.kBrushless);
+    //private final CANSparkMax bottomIntakeMotor = new CANSparkMax(Constants.Intake.INTAKE_BOTTOM_MOTOR_PORT, MotorType.kBrushless);
+    private RelativeEncoder topIntakeEncoder;
+    private RelativeEncoder bottomIntakeEncoder;
 
     /** 
      * Creates a new Intake. 
@@ -54,53 +58,72 @@ public class Intake extends Subsystem4237
     private void configCANSparkMax()
     {
         // Factory Defaults
-        intakeMotor.restoreFactoryDefaults();
+        topIntakeMotor.restoreFactoryDefaults();
+        //bottomIntakeMotor.restoreFactoryDefaults();
         // Do Not Invert Motor Direction
-        intakeMotor.setInverted(false); // test later
+        topIntakeMotor.setInverted(false); // test later
+        //bottomIntakeMotor.setInverted(true); // test later
 
-        intakeEncoder = intakeMotor.getEncoder();
+        topIntakeEncoder = topIntakeMotor.getEncoder();
+        //bottomIntakeEncoder = bottomIntakeMotor.getEncoder();
     }
 
-    public double getIntakePosition()
+    public double getTopIntakePosition()
     {
-        return periodicData.intakePosition;
+        return periodicData.topIntakePosition;
     }
 
-    public double getIntakeSpeed()
+    public double getBottomIntakePosition()
     {
-        return periodicData.intakeSpeed;
+        return periodicData.bottomIntakePosition;
+    }
+
+    public double getTopIntakeSpeed()
+    {
+        return periodicData.topIntakeSpeed;
+    }
+
+    public double getBottomIntakeSpeed()
+    {
+        return periodicData.bottomIntakeSpeed;
     }
 
     public void intakeForward()
     {
-        periodicData.intakeSpeed = 0.3;
+        periodicData.topIntakeSpeed = 0.25;
+        periodicData.bottomIntakeSpeed = 0.25;
     }
 
     public void intakeOff()
     {
-        periodicData.intakeSpeed = 0.0;
+        periodicData.topIntakeSpeed = 0.0;
+        periodicData.bottomIntakeSpeed = 0.0;
     }
 
     public void intakeReverse()
     {
-        periodicData.intakeSpeed = -0.3;
+        periodicData.topIntakeSpeed = -0.25;
+        periodicData.bottomIntakeSpeed = -0.25;
     }
 
-    public void on(double speed)
+    public void intakeOn(double speed)
     {
-        periodicData.intakeSpeed = speed;
+        periodicData.topIntakeSpeed = speed;
+        periodicData.bottomIntakeSpeed = speed;
     }
 
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.intakePosition = intakeEncoder.getPosition();
+        periodicData.topIntakePosition = topIntakeEncoder.getPosition();
+        periodicData.bottomIntakePosition = bottomIntakeEncoder.getPosition();
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        
+        topIntakeMotor.set(periodicData.topIntakeSpeed);
+        //bottomIntakeMotor.set(periodicData.bottomIntakeSpeed);
     }
 
     @Override
@@ -118,6 +141,6 @@ public class Intake extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Intake Position: " + periodicData.intakePosition;
+        return "Current Top Intake Position: " + periodicData.topIntakePosition + " Current Bottom Intake Position: " + periodicData.bottomIntakePosition;
     }
 }
