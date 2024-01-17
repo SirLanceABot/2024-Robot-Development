@@ -2,6 +2,11 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.RelativeEncoder;
+
+import frc.robot.Constants;
+
 /**
  * Use this class as a template to create other subsystems.
  */
@@ -26,7 +31,14 @@ public class Climb extends Subsystem4237
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    // private int leftMotorPort
+    private int leftMotorPort = Constants.Climb.LEFT_MOTOR_PORT;
+    private int rightMotorPort = Constants.Climb.RIGHT_MOTOR_PORT;
+    private final TalonFX leftMotor = new TalonFX(leftMotorPort);
+    private final TalonFX rightMotor = new TalonFX(rightMotorPort);
+    private RelativeEncoder leftMotorEncoder;
+    private RelativeEncoder rightMotorEncoder;
+    
+    
 
     /** 
      * Creates a new Climb. 
@@ -39,6 +51,13 @@ public class Climb extends Subsystem4237
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
+
+    private void configTalonFX()
+    {
+        leftMotor.setInverted(false);
+        rightMotor.setInverted(false);
+    }
+
 
     @Override
     public void readPeriodicInputs()

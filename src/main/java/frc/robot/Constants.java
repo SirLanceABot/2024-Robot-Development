@@ -176,6 +176,18 @@ public final class Constants
         public static final int INTAKE_DOWN_POSITION              = 42370;
     }
 
+    public static class Climb
+    {
+        public static final int LEFT_MOTOR_PORT                   = 0;
+        public static final int RIGHT_MOTOR_PORT                  = 0;
+
+        public static final int LEFT_MOTOR_UPPER_SOFT_LIMIT       = 1000;
+        public static final int LEFT_MOTOR_LOWER_SOFT_LIMIT       = 0;
+        public static final int RIGHT_MOTOR_UPPER_SOFT_LIMIT      = 1000;
+        public static final int RIGHT_MOTOR_LOWER_SOFT_LIMIT      = 0;
+
+    }
+
     public static class PowerDistributionHub
     {
         public static final int PDH_CAN_ID              = 1;
