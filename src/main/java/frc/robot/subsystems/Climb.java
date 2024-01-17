@@ -3,6 +3,11 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
@@ -25,9 +30,13 @@ public class Climb extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
+        private double currentPosition;
+        private double currentVelocity;
 
         // OUTPUTS
-
+        private DoubleLogEntry positiLogEntry;
+        private DoubleLogEntry velocityLogEntry;
+        private double motorSpeed;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -56,8 +65,39 @@ public class Climb extends Subsystem4237
     {
         leftMotor.setInverted(false);
         rightMotor.setInverted(false);
+        leftMotor.setNeutralMode(NeutralModeValue.Brake);
+        rightMotor.setNeutralMode(NeutralModeValue.Brake);
+
+        // rightMaster.configForwardSoftLimitThreshold(10000, 0);
+        // rightMaster.configReverseSoftLimitThreshold(-10000, 0);
+        // rightMaster.configForwardSoftLimitEnable(true, 0);
+        // rightMaster.configReverseSoftLimitEnable(true, 0);
+
+        // leftMotor.configForwardSoftLimitThreshold(Constants.Climb.LEFT_MOTOR_UPPER_SOFT_LIMIT, 0);
+
+
+
     }
 
+    public void raiseClimb()
+    {
+        periodicData.motorSpeed = 0.2;
+    }
+
+    public void lowerClimb()
+    {
+        periodicData.motorSpeed = -0.2;
+    }
+
+    public void holdClimb()
+    {
+        periodicData.motorSpeed = -0.05;
+    }
+
+    public void off()
+    {
+        periodicData.motorSpeed = 0.0;
+    }
 
     @Override
     public void readPeriodicInputs()
@@ -65,7 +105,10 @@ public class Climb extends Subsystem4237
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        leftMotor.set(periodicData.motorSpeed);
+        rightMotor.set(periodicData.motorSpeed);
+    }
 
     @Override
     public void periodic()
