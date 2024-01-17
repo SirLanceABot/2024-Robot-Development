@@ -165,7 +165,7 @@ public final class Constants
 
     public static class Shuttle
     {
-        public static final int SHUTTLE_MOTOR_PORT         = 0;
+        public static final int MOTOR_PORT         = 3;
     }
 
     public static class IntakePositioning

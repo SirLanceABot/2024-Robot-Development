@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -26,7 +27,7 @@ public class Shuttle extends Subsystem4237
     }
 
     // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax motor = new CANSparkMax(3, MotorType.kBrushless);
+    private final CANSparkMax motor = new CANSparkMax(Constants.Shuttle.MOTOR_PORT, MotorType.kBrushless);
 
     private final SparkLimitSwitch upwardLimit;
     private final SparkLimitSwitch downwardLimit;
@@ -63,9 +64,7 @@ public class Shuttle extends Subsystem4237
 
         encoder = motor.getEncoder();
 
-        configHardLimit();
-        configSoftLimit();
-        configConversionFactor();
+        configMotor();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -104,41 +103,43 @@ public class Shuttle extends Subsystem4237
 
     /** 
      * Turns on the motor to move the ring up and towards the shooter
-     * @param speed (double)*/
+     */
     public void moveUpward()
     {
         periodicData.motorSpeed = 0.02;
     }
 
-    // Turns on the motor to move the ring down and away from the shooter
+    
+    /**
+     * Turns on the motor to move the ring down and away from the shooter
+     */
     public void moveDownward()
     {
         periodicData.motorSpeed = -0.02;
     }
 
 
-    // sets a soft limit on the Shuttle motor
-    private void configSoftLimit()
+    /**
+     * sets a soft limit, hard limit, brake mode and conversion factor for the Shuttle motor
+     */
+    private void configMotor()
     {
+        motor.setIdleMode(IdleMode.kBrake);
         motor.setSoftLimit(SoftLimitDirection.kForward, (float) (3.0 * ROLLER_CIRCUMFRENCE_INCHES)); // kForward is upward movement
         motor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-3.0 * ROLLER_CIRCUMFRENCE_INCHES)); // kReverse is downward movement
 
         motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
         motor.enableSoftLimit(SoftLimitDirection.kReverse, true); // kReverse is downward movement
-    }
-
-    // sets a hard limit on the Shuttle motor
-    private void configHardLimit()
-    {
+    
         upwardLimit.enableLimitSwitch(true);
         downwardLimit.enableLimitSwitch(true);
-    }
 
-    private void configConversionFactor()
-    {
         encoder.setPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
     }
 
+    /**
+     * Resets the Encoder value to 0.
+     */
     public void resetEncoder()
     {
         encoder.setPosition(0.0);
