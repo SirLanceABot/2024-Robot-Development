@@ -1,8 +1,11 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+
+import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Candle4237;
+import frc.robot.subsystems.Candle4237.LedStatus;
 
 public class BradyTest implements Test
 {
@@ -20,6 +23,7 @@ public class BradyTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Candle4237 candle;
+    private final Joystick bradysJoystick;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -29,6 +33,7 @@ public class BradyTest implements Test
 
         this.robotContainer = robotContainer;
         candle = new Candle4237();
+        bradysJoystick = new Joystick(0);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -37,14 +42,36 @@ public class BradyTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+
+    }
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
     {
-        candle.signalRed();
+        //candle.setRGBFade();
+        if(bradysJoystick.getRawButton(1)) //A
+        {
+            candle.setGreen(false);
+        }
+        else if(bradysJoystick.getRawButton(2)) //B
+        {
+            candle.setRed(false);
+        }
+        else if(bradysJoystick.getRawButton(3)) //X
+        {
+            candle.setBlue(false);
+        }
+        else if(bradysJoystick.getRawButton(4)) //Y
+        {
+            candle.setLarson();
+        }
+        else if(bradysJoystick.getRawButton(6)) //RB
+        {
+            candle.setOff();
+        }
     }
     
     /**
@@ -52,7 +79,7 @@ public class BradyTest implements Test
      */
     public void exit()
     {
-        candle.signalOff();
+        candle.setOff();
     }
 
     // *** METHODS ***
