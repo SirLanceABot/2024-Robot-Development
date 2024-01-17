@@ -28,7 +28,7 @@ public class Index extends Subsystem4237
         // INPUTS
 
         // OUTPUTS
-        private double indexMotorSpeed;
+        private double motorSpeed;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -58,15 +58,25 @@ public class Index extends Subsystem4237
         // indexEncoder = indexMotor.getEncoder();
     }
 
-    public void forwardIndexMotor()
+    public void acceptNote()
     {
-        periodicData.indexMotorSpeed = 0.1;
+        periodicData.motorSpeed = 0.1;
+    }
+
+    public void feedNote()
+    {
+        periodicData.motorSpeed = 0.5;
     }
 
 
-    public void reverseIndexMotor()
+    public void reverse()
     {
-        periodicData.indexMotorSpeed = -0.1;
+        periodicData.motorSpeed = -0.1;
+    }
+
+    public void turnOff()
+    {
+        periodicData.motorSpeed = 0.0;
     }
 
     @Override
@@ -75,7 +85,15 @@ public class Index extends Subsystem4237
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        indexMotor.set(periodicData.motorSpeed);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Current Index Speed: " + periodicData.motorSpeed;
+    }
 
     @Override
     public void periodic()

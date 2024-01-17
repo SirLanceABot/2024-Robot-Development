@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.PoseEstimator;
-import frc.robot.subsystems.Shooter;
+// import frc.robot.subsystems.Shooter;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
@@ -48,12 +50,13 @@ public class RobotContainer
     private boolean useExampleSubsystem		= false;
     private boolean useGyro					= false;
     private boolean useDrivetrain   		= false;
-    private boolean useShooter              = false;
+    private boolean useFlywheel             = false;
     private boolean useIntake               = false; 
     private boolean usePivot                = false;
     private boolean useIntakePositioning    = false;
     private boolean useShuttle              = false;
     private boolean useClimb                = false;
+    private boolean useIndex                = true;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -75,12 +78,13 @@ public class RobotContainer
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
-    public final Shooter shooter;
+    public final Flywheel flywheel;
     public final Intake intake;
     public final Pivot pivot;
     public final IntakePositioning intakePositioning;
     public final Shuttle shuttle;
     // public final Climb climb;
+    public final Index index;
 
     public final Camera cameraOne;
     public final Camera cameraTwo;
@@ -116,6 +120,7 @@ public class RobotContainer
         intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
         shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
         // climb               = (useClimb)                                    ? new Climb()                                            : null;
+        index               =(useIndex)                                     ? new Index()                                               : null;
 
 
 
@@ -125,7 +130,7 @@ public class RobotContainer
         cameraFour          = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
         poseEstimator       = (useFullRobot || usePoseEstimator)            ? new PoseEstimator(drivetrain, gyro, cameraOne, cameraTwo, cameraThree, cameraFour)    : null;
 
-        shooter             = (useFullRobot || (useShooter && usePoseEstimator))      ? new Shooter(poseEstimator)                      : null;
+        flywheel             = (useFullRobot || (useFlywheel && usePoseEstimator))      ? new Flywheel(poseEstimator)                      : null;
 
         mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
         driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;

@@ -143,9 +143,9 @@ public final class Constants
         public static final int INTAKE_BOTTOM_MOTOR_PORT       = 0;
     }
 
-    public static class Shooter
+    public static class Flywheel
     {
-        public static final int SHOOTER_MOTOR_PORT   = 0;
+        public static final int FLYWHEEL_MOTOR_PORT   = 0;
         // public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
     }
 

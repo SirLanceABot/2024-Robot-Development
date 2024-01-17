@@ -4,7 +4,9 @@ import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Flywheel;
+// import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Index;
 
 public class OwenTest implements Test
 {
@@ -21,7 +23,8 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Shooter shooter;
+    private final Flywheel flywheel;
+    private final Index index;
     private final Joystick joystick = new Joystick(0);
 
 
@@ -31,7 +34,8 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        shooter = this.robotContainer.shooter;
+        flywheel = this.robotContainer.flywheel;
+        index = this.robotContainer.index;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -47,19 +51,28 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
-        if(joystick.getRawButton(4))
+        if(joystick.getRawButton(1))
         {
-            System.out.println("Shooter Forward");
-            shooter.forwardShooterMotor();
+            System.out.println("Accept Note");
+            // flywheel.shoot();
+            index.acceptNote();
+        }
+        else if(joystick.getRawButton(2))
+        {
+            System.out.println("Feed Note");
+            // flywheel.intake();
+            index.feedNote();
         }
         else if(joystick.getRawButton(3))
         {
-            System.out.println("Shooter Reverse");
-            shooter.reverseShooterMotor();
+            System.out.println("Reverse Index");
+            index.reverse();
         }
-        else
+        else 
         {
-            shooter.turnOffShooterMotor();
+            System.out.println("Off");
+            // flywheel.turnOff();
+            index.turnOff();
         }
 
     }

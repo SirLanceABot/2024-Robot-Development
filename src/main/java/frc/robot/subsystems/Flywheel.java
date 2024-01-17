@@ -13,7 +13,7 @@ import frc.robot.subsystems.PoseEstimator;
 /**
  * Use this class as a template to create other subsystems.
  */
-public class Shooter extends Subsystem4237
+public class Flywheel extends Subsystem4237
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -33,22 +33,22 @@ public class Shooter extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
-        private double currentDistance;
-        private double currentVelocity;
+        // private double currentDistance;
+        private double currentSpeed;
 
         // OUTPUTS
        
-        private double shooterMotorSpeed;
-        private DoubleLogEntry currentDistanceEntry;
+        private double flywheelSpeed;
+        // private DoubleLogEntry currentDistanceEntry;
         private DoubleLogEntry currentVelocityEntry;
 
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final int ShooterMotorPort = Constants.Shooter.SHOOTER_MOTOR_PORT;
-    private final TalonFX shooterMotor = new TalonFX(ShooterMotorPort);
-    private RelativeEncoder shooterEncoder;
+    private final int ShooterMotorPort = Constants.Flywheel.FLYWHEEL_MOTOR_PORT;
+    private final TalonFX flywheelMotor = new TalonFX(ShooterMotorPort);
+    private RelativeEncoder flywheelEncoder;
 
     private ResetState resetState = ResetState.kDone;
     private Pose2d fieldLocation;
@@ -57,7 +57,7 @@ public class Shooter extends Subsystem4237
     /** 
      * Creates a new Shooter. 
      */
-    public Shooter(PoseEstimator poseEstimator)
+    public Flywheel(PoseEstimator poseEstimator)
     {
         super("Shooter");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -71,9 +71,9 @@ public class Shooter extends Subsystem4237
     {
         // Factory Defaults
         // outerShooterMotor.config
-        shooterMotor.setInverted(false);
-        shooterMotor.setNeutralMode(NeutralModeValue.Coast);
-        // outerShooterEncoder = outerShooterMotor.getEncoder();
+        flywheelMotor.setInverted(false);
+        flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+        // flywheelEncoder = flywheelMotor.getEncoder();
     }
 
     public void resetEncoder()
@@ -86,42 +86,29 @@ public class Shooter extends Subsystem4237
         fieldLocation = poseEstimator.getEstimatedPose();
     }
 
-    public double getVelocity()
+    public double getSpeed()
     {
-        return periodicData.currentVelocity;
+        return periodicData.currentSpeed;
         
     }
 
-    public double getDistance()
-    {
-        return periodicData.currentDistance;
-    }
 
-    public void forwardShooterMotor()
+    public void shoot()
     {
-        periodicData.shooterMotorSpeed = 0.1;
+        periodicData.flywheelSpeed = 0.1;
     }
 
 
-    public void reverseShooterMotor()
+    public void intake()
     {
-        periodicData.shooterMotorSpeed = -0.1;
+        periodicData.flywheelSpeed = -0.1;
     }
 
-    public void turnOffShooterMotor()
+    public void turnOff()
     {
-        periodicData.shooterMotorSpeed = 0.0;
+        periodicData.flywheelSpeed = 0.0;
     }
 
-    public void setDistance()
-    {
-
-    }
-
-    // public void setVelocity(double shooterMotorSpeed)
-    // {
-        
-    // }
 
     @Override
     public void readPeriodicInputs()
@@ -130,7 +117,13 @@ public class Shooter extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        shooterMotor.set(periodicData.shooterMotorSpeed);
+        flywheelMotor.set(periodicData.flywheelSpeed);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Current Shooter Speed: " + periodicData.flywheelSpeed;
     }
 
     @Override
