@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Constants;
 
 
@@ -23,21 +26,20 @@ public class Pivot extends Subsystem4237
         // INPUTS
     
         private double currentPosition;
-        private double currentVelocity;
         private double currentAngle;
 
         // OUTPUTS
 
         private double motorSpeed;
 
-
     }
 
-    private final CANSparkMax pivotMotor = new CANSparkMax(Constants.Pivot.PIVOT_MOTOR_PORT, MotorType.kBrushless);
+    private final CANSparkMax pivotMotor = new CANSparkMax(3, MotorType.kBrushless);
 
     private PeriodicIO periodicIO = new PeriodicIO();
+    private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
-    private RelativeEncoder relativeEncoder;
+    //private RelativeEncoder relativeEncoder;
     /** 
      * Creates a new ExampleSubsystem. 
      */
@@ -47,16 +49,13 @@ public class Pivot extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configPivotMotor();
-        relativeEncoder.setPosition(Constants.Pivot.STARTING_ENCODER_POSITION);
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    private void configPivotMotor()
+    public void configPivotMotor()
     {
         // Factory Defaults
         pivotMotor.restoreFactoryDefaults();
-        
-        periodicIO.currentPosition = 0.0;
 
 
         // Soft Limits
@@ -67,45 +66,44 @@ public class Pivot extends Subsystem4237
 
     }
 
-    public void moveUp()
+    public void moveUp(double speed)
     {
-        periodicIO.motorSpeed = 0.25;
+        periodicIO.motorSpeed = speed;
+        pivotMotor.set(periodicIO.motorSpeed);
     }
 
-    public void moveDown()
+    public void moveDown(double speed)
     {
-        periodicIO.motorSpeed = -0.25;
+        periodicIO.motorSpeed = speed;
+        pivotMotor.set(periodicIO.motorSpeed);
     }
 
     public void stopPivot()
     {
-        periodicIO.motorSpeed = 0.0; 
+        periodicIO.motorSpeed = 0.0;
+        pivotMotor.set(periodicIO.motorSpeed); 
     }
 
-    public void moveToPosition()
+    public double returnPivotAngle()
     {
-        if(periodicIO.currentPosition <= 10.0)
-        {
-            pivotMotor.set(0.25);
-        }
-        else
-        {
-            pivotMotor.set(0.0);
-        }
+        return (360 * rotaryEncoder.getAbsolutePosition());
     }
+
 
     @Override
     public void readPeriodicInputs()
     {
-        periodicIO.currentPosition = relativeEncoder.getPosition();
 
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        pivotMotor.set(periodicIO.motorSpeed);
-        System.out.println("currentPosition = " + periodicIO.currentPosition);
+        //Temporary
+        System.out.println("rotaryEncoder = " + 360 * rotaryEncoder.getAbsolutePosition());
+        // System.out.println("getDistancePerRotation()" + rotaryEncoder.getDistancePerRotation());
+        // System.out.println("getDistance()" + rotaryEncoder.getDistance());
+        
     }
 
     @Override

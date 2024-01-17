@@ -3,6 +3,7 @@ package frc.robot.tests;
 import frc.robot.subsystems.Pivot;
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class DaneTest implements Test
@@ -30,9 +31,8 @@ public class DaneTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-
         pivot = this.robotContainer.pivot;
-        joystick = new Joystick(0);
+        joystick = new Joystick(1);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -42,7 +42,7 @@ public class DaneTest implements Test
      */
     public void init()
     {
-        
+        pivot.configPivotMotor();
     }
 
     /**
@@ -50,17 +50,20 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-        if(joystick.getRawButton(1))
+        if(pivot.returnPivotAngle() < 180.0)
         {
-            pivot.moveUp();
-        }
-        else if(joystick.getRawButton(2))
-        {
-            pivot.moveDown();
-        }
-        else if(joystick.getRawButton(3))
-        {
-            pivot.moveToPosition();
+            if(joystick.getRawAxis(1) > 0.25)
+            {
+                pivot.moveUp(joystick.getRawAxis(1) / 2.0);
+            }
+            else if(joystick.getRawAxis(1) < -0.25)
+            {
+                pivot.moveDown(joystick.getRawAxis(1) / 2.0);
+            }
+            else
+            {
+                pivot.stopPivot();
+            }
         }
     }
     
