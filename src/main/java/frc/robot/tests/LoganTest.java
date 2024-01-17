@@ -26,9 +26,9 @@ public class LoganTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final CANSparkMax intakeMotor = new CANSparkMax(3, MotorType.kBrushless);
-    private RelativeEncoder intakeEncoder;
-    private final Joystick joystick = new Joystick(0);
+    // private final CANSparkMax intakeMotor = new CANSparkMax(3, MotorType.kBrushless);
+    // private RelativeEncoder intakeEncoder;
+    private final Joystick joystick = new Joystick(1);
     private double encoderPosition;
     private Intake intake;
 
@@ -57,21 +57,21 @@ public class LoganTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            encoderPosition = intakeEncoder.getPosition();
+            encoderPosition = intake.getBottomIntakePosition();
             System.out.println("In.  Encoder Position: " + encoderPosition);
-            intake.intakeForward();
+            intake.forward();
         }
         else if(joystick.getRawButton(2))
         {
-            encoderPosition = intakeEncoder.getPosition();
+            encoderPosition = intake.getBottomIntakePosition();
             System.out.println("Out.  Encoder Position: " + encoderPosition);
-            intake.intakeReverse();
+            intake.reverse();
         }
         else
         {
-            encoderPosition = intakeEncoder.getPosition();
+            encoderPosition = intake.getBottomIntakePosition();
             System.out.println("Stopped.  Encoder Position: " + encoderPosition);
-            intake.intakeOff();
+            intake.off();
         }
     }
     

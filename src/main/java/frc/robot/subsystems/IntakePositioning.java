@@ -80,7 +80,7 @@ public class IntakePositioning extends Subsystem4237
         intakePositioningMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     }
 
-    public double getIntakePositioningPosition()
+    public double getIntakePosition()
     {
         return periodicData.intakePositioningPosition;
     }
