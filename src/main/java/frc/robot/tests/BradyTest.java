@@ -23,7 +23,7 @@ public class BradyTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    // private final Candle4237 candle;
+    private final Candle4237 candle;
     // private final Joystick bradysJoystick;
     private final Proximity proximity;
 
@@ -34,7 +34,7 @@ public class BradyTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        // candle = new Candle4237();
+        candle = new Candle4237();
         // bradysJoystick = new Joystick(0);
         proximity = new Proximity();
 
@@ -75,6 +75,15 @@ public class BradyTest implements Test
         // {
         //     candle.setOff();
         // }
+
+        if(proximity.getIsDetected())
+        {
+            candle.setGreen(false);
+        }
+        else
+        {
+            candle.setRed(false);
+        }
 
         
     }
