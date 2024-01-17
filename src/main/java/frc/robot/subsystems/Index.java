@@ -33,7 +33,7 @@ public class Index extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
     private final int IndexMotorPort = Constants.Index.INDEX_MOTOR_PORT;
-    private final TalonFX indexMotor = new TalonFX(IndexMotorPort);
+    private final TalonFX indexMotor = new TalonFX(1);
     private RelativeEncoder indexEncoder;
 
     /** 
@@ -65,7 +65,7 @@ public class Index extends Subsystem4237
 
     public void feedNote()
     {
-        periodicData.motorSpeed = 0.5;
+        periodicData.motorSpeed = 0.25;
     }
 
 
