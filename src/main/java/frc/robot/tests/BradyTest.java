@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
+import frc.robot.sensors.Proximity;
 import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.Candle4237.LedStatus;
 
@@ -22,8 +23,9 @@ public class BradyTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Candle4237 candle;
-    private final Joystick bradysJoystick;
+    // private final Candle4237 candle;
+    // private final Joystick bradysJoystick;
+    private final Proximity proximity;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -32,8 +34,9 @@ public class BradyTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        candle = new Candle4237();
-        bradysJoystick = new Joystick(0);
+        // candle = new Candle4237();
+        // bradysJoystick = new Joystick(0);
+        proximity = new Proximity();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -52,26 +55,28 @@ public class BradyTest implements Test
     public void periodic()
     {
         //candle.setRGBFade();
-        if(bradysJoystick.getRawButton(1)) //A
-        {
-            candle.setGreen(false);
-        }
-        else if(bradysJoystick.getRawButton(2)) //B
-        {
-            candle.setRed(false);
-        }
-        else if(bradysJoystick.getRawButton(3)) //X
-        {
-            candle.setBlue(false);
-        }
-        else if(bradysJoystick.getRawButton(4)) //Y
-        {
-            candle.setLarson();
-        }
-        else if(bradysJoystick.getRawButton(6)) //RB
-        {
-            candle.setOff();
-        }
+        // if(bradysJoystick.getRawButton(1)) //A
+        // {
+        //     candle.setGreen(false);
+        // }
+        // else if(bradysJoystick.getRawButton(2)) //B
+        // {
+        //     candle.setRed(false);
+        // }
+        // else if(bradysJoystick.getRawButton(3)) //X
+        // {
+        //     candle.setBlue(false);
+        // }
+        // else if(bradysJoystick.getRawButton(4)) //Y
+        // {
+        //     candle.setLarson();
+        // }
+        // else if(bradysJoystick.getRawButton(6)) //RB
+        // {
+        //     candle.setOff();
+        // }
+
+        
     }
     
     /**
@@ -79,7 +84,7 @@ public class BradyTest implements Test
      */
     public void exit()
     {
-        candle.setOff();
+        // candle.setOff();
     }
 
     // *** METHODS ***
