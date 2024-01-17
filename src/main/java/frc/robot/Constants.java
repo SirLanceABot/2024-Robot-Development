@@ -172,8 +172,8 @@ public final class Constants
     {
         public static final int INTAKE_POSITIONING_MOTOR_PORT     = 0;
 
-        public static final int INTAKE_UP_POSITION                = 0;
-        public static final int INTAKE_DOWN_POSITION              = 42370;
+        public static final int UP_POSITION                = 0;
+        public static final int DOWN_POSITION              = 1;
     }
 
     public static class Climb

@@ -2,12 +2,8 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
 
@@ -49,7 +45,7 @@ public class IntakePositioning extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    // private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, );
+    private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, Constants.IntakePositioning.UP_POSITION, Constants.IntakePositioning.DOWN_POSITION);
 
     /** 
      * Creates a new IntakePositioning. 
@@ -62,14 +58,14 @@ public class IntakePositioning extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public void dropIntake()
+    public void intakeDown()
     {
-
+        periodicData.intakePosition = IntakePosition.kDown;
     }
 
-    public void raiseIntake()
+    public void intakeUp()
     {
-       
+        periodicData.intakePosition = IntakePosition.kUp;
     }
 
     @Override
@@ -80,7 +76,9 @@ public class IntakePositioning extends Subsystem4237
 
     @Override
     public void writePeriodicOutputs()
-    {}
+    {
+        intakeSolenoid.set(periodicData.intakePosition.value);
+    }
 
     @Override
     public void periodic()
@@ -92,5 +90,11 @@ public class IntakePositioning extends Subsystem4237
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Intake Position: " + periodicData.intakePosition;
     }
 }
