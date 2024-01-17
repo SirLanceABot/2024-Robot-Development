@@ -7,6 +7,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
 
 /**
@@ -26,30 +28,28 @@ public class IntakePositioning extends Subsystem4237
 
     public enum IntakePosition
     {
-        kUP(Constants.IntakePositioning.INTAKE_UP_POSITION), kDOWN(Constants.IntakePositioning.INTAKE_DOWN_POSITION);
+        kUp(Value.kForward), kDown(Value.kReverse), kOff(Value.kOff);
 
-        public final double intakePositioning;
+        public final Value value;
 
-        private IntakePosition(double intakePositioning)
+        private IntakePosition(Value value)
         {
-            this.intakePositioning = intakePositioning;
+            this.value = value;
         }
     }
     
     private class PeriodicData
     {
         // INPUTS
-        private double intakePositioningPosition = 0.0;
 
         // OUTPUTS
-        private double intakePositioningSpeed = 0.0;
+        private IntakePosition intakePosition = IntakePosition.kOff;
 
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax intakePositioningMotor = new CANSparkMax(Constants.IntakePositioning.INTAKE_POSITIONING_MOTOR_PORT, MotorType.kBrushless);
-    private RelativeEncoder intakePositioningEncoder;
+    // private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, );
 
     /** 
      * Creates a new IntakePositioning. 
@@ -58,62 +58,24 @@ public class IntakePositioning extends Subsystem4237
     {
         super("Intake Positioning");
         System.out.println("  Constructor Started:  " + fullClassName);
-
-        configCANSparkMax();
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    private void configCANSparkMax()
-    {
-        // Factory Defaults
-        intakePositioningMotor.restoreFactoryDefaults();
-        // Do Not Invert Motor Direction
-        intakePositioningMotor.setInverted(false); // test later
-
-        intakePositioningEncoder = intakePositioningMotor.getEncoder();
-
-        //Soft Limits
-        intakePositioningMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.IntakePositioning.INTAKE_DOWN_POSITION);
-        intakePositioningMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        intakePositioningMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.IntakePositioning.INTAKE_UP_POSITION);
-        intakePositioningMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    }
-
-    public double getIntakePosition()
-    {
-        return periodicData.intakePositioningPosition;
-    }
-
-    public double getInakePositioningSpeed()
-    {
-        return periodicData.intakePositioningSpeed;
-    }
-
     public void dropIntake()
     {
-        periodicData.intakePositioningSpeed = 0.1;
+
     }
 
     public void raiseIntake()
     {
-        periodicData.intakePositioningSpeed = -0.1;
-    }
-
-    public void intakePositioningOff()
-    {
-        periodicData.intakePositioningSpeed = 0.0;
-    }
-
-    public void on(double speed)
-    {
-        periodicData.intakePositioningSpeed = speed;
+       
     }
 
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.intakePositioningPosition = intakePositioningEncoder.getPosition();
+        
     }
 
     @Override
