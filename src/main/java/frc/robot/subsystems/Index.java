@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
+import frc.robot.motors.TalonFX4237;
 
 /**
  * Use this class as a template to create other subsystems.
@@ -32,9 +33,8 @@ public class Index extends Subsystem4237
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private final int IndexMotorPort = Constants.Index.INDEX_MOTOR_PORT;
-    private final TalonFX indexMotor = new TalonFX(1);
-    private RelativeEncoder indexEncoder;
+    private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
+    private RelativeEncoder encoder;
 
     /** 
      * Creates a new Index. 
@@ -51,11 +51,9 @@ public class Index extends Subsystem4237
 
     private void configTalonFX()
     {
-        // Factory Defaults
-        // outerShooterMotor.config
-        indexMotor.setInverted(false);
-        indexMotor.setNeutralMode(NeutralModeValue.Coast);
-        // indexEncoder = indexMotor.getEncoder();
+        motor.setupCoastMode();
+        motor.setupFactoryDefaults();
+        motor.setupInverted(false);
     }
 
     public void acceptNote()
@@ -86,7 +84,7 @@ public class Index extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        indexMotor.set(periodicData.motorSpeed);
+        motor.set(periodicData.motorSpeed);
     }
 
     @Override

@@ -45,7 +45,9 @@ public class IntakePositioning extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, Constants.IntakePositioning.UP_POSITION, Constants.IntakePositioning.DOWN_POSITION);
+    private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, UP_POSITION, DOWN_POSITION);
+    public static final int UP_POSITION                = 0;
+    public static final int DOWN_POSITION              = 1;
 
     /** 
      * Creates a new IntakePositioning. 

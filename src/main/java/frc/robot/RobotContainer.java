@@ -130,7 +130,7 @@ public class RobotContainer
         cameraFour          = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
         poseEstimator       = (useFullRobot || usePoseEstimator)            ? new PoseEstimator(drivetrain, gyro, cameraOne, cameraTwo, cameraThree, cameraFour)    : null;
 
-        flywheel             = (useFullRobot || (useFlywheel && usePoseEstimator))      ? new Flywheel(poseEstimator)                      : null;
+        flywheel             = (useFullRobot || (useFlywheel))      ? new Flywheel()                      : null;
 
         mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
         driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;

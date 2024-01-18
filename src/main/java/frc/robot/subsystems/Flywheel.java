@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import frc.robot.Constants;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.motors.TalonFX4237;
 
 /**
  * Use this class as a template to create other subsystems.
@@ -49,22 +50,19 @@ public class Flywheel extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final int ShooterMotorPort = Constants.Flywheel.FLYWHEEL_MOTOR_PORT;
-    private final TalonFX flywheelMotor = new TalonFX(ShooterMotorPort);
-    private RelativeEncoder flywheelEncoder;
+    private final TalonFX4237 motor = new TalonFX4237(Constants.Flywheel.MOTOR_PORT, Constants.Flywheel.MOTOR_CAN_BUS, "flywheelMotor");
+    private RelativeEncoder encoder;
 
     private ResetState resetState = ResetState.kDone;
     private Pose2d fieldLocation;
-    private final PoseEstimator poseEstimator;
 
     /** 
      * Creates a new Shooter. 
      */
-    public Flywheel(PoseEstimator poseEstimator)
+    public Flywheel()
     {
         super("Shooter");
         System.out.println("  Constructor Started:  " + fullClassName);
-        this.poseEstimator = poseEstimator;
         configTalonFX();
         
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -72,11 +70,10 @@ public class Flywheel extends Subsystem4237
 
     private void configTalonFX()
     {
-        // Factory Defaults
-        // outerShooterMotor.config
-        flywheelMotor.setInverted(false);
-        flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
-        // flywheelEncoder = flywheelMotor.getEncoder();
+        motor.setupFactoryDefaults();
+        motor.setupInverted(false);
+        motor.setupCoastMode();
+
     }
 
     public void resetEncoder()
@@ -84,15 +81,20 @@ public class Flywheel extends Subsystem4237
         resetState = ResetState.kStart;
     }
 
-    public void calculateDistance()
+    public double getVelocity()
     {
-        fieldLocation = poseEstimator.getEstimatedPose();
+        return motor.getVelocity();
+        
     }
 
-    public double getSpeed()
+    public double getPosition()
     {
-        return periodicData.currentSpeed;
-        
+        return motor.getPosition();
+    }
+
+    public void setVelocity()
+    {
+
     }
 
 
@@ -120,7 +122,7 @@ public class Flywheel extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        flywheelMotor.set(periodicData.flywheelSpeed);
+        motor.set(periodicData.flywheelSpeed);
     }
 
     @Override

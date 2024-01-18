@@ -139,52 +139,51 @@ public final class Constants
 
     public static class Intake
     {
-        public static final int INTAKE_TOP_MOTOR_PORT          = 0;
-        public static final int INTAKE_BOTTOM_MOTOR_PORT       = 0;
+        public static final int TOP_MOTOR_PORT           = 0;
+        public static final int BOTTOM_MOTOR_PORT        = 0;
+        public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
+        public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
     }
 
     public static class Flywheel
     {
-        public static final int FLYWHEEL_MOTOR_PORT   = 0;
-        // public static final int INNER_SHOOTER_MOTOR_PORT   = 0;
+        public static final int MOTOR_PORT               = 0;
+        public static final String MOTOR_CAN_BUS         = CANIVORE;
     }
 
     public static class Index
     {
-        public static final int INDEX_MOTOR_PORT = 0;
+        public static final int MOTOR_PORT               = 0;
+        public static final String MOTOR_CAN_BUS         = CANIVORE;
     }
 
     public static class Pivot
     {
-        public static final int PIVOT_MOTOR_PORT                = 0;
-
-        public static final double STARTING_ENCODER_POSITION    = 0.0;
-        public static final float ENCODER_UPWARD_SOFT_LIMIT    = 4237.0f;
-        public static final float ENCODER_DOWNWARD_SOFT_LIMIT  = -4237.0f;
+        public static final int MOTOR_PORT               = 0;
+        public static final String MOTOR_CAN_BUS         = CANIVORE;
     }
 
     public static class Shuttle
     {
-        public static final int MOTOR_PORT         = 3;
+        public static final int MOTOR_PORT               = 3;
+        public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
     public static class IntakePositioning
     {
-        public static final int INTAKE_POSITIONING_MOTOR_PORT     = 0;
+        public static final int MOTOR_PORT     = 0;
 
-        public static final int UP_POSITION                = 0;
-        public static final int DOWN_POSITION              = 1;
+        
     }
 
     public static class Climb
     {
-        public static final int LEFT_MOTOR_PORT                   = 0;
-        public static final int RIGHT_MOTOR_PORT                  = 0;
+        public static final int LEFT_MOTOR_PORT          = 0;
+        public static final int RIGHT_MOTOR_PORT         = 0;
+        public static final String LEFT_MOTOR_CAN_BUS    = CANIVORE;
+        public static final String RIGHT_MOTOR_CAN_BUS   = CANIVORE;
 
-        public static final int LEFT_MOTOR_UPPER_SOFT_LIMIT       = 1000;
-        public static final int LEFT_MOTOR_LOWER_SOFT_LIMIT       = 0;
-        public static final int RIGHT_MOTOR_UPPER_SOFT_LIMIT      = 1000;
-        public static final int RIGHT_MOTOR_LOWER_SOFT_LIMIT      = 0;
+        
 
     }
 

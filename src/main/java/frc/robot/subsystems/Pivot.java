@@ -39,6 +39,10 @@ public class Pivot extends Subsystem4237
     private PeriodicIO periodicIO = new PeriodicIO();
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
+    public static final double STARTING_ENCODER_POSITION    = 0.0;
+    public static final float ENCODER_UPWARD_SOFT_LIMIT    = 4237.0f;
+    public static final float ENCODER_DOWNWARD_SOFT_LIMIT  = -4237.0f;
+
     //private RelativeEncoder relativeEncoder;
     /** 
      * Creates a new ExampleSubsystem. 
@@ -59,9 +63,9 @@ public class Pivot extends Subsystem4237
 
 
         // Soft Limits
-        pivotMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Pivot.ENCODER_UPWARD_SOFT_LIMIT);
+        pivotMotor.setSoftLimit(SoftLimitDirection.kForward, ENCODER_UPWARD_SOFT_LIMIT);
         pivotMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Pivot.ENCODER_DOWNWARD_SOFT_LIMIT);
+        pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, ENCODER_DOWNWARD_SOFT_LIMIT);
         pivotMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     }

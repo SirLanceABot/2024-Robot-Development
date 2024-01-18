@@ -11,6 +11,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.Constants;
+import frc.robot.motors.TalonFX4237;
 
 /**
  * Use this class as a template to create other subsystems.
@@ -26,26 +27,65 @@ public class Climb extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
+
+    public enum Position
+    {
+        kChain(CHAIN_ENCODER_POSITION),
+        kRobot(ROBOT_ENCODER_POSITION),
+        kOverride(-4237);
+
+        public final double value;
+        private Position(double value)
+        {
+            this.value = value;
+        }
+    }
+
+    public enum ResetState
+    {
+        kStart, kTry, kDone;
+    }
+
+    private enum LimitSwitchState
+    {
+        kPressed, kStillPressed, kReleased, kStillReleased;
+    }
     
     private class PeriodicData
     {
         // INPUTS
-        private double currentPosition;
-        private double currentVelocity;
+        private double currentPosition = 0.0;
+       
 
         // OUTPUTS
-        private DoubleLogEntry positiLogEntry;
-        private DoubleLogEntry velocityLogEntry;
+        private DoubleLogEntry positionEntry;
+        private DoubleLogEntry velocityEntry;
         private double motorSpeed;
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private int leftMotorPort = Constants.Climb.LEFT_MOTOR_PORT;
-    private int rightMotorPort = Constants.Climb.RIGHT_MOTOR_PORT;
-    private final TalonFX leftMotor = new TalonFX(leftMotorPort);
-    private final TalonFX rightMotor = new TalonFX(rightMotorPort);
-    private RelativeEncoder leftMotorEncoder;
-    private RelativeEncoder rightMotorEncoder;
+    private final TalonFX4237 leftMotor = new TalonFX4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
+    private final TalonFX4237 rightMotor = new TalonFX4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
+    // private RelativeEncoder leftMotorEncoder;
+    // private RelativeEncoder rightMotorEncoder;
+
+    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 1000;
+    public static final int LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0;
+    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 1000;
+    public static final int RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0;
+
+    public static final int CHAIN_ENCODER_POSITION              = 10000;
+    public static final int ROBOT_ENCODER_POSITION              = 10000;
+
+    private final double kP = 0.00003;
+    private final double kI = 0.0; // 0.0001
+    private final double kD = 0.0;
+    private final double kIz = 0.0;
+    private final double kFF = 0.0;
+    private final double kMaxOutput = 0.7;
+    private final double kMinOutput = -0.7;
+    
+
     
     
 
@@ -56,27 +96,25 @@ public class Climb extends Subsystem4237
     {
         super("Climb");
         System.out.println("  Constructor Started:  " + fullClassName);
+        configMotors();
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    private void configTalonFX()
+    private void configMotors()
     {
-        leftMotor.setInverted(false);
-        rightMotor.setInverted(false);
-        leftMotor.setNeutralMode(NeutralModeValue.Brake);
-        rightMotor.setNeutralMode(NeutralModeValue.Brake);
+        leftMotor.setupBrakeMode();
+        rightMotor.setupBrakeMode();
+        leftMotor.setupFactoryDefaults();
+        rightMotor.setupFactoryDefaults();
+        leftMotor.setupInverted(false);
+        rightMotor.setupInverted(false);
 
-        // rightMaster.configForwardSoftLimitThreshold(10000, 0);
-        // rightMaster.configReverseSoftLimitThreshold(-10000, 0);
-        // rightMaster.configForwardSoftLimitEnable(true, 0);
-        // rightMaster.configReverseSoftLimitEnable(true, 0);
-
-        // leftMotor.configForwardSoftLimitThreshold(Constants.Climb.LEFT_MOTOR_UPPER_SOFT_LIMIT, 0);
-
-
-
+        leftMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
+        leftMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
+        rightMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
+        rightMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
     }
 
     public void raiseClimb()
