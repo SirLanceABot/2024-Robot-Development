@@ -54,7 +54,8 @@ public class Climb extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
-        private double currentPosition = 0.0;
+        private double currentLeftPosition = 0.0;
+        private double currentRightPosition = 0.0;
        
 
         // OUTPUTS
@@ -84,7 +85,7 @@ public class Climb extends Subsystem4237
     private final double kFF = 0.0;
     private final double kMaxOutput = 0.7;
     private final double kMinOutput = -0.7;
-    
+
 
     
     
@@ -139,7 +140,9 @@ public class Climb extends Subsystem4237
 
     @Override
     public void readPeriodicInputs()
-    {}
+    {
+        periodicData.currentLeftPosition = leftMotor.getPosition();
+    }
 
     @Override
     public void writePeriodicOutputs()
