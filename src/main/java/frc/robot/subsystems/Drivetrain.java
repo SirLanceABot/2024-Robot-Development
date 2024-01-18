@@ -107,14 +107,14 @@ public class Drivetrain extends Subsystem4237
     private final SwerveModuleConfig BACK_RIGHT_SWERVE_MODULE = new SwerveModuleConfig(
         "Back Right", BACK_RIGHT_LOCATION, Constants.Drivetrain.BACK_RIGHT_DRIVE, false, Constants.Drivetrain.BACK_RIGHT_ENCODER, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN); 
     
-    // private final SwerveModule frontLeft;
-    // private final SwerveModule frontRight;
-    // private final SwerveModule backLeft;
-    // private final SwerveModule backRight;
-    private final Module frontLeft;
-    private final Module frontRight;
-    private final Module backLeft;
-    private final Module backRight;
+    private final SwerveModule frontLeft;
+    private final SwerveModule frontRight;
+    private final SwerveModule backLeft;
+    private final SwerveModule backRight;
+    // private final Module frontLeft;
+    // private final Module frontRight;
+    // private final Module backLeft;
+    // private final Module backRight;
 
     // TODO: Make final by setting to an initial stopped state
     //private SwerveModuleState[] previousSwerveModuleStates = null;
@@ -161,29 +161,34 @@ public class Drivetrain extends Subsystem4237
         // backLeft = new SwerveModule(BACK_LEFT_SWERVE_MODULE);
         // backRight = new SwerveModule(BACK_RIGHT_SWERVE_MODULE);
 
-        if(Constants.ROBOT_NAME_4237.equals("2023 Robot"))
-        {
-            frontLeft = new SwerveModule2023(FRONT_LEFT_SWERVE_MODULE);
-            frontRight = new SwerveModule2023(FRONT_RIGHT_SWERVE_MODULE);
-            backLeft = new SwerveModule2023(BACK_LEFT_SWERVE_MODULE);
-            backRight = new SwerveModule2023(BACK_RIGHT_SWERVE_MODULE);
-        }
-        else if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
-        {
-            frontLeft = new SwerveModule2022(FRONT_LEFT_SWERVE_MODULE);
-            frontRight = new SwerveModule2022(FRONT_RIGHT_SWERVE_MODULE);
-            backLeft = new SwerveModule2022(BACK_LEFT_SWERVE_MODULE);
-            backRight = new SwerveModule2022(BACK_RIGHT_SWERVE_MODULE);
-        }
-        else
-        {
-            System.out.println("Unknown Robot " + Constants.ROBOT_NAME_4237);
-            frontLeft = null;
-            frontRight = null;
-            backLeft = null;
-            backRight = null;
-        }
-            
+        // if(Constants.ROBOT_NAME_4237.equals("2023 Robot"))
+        // {
+        //     frontLeft = new SwerveModule2023(FRONT_LEFT_SWERVE_MODULE);
+        //     frontRight = new SwerveModule2023(FRONT_RIGHT_SWERVE_MODULE);
+        //     backLeft = new SwerveModule2023(BACK_LEFT_SWERVE_MODULE);
+        //     backRight = new SwerveModule2023(BACK_RIGHT_SWERVE_MODULE);
+        // }
+        // else if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
+        // {
+        //     frontLeft = new SwerveModule2022(FRONT_LEFT_SWERVE_MODULE);
+        //     frontRight = new SwerveModule2022(FRONT_RIGHT_SWERVE_MODULE);
+        //     backLeft = new SwerveModule2022(BACK_LEFT_SWERVE_MODULE);
+        //     backRight = new SwerveModule2022(BACK_RIGHT_SWERVE_MODULE);
+        // }
+        // else
+        // {
+        //     System.out.println("Unknown Robot " + Constants.ROBOT_NAME_4237);
+        //     frontLeft = null;
+        //     frontRight = null;
+        //     backLeft = null;
+        //     backRight = null;
+        // }
+        
+        
+        frontLeft = new SwerveModule(FRONT_LEFT_SWERVE_MODULE);
+        frontRight = new SwerveModule(FRONT_RIGHT_SWERVE_MODULE);
+        backLeft = new SwerveModule(BACK_LEFT_SWERVE_MODULE);
+        backRight = new SwerveModule(BACK_RIGHT_SWERVE_MODULE);
 
         // gyro = new WPI_Pigeon2(Port.Sensor.PIGEON, Port.Motor.CAN_BUS);
 
