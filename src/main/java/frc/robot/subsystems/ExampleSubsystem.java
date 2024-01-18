@@ -58,4 +58,10 @@ public class ExampleSubsystem extends Subsystem4237
     {
         // This method will be called once per scheduler run during simulation
     }
+
+    @Override
+    public String toString()
+    {
+        return "";
+    }
 }

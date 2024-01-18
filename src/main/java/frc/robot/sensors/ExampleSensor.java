@@ -70,6 +70,6 @@ public class ExampleSensor extends Sensor4237
     @Override
     public String toString()
     {
-        return null;
+        return "";
     }
 }
