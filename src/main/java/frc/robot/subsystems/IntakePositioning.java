@@ -60,12 +60,12 @@ public class IntakePositioning extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public void intakeDown()
+    public void extend()
     {
         periodicData.intakePosition = IntakePosition.kDown;
     }
 
-    public void intakeUp()
+    public void retract()
     {
         periodicData.intakePosition = IntakePosition.kUp;
     }

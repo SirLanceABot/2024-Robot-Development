@@ -145,6 +145,15 @@ public final class Constants
         public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
     }
 
+    public static class AmpAssist
+    {
+        public static final int MOTOR_PORT               = 0;
+        public static final String MOTOR_CAN_BUS         = ROBORIO;
+
+        public static final int OUT_SOFT_LIMIT           = 4237;
+        public static final int IN_SOFT_LIMIT            = 0;
+    }
+
     public static class Flywheel
     {
         public static final int MOTOR_PORT               = 0;
@@ -172,8 +181,6 @@ public final class Constants
     public static class IntakePositioning
     {
         public static final int MOTOR_PORT     = 0;
-
-        
     }
 
     public static class Climb
