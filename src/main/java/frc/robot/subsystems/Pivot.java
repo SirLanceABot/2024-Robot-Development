@@ -56,7 +56,7 @@ public class Pivot extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public void configPivotMotor()
+    private void configPivotMotor()
     {
         // Factory Defaults
         pivotMotor.restoreFactoryDefaults();
@@ -78,7 +78,7 @@ public class Pivot extends Subsystem4237
 
     public void moveDown(double speed)
     {
-        periodicIO.motorSpeed = speed;
+        periodicIO.motorSpeed = -speed;
         pivotMotor.set(periodicIO.motorSpeed);
     }
 
@@ -93,6 +93,25 @@ public class Pivot extends Subsystem4237
         return (360 * rotaryEncoder.getAbsolutePosition());
     }
 
+    public void setAngle(double degrees)
+    {
+    
+        do
+        {
+           if(returnPivotAngle() > degrees)
+            {
+                moveDown(0.5);
+            }
+
+            if(returnPivotAngle() < degrees)
+            {
+                moveUp(0.5);
+            } 
+        }
+        while(returnPivotAngle() > (degrees - 2.0) || returnPivotAngle() < (degrees + 2.0));
+
+        stopPivot();
+    }
 
     @Override
     public void readPeriodicInputs()
@@ -113,6 +132,8 @@ public class Pivot extends Subsystem4237
     @Override
     public void periodic()
     {
+
+        periodicIO.currentAngle = returnPivotAngle();
         // This method will be called once per scheduler run
         
     }
