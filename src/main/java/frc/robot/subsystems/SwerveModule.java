@@ -2,34 +2,12 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
-// import com.ctre.phoenix.ErrorCode;
-// import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-// import com.ctre.phoenix.sensors.CANCoder;
-// import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-// import com.ctre.phoenix.sensors.SensorTimeBase;
-// import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
-// import com.ctre.phoenix.motorcontrol.ControlMode;
-// import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-// import com.ctre.phoenix.motorcontrol.NeutralMode;
-// import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-// import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-// FIXME uncomment
-// import com.ctre.phoenix.sensors.CANCoder;
-// import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -37,11 +15,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
-
+import frc.robot.Constants;
+import frc.robot.motors.CANSparkMax4237;
+import frc.robot.motors.MotorController4237;
+import frc.robot.motors.TalonFX4237;
 
 class SwerveModule extends RobotDriveBase
 {
@@ -59,14 +39,14 @@ class SwerveModule extends RobotDriveBase
     // *** CLASS & INSTANCE VARIABLES ***
     private final String moduleName;
     // private final TalonFX driveMotor;
-    private final CANSparkMax driveMotor;
-    private final RelativeEncoder driveMotorEncoder;
+    private final MotorController4237 driveMotor;
+    // private final RelativeEncoder driveMotorEncoder;
     private final boolean driveMotorInverted;
     private final CANcoder turnEncoder;
     private final double turnEncoderOffset;
     // private final TalonFX turnMotor;
-    private final CANSparkMax turnMotor;
-    private final RelativeEncoder turnMotorEncoder;
+    private final MotorController4237 turnMotor;
+    // private final RelativeEncoder turnMotorEncoder;
 
     private final PIDController drivePIDController = new PIDController(3.5, 0, 0.09); // volts / (m/s) for P and volts / (m/s^2) for D
     // private final PIDController turningPIDController = new PIDController(1.0, 0, 0);
@@ -101,14 +81,22 @@ class SwerveModule extends RobotDriveBase
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + moduleName);
 
         // driveMotor = new TalonFX(smd.driveMotorChannel, Constants.Drivetrain.CAN_BUS);
-        driveMotor = new CANSparkMax(smd.driveMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
-        driveMotorEncoder = driveMotor.getEncoder();
+        // driveMotor = new CANSparkMax(smd.driveMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
+        if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
+            driveMotor = new CANSparkMax4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");
+        else
+            driveMotor = new TalonFX4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");;
+        // driveMotorEncoder = driveMotor.getEncoder();
         driveMotorInverted = smd.driveMotorInverted;
         turnEncoder = new CANcoder(smd.turnEncoderChannel, Constants.Drivetrain.CANCODER_CAN_BUS);  
         turnEncoderOffset = smd.turnEncoderOffset;
         // turnMotor = new TalonFX(smd.turnMotorChannel, Constants.Drivetrain.CAN_BUS);
-        turnMotor = new CANSparkMax(smd.turnMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
-        turnMotorEncoder = turnMotor.getEncoder();
+        // turnMotor = new CANSparkMax(smd.turnMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
+        if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
+            turnMotor = new CANSparkMax4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");
+        else
+            turnMotor = new TalonFX4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");;
+        // turnMotorEncoder = turnMotor.getEncoder();
 
         configDriveMotor();
         configCANCoder();
@@ -142,25 +130,32 @@ class SwerveModule extends RobotDriveBase
     {
         // Set factory defaults
         // driveMotor.configFactoryDefault();
-        driveMotor.restoreFactoryDefaults(false);
+        // driveMotor.restoreFactoryDefaults(false);
+        driveMotor.setupFactoryDefaults();
 
+        // FIXME
         // driveMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-        driveMotor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 20);
+        // driveMotor.setupPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, 20);
         
         // Invert the motor
-        driveMotor.setInverted(driveMotorInverted); 
+        // driveMotor.setInverted(driveMotorInverted); 
+        driveMotor.setupInverted(driveMotorInverted); 
 
         // Set brake mode
         // driveMotor.setNeutralMode(NeutralMode.Brake);
-        driveMotor.setIdleMode(IdleMode.kBrake);
+        // driveMotor.setIdleMode(IdleMode.kBrake);
+        driveMotor.setupBrakeMode();
 
         // Set soft limits
         // driveMotor.configForwardSoftLimitEnable(false);
         // driveMotor.configReverseSoftLimitEnable(false);
-        driveMotor.setSoftLimit(SoftLimitDirection.kForward, 0.0f);
-        driveMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
-        driveMotor.setSoftLimit(SoftLimitDirection.kReverse, 0.0f);
-        driveMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+        // driveMotor.setSoftLimit(SoftLimitDirection.kForward, 0.0f);
+        // driveMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+        driveMotor.setupForwardSoftLimit(0.0, false);
+
+        // driveMotor.setSoftLimit(SoftLimitDirection.kReverse, 0.0f);
+        // driveMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+        driveMotor.setupReverseSoftLimit(0.0, false);
         
         // TODO Does this need to be set for the SparkMax
         // driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor); //TODO Convert to newer config API
@@ -169,6 +164,7 @@ class SwerveModule extends RobotDriveBase
         // driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 20, 25, 1.0));
         // driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 10, 15, 0.5));
         // driveMotor.setSmartCurrentLimit(40);
+        driveMotor.setupCurrentLimit(40.0, 60.0, 0.5);
 
         // Set open loop ramp rate
         // driveMotor.configOpenloopRamp(openLoopRamp);
@@ -179,11 +175,14 @@ class SwerveModule extends RobotDriveBase
         // Set voltage compensation
         // driveMotor.configVoltageCompSaturation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
         // driveMotor.enableVoltageCompensation(true);
-        driveMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        // driveMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        driveMotor.setupVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
         
         // Set the conversion factors
-        driveMotorEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS);
-        driveMotorEncoder.setVelocityConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC);
+        // driveMotorEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS);
+        // driveMotorEncoder.setVelocityConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC);
+        driveMotor.setupPositionConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS);
+        driveMotor.setupVelocityConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC);
 
         // System.out.println("DriveTalon");
 
@@ -226,22 +225,28 @@ class SwerveModule extends RobotDriveBase
     {
         // Set factory defaults
         // turnMotor.configFactoryDefault();
-        turnMotor.restoreFactoryDefaults(false);
+        // turnMotor.restoreFactoryDefaults(false);
+        turnMotor.setupFactoryDefaults();
 
         // Invert the motor
-        turnMotor.setInverted(false);
+        // turnMotor.setInverted(false);
+        turnMotor.setupInverted(false);
 
         // Set brake mode
         // turnMotor.setNeutralMode(NeutralMode.Brake);
-        turnMotor.setIdleMode(IdleMode.kBrake);
+        // turnMotor.setIdleMode(IdleMode.kBrake);
+        turnMotor.setupBrakeMode();
 
         // Set soft limits
         // turnMotor.configForwardSoftLimitEnable(false);
         // turnMotor.configReverseSoftLimitEnable(false);
-        turnMotor.setSoftLimit(SoftLimitDirection.kForward, 0.0f);
-        turnMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
-        turnMotor.setSoftLimit(SoftLimitDirection.kReverse, 0.0f);
-        turnMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+        // turnMotor.setSoftLimit(SoftLimitDirection.kForward, 0.0f);
+        // turnMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+        turnMotor.setupForwardSoftLimit(0.0, false);
+
+        // turnMotor.setSoftLimit(SoftLimitDirection.kReverse, 0.0f);
+        // turnMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+        turnMotor.setupReverseSoftLimit(0.0, false);
 
         // TODO Does this need to be set for the SparkMax
         // turnMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor); //TODO Convert to newer config API
@@ -260,7 +265,8 @@ class SwerveModule extends RobotDriveBase
         // Set voltage compensation
         // turnMotor.configVoltageCompSaturation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
         // turnMotor.enableVoltageCompensation(true);
-        turnMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        // turnMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        turnMotor.setupVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
 
         // TODO Set the conversion factors
         // turnMotorEncoder.setPositionConversionFactor(?);
@@ -336,7 +342,8 @@ class SwerveModule extends RobotDriveBase
     public void configOpenLoopRamp(double seconds)
     {
         // driveMotor.configOpenloopRamp(seconds);
-        driveMotor.setOpenLoopRampRate(seconds);
+        // driveMotor.setOpenLoopRampRate(seconds);
+        driveMotor.setupOpenLoopRampRate(seconds);
     }
 
     /**
@@ -430,11 +437,13 @@ class SwerveModule extends RobotDriveBase
         
         // TODO Is this right?
         // double velocity = driveMotor.getSelectedSensorVelocity() * Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC;
-        double velocity = driveMotorEncoder.getVelocity(); // * Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC;
+        // double velocity = driveMotorEncoder.getVelocity(); // * Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC;
+        double velocity = driveMotor.getVelocity();
         
         // FIXME Units conversion?
         // System.out.println(driveMotor.getDeviceID() + " " + velocity);
         return velocity;
+
     }
 
 
@@ -442,7 +451,8 @@ class SwerveModule extends RobotDriveBase
     {
         // TODO Is this right?
         // double position = driveMotor.getSelectedSensorPosition() * Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS;
-        double position = driveMotorEncoder.getPosition(); // * Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS;
+        // double position = driveMotorEncoder.getPosition(); // * Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS;
+        double position = driveMotor.getPosition();
         
         return position;
     }
@@ -471,19 +481,21 @@ class SwerveModule extends RobotDriveBase
     public void resetEncoders()
     {
         // driveMotor.setSelectedSensorPosition(0.0);
-        driveMotorEncoder.setPosition(0.0);
+        // driveMotorEncoder.setPosition(0.0);
+        driveMotor.setPosition(0.0);
 
         // turnMotor.setSelectedSensorPosition(0.0);
-        turnMotorEncoder.setPosition(0.0);
+        // turnMotorEncoder.setPosition(0.0);
+        turnMotor.setPosition(0.0);
         
         turnEncoder.setPosition(turnEncoder.getAbsolutePosition().getValueAsDouble());
     }
 
-    public double getDriveMotorPosition()
-    {
-        // return driveMotor.getSelectedSensorPosition();
-        return driveMotorEncoder.getPosition();
-    }
+    // public double getDriveMotorPosition()
+    // {
+    //     // return driveMotor.getSelectedSensorPosition();
+    //     return driveMotorEncoder.getPosition();
+    // }
 
     public void stopModule()
     {
