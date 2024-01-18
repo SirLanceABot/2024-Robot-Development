@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 
 import frc.robot.Constants;
 import frc.robot.motors.TalonFX4237;
@@ -85,6 +86,12 @@ public class Climb extends Subsystem4237
     private final double kFF = 0.0;
     private final double kMaxOutput = 0.7;
     private final double kMinOutput = -0.7;
+    private final double kRobotMaxOutput = 0.7;
+    private final double kRobotMinOutput = -0.7;
+
+    private LimitSwitchState reverseLSState = LimitSwitchState.kStillReleased;
+    private Position position = Position.kOverride;
+    private ResetState resetState = ResetState.kDone;
 
 
     
@@ -118,6 +125,11 @@ public class Climb extends Subsystem4237
         rightMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
     }
 
+    public void resetEncoder()
+    {
+        resetState = ResetState.kStart;
+    }
+
     public void raiseClimb()
     {
         periodicData.motorSpeed = 0.2;
@@ -141,7 +153,41 @@ public class Climb extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.currentLeftPosition = leftMotor.getPosition();
+
+        // periodicData.currentLeftPosition = leftMotor.getPosition();
+        // periodicData.currentRightPosition = rightMotor.getPosition();
+
+        // if(periodicData.currentLeftPosition == periodicData.currentRightPosition)
+        // {
+        //     boolean isReverseLimitSwitchPressed = reverseLimitSwitch.isPressed();
+
+        //     switch(reverseLSState)
+        //     {
+        //         case kStillReleased:
+        //             if(isReverseLimitSwitchPressed)
+        //             {
+        //                 resetState = ResetState.kStart;
+        //                 reverseLSState = LimitSwitchState.kPressed;
+        //             }
+        //             break;
+        //         case kPressed:
+        //             if(isReverseLimitSwitchPressed)
+        //                 reverseLSState = LimitSwitchState.kStillPressed;
+        //             else
+        //                 reverseLSState = LimitSwitchState.kReleased;
+        //             break;
+        //         case kStillPressed:
+        //             if(!isReverseLimitSwitchPressed)
+        //                 reverseLSState = LimitSwitchState.kReleased;
+        //             break;
+        //         case kReleased:
+        //             if(!isReverseLimitSwitchPressed)
+        //                 reverseLSState = LimitSwitchState.kStillReleased;
+        //             else
+        //                 reverseLSState = LimitSwitchState.kPressed;
+        //             break;
+        //     }
+        // }
     }
 
     @Override
@@ -149,6 +195,20 @@ public class Climb extends Subsystem4237
     {
         leftMotor.set(periodicData.motorSpeed);
         rightMotor.set(periodicData.motorSpeed);
+
+        switch(resetState)
+        {
+            case kDone:
+                if(position == Position.kOverride)
+                {
+                    leftMotor.set(periodicData.motorSpeed);
+                    rightMotor.set(periodicData.motorSpeed);
+                }
+                else if(position == Position.kRobot)
+                {
+                    // pidController.
+                }
+        }
     }
 
     @Override

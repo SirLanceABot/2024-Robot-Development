@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import frc.robot.Constants;
 import frc.robot.motors.TalonFX4237;
 
@@ -27,14 +28,17 @@ public class Index extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
+        private double currentPosition;
+        private double currentSpeed;
 
         // OUTPUTS
         private double motorSpeed;
+        private double encoderPosition;
+        private DoubleLogEntry positiDoubleLogEntry;
     }
 
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
-    private RelativeEncoder encoder;
 
     /** 
      * Creates a new Index. 
@@ -75,6 +79,26 @@ public class Index extends Subsystem4237
     public void turnOff()
     {
         periodicData.motorSpeed = 0.0;
+    }
+
+    public double getPosition()
+    {
+        return motor.getPosition();
+    }
+
+    public void setPosition(double position)
+    {
+        periodicData.encoderPosition = position;
+    }
+
+    public double getVelocity()
+    {
+        return motor.getVelocity();
+    }
+
+    public void setVelocity(double speed)
+    {
+        periodicData.motorSpeed = speed;
     }
 
     @Override
