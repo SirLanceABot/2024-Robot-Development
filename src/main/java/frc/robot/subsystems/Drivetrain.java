@@ -94,6 +94,7 @@ public class Drivetrain extends Subsystem4237
     // *** CLASS & INSTANCE VARIABLES ***
     private final Gyro4237 gyro; //Pigeon2
     private final Camera[] cameraArray;
+    private boolean usePoseEstimator;
     private boolean useDataLog = true;
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
@@ -134,7 +135,7 @@ public class Drivetrain extends Subsystem4237
     private PeriodicData periodicData;
     
     // *** CLASS CONSTRUCTOR ***
-    public Drivetrain(Gyro4237 gyro, DataLog log, Camera[] cameraArray)//, DriverController driverController)
+    public Drivetrain(Gyro4237 gyro, DataLog log, Camera[] cameraArray, boolean usePoseEstimator)//, DriverController driverController)
     {
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -149,6 +150,7 @@ public class Drivetrain extends Subsystem4237
         this.gyro = gyro;
         this.cameraArray = cameraArray;
         this.log = log;
+        this.usePoseEstimator = usePoseEstimator;
         if(log == null)
         {
             useDataLog = false;
@@ -225,7 +227,8 @@ public class Drivetrain extends Subsystem4237
                 backRight.getPosition()
             });
 
-        poseEstimator = new PoseEstimator(this, gyro, cameraArray);
+        
+        poseEstimator = (usePoseEstimator) ? new PoseEstimator(this, gyro, cameraArray) : null;
 
         // setSafetyEnabled(true);
 

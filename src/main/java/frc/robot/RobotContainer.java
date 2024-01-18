@@ -63,6 +63,7 @@ public class RobotContainer
     private boolean useCameraTwo            = false;
     private boolean useCameraThree          = false;
     private boolean useCameraFour           = false;
+    private boolean usePoseEstimator        = false;
 
     private boolean useMainShuffleboard		= false;    
     private boolean useDriverController		= false;
@@ -109,7 +110,7 @@ public class RobotContainer
 
         exampleSubsystem 	= (useExampleSubsystem)							? new Shuttle() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
-        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray)                                 : null;
+        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
         intake              = (useIntake)                                   ? new Intake()                                              : null;
         pivot               = (usePivot)                                    ? new Pivot()                                               : null;
