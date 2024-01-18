@@ -33,7 +33,7 @@ public class AmpAssist extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 ampAssistMotor = new CANSparkMax4237(Constants.AmpAssist.MOTOR_PORT, Constants.AmpAssist.MOTOR_CAN_BUS, "ampAssistMotor");
+    private final CANSparkMax4237 ampAssistMotor = new CANSparkMax4237(5, Constants.AmpAssist.MOTOR_CAN_BUS, "ampAssistMotor");
     private RelativeEncoder ampAssistEncoder;
 
     /** 
@@ -61,22 +61,22 @@ public class AmpAssist extends Subsystem4237
         ampAssistMotor.setupReverseSoftLimit(-4237, true);
     }
 
-    private double getAmpAssistPosition()
+    public double getAmpAssistPosition()
     {
         return periodicData.ampAssistPosition;
     }
 
-    private void moveOut()
+    public void moveOut()
     {
         periodicData.ampAssistSpeed = 0.1;
     }
 
-    private void moveIn()
+    public void moveIn()
     {
         periodicData.ampAssistSpeed = -0.1;
     }
 
-    private void off()
+    public void off()
     {
         periodicData.ampAssistSpeed = 0.0;
     }

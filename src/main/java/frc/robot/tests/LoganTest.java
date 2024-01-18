@@ -3,6 +3,7 @@ package frc.robot.tests;
 import java.lang.invoke.MethodHandles;
 
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.AmpAssist;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -31,6 +32,7 @@ public class LoganTest implements Test
     private final Joystick joystick = new Joystick(1);
     private double encoderPosition;
     private Intake intake;
+    private AmpAssist ampAssist;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -57,21 +59,21 @@ public class LoganTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            encoderPosition = intake.getBottomIntakePosition();
+            encoderPosition = ampAssist.getAmpAssistPosition();
             System.out.println("In.  Encoder Position: " + encoderPosition);
-            intake.pickupFront();
+            ampAssist.moveIn();
         }
         else if(joystick.getRawButton(2))
         {
-            encoderPosition = intake.getBottomIntakePosition();
+            encoderPosition = ampAssist.getAmpAssistPosition();
             System.out.println("Out.  Encoder Position: " + encoderPosition);
-            intake.pickupBack();
+            ampAssist.moveOut();
         }
         else
         {
-            encoderPosition = intake.getBottomIntakePosition();
+            encoderPosition = ampAssist.getAmpAssistPosition();
             System.out.println("Stopped.  Encoder Position: " + encoderPosition);
-            intake.off();
+            ampAssist.off();
         }
     }
     
