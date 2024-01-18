@@ -56,7 +56,7 @@ public class RobotContainer
     private boolean useIntakePositioning    = false;
     private boolean useShuttle              = false;
     private boolean useClimb                = false;
-    private boolean useIndex                = true;
+    private boolean useIndex                = false;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
