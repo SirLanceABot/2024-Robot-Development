@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
@@ -84,7 +85,7 @@ public class RobotContainer
     public final Pivot pivot;
     public final IntakePositioning intakePositioning;
     public final Shuttle shuttle;
-    // public final Climb climb;
+    public final Climb climb;
     public final Index index;
 
     public final Camera[] cameraArray = new Camera[4];
@@ -116,7 +117,7 @@ public class RobotContainer
         pivot               = (usePivot)                                    ? new Pivot()                                               : null;
         intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
         shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
-        // climb               = (useClimb)                                    ? new Climb()                                            : null;
+        climb               = (useClimb)                                    ? new Climb()                                            : null;
         index               =(useIndex)                                     ? new Index()                                               : null;
 
 

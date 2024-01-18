@@ -196,19 +196,19 @@ public class Climb extends Subsystem4237
         leftMotor.set(periodicData.motorSpeed);
         rightMotor.set(periodicData.motorSpeed);
 
-        switch(resetState)
-        {
-            case kDone:
-                if(position == Position.kOverride)
-                {
-                    leftMotor.set(periodicData.motorSpeed);
-                    rightMotor.set(periodicData.motorSpeed);
-                }
-                else if(position == Position.kRobot)
-                {
-                    // pidController.
-                }
-        }
+        // switch(resetState)
+        // {
+        //     case kDone:
+        //         if(position == Position.kOverride)
+        //         {
+        //             leftMotor.set(periodicData.motorSpeed);
+        //             rightMotor.set(periodicData.motorSpeed);
+        //         }
+        //         else if(position == Position.kRobot)
+        //         {
+        //             // pidController.
+        //         }
+        // }
     }
 
     @Override

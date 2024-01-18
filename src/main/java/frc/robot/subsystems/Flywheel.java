@@ -54,7 +54,19 @@ public class Flywheel extends Subsystem4237
     private RelativeEncoder encoder;
 
     private ResetState resetState = ResetState.kDone;
-    private Pose2d fieldLocation;
+
+    private final double kP = 0.0;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+    private final double kIz = 0.0;
+    private final double kFF = 0.0;
+    private final double kShootMaxOutput = 0.0;
+    private final double kShootMinOutput = 0.0;
+    private final double kIntakeMaxOutput = 0.0;
+    private final double kIntakeMinOutput = 0.0;
+
+
+
 
     /** 
      * Creates a new Shooter. 

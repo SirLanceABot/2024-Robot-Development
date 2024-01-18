@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Index;
@@ -25,6 +26,7 @@ public class OwenTest implements Test
     private final RobotContainer robotContainer;
     private final Flywheel flywheel;
     private final Index index;
+    private final Climb climb;
     private final Joystick joystick = new Joystick(0);
 
 
@@ -36,6 +38,7 @@ public class OwenTest implements Test
         this.robotContainer = robotContainer;
         flywheel = this.robotContainer.flywheel;
         index = this.robotContainer.index;
+        climb = this.robotContainer.climb;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -53,26 +56,30 @@ public class OwenTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            System.out.println("Accept Note");
+            System.out.println("raise climb");
             // flywheel.shoot();
-            index.acceptNote();
+            // index.acceptNote();
+            climb.raiseClimb();
         }
         else if(joystick.getRawButton(2))
         {
-            System.out.println("Feed Note");
+            System.out.println("lower climb");
             // flywheel.intake();
-            index.feedNote();
+            // index.feedNote();
+            climb.lowerClimb();
         }
         else if(joystick.getRawButton(3))
         {
-            System.out.println("Reverse Index");
-            index.reverse();
+            System.out.println("hold climb");
+            // index.reverse();
+            climb.holdClimb();
         }
         else 
         {
             System.out.println("Off");
             // flywheel.turnOff();
-            index.turnOff();
+            // index.turnOff();
+            climb.off();
         }
 
     }
