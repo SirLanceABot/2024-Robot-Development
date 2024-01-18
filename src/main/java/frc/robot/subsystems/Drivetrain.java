@@ -1,11 +1,12 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
-import frc.robot.Constants;
-import frc.robot.Constants.DrivetrainConstants;
-import frc.robot.Constants.SwerveModuleSetup;
-import frc.robot.controls.AdaptiveSlewRateLimiter;
-import frc.robot.sensors.Gyro4237;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,6 +20,12 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import frc.robot.Constants;
+import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.Constants.SwerveModuleSetup;
+import frc.robot.controls.AdaptiveSlewRateLimiter;
+import frc.robot.sensors.Camera;
+import frc.robot.sensors.Gyro4237;
 
 
 /** Represents a swerve drive style drivetrain. */
@@ -86,9 +93,11 @@ public class Drivetrain extends Subsystem4237
 
     // *** CLASS & INSTANCE VARIABLES ***
     private final Gyro4237 gyro; //Pigeon2
+    private final Camera[] cameraArray;
     private boolean useDataLog = true;
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
+    private final PoseEstimator poseEstimator;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -125,7 +134,7 @@ public class Drivetrain extends Subsystem4237
     private PeriodicData periodicData;
     
     // *** CLASS CONSTRUCTOR ***
-    public Drivetrain(Gyro4237 gyro, DataLog log)//, DriverController driverController)
+    public Drivetrain(Gyro4237 gyro, DataLog log, Camera[] cameraArray)//, DriverController driverController)
     {
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -138,6 +147,7 @@ public class Drivetrain extends Subsystem4237
         periodicData = new PeriodicData(); // all the periodic I/O appear here
         
         this.gyro = gyro;
+        this.cameraArray = cameraArray;
         this.log = log;
         if(log == null)
         {
@@ -215,9 +225,42 @@ public class Drivetrain extends Subsystem4237
                 backRight.getPosition()
             });
 
+        poseEstimator = new PoseEstimator(this, gyro, cameraArray);
+
         // setSafetyEnabled(true);
 
+        configureAutoBuilder();
+
         System.out.println("  Constructor Finished: " + fullClassName);
+    }
+
+    public void configureAutoBuilder()
+    {
+        AutoBuilder.configureHolonomic(
+                poseEstimator::getEstimatedPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        Constants.DrivetrainConstants.MAX_DRIVE_SPEED, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
     }
 
     // *** CLASS & INSTANCE METHODS ***
@@ -374,6 +417,18 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters().getTranslation().getDistance(startingPosition);
     }
 
+    public ChassisSpeeds getRobotRelativeSpeeds()
+    {
+        return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
+    }
+
+    public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
+    {
+        driveMode = DriveMode.kDrive;
+        periodicData.fieldRelative = false;
+        periodicData.chassisSpeeds = chassisSpeeds;
+    }
+
     public void resetEncoders()
     {
         resetEncoders = true;
@@ -386,6 +441,20 @@ public class Drivetrain extends Subsystem4237
     public void resetOdometry()
     {
         resetOdometry = true;
+    }
+
+    public void resetPose(Pose2d newPose)
+    {
+        periodicData.odometry.resetPosition(
+            gyro.getRotation2d(), 
+            new SwerveModulePosition[] 
+            {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            }, 
+            newPose);
     }
 
     //@Override

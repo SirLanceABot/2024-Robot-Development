@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
@@ -62,7 +63,6 @@ public class RobotContainer
     private boolean useCameraTwo            = false;
     private boolean useCameraThree          = false;
     private boolean useCameraFour           = false;
-    private boolean usePoseEstimator        = false;
 
     private boolean useMainShuffleboard		= false;    
     private boolean useDriverController		= false;
@@ -86,11 +86,7 @@ public class RobotContainer
     // public final Climb climb;
     public final Index index;
 
-    public final Camera cameraOne;
-    public final Camera cameraTwo;
-    public final Camera cameraThree;
-    public final Camera cameraFour;
-    public final PoseEstimator poseEstimator;
+    public final Camera[] cameraArray = new Camera[4];
 
     public final MainShuffleboard mainShuffleboard;
     public final DriverController driverController;
@@ -113,7 +109,7 @@ public class RobotContainer
 
         exampleSubsystem 	= (useExampleSubsystem)							? new Shuttle() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
-        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log)                                 : null;
+        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
         intake              = (useIntake)                                   ? new Intake()                                              : null;
         pivot               = (usePivot)                                    ? new Pivot()                                               : null;
@@ -124,13 +120,12 @@ public class RobotContainer
 
 
 
-        cameraOne           = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
-        cameraTwo           = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
-        cameraThree         = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
-        cameraFour          = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
-        poseEstimator       = (useFullRobot || usePoseEstimator)            ? new PoseEstimator(drivetrain, gyro, cameraOne, cameraTwo, cameraThree, cameraFour)    : null;
+        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
+        cameraArray[1]      = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
+        cameraArray[2]      = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
+        cameraArray[3]      = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
 
-        flywheel             = (useFullRobot || (useFlywheel))      ? new Flywheel()                      : null;
+        flywheel             = (useFullRobot || useFlywheel)      ? new Flywheel()                      : null;
 
         mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
         driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;
