@@ -59,13 +59,13 @@ public class LoganTest implements Test
         {
             encoderPosition = intake.getBottomIntakePosition();
             System.out.println("In.  Encoder Position: " + encoderPosition);
-            intake.forward();
+            intake.pickupFront();
         }
         else if(joystick.getRawButton(2))
         {
             encoderPosition = intake.getBottomIntakePosition();
             System.out.println("Out.  Encoder Position: " + encoderPosition);
-            intake.reverse();
+            intake.pickupBack();
         }
         else
         {
