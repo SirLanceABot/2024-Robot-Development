@@ -25,16 +25,16 @@ public class AmpAssist extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
-        private double ampAssistPosition;
+        private double ampAssistPosition = 0.0;
 
         // OUTPUTS
-        private double ampAssistSpeed;
+        private double ampAssistSpeed = 0.0;
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 ampAssistMotor = new CANSparkMax4237(5, Constants.AmpAssist.MOTOR_CAN_BUS, "ampAssistMotor");
-    private RelativeEncoder ampAssistEncoder;
+    private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.AmpAssist.MOTOR_PORT, Constants.AmpAssist.MOTOR_CAN_BUS, "ampAssistMotor");
+    private RelativeEncoder encoder;
 
     /** 
      * Creates a new AmpAssist. 
@@ -52,13 +52,15 @@ public class AmpAssist extends Subsystem4237
     private void configCANSparkMax()
     {
         // Restore factory Defaults
-        ampAssistMotor.setupFactoryDefaults();
+        motor.setupFactoryDefaults();
 
         // Do Not invert Motor
-        ampAssistMotor.setupInverted(false);
+        motor.setupInverted(false);
 
-        ampAssistMotor.setupForwardSoftLimit(4237, true);
-        ampAssistMotor.setupReverseSoftLimit(-4237, true);
+        motor.setupForwardSoftLimit(-75, true);
+        motor.setupReverseSoftLimit(-100, true);
+
+        encoder.setPosition(0.0);
     }
 
     public double getAmpAssistPosition()
@@ -84,13 +86,13 @@ public class AmpAssist extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.ampAssistPosition = ampAssistEncoder.getPosition();
+        periodicData.ampAssistPosition = motor.getPosition();
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        ampAssistMotor.set(periodicData.ampAssistSpeed);
+        motor.set(periodicData.ampAssistSpeed);
     }
 
     @Override

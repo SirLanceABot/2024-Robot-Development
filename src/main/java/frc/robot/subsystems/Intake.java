@@ -38,10 +38,10 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 topIntakeMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
-    private final CANSparkMax4237 bottomIntakeMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
-    private RelativeEncoder topIntakeEncoder;
-    private RelativeEncoder bottomIntakeEncoder;
+    private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
+    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
+    private RelativeEncoder topEncoder;
+    private RelativeEncoder bottomEncoder;
 
     /** 
      * Creates a new Intake. 
@@ -59,32 +59,35 @@ public class Intake extends Subsystem4237
     private void configCANSparkMax()
     {
         // Factory Defaults
-        topIntakeMotor.setupFactoryDefaults();
-        bottomIntakeMotor.setupFactoryDefaults();
+        topMotor.setupFactoryDefaults();
+        bottomMotor.setupFactoryDefaults();
         // Do Not Invert Motor Direction
-        topIntakeMotor.setupInverted(false); // test later
-        bottomIntakeMotor.setupInverted(true); // test later
+        topMotor.setupInverted(false); // test later
+        bottomMotor.setupInverted(true); // test later
         // Set Brake Mode
-        topIntakeMotor.setupBrakeMode();
-        bottomIntakeMotor.setupBrakeMode();
+        topMotor.setupBrakeMode();
+        bottomMotor.setupBrakeMode();
+
+        topEncoder.setPosition(0.0);
+        bottomEncoder.setPosition(0.0);
     }
 
-    public double getTopIntakePosition()
+    public double getTopPosition()
     {
         return periodicData.topIntakePosition;
     }
 
-    public double getBottomIntakePosition()
+    public double getBottomPosition()
     {
         return periodicData.bottomIntakePosition;
     }
 
-    public double getTopIntakeSpeed()
+    public double getTopSpeed()
     {
         return periodicData.topIntakeSpeed;
     }
 
-    public double getBottomIntakeSpeed()
+    public double getBottomSpeed()
     {
         return periodicData.bottomIntakeSpeed;
     }
@@ -128,15 +131,15 @@ public class Intake extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.topIntakePosition = topIntakeEncoder.getPosition();
-        periodicData.bottomIntakePosition = bottomIntakeEncoder.getPosition();
+        periodicData.topIntakePosition = topEncoder.getPosition();
+        periodicData.bottomIntakePosition = bottomEncoder.getPosition();
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        topIntakeMotor.set(periodicData.topIntakeSpeed);
-        bottomIntakeMotor.set(periodicData.bottomIntakeSpeed);
+        topMotor.set(periodicData.topIntakeSpeed);
+        bottomMotor.set(periodicData.bottomIntakeSpeed);
     }
 
     @Override

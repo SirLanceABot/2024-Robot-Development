@@ -42,6 +42,7 @@ public class LoganTest implements Test
 
         this.robotContainer = robotContainer;
         intake = this.robotContainer.intake;
+        ampAssist = this.robotContainer.ampAssist;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }

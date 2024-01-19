@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
@@ -53,7 +54,8 @@ public class RobotContainer
     private boolean useGyro					= false;
     private boolean useDrivetrain   		= false;
     private boolean useFlywheel             = false;
-    private boolean useIntake               = false; 
+    private boolean useIntake               = false;
+    private boolean useAmpAssist            = true; 
     private boolean usePivot                = false;
     private boolean useIntakePositioning    = false;
     private boolean useShuttle              = false;
@@ -82,6 +84,7 @@ public class RobotContainer
     public final Compressor compressor;
     public final Flywheel flywheel;
     public final Intake intake;
+    public final AmpAssist ampAssist;
     public final Pivot pivot;
     public final IntakePositioning intakePositioning;
     public final Shuttle shuttle;
@@ -114,6 +117,7 @@ public class RobotContainer
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
         intake              = (useIntake)                                   ? new Intake()                                              : null;
+        ampAssist           = (useAmpAssist)                                ? new AmpAssist()                                           : null;
         pivot               = (usePivot)                                    ? new Pivot()                                               : null;
         intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
         shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
