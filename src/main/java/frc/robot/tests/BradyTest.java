@@ -76,16 +76,23 @@ public class BradyTest implements Test
         //     candle.setOff();
         // }
 
+        // if(proximity.getIsDetected())
+        // {
+        //     candle.setGreen(false);
+        // }
+        // else
+        // {
+        //     candle.setRed(false);
+        // }
+
         if(proximity.getIsDetected())
         {
-            candle.setGreen(false);
+            System.out.println("True");
         }
         else
         {
-            candle.setRed(false);
+            System.out.println("False");
         }
-
-        
     }
     
     /**
