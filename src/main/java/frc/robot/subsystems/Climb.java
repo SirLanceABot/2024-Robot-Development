@@ -71,9 +71,9 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 10000;
+    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 100;
     public static final int LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0;
-    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 10000;
+    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 100;
     public static final int RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0;
 
     public static final int CHAIN_ENCODER_POSITION              = 10000;
