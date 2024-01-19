@@ -3,12 +3,16 @@ package frc.robot.tests;
 import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Climb.TargetPosition;
+import frc.robot.commands.MoveClimb;
+import frc.robot.controls.Xbox;
+// import frc.robot.controls.OperatorController
 
 public class OwenTest implements Test
 {
@@ -29,6 +33,8 @@ public class OwenTest implements Test
     // private final Index index;
     private final Climb climb;
     private final Joystick joystick = new Joystick(0);
+    // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
+    // Trigger trigger = new Trigger(true);
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -59,26 +65,33 @@ public class OwenTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            System.out.println("raise climb");
+            System.out.println("Chain Position");
             System.out.println("Encoder Position" + climb.getLeftPosition());
             // flywheel.shoot();
             // index.acceptNote();
-            climb.extendClimb();
+            climb.moveToChain();
         }
         else if(joystick.getRawButton(2))
         {
-            System.out.println("lower climb");
+            System.out.println("Robot Position");
             System.out.println("Encoder Position" + climb.getLeftPosition());
             // flywheel.intake();
             // index.feedNote();
-            climb.retractClimb();
+            climb.moveToInnerRobot();
         }
         else if(joystick.getRawButton(3))
         {
-            System.out.println("hold climb");
+            System.out.println("Raise Climb");
             System.out.println("Encoder Position" + climb.getLeftPosition());
             // index.reverse();
-            climb.holdClimb();
+            climb.extend();
+        }
+        else if(joystick.getRawButton(4))
+        {
+            System.out.println("Lower Climb");
+            System.out.println("Encoder Position" + climb.getLeftPosition());
+            // index.reverse();
+            climb.retract();
         }
         else 
         {

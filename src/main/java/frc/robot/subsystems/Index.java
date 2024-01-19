@@ -29,12 +29,12 @@ public class Index extends Subsystem4237
     {
         // INPUTS
         private double currentPosition;
-        private double currentSpeed;
+        private double currentVelocity;
 
         // OUTPUTS
         private double motorSpeed;
         private double encoderPosition;
-        private DoubleLogEntry positiDoubleLogEntry;
+        // private DoubleLogEntry positiDoubleLogEntry;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -84,7 +84,7 @@ public class Index extends Subsystem4237
 
     public double getPosition()
     {
-        return motor.getPosition();
+        return periodicData.currentPosition;
     }
 
     public void setPosition(double position)
@@ -94,7 +94,7 @@ public class Index extends Subsystem4237
 
     public double getVelocity()
     {
-        return motor.getVelocity();
+        return periodicData.currentVelocity;
     }
 
     public void setVelocity(double speed)
@@ -104,7 +104,10 @@ public class Index extends Subsystem4237
 
     @Override
     public void readPeriodicInputs()
-    {}
+    {
+        periodicData.currentPosition = motor.getPosition();
+        periodicData.currentVelocity = motor.getVelocity();
+    }
 
     @Override
     public void writePeriodicOutputs()

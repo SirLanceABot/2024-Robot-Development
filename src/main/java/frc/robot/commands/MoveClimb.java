@@ -28,16 +28,18 @@ public class MoveClimb extends Command
     // *** CLASS AND INSTANCE VARIABLES ***
     // private final Shuttle exampleSubsystem;
     private final Climb climb;
+    private final TargetPosition targetPosition;
 
 
     /**
-     * Creates a new ExampleCommand.
+     * Creates a new MoveClimb.
      *
      * @param subsystem The subsystem used by this command.
      */
     public MoveClimb(Climb climb, TargetPosition targetPosition) 
     {
         this.climb = climb;
+        this.targetPosition = targetPosition;
         
         // Use addRequirements() here to declare subsystem dependencies.
         if(this.climb != null)
@@ -55,7 +57,25 @@ public class MoveClimb extends Command
     @Override
     public void execute()
     {
+        if(climb != null)
+        {
+            switch(targetPosition)
+            {
+                case kChain:
+                    climb.moveToChain();
+                    break;
 
+                case kInnerRobot:
+                    climb.moveToInnerRobot();
+                    break;
+
+                case kOuterRobot:
+                    climb.moveToOuterRobot();
+                    break;
+                case kOverride:
+                    break;
+            }
+        }
     }
 
     // Called once the command ends or is interrupted.
@@ -67,6 +87,10 @@ public class MoveClimb extends Command
     @Override
     public boolean isFinished() 
     {
+        if(climb != null && targetPosition != TargetPosition.kOverride)
+        {
+
+        }
         return false;
     }
     

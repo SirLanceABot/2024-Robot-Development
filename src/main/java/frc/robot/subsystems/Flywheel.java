@@ -38,7 +38,7 @@ public class Flywheel extends Subsystem4237
     {
         // INPUTS
         // private double currentDistance;
-        private double currentSpeed;
+        private double currentVelocity;
 
         // OUTPUTS
        
@@ -51,19 +51,19 @@ public class Flywheel extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Flywheel.MOTOR_PORT, Constants.Flywheel.MOTOR_CAN_BUS, "flywheelMotor");
-    private RelativeEncoder encoder;
+    // private RelativeEncoder encoder;
 
     private ResetState resetState = ResetState.kDone;
 
-    private final double kP = 0.0;
-    private final double kI = 0.0;
-    private final double kD = 0.0;
-    private final double kIz = 0.0;
-    private final double kFF = 0.0;
-    private final double kShootMaxOutput = 0.0;
-    private final double kShootMinOutput = 0.0;
-    private final double kIntakeMaxOutput = 0.0;
-    private final double kIntakeMinOutput = 0.0;
+    // private final double kP = 0.0;
+    // private final double kI = 0.0;
+    // private final double kD = 0.0;
+    // private final double kIz = 0.0;
+    // private final double kFF = 0.0;
+    // private final double kShootMaxOutput = 0.0;
+    // private final double kShootMinOutput = 0.0;
+    // private final double kIntakeMaxOutput = 0.0;
+    // private final double kIntakeMinOutput = 0.0;
 
 
 
@@ -97,20 +97,14 @@ public class Flywheel extends Subsystem4237
 
     public double getVelocity()
     {
-        return motor.getVelocity();
+        return periodicData.currentVelocity;
         
     }
 
-    public double getPosition()
-    {
-        return motor.getPosition();
-    }
-
-    public void setVelocity()
-    {
-
-    }
-
+    // public double getPosition()
+    // {
+    //     return motor.getPosition();
+    // }
 
     public void shoot(double speed)
     {
@@ -131,7 +125,10 @@ public class Flywheel extends Subsystem4237
 
     @Override
     public void readPeriodicInputs()
-    {}
+    {
+        periodicData.currentVelocity = motor.getVelocity();
+
+    }
 
     @Override
     public void writePeriodicOutputs()

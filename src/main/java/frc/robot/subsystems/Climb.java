@@ -32,7 +32,8 @@ public class Climb extends Subsystem4237
     public enum TargetPosition
     {
         kChain(CHAIN_ENCODER_POSITION),
-        kRobot(ROBOT_ENCODER_POSITION),
+        kInnerRobot(INNER_ROBOT_ENCODER_POSITION),
+        kOuterRobot(OUTER_ROBOT_ENCODER_POSITION),
         kOverride(-4237.0);
 
         public final double value;
@@ -78,13 +79,14 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 100;
-    public static final int LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0;
-    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 100;
-    public static final int RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0;
+    public static final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 80.0;
+    public static final double LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0.0;
+    public static final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 80.0;
+    public static final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
-    public static final double CHAIN_ENCODER_POSITION              = 1000.0;
-    public static final double ROBOT_ENCODER_POSITION              = 1000.0;
+    public static final double CHAIN_ENCODER_POSITION           = 60.0;
+    public static final double OUTER_ROBOT_ENCODER_POSITION     = 30.0;
+    public static final double INNER_ROBOT_ENCODER_POSITION     = 20.0;
 
     private final double kP = 0.00003;
     private final double kI = 0.0; // 0.0001
@@ -137,7 +139,7 @@ public class Climb extends Subsystem4237
         resetState = ResetState.kStart;
     }
 
-    public void extendClimb()
+    public void extend()
     {
         
         targetPosition = TargetPosition.kOverride;
@@ -145,7 +147,7 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = 0.2;
     }
 
-    public void retractClimb()
+    public void retract()
     {
         targetPosition = TargetPosition.kOverride;
         overrideMode = OverrideMode.kMoving;
@@ -162,9 +164,14 @@ public class Climb extends Subsystem4237
         targetPosition = TargetPosition.kChain;
     }
 
-    public void moveToRobot()
+    public void moveToOuterRobot()
     {
-        targetPosition = TargetPosition.kRobot;
+        targetPosition = TargetPosition.kOuterRobot;
+    }
+
+    public void moveToInnerRobot()
+    {
+        targetPosition = TargetPosition.kInnerRobot;
     }
 
     public void off()
