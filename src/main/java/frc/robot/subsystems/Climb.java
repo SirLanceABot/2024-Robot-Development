@@ -152,7 +152,8 @@ public class Climb extends Subsystem4237
 
     public void setPosit()
     {
-        periodicData.currentLeftPosition = leftMotor.getPosition();
+        leftMotor.setPosition(50.0);
+        // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
     }
 
@@ -166,7 +167,8 @@ public class Climb extends Subsystem4237
     public void readPeriodicInputs()
     {
 
-        getPosit();
+        periodicData.currentLeftPosition = leftMotor.getPosition();
+        // getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
 

@@ -47,7 +47,9 @@ public class OwenTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+        climb.setPosit();
+    }
 
     /**
      * This method runs periodically (every 20ms).
