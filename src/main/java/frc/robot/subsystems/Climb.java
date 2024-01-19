@@ -71,9 +71,9 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 1000;
+    public static final int LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 10000;
     public static final int LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0;
-    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 1000;
+    public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 10000;
     public static final int RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0;
 
     public static final int CHAIN_ENCODER_POSITION              = 10000;
@@ -150,10 +150,17 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = 0.0;
     }
 
+    public void getPosit()
+    {
+        periodicData.currentLeftPosition = leftMotor.getPosition();
+        periodicData.currentRightPosition = rightMotor.getPosition();
+    }
+
     @Override
     public void readPeriodicInputs()
     {
 
+        getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
 
@@ -209,6 +216,13 @@ public class Climb extends Subsystem4237
         //             // pidController.
         //         }
         // }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Current Encoder Position: " + periodicData.currentLeftPosition + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
+
     }
 
     @Override
