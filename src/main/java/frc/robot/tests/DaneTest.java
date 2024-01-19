@@ -48,8 +48,9 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-
-        pivot.setAngle(180.0);
+    
+            pivot.setAngle(180.0);
+    
 
         // if(pivot.returnPivotAngle() < 180.0)
         // {
