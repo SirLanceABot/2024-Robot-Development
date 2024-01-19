@@ -86,6 +86,8 @@ public class Flywheel extends Subsystem4237
         motor.setupInverted(false);
         motor.setupCoastMode();
 
+        // motor.config_kP(0, kP);
+
     }
 
     public void resetEncoder()
@@ -110,9 +112,9 @@ public class Flywheel extends Subsystem4237
     }
 
 
-    public void shoot()
+    public void shoot(double speed)
     {
-        periodicData.flywheelSpeed = 0.1;
+        periodicData.flywheelSpeed = speed;
     }
 
 

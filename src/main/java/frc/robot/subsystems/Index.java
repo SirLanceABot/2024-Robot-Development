@@ -57,7 +57,8 @@ public class Index extends Subsystem4237
     {
         motor.setupCoastMode();
         motor.setupFactoryDefaults();
-        motor.setupInverted(false);
+        motor.setupInverted(true);
+        motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
     }
 
     public void acceptNote()

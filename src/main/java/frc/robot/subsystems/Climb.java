@@ -29,14 +29,14 @@ public class Climb extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    public enum Position
+    public enum TargetPosition
     {
         kChain(CHAIN_ENCODER_POSITION),
         kRobot(ROBOT_ENCODER_POSITION),
-        kOverride(-4237);
+        kOverride(-4237.0);
 
         public final double value;
-        private Position(double value)
+        private TargetPosition(double value)
         {
             this.value = value;
         }
@@ -50,6 +50,11 @@ public class Climb extends Subsystem4237
     private enum LimitSwitchState
     {
         kPressed, kStillPressed, kReleased, kStillReleased;
+    }
+
+    private enum OverrideMode
+    {
+        kNotMoving, kMoving;
     }
     
     private class PeriodicData
@@ -68,6 +73,8 @@ public class Climb extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 leftMotor = new TalonFX4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
     private final TalonFX4237 rightMotor = new TalonFX4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
+    private TargetPosition targetPosition = TargetPosition.kOverride;
+    private OverrideMode overrideMode = OverrideMode.kNotMoving;
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
@@ -76,8 +83,8 @@ public class Climb extends Subsystem4237
     public static final int RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 100;
     public static final int RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0;
 
-    public static final int CHAIN_ENCODER_POSITION              = 10000;
-    public static final int ROBOT_ENCODER_POSITION              = 10000;
+    public static final double CHAIN_ENCODER_POSITION              = 1000.0;
+    public static final double ROBOT_ENCODER_POSITION              = 1000.0;
 
     private final double kP = 0.00003;
     private final double kI = 0.0; // 0.0001
@@ -90,7 +97,7 @@ public class Climb extends Subsystem4237
     private final double kRobotMinOutput = -0.7;
 
     private LimitSwitchState reverseLSState = LimitSwitchState.kStillReleased;
-    private Position position = Position.kOverride;
+    private TargetPosition position = TargetPosition.kOverride;
     private ResetState resetState = ResetState.kDone;
 
 
@@ -130,13 +137,18 @@ public class Climb extends Subsystem4237
         resetState = ResetState.kStart;
     }
 
-    public void raiseClimb()
+    public void extendClimb()
     {
+        
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
         periodicData.motorSpeed = 0.2;
     }
 
-    public void lowerClimb()
+    public void retractClimb()
     {
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
         periodicData.motorSpeed = -0.2;
     }
 
@@ -145,22 +157,38 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = -0.05;
     }
 
+    public void moveToChain()
+    {
+        targetPosition = TargetPosition.kChain;
+    }
+
+    public void moveToRobot()
+    {
+        targetPosition = TargetPosition.kRobot;
+    }
+
     public void off()
     {
         periodicData.motorSpeed = 0.0;
     }
 
-    public void setPosit()
+    public void setLeftAndRightPosiiton(TargetPosition position)
     {
-        leftMotor.setPosition(50.0);
+        leftMotor.setPosition(position.value);
+        rightMotor.setPosition(position.value);
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
     }
 
-    public double getPosit()
+    public double getLeftPosition()
     {
         return periodicData.currentLeftPosition;
         
+    }
+
+    public double getRightPosition()
+    {
+        return periodicData.currentRightPosition;
     }
 
     @Override
@@ -168,6 +196,7 @@ public class Climb extends Subsystem4237
     {
 
         periodicData.currentLeftPosition = leftMotor.getPosition();
+        periodicData.currentRightPosition = rightMotor.getPosition();
         // getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
@@ -229,7 +258,7 @@ public class Climb extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Encoder Position: " + getPosit() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
+        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
 
     }
 

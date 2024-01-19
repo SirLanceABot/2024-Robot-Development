@@ -8,6 +8,7 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Climb.TargetPosition;
 
 public class OwenTest implements Test
 {
@@ -48,7 +49,7 @@ public class OwenTest implements Test
      */
     public void init()
     {
-        climb.setPosit();
+        climb.setLeftAndRightPosiiton(TargetPosition.kChain);
     }
 
     /**
@@ -59,30 +60,30 @@ public class OwenTest implements Test
         if(joystick.getRawButton(1))
         {
             System.out.println("raise climb");
-            System.out.println("Encoder Position" + climb.getPosit());
+            System.out.println("Encoder Position" + climb.getLeftPosition());
             // flywheel.shoot();
             // index.acceptNote();
-            climb.raiseClimb();
+            climb.extendClimb();
         }
         else if(joystick.getRawButton(2))
         {
             System.out.println("lower climb");
-            System.out.println("Encoder Position" + climb.getPosit());
+            System.out.println("Encoder Position" + climb.getLeftPosition());
             // flywheel.intake();
             // index.feedNote();
-            climb.lowerClimb();
+            climb.retractClimb();
         }
         else if(joystick.getRawButton(3))
         {
             System.out.println("hold climb");
-            System.out.println("Encoder Position" + climb.getPosit());
+            System.out.println("Encoder Position" + climb.getLeftPosition());
             // index.reverse();
             climb.holdClimb();
         }
         else 
         {
             System.out.println("Off");
-            System.out.println("Encoder Position" + climb.getPosit());
+            System.out.println("Encoder Position" + climb.getLeftPosition());
             // flywheel.turnOff();
             // index.turnOff();
             climb.off();
