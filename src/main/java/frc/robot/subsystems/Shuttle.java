@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import com.revrobotics.RelativeEncoder; 
 import frc.robot.Constants;
+import frc.robot.motors.CANSparkMax4237;
 
 
 /**
@@ -26,14 +27,15 @@ public class Shuttle extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
+    /**
+     * makes a new motor
+     */
+    private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.Shuttle.MOTOR_PORT, Constants.Shuttle.MOTOR_CAN_BUS, "Shuttle Motor");
     // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
-    private final CANSparkMax motor = new CANSparkMax(Constants.Shuttle.MOTOR_PORT, MotorType.kBrushless);
-
-    private final SparkLimitSwitch upwardLimit;
-    private final SparkLimitSwitch downwardLimit;
-    private final RelativeEncoder encoder;
+    
     private final double GEAR_RATIO = 3.0 / 20.0; // Roller spins three times, the motor spins 20 times
     private final double ROLLER_CIRCUMFRENCE_INCHES = Math.PI * 2.25; 
+
     private class PeriodicData
     {
  
@@ -56,14 +58,10 @@ public class Shuttle extends Subsystem4237
         super("Shuttle");
         System.out.println("  Constructor Started: " + fullClassName);
 
-        motor.restoreFactoryDefaults();
+        motor.setupFactoryDefaults();
 
         // creates a limit switch for the shuttle motor
-        upwardLimit = motor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
-        downwardLimit = motor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
-
-        encoder = motor.getEncoder();
-
+        
         configMotor();
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -82,7 +80,7 @@ public class Shuttle extends Subsystem4237
     @Override
     public void periodic()
     {
-        System.out.println("Encoder = " + encoder.getPosition());
+        System.out.println("Encoder = " + motor.getPosition());
         
         // This method will be called once per scheduler run
     }
@@ -124,17 +122,19 @@ public class Shuttle extends Subsystem4237
      */
     private void configMotor()
     {
-        motor.setIdleMode(IdleMode.kBrake);
-        motor.setSoftLimit(SoftLimitDirection.kForward, (float) (3.0 * ROLLER_CIRCUMFRENCE_INCHES)); // kForward is upward movement
-        motor.setSoftLimit(SoftLimitDirection.kReverse, (float) (-3.0 * ROLLER_CIRCUMFRENCE_INCHES)); // kReverse is downward movement
+        motor.setupBrakeMode();
+        motor.setupForwardSoftLimit(3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
+        motor.setupReverseSoftLimit(-3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
 
-        motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
-        motor.enableSoftLimit(SoftLimitDirection.kReverse, true); // kReverse is downward movement
+        // motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
+        // motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled); // kReverse is downward movement
+        // motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        //motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     
-        upwardLimit.enableLimitSwitch(true);
-        downwardLimit.enableLimitSwitch(true);
+        motor.setupForwardHardLimitSwitch(true, true);
+        motor.setupReverseHardLimitSwitch(true, true);
 
-        encoder.setPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
+        motor.setupPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
     }
 
     /**
@@ -142,6 +142,6 @@ public class Shuttle extends Subsystem4237
      */
     public void resetEncoder()
     {
-        encoder.setPosition(0.0);
+        motor.setPosition(0.0);
     }
 }
