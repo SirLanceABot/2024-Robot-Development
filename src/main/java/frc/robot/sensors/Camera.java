@@ -89,7 +89,7 @@ public class Camera extends Sensor4237
     }
 
     // converts Pose3d to Quaternions for AdvantageScope usage
-    public double[] toQuaternions(Pose3d pose)
+    public static double[] toQuaternions(Pose3d pose)
     {
         return new double[] {
             pose.getTranslation().getX(), pose.getTranslation().getY(), pose.getTranslation().getZ(),
@@ -99,7 +99,7 @@ public class Camera extends Sensor4237
     }
 
     // converts Pose2d to Quaternions for AdvantageScope usage
-    public double[] toQuaternions(Pose2d pose)
+    public static double[] toQuaternions(Pose2d pose)
     {
         return new double[] {
             pose.getTranslation().getX(), pose.getTranslation().getY(),
@@ -183,7 +183,7 @@ public class Camera extends Sensor4237
         poseForAS = toPose3d(periodicData.botPoseWPIBlue);    // variable for testing in AdvantageScope
 
         // put the pose from LL onto the Network Table so AdvantageScope can read it
-        ASTable.getEntry("robotpose").setDoubleArray(toQuaternions(poseForAS));
+        ASTable.getEntry("robotpose").setDoubleArray(Camera.toQuaternions(poseForAS));
     }
 
     @Override

@@ -177,7 +177,7 @@ public class PoseEstimator extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        if(poseEstimator != null)
+        if(poseEstimator != null && drivetrain != null && gyro != null)
         {
             // update pose estimator with drivetrain encoders (odometry part)
             // periodicData.estimatedPose = poseEstimator.update(periodicData.gyroRotation, periodicData.swerveModulePositions);
@@ -218,7 +218,7 @@ public class PoseEstimator extends Subsystem4237
             periodicData.poseForAS = poseEstimator.getEstimatedPosition(); // variable for testing in AdvantageScope
 
             // put the pose onto the NT so AdvantageScope can read it
-            ASTable.getEntry("poseEstimator").setDoubleArray(cameraArray[0].toQuaternions(periodicData.poseForAS));
+            ASTable.getEntry("poseEstimator").setDoubleArray(Camera.toQuaternions(periodicData.poseForAS));
         }
     }
 
