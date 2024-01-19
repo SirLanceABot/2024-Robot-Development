@@ -24,8 +24,8 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Flywheel flywheel;
-    private final Index index;
+    // private final Flywheel flywheel;
+    // private final Index index;
     private final Climb climb;
     private final Joystick joystick = new Joystick(0);
 
@@ -36,8 +36,8 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        flywheel = this.robotContainer.flywheel;
-        index = this.robotContainer.index;
+        // flywheel = this.robotContainer.flywheel;
+        // index = this.robotContainer.index;
         climb = this.robotContainer.climb;
 
         System.out.println("  Constructor Finished: " + fullClassName);
