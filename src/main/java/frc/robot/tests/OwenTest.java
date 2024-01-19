@@ -57,6 +57,7 @@ public class OwenTest implements Test
         if(joystick.getRawButton(1))
         {
             System.out.println("raise climb");
+            System.out.println("Encoder Position" + climb.getPosit());
             // flywheel.shoot();
             // index.acceptNote();
             climb.raiseClimb();
@@ -64,6 +65,7 @@ public class OwenTest implements Test
         else if(joystick.getRawButton(2))
         {
             System.out.println("lower climb");
+            System.out.println("Encoder Position" + climb.getPosit());
             // flywheel.intake();
             // index.feedNote();
             climb.lowerClimb();
@@ -71,12 +73,14 @@ public class OwenTest implements Test
         else if(joystick.getRawButton(3))
         {
             System.out.println("hold climb");
+            System.out.println("Encoder Position" + climb.getPosit());
             // index.reverse();
             climb.holdClimb();
         }
         else 
         {
             System.out.println("Off");
+            System.out.println("Encoder Position" + climb.getPosit());
             // flywheel.turnOff();
             // index.turnOff();
             climb.off();

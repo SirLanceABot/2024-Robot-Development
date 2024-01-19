@@ -150,10 +150,16 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = 0.0;
     }
 
-    public void getPosit()
+    public void setPosit()
     {
         periodicData.currentLeftPosition = leftMotor.getPosition();
-        periodicData.currentRightPosition = rightMotor.getPosition();
+        // periodicData.currentRightPosition = rightMotor.getPosition();
+    }
+
+    public double getPosit()
+    {
+        return periodicData.currentLeftPosition;
+        
     }
 
     @Override
@@ -221,7 +227,7 @@ public class Climb extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Encoder Position: " + periodicData.currentLeftPosition + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
+        return "Current Encoder Position: " + getPosit() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
 
     }
 
