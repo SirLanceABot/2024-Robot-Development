@@ -168,8 +168,11 @@ public final class Constants
 
     public static class Pivot
     {
-        public static final int MOTOR_PORT               = 3;
-        public static final String MOTOR_CAN_BUS         = ROBORIO;
+        public static final int MOTOR_PORT                      = 12;
+        public static final String MOTOR_CAN_BUS                = ROBORIO;
+
+        public static final double ENCODER_TICKS_PER_DEGREE     = 5.689;
+        public static final double ENCODER_TICKS_PER_REVOLUTION = 2048;
     }
 
     public static class Shuttle
