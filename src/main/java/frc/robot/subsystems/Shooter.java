@@ -46,7 +46,7 @@ public class Shooter extends Subsystem4237
     /** 
      * Creates a new Shooter. 
      */
-    public Shooter()
+    public Shooter(Pivot pivot, Index index, Flywheel flywheel)
     {
         super("Shooter");
         System.out.println("  Constructor Started:  " + fullClassName);

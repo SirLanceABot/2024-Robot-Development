@@ -22,6 +22,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.Shooter;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
@@ -63,7 +64,8 @@ public class RobotContainer
     private boolean useShuttle              = false;
     private boolean useClimb                = false;
     private boolean useIndex                = false;
-    private boolean useUltrasonic           = true;
+    private boolean useUltrasonic           = false;
+    private boolean useShooter              = false;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -94,6 +96,7 @@ public class RobotContainer
     public final Climb climb;
     public final Index index;
     public final Ultrasonic ultrasonic;
+    public final Shooter shooter;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -128,6 +131,8 @@ public class RobotContainer
         climb               = (useClimb)                                    ? new Climb()                                               : null;
         index               = (useIndex)                                    ? new Index()                                               : null;
         ultrasonic          = (useUltrasonic)                               ? new Ultrasonic()                                          : null;
+        flywheel            = (useFullRobot || useFlywheel)                ? new Flywheel()                                            : null;
+        shooter             = (useFullRobot || useShooter)                  ? new Shooter(pivot, index, flywheel)                       : null;   
 
 
 
@@ -136,7 +141,7 @@ public class RobotContainer
         cameraArray[2]      = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
         cameraArray[3]      = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
 
-        flywheel             = (useFullRobot || useFlywheel)      ? new Flywheel()                      : null;
+        
 
         mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
         driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;
