@@ -154,7 +154,28 @@ public class RobotContainer
         }
         else
             schedulerLog = null;
+
+        // Configure the trigger bindings
+        if(useFullRobot || useBindings)
+            configureBindings();
     }
+
+    private void configureBindings()
+    {
+        configureDriverBindings();
+        configureOperatorBindings();
+    }
+
+    private void configureDriverBindings()
+    {
+
+    }
+
+    private void configureOperatorBindings()
+    {
+        
+    }
+    
 
     public void resetRobot()
     {
