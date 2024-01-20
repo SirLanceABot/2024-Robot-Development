@@ -71,7 +71,7 @@ public class RobotContainer
     private boolean useCameraFour           = false;
     private boolean usePoseEstimator        = false;
 
-    private boolean useMainShuffleboard		= false;    
+    private boolean useMainShuffleboard		= true;    
     private boolean useDriverController		= false;
     private boolean useOperatorController 	= false;
     private boolean useBindings				= false;

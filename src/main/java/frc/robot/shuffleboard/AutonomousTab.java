@@ -42,6 +42,9 @@ public class AutonomousTab
     private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
+    
 
     private GenericEntry successfulDownload;
     private GenericEntry errorMessageBox;
@@ -62,6 +65,8 @@ public class AutonomousTab
         createScorePreloadBox();
         createContainingPreloadBox();
         createDriveOutOfStartZoneBox();
+        createShootDelayBox();
+        createDriveDelayBox();
     
         
         createSendDataButton();
@@ -93,8 +98,30 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(startingLocationBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(1, 3)
+            .withPosition(1, 1)
             .withSize(5, 2);
+    }
+
+    /**
+    * <b>Drive Out of Start Zone box</b> Box
+    * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
+    */
+     private void createDriveOutOfStartZoneBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
+        SendableRegistry.setName(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
+        
+        //add options to  Box
+        driveOutOfStartZoneBox.addOption("No", AutonomousTabData.DriveOutOfStartZone.kNo);
+        driveOutOfStartZoneBox.setDefaultOption("Yes", AutonomousTabData.DriveOutOfStartZone.kYes);
+        
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(driveOutOfStartZoneBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(6, 1)
+            .withSize(4, 3);
     }
 
     /**
@@ -114,7 +141,7 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(containingPreloadBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(10, 0)
+            .withPosition(1,5)
             .withSize(4, 3);
     }
 
@@ -136,31 +163,61 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(scorePreloadBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(14, 0)
-            .withSize(5, 2);
-    }
-
-    private void createDriveOutOfStartZoneBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
-        SendableRegistry.setName(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
-        
-        //add options to  Box
-        driveOutOfStartZoneBox.addOption("No", AutonomousTabData.DriveOutOfStartZone.kNo);
-        driveOutOfStartZoneBox.setDefaultOption("Yes", AutonomousTabData.DriveOutOfStartZone.kYes);
-        
-
-        //put the widget on the shuffleboard
-        autonomousTab.add(driveOutOfStartZoneBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(18, 0)
+            .withPosition(5, 5)
             .withSize(4, 3);
     }
 
-    
+    /**
+    * <b>Shoot Delay</b> Box
+    * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
+    */
+    private void createShootDelayBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(shootDelayBox, "Shoot Delay");
+        SendableRegistry.setName(shootDelayBox, "Shoot Delay");
+        
+        //add options to  Box
+        shootDelayBox.setDefaultOption("Zero", AutonomousTabData.ShootDelay.k0);
+        shootDelayBox.addOption("One", AutonomousTabData.ShootDelay.k1);
+        shootDelayBox.addOption("Two", AutonomousTabData.ShootDelay.k2);
+        shootDelayBox.addOption("Three", AutonomousTabData.ShootDelay.k3);
+        shootDelayBox.addOption("Four", AutonomousTabData.ShootDelay.k4);
+        shootDelayBox.addOption("Five", AutonomousTabData.ShootDelay.k5);
 
+        //put the widget on the shuffleboard
+        autonomousTab.add(shootDelayBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(10, 5)
+            .withSize(10, 2);
+    }
 
+    /**
+    * <b>Drive Delay</b> Box
+    * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
+    */
+    private void createDriveDelayBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(driveDelayBox, "Drive Delay");
+        SendableRegistry.setName(driveDelayBox, "Drive Delay");
+        
+        //add options to  Box
+        driveDelayBox.setDefaultOption("Zero", AutonomousTabData.DriveDelay.k0);
+        driveDelayBox.addOption("One", AutonomousTabData.DriveDelay.k1);
+        driveDelayBox.addOption("Two", AutonomousTabData.DriveDelay.k2);
+        driveDelayBox.addOption("Three", AutonomousTabData.DriveDelay.k3);
+        driveDelayBox.addOption("Four", AutonomousTabData.DriveDelay.k4);
+        driveDelayBox.addOption("Five", AutonomousTabData.DriveDelay.k5);
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(driveDelayBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(10, 1)
+            .withSize(10, 2);
+    }
+
+   
 
     /**
      * <b>Send Data</b> Button
@@ -171,8 +228,8 @@ public class AutonomousTab
         SendableRegistry.add(sendDataButton, "Send Data");
         SendableRegistry.setName(sendDataButton, "Send Data");
 
-        sendDataButton.setDefaultOption("No", false);
-        sendDataButton.addOption("Yes", true);
+        sendDataButton.setDefaultOption("Yes", true);
+        sendDataButton.addOption("No", false);
 
         autonomousTab.add(sendDataButton)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
