@@ -79,7 +79,7 @@ public class AutonomousTabData
         str += "\n*****  AUTONOMOUS SELECTION  *****\n";
         str += "Starting Location           : " + startingLocation   + "\n";
         str += "Containing Preload          : " + containingPreload + "\n";
-        str += "Play Preload                : " + scorePreload  + "\n";  
+        str += "Score Preload               : " + scorePreload  + "\n";  
         str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
         str += "Shoot Delay                 : " + shootDelay + "\n";   
         str += "Drive Delay                 : " + driveDelay + "\n";  

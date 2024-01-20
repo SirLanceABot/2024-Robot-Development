@@ -42,6 +42,7 @@ public class AutonomousTab
     private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
+
     private GenericEntry successfulDownload;
     private GenericEntry errorMessageBox;
 
@@ -142,20 +143,24 @@ public class AutonomousTab
     private void createDriveOutOfStartZoneBox()
     {
         //create and name the Box
-        SendableRegistry.add(scorePreloadBox, "Drive Out Of Start Zone?");
-        SendableRegistry.setName(scorePreloadBox, "Drive Out Of Start Zone?");
+        SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
+        SendableRegistry.setName(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
         
         //add options to  Box
-        scorePreloadBox.addOption("No", AutonomousTabData.ScorePreload.kNo);
-        scorePreloadBox.setDefaultOption("Yes", AutonomousTabData.ScorePreload.kYes);
+        driveOutOfStartZoneBox.addOption("No", AutonomousTabData.DriveOutOfStartZone.kNo);
+        driveOutOfStartZoneBox.setDefaultOption("Yes", AutonomousTabData.DriveOutOfStartZone.kYes);
         
 
         //put the widget on the shuffleboard
-        autonomousTab.add(scorePreloadBox)
+        autonomousTab.add(driveOutOfStartZoneBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(14, 0)
+            .withPosition(18, 0)
             .withSize(4, 3);
     }
+
+    
+
+
 
     /**
      * <b>Send Data</b> Button
