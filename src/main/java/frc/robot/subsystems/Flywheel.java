@@ -86,6 +86,7 @@ public class Flywheel extends Subsystem4237
         motor.setupInverted(false);
         motor.setupCoastMode();
 
+
         // motor.config_kP(0, kP);
 
     }
@@ -101,10 +102,10 @@ public class Flywheel extends Subsystem4237
         
     }
 
-    // public double getPosition()
-    // {
-    //     return motor.getPosition();
-    // }
+    public double getPosition()
+    {
+        return motor.getPosition();
+    }
 
     public void shoot(double speed)
     {
