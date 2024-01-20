@@ -422,17 +422,21 @@ public class Drivetrain extends Subsystem4237
 
     public ChassisSpeeds getRobotRelativeSpeedsForPP()
     {
+        // System.out.println(new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn));
         return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
     }
 
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
+        System.out.println(chassisSpeeds);
         driveMode = DriveMode.kDrive;
         periodicData.fieldRelative = false;
         periodicData.chassisSpeeds = chassisSpeeds;
         // periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-        System.out.println(chassisSpeeds);
+        // SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+        // System.out.println(periodicData.swerveModuleStates);
     }
+
 
     public void resetEncoders()
     {
@@ -500,15 +504,15 @@ public class Drivetrain extends Subsystem4237
         {
             case kDrive:
 
-                // System.out.println(periodicData.chassisSpeeds);
-        
+                System.out.println(periodicData.chassisSpeeds);
+
                 if(periodicData.fieldRelative)
                     periodicData.chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn, gyro.getRotation2d());
                 else
                     periodicData.chassisSpeeds = new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
 
-                // System.out.println(periodicData.chassisSpeeds);
-                
+                System.out.println(periodicData.chassisSpeeds);
+
                 periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
 
                 // System.out.println(periodicData.swerveModuleStates[0] + "   "
