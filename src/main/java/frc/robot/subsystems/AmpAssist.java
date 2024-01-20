@@ -57,10 +57,12 @@ public class AmpAssist extends Subsystem4237
         // Do Not invert Motor
         motor.setupInverted(false);
 
+        motor.setupBrakeMode();
+
         motor.setupForwardSoftLimit(-75, true);
         motor.setupReverseSoftLimit(-100, true);
 
-        encoder.setPosition(0.0);
+        // encoder.setPosition(0.0);
     }
 
     public double getAmpAssistPosition()

@@ -38,8 +38,8 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
-    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
+    private final CANSparkMax4237 topMotor = new CANSparkMax4237(5, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
+    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(3, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
     private RelativeEncoder topEncoder;
     private RelativeEncoder bottomEncoder;
 
@@ -68,8 +68,8 @@ public class Intake extends Subsystem4237
         topMotor.setupBrakeMode();
         bottomMotor.setupBrakeMode();
 
-        topEncoder.setPosition(0.0);
-        bottomEncoder.setPosition(0.0);
+        // topMotor.setPosition(0.0);
+        // bottomMotor.setPosition(0.0);
     }
 
     public double getTopPosition()
@@ -131,8 +131,8 @@ public class Intake extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.topIntakePosition = topEncoder.getPosition();
-        periodicData.bottomIntakePosition = bottomEncoder.getPosition();
+        periodicData.topIntakePosition = topMotor.getPosition();
+        periodicData.bottomIntakePosition = bottomMotor.getPosition();
     }
 
     @Override
