@@ -47,6 +47,10 @@ public class JWoodTest implements Test
     // *** CLASS CONSTRUCTORS ***
     // Put all class constructors here
 
+    /**
+     * Use this class to test your code using Test mode
+     * @param robotContainer The container of all robot components
+     */
     public JWoodTest(RobotContainer robotContainer)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
