@@ -29,6 +29,7 @@ import frc.robot.controls.OperatorButtonBindings;
 import frc.robot.controls.OperatorController;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
+import frc.robot.sensors.Ultrasonic;
 import frc.robot.shuffleboard.MainShuffleboard;
 
 /**
@@ -62,6 +63,7 @@ public class RobotContainer
     private boolean useShuttle              = false;
     private boolean useClimb                = false;
     private boolean useIndex                = false;
+    private boolean useUltrasonic           = true;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -91,6 +93,7 @@ public class RobotContainer
     public final Shuttle shuttle;
     public final Climb climb;
     public final Index index;
+    public final Ultrasonic ultrasonic;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -121,9 +124,10 @@ public class RobotContainer
         ampAssist           = (useAmpAssist)                                ? new AmpAssist()                                           : null;
         pivot               = (usePivot)                                    ? new Pivot()                                               : null;
         intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
-        shuttle             = (useShuttle)                                  ? new Shuttle()                                          : null;
-        climb               = (useClimb)                                    ? new Climb()                                            : null;
-        index               =(useIndex)                                     ? new Index()                                               : null;
+        shuttle             = (useShuttle)                                  ? new Shuttle()                                             : null;
+        climb               = (useClimb)                                    ? new Climb()                                               : null;
+        index               = (useIndex)                                    ? new Index()                                               : null;
+        ultrasonic          = (useUltrasonic)                               ? new Ultrasonic()                                          : null;
 
 
 

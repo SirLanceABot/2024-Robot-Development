@@ -13,6 +13,7 @@ import frc.robot.subsystems.Climb.TargetPosition;
 import frc.robot.commands.MoveClimb;
 import frc.robot.controls.Xbox;
 // import frc.robot.controls.OperatorController
+import frc.robot.sensors.Ultrasonic;
 
 public class OwenTest implements Test
 {
@@ -31,7 +32,8 @@ public class OwenTest implements Test
     private final RobotContainer robotContainer;
     // private final Flywheel flywheel;
     // private final Index index;
-    private final Climb climb;
+    // private final Climb climb;
+    private final Ultrasonic ultrasonic;
     private final Joystick joystick = new Joystick(0);
     // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
     // Trigger trigger = new Trigger(true);
@@ -45,7 +47,8 @@ public class OwenTest implements Test
         this.robotContainer = robotContainer;
         // flywheel = this.robotContainer.flywheel;
         // index = this.robotContainer.index;
-        climb = this.robotContainer.climb;
+        // climb = this.robotContainer.climb;
+        ultrasonic = this.robotContainer.ultrasonic;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -55,7 +58,7 @@ public class OwenTest implements Test
      */
     public void init()
     {
-        climb.setLeftAndRightPosiiton(TargetPosition.kChain);
+        // climb.setLeftAndRightPosiiton(TargetPosition.kChain);
     }
 
     /**
@@ -63,44 +66,45 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
-        if(joystick.getRawButton(1))
-        {
-            System.out.println("Chain Position");
-            System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.shoot();
-            // index.acceptNote();
-            climb.moveToChain();
-        }
-        else if(joystick.getRawButton(2))
-        {
-            System.out.println("Robot Position");
-            System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.intake();
-            // index.feedNote();
-            climb.moveToInnerRobot();
-        }
-        else if(joystick.getRawButton(3))
-        {
-            System.out.println("Raise Climb");
-            System.out.println("Encoder Position" + climb.getLeftPosition());
-            // index.reverse();
-            climb.extend();
-        }
-        else if(joystick.getRawButton(4))
-        {
-            System.out.println("Lower Climb");
-            System.out.println("Encoder Position" + climb.getLeftPosition());
-            // index.reverse();
-            climb.retract();
-        }
-        else 
-        {
-            System.out.println("Off");
-            System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.turnOff();
-            // index.turnOff();
-            climb.off();
-        }
+        System.out.println("distance = " + ultrasonic.getDistance());
+        // if(joystick.getRawButton(1))
+        // {
+        //     System.out.println("Chain Position");
+        //     System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.shoot();
+        //     // index.acceptNote();
+        //     climb.moveToChain();
+        // }
+        // else if(joystick.getRawButton(2))
+        // {
+        //     System.out.println("Robot Position");
+        //     System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.intake();
+        //     // index.feedNote();
+        //     climb.moveToInnerRobot();
+        // }
+        // else if(joystick.getRawButton(3))
+        // {
+        //     System.out.println("Raise Climb");
+        //     System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // index.reverse();
+        //     climb.extend();
+        // }
+        // else if(joystick.getRawButton(4))
+        // {
+        //     System.out.println("Lower Climb");
+        //     System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // index.reverse();
+        //     climb.retract();
+        // }
+        // else 
+        // {
+        //     System.out.println("Off");
+        //     System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.turnOff();
+        //     // index.turnOff();
+        //     climb.off();
+        // }
 
     }
     
