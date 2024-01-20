@@ -242,7 +242,7 @@ public class Drivetrain extends Subsystem4237
         AutoBuilder.configureHolonomic(
                 poseEstimator::getEstimatedPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
@@ -420,7 +420,7 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters().getTranslation().getDistance(startingPosition);
     }
 
-    public ChassisSpeeds getRobotRelativeSpeeds()
+    public ChassisSpeeds getRobotRelativeSpeedsForPP()
     {
         return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
     }
@@ -430,6 +430,8 @@ public class Drivetrain extends Subsystem4237
         driveMode = DriveMode.kDrive;
         periodicData.fieldRelative = false;
         periodicData.chassisSpeeds = chassisSpeeds;
+        // periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
+        System.out.println(chassisSpeeds);
     }
 
     public void resetEncoders()
@@ -497,13 +499,22 @@ public class Drivetrain extends Subsystem4237
         switch (driveMode)
         {
             case kDrive:
+
+                // System.out.println(periodicData.chassisSpeeds);
         
                 if(periodicData.fieldRelative)
                     periodicData.chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn, gyro.getRotation2d());
                 else
                     periodicData.chassisSpeeds = new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
+
+                // System.out.println(periodicData.chassisSpeeds);
                 
                 periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
+
+                // System.out.println(periodicData.swerveModuleStates[0] + "   "
+                // + periodicData.swerveModuleStates[1] + "   "
+                // + periodicData.swerveModuleStates[2] + "   "
+                // + periodicData.swerveModuleStates[3]);
 
                 SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
                 break;
@@ -586,6 +597,10 @@ public class Drivetrain extends Subsystem4237
         }
         else 
         {
+            // System.out.println(periodicData.swerveModuleStates[0] + "   "
+            // + periodicData.swerveModuleStates[1] + "   "
+            // + periodicData.swerveModuleStates[2] + "   "
+            // + periodicData.swerveModuleStates[3]);
             frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
             frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
             backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
