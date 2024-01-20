@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.AmpAssist;
+import frc.robot.subsystems.IntakePositioning;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -34,6 +35,7 @@ public class LoganTest implements Test
     private double bottomEncoderPosition;
     private Intake intake;
     private AmpAssist ampAssist;
+    private IntakePositioning intakePositioning;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -44,6 +46,7 @@ public class LoganTest implements Test
         this.robotContainer = robotContainer;
         intake = this.robotContainer.intake;
         ampAssist = this.robotContainer.ampAssist;
+        intakePositioning = this.robotContainer.intakePositioning;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -59,43 +62,54 @@ public class LoganTest implements Test
      */
     public void periodic()
     {
+        // if(joystick.getRawButton(1)) // A button
+        // {
+        //     topEncoderPosition = intake.getTopPosition();
+        //     bottomEncoderPosition = intake.getBottomPosition();
+        //     System.out.println("Pickup Front.  Top Encoder Position: " + topEncoderPosition);
+        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
+        //     intake.pickupFront();
+        // }
+        // else if(joystick.getRawButton(2)) // B button
+        // {
+        //     topEncoderPosition = intake.getTopPosition();
+        //     bottomEncoderPosition = intake.getBottomPosition();
+        //     System.out.println("Pickup Back.  Top Encoder Position: " + topEncoderPosition);
+        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
+        //     intake.pickupBack();
+        // }
+        // else if(joystick.getRawButton(3)) // X button
+        // {
+        //     topEncoderPosition = intake.getTopPosition();
+        //     bottomEncoderPosition = intake.getBottomPosition();
+        //     System.out.println("Eject Front.  Top Encoder Position: " + topEncoderPosition);
+        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
+        //     intake.ejectFront();
+        // }
+        // else if(joystick.getRawButton(4)) // Y button
+        // {
+        //     topEncoderPosition = intake.getTopPosition();
+        //     bottomEncoderPosition = intake.getBottomPosition();
+        //     System.out.println("Eject Back.  Top Encoder Position: " + topEncoderPosition);
+        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
+        //     intake.ejectBack();
+        // }
+        // else
+        // {
+        //     System.out.println("Off.  Top Encoder Position: " + topEncoderPosition);
+        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
+        //     intake.off();
+        // }
+
         if(joystick.getRawButton(1)) // A button
         {
-            topEncoderPosition = intake.getTopPosition();
-            bottomEncoderPosition = intake.getBottomPosition();
-            System.out.println("Pickup Front.  Top Encoder Position: " + topEncoderPosition);
-            System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-            intake.pickupFront();
+            System.out.println("Out.");
+            intakePositioning.extend();
         }
         else if(joystick.getRawButton(2)) // B button
         {
-            topEncoderPosition = intake.getTopPosition();
-            bottomEncoderPosition = intake.getBottomPosition();
-            System.out.println("Pickup Back.  Top Encoder Position: " + topEncoderPosition);
-            System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-            intake.pickupBack();
-        }
-        else if(joystick.getRawButton(3)) // X button
-        {
-            topEncoderPosition = intake.getTopPosition();
-            bottomEncoderPosition = intake.getBottomPosition();
-            System.out.println("Eject Front.  Top Encoder Position: " + topEncoderPosition);
-            System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-            intake.ejectFront();
-        }
-        else if(joystick.getRawButton(4)) // Y button
-        {
-            topEncoderPosition = intake.getTopPosition();
-            bottomEncoderPosition = intake.getBottomPosition();
-            System.out.println("Eject Back.  Top Encoder Position: " + topEncoderPosition);
-            System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-            intake.ejectBack();
-        }
-        else
-        {
-            System.out.println("Off.  Top Encoder Position: " + topEncoderPosition);
-            System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-            intake.off();
+            System.out.println("In.");
+            intakePositioning.retract();
         }
     }
     
