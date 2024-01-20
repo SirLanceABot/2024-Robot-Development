@@ -10,7 +10,7 @@ import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Climb.TargetPosition;
-import frc.robot.commands.MoveClimb;
+import frc.robot.commands.ExtendClimb;
 import frc.robot.controls.Xbox;
 // import frc.robot.controls.OperatorController
 import frc.robot.sensors.Ultrasonic;

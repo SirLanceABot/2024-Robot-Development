@@ -38,6 +38,9 @@ public class Shooter extends Subsystem4237
     // Put all class variables and instance variables here
     private final PeriodicData periodicData = new PeriodicData();
     private final Talon motor = new Talon(0);
+    private Pivot pivot;
+    private Index index;
+    private Flywheel flywheel;
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -51,6 +54,9 @@ public class Shooter extends Subsystem4237
         super("Shooter");
         System.out.println("  Constructor Started:  " + fullClassName);
 
+        this.pivot = pivot;
+        this.index = index;
+        this.flywheel = flywheel;
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }

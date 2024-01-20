@@ -55,14 +55,14 @@ public class Ultrasonic extends Sensor4237
         super("Ultrasonic");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        periodicData.sensorDistance = calculatedDistance();
+        periodicData.sensorDistance = calculateDistance();
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
 
     // *** CLASS METHODS & INSTANCE METHODS ***
     // Put all class methods and instance methods here
-    private double calculatedDistance()
+    private double calculateDistance()
     {
         var voltSensor = sensor.getVoltage();
         SmartDashboard.putNumber("Sensor Voltage", voltSensor);
@@ -79,6 +79,7 @@ public class Ultrasonic extends Sensor4237
     */
     public double getDistance()
     {
+        periodicData.sensorDistance = calculateDistance();
         return periodicData.sensorDistance;
     }
     
@@ -92,7 +93,7 @@ public class Ultrasonic extends Sensor4237
         periodicData.sensorValue = sensor.getAverageVoltage();
         if(!skipChecker)
         {
-            double temp = calculatedDistance();
+            double temp = calculateDistance();
             SmartDashboard.putNumber("Temp Distance", temp);
             if(temp < 12.0)
             {

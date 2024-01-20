@@ -6,14 +6,15 @@ package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.subsystems.Shuttle;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Climb.TargetPosition;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePositioning;
+import frc.robot.subsystems.Shuttle;
 
 /** 
  * An example command that uses an example subsystem. 
  */
-public class MoveClimb extends Command 
+public class IntakeFromFloor extends Command 
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -26,25 +27,30 @@ public class MoveClimb extends Command
     }
 
     // *** CLASS AND INSTANCE VARIABLES ***
-    // private final Shuttle exampleSubsystem;
-    private final Climb climb;
-    private final TargetPosition targetPosition;
+    private final Intake intake;
+    private final IntakePositioning intakePositioning;
+    private final Shuttle shuttle;
+    private final Index index;
 
 
     /**
-     * Creates a new MoveClimb.
+     * Creates a new IntakeFromFloor.
      *
      * @param subsystem The subsystem used by this command.
-     */
-    public MoveClimb(Climb climb, TargetPosition targetPosition) 
+     */ 
+    public IntakeFromFloor(Intake intake, IntakePositioning intakePositioning, Shuttle shuttle, Index index) 
     {
-        this.climb = climb;
-        this.targetPosition = targetPosition;
-        
+        this.intake = intake;
+        this.intakePositioning = intakePositioning;
+        this.shuttle = shuttle;
+        this.index = index;
         // Use addRequirements() here to declare subsystem dependencies.
-        if(this.climb != null)
+        if(intake != null && intakePositioning != null && shuttle != null && index != null)
         {
-            addRequirements(this.climb);
+            addRequirements(this.intake);
+            addRequirements(this.intakePositioning);
+            addRequirements(this.shuttle);
+            addRequirements(this.index);
         }
     }
 
@@ -56,27 +62,7 @@ public class MoveClimb extends Command
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute()
-    {
-        if(climb != null)
-        {
-            switch(targetPosition)
-            {
-                case kChain:
-                    climb.moveToChain();
-                    break;
-
-                case kInnerRobot:
-                    climb.moveToInnerRobot();
-                    break;
-
-                case kOuterRobot:
-                    climb.moveToOuterRobot();
-                    break;
-                case kOverride:
-                    break;
-            }
-        }
-    }
+    {}
 
     // Called once the command ends or is interrupted.
     @Override
@@ -87,10 +73,6 @@ public class MoveClimb extends Command
     @Override
     public boolean isFinished() 
     {
-        if(climb != null && targetPosition != TargetPosition.kOverride)
-        {
-
-        }
         return false;
     }
     
