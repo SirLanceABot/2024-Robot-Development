@@ -140,7 +140,7 @@ public class RobotContainer
 
 
 
-        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight")                           : null;
+        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight-one")                           : null;
         cameraArray[1]      = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
         cameraArray[2]      = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
         cameraArray[3]      = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
