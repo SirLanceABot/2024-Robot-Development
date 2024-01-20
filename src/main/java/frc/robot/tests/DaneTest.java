@@ -22,7 +22,7 @@ public class DaneTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Pivot pivot;
-    private final Joystick joystick;
+    private final Joystick joystick = new Joystick(1);
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -32,7 +32,7 @@ public class DaneTest implements Test
 
         this.robotContainer = robotContainer;
         pivot = this.robotContainer.pivot;
-        joystick = new Joystick(1);
+        
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -48,8 +48,12 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-    
-            pivot.setAngle(180.0);
+            if(joystick.getRawButton(1))
+            {
+                pivot.setAngle(180.0, 0.25);
+            }
+
+        
     
 
         // if(pivot.returnPivotAngle() < 180.0)
