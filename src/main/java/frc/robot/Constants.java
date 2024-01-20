@@ -168,8 +168,8 @@ public final class Constants
 
     public static class Pivot
     {
-        public static final int MOTOR_PORT               = 0;
-        public static final String MOTOR_CAN_BUS         = CANIVORE;
+        public static final int MOTOR_PORT               = 3;
+        public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
     public static class Shuttle

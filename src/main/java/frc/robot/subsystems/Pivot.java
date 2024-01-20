@@ -21,7 +21,7 @@ public class Pivot extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    private class PeriodicIO
+    private class PeriodicData
     {
         // INPUTS
     
@@ -34,9 +34,9 @@ public class Pivot extends Subsystem4237
 
     }
 
-    private final CANSparkMax4237 pivotMotor = new CANSparkMax4237(3, "rio", "pivotMotor");
+    private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
 
-    private PeriodicIO periodicIO = new PeriodicIO();
+    private PeriodicData periodicData = new PeriodicData();
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
 
@@ -52,31 +52,33 @@ public class Pivot extends Subsystem4237
     private void configPivotMotor()
     {
         // Factory Defaults
-        pivotMotor.setupFactoryDefaults();
+        motor.setupFactoryDefaults();
+        motor.setupInverted(false);
+        motor.setupBrakeMode();
 
 
         // Soft Limits
-        pivotMotor.setupForwardSoftLimit(10000.0, true);
-        pivotMotor.setupReverseSoftLimit(-10000.0, true);
+        motor.setupForwardSoftLimit(10000.0, true);
+        motor.setupReverseSoftLimit(-10000.0, true);
 
     }
 
     public void moveUp(double speed)
     {
-        periodicIO.motorSpeed = speed;
-        pivotMotor.set(periodicIO.motorSpeed);
+        periodicData.motorSpeed = speed;
+        // motor.set(periodicData.motorSpeed);
     }
 
     public void moveDown(double speed)
     {
-        periodicIO.motorSpeed = -speed;
-        pivotMotor.set(periodicIO.motorSpeed);
+        periodicData.motorSpeed = -speed;
+        // motor.set(periodicData.motorSpeed);
     }
 
     public void stopPivot()
     {
-        periodicIO.motorSpeed = 0.0;
-        pivotMotor.set(periodicIO.motorSpeed); 
+        periodicData.motorSpeed = 0.0;
+        // motor.set(periodicData.motorSpeed); 
     }
 
     public double returnPivotAngle()
@@ -88,17 +90,17 @@ public class Pivot extends Subsystem4237
     {
         do
         {
-           if(periodicIO.currentAngle > degrees)
+           if(periodicData.currentAngle > degrees)
             {
                 moveDown(0.5);
             }
 
-            if(periodicIO.currentAngle < degrees)
+            if(periodicData.currentAngle < degrees)
             {
                 moveUp(0.5);
             } 
         }
-        while(periodicIO.currentAngle > (degrees - 2.0) || periodicIO.currentAngle < (degrees + 2.0));
+        while(periodicData.currentAngle > (degrees - 2.0) || periodicData.currentAngle < (degrees + 2.0));
 
         stopPivot();
     }
@@ -111,13 +113,14 @@ public class Pivot extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicIO.currentAngle = returnPivotAngle();
+        periodicData.currentAngle = returnPivotAngle();
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        System.out.println("currentAngle = " + periodicIO.currentAngle); 
+        System.out.println("currentAngle = " + periodicData.currentAngle); 
+        motor.set(periodicData.motorSpeed);
     }
 
     @Override
