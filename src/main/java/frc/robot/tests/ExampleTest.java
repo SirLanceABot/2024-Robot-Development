@@ -2,7 +2,7 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.ExampleSubsystem;
 
 public class ExampleTest implements Test
 {
@@ -16,13 +16,25 @@ public class ExampleTest implements Test
         System.out.println("Loading: " + fullClassName);
     }
 
+
+    // *** INNER ENUMS and INNER CLASSES ***
+    // Put all inner enums and inner classes here
+
+
+
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Shuttle exampleSubsystem;
+    private final ExampleSubsystem exampleSubsystem;
 
 
-    // *** CLASS CONSTRUCTOR ***
+    // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
+
+    /**
+     * Use this class to test your code using Test mode
+     * @param robotContainer The container of all robot components
+     */
     public ExampleTest(RobotContainer robotContainer)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -32,6 +44,15 @@ public class ExampleTest implements Test
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
+
+
+    // *** CLASS METHODS & INSTANCE METHODS ***
+    // Put all class methods and instance methods here
+
+        
+
+    // *** OVERRIDEN METHODS ***
+    // Put all methods that are Overridden here
 
     /**
      * This method runs one time before the periodic() method.
@@ -49,10 +70,5 @@ public class ExampleTest implements Test
      * This method runs one time after the periodic() method.
      */
     public void exit()
-    {}
-
-    // *** METHODS ***
-    // Put any additional methods here.
-
-    
+    {} 
 }

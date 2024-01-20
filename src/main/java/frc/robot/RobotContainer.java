@@ -15,6 +15,7 @@ import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -78,7 +79,7 @@ public class RobotContainer
 
     public final boolean fullRobot;
 
-    public final Shuttle exampleSubsystem;
+    public final ExampleSubsystem exampleSubsystem;
     public final Gyro4237 gyro;
     public final Drivetrain drivetrain;
     public final Compressor compressor;
@@ -112,7 +113,7 @@ public class RobotContainer
         // Create the needed subsystems
         fullRobot 			    = (useFullRobot);
 
-        exampleSubsystem 	= (useExampleSubsystem)							? new Shuttle() 							    	: null;
+        exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
         drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)                                 : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;

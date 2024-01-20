@@ -37,12 +37,16 @@ public class Robot extends TimedRobot
     }
 
     
-    // *** CLASS AND INSTANCE VARIABLES ***
+    // *** CLASS VARIABLES & INSTANCE VARIABLES ***
+    // Put all class variables and instance variables here
     private final RobotContainer robotContainer = new RobotContainer();
     private AutonomousTabData autonomousTabData = null;
     private Command autonomousCommand = null;
     private TestMode testMode = null;
     
+
+    // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
 
     /** 
      * This class determines the actions of the robot, depending on the mode and state of the robot.
@@ -50,6 +54,10 @@ public class Robot extends TimedRobot
      */
     Robot()
     {}
+
+        
+    // *** OVERRIDEN METHODS ***
+    // Put all methods that are Overridden here
 
     /**
      * This method runs when the robot first starts up.
@@ -67,7 +75,7 @@ public class Robot extends TimedRobot
     public void robotPeriodic()
     {
         // Update all of the periodic inputs.
-        PeriodicIO.readInputs();
+        PeriodicIO.readAllPeriodicInputs();
         
         // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
         // commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -76,10 +84,10 @@ public class Robot extends TimedRobot
         CommandScheduler.getInstance().run();
         
         // Run periodic tasks
-        PeriodicTask.runPeriodicTasks();
+        PeriodicTask.runAllPeriodicTasks();
 
         // Update all of the periodic outputs.
-        PeriodicIO.writeOutputs();
+        PeriodicIO.writeAllPeriodicOutputs();
     }
 
     /**

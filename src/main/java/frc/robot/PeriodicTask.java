@@ -8,12 +8,28 @@ import java.util.ArrayList;
  */
 public interface PeriodicTask
 {
-    // *** CLASS & INSTANCE VARIABLES ***
+    // *** STATIC CONSTANTS ***
+    // Put all constants here - automatically "public final static"
     public final static ArrayList<PeriodicTask> allPeriodicTasks = new ArrayList<PeriodicTask>();
 
-    // Abstract methods to override in subclasses
-    public abstract void runPeriodicTask();
-    
+
+    // *** STATIC METHODS ***
+    // Put all static methods here - automatically "public"
+
+    /**
+     * Static method to periodically update all of the systems in the array list.
+     * Call this method from the robotPeriodic() method in the Robot class.
+     */
+    public static void runAllPeriodicTasks()
+    {
+        for(PeriodicTask periodicTask : allPeriodicTasks)
+            periodicTask.runPeriodicTask();
+    }
+
+
+    // *** DEFAULT METHODS ***
+    // Put all default methods methods here - automatically "public"
+
     /**
      * Default method to register periodic inputs and outputs
      */
@@ -22,13 +38,9 @@ public interface PeriodicTask
         allPeriodicTasks.add(this);
     }
 
-    /**
-     * Static method to periodically update all of the systems in the array list.
-     * Call this method from the robotPeriodic() method in the Robot class.
-     */
-    public static void runPeriodicTasks()
-    {
-        for(PeriodicTask periodicTask : allPeriodicTasks)
-            periodicTask.runPeriodicTask();
-    }
+
+    // *** ABSTRACT METHODS ***
+    // Put all abstract methods here - automatically "public abstract"
+    // These methods must be defined in any subclass that implements this interface
+    public abstract void runPeriodicTask();
 }
