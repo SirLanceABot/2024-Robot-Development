@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 /**
  * This abstract class defines the abstract methods that all motor controllers have.
+ * Every motor controller will automatically have the Watchdog enabled.
  */
 public abstract class MotorController4237 extends MotorSafety implements MotorController
 {
@@ -20,8 +21,28 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         System.out.println("Loading: " + fullClassName);
     }
 
+
+    // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
+
+    /** 
+     * Enables the Watchdog for the motor by default.
+     * Can be disabled by calling setSafetyEnabled(false).
+     * @param motorControllerName The name of the motor controller/mechanism, for debugging purposes
+     */
+    MotorController4237(String motorControllerName)
+    {
+        System.out.println("  Constructor Started:  " + fullClassName  + " >> " + motorControllerName);
+        
+        // Enable the Watchdog for the motor
+        setSafetyEnabled(true);
+        
+        System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
+    }
+
+
     // *** ABSTRACT METHODS ***
-    // These must be defined in any subclass that extends this class.
+    // These methods must be defined in any subclass that extends this class
     public abstract void setupFactoryDefaults();
     public abstract void setupPeriodicFramePeriod(int frameNumber, int periodMs);
     public abstract void setupInverted(boolean isInverted);
@@ -40,18 +61,4 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setPosition(double position);
     public abstract double getPosition();
     public abstract double getVelocity();
-
-
-    /** 
-     * The constructor enables the Watchdog for the motor by default.
-     * @param motorControllerName The name of the motor controller, or the mechanism it belongs to
-     */
-    MotorController4237(String motorControllerName)
-    {
-        System.out.println("  Constructor Started:  " + fullClassName  + " >> " + motorControllerName);
-        
-        setSafetyEnabled(true);
-        
-        System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
-    }
 }

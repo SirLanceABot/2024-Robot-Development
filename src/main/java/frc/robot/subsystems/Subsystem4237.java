@@ -21,20 +21,29 @@ abstract class Subsystem4237 extends SubsystemBase implements PeriodicIO
         System.out.println("Loading: " + fullClassName);
     }
 
-    // *** CLASS CONSTRUCTOR ***
+
+    // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
+
+    /**
+     * Registers the subsystem for PeriodicIO.
+     * @param subsystemName The name of the subsystem, for debugging purposes
+     */
     Subsystem4237(String subsystemName)
     {
         super();
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + subsystemName);
 
-        // Register this subsystem in the array list for periodic inputs and outputs.
+        // Register this sensor in the array list to get periodic input and output
         registerPeriodicIO();
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + subsystemName);
     }
+    
 
-    // Abstract methods to override in subclasses
+    // *** ABSTRACT METHODS ***
+    // These methods must be defined in any subclass that extends this class
     public abstract void readPeriodicInputs();
     public abstract void writePeriodicOutputs();
 }

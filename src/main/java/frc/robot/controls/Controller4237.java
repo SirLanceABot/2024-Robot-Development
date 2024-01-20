@@ -6,8 +6,8 @@ import frc.robot.PeriodicIO;
 import frc.robot.PeriodicTask;
 
 /**
- * This abstract class will be extended for every subsystem on the robot. 
- * Every subsystem will automatically be added to the array list for periodic inputs and outputs.
+ * This abstract class will be extended for every controller. 
+ * Every controller will automatically be added to the array list for periodic inputs, outputs, and tasks.
  */
 abstract class Controller4237 implements PeriodicIO, PeriodicTask
 {
@@ -21,21 +21,32 @@ abstract class Controller4237 implements PeriodicIO, PeriodicTask
         System.out.println("Loading: " + fullClassName);
     }
 
-    // *** CLASS CONSTRUCTOR ***
+
+    // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
+    
+    /**
+     * Registers the controller for PeriodicIO and PeriodicTask.
+     * @param controllerName
+     */
     Controller4237(String controllerName)
     {
         super();
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + controllerName);
 
-        // Register this subsystem in the array list for periodic inputs and outputs.
+        // Register this sensor in the array list to get periodic input and output
         registerPeriodicIO();
+
+        // Register this controller in the array list to run periodic tasks
         registerPeriodicTask();
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + controllerName);
     }
 
-    // Abstract methods to override in subclasses
+
+    // *** ABSTRACT METHODS ***
+    // These methods must be defined in any subclass that extends this class
     public abstract void readPeriodicInputs();
     public abstract void writePeriodicOutputs();
     public abstract void runPeriodicTask();
