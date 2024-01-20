@@ -84,9 +84,13 @@ public class Climb extends Subsystem4237
     public static final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 80.0;
     public static final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
-    public static final double CHAIN_ENCODER_POSITION           = 60.0;
-    public static final double OUTER_ROBOT_ENCODER_POSITION     = 30.0;
-    public static final double INNER_ROBOT_ENCODER_POSITION     = 20.0;
+    public static final double CHAIN_ENCODER_POSITION              = 60.0;
+    public static final double OUTER_ROBOT_ENCODER_POSITION        = 30.0;
+    public static final double INNER_ROBOT_ENCODER_POSITION        = 20.0;
+
+    public static final double CURRENT_LIMIT                       = 10.0;
+    public static final double CURRENT_THRESHOLD                   = 10.0;
+    public static final double TIME_THRESHOLD                      = 10.0;
 
     private final double kP = 0.00003;
     private final double kI = 0.0; // 0.0001
@@ -127,6 +131,10 @@ public class Climb extends Subsystem4237
         rightMotor.setupFactoryDefaults();
         leftMotor.setupInverted(false);
         rightMotor.setupInverted(false);
+        leftMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        rightMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        leftMotor.setPosition(0.0);
+        rightMotor.setPosition(0.0);
 
         leftMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
         leftMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
@@ -181,10 +189,21 @@ public class Climb extends Subsystem4237
 
     public void setLeftAndRightPosiiton(TargetPosition position)
     {
-        leftMotor.setPosition(position.value);
-        rightMotor.setPosition(position.value);
-        // periodicData.currentLeftPosition = leftMotor.getPosition();
-        // periodicData.currentRightPosition = rightMotor.getPosition();
+        if(position.value > leftMotor.getPosition())
+        {
+            leftMotor.set(0.05);
+            rightMotor.set(0.05);        
+        }
+        else
+        {
+            leftMotor.set(0.0);
+            rightMotor.set(0.0); 
+        }
+        // if(position.value < leftMotor.getPosition() && (Math.abs(position.value - leftMotor.getPosition()) > 5))
+        // {
+        //     leftMotor.set(-0.05);
+        //     rightMotor.set(-0.05);        
+        // }
     }
 
     public double getLeftPosition()
@@ -202,6 +221,7 @@ public class Climb extends Subsystem4237
     public void readPeriodicInputs()
     {
 
+        
         periodicData.currentLeftPosition = leftMotor.getPosition();
         periodicData.currentRightPosition = rightMotor.getPosition();
         // getPosit();
@@ -244,8 +264,16 @@ public class Climb extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        leftMotor.set(periodicData.motorSpeed);
-        rightMotor.set(periodicData.motorSpeed);
+        if(targetPosition == TargetPosition.kOverride)
+        {
+            leftMotor.set(periodicData.motorSpeed);
+            rightMotor.set(periodicData.motorSpeed);
+        }
+        else
+        {
+            setLeftAndRightPosiiton(targetPosition);
+        }
+        
 
         // switch(resetState)
         // {

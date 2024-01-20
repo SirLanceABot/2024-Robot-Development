@@ -39,6 +39,9 @@ public class Index extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
+    public static final double CURRENT_LIMIT                       = 10.0;
+    public static final double CURRENT_THRESHOLD                   = 10.0;
+    public static final double TIME_THRESHOLD                      = 10.0;
 
     /** 
      * Creates a new Index. 
@@ -58,7 +61,8 @@ public class Index extends Subsystem4237
         motor.setupCoastMode();
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
-        motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
+        // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
+        motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
     }
 
     public void acceptNote()
