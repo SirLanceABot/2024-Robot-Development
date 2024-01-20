@@ -26,17 +26,35 @@ public class AutonomousTabData
         kYes, kNo;
     }
 
-    public static enum PlayPreload
+    public static enum ScorePreload
     {
         kYes, kNo;
     }
 
+    public static enum DriveOutOfStartZone
+    {
+        kYes, kNo;
+    }
+
+    public static enum ShootDelay
+    {
+        k0, k1, k2, k3, k4, k5;
+    }
+
+    public static enum DriveDelay
+    {
+        k0, k1, k2, k3, k4, k5;
+    }
     //-------------------------------------------------------------------//
 
     // IMPORTANT: Any variables added here must be initialized in the copy constructor below
     public StartingLocation startingLocation = StartingLocation.kMiddle;
     public ContainingPreload containingPreload = ContainingPreload.kYes;
-    public PlayPreload playPreload = PlayPreload.kYes;
+    public ScorePreload scorePreload = ScorePreload.kYes;
+    public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
+    public ShootDelay shootDelay = ShootDelay.k0;
+    public DriveDelay driveDelay = DriveDelay.k0;
+  
 
     // Default constructor
     public AutonomousTabData()
@@ -47,7 +65,11 @@ public class AutonomousTabData
     {
         startingLocation = atd.startingLocation;
         containingPreload = atd.containingPreload;
-        playPreload = atd.playPreload;
+        scorePreload = atd.scorePreload;
+        driveOutOfStartZone = atd.driveOutOfStartZone;
+        shootDelay = atd.shootDelay;
+        driveDelay = atd.driveDelay;
+
     }
 
     public String toString()
@@ -57,7 +79,10 @@ public class AutonomousTabData
         str += "\n*****  AUTONOMOUS SELECTION  *****\n";
         str += "Starting Location           : " + startingLocation   + "\n";
         str += "Containing Preload          : " + containingPreload + "\n";
-        str += "Play Preload                : " + playPreload  + "\n";
+        str += "Play Preload                : " + scorePreload  + "\n";  
+        str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
+        str += "Shoot Delay                 : " + shootDelay + "\n";   
+        str += "Drive Delay                 : " + driveDelay + "\n";  
 
         return str;
     }

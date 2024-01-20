@@ -40,7 +40,8 @@ public class AutonomousTab
     // Create the Box objects
     private SendableChooser<AutonomousTabData.StartingLocation> startingLocationBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.PlayPreload> playPreloadBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
     private GenericEntry successfulDownload;
     private GenericEntry errorMessageBox;
 
@@ -57,8 +58,10 @@ public class AutonomousTab
         System.out.println("  Constructor Started:  " + fullClassName);
 
         createStartingLocationBox();
-        createPlayPreloadBox();
+        createScorePreloadBox();
         createContainingPreloadBox();
+        createDriveOutOfStartZoneBox();
+    
         
         createSendDataButton();
         successfulDownload = createSuccessfulDownloadBox();
@@ -115,22 +118,40 @@ public class AutonomousTab
     }
 
     /**
-    * <b>Play Preload</b> Box
+    * <b>Score Preload</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createPlayPreloadBox()
+    private void createScorePreloadBox()
     {
         //create and name the Box
-        SendableRegistry.add(playPreloadBox, "Play Preload?");
-        SendableRegistry.setName(playPreloadBox, "Play Preload?");
+        SendableRegistry.add(scorePreloadBox, "Score Preload?");
+        SendableRegistry.setName(scorePreloadBox, "Score Preload?");
         
         //add options to  Box
-        playPreloadBox.addOption("No", AutonomousTabData.PlayPreload.kNo);
-        playPreloadBox.setDefaultOption("Yes", AutonomousTabData.PlayPreload.kYes);
+        scorePreloadBox.addOption("No", AutonomousTabData.ScorePreload.kNo);
+        scorePreloadBox.setDefaultOption("Yes", AutonomousTabData.ScorePreload.kYes);
         
 
         //put the widget on the shuffleboard
-        autonomousTab.add(playPreloadBox)
+        autonomousTab.add(scorePreloadBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(14, 0)
+            .withSize(5, 2);
+    }
+
+    private void createDriveOutOfStartZoneBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(scorePreloadBox, "Drive Out Of Start Zone?");
+        SendableRegistry.setName(scorePreloadBox, "Drive Out Of Start Zone?");
+        
+        //add options to  Box
+        scorePreloadBox.addOption("No", AutonomousTabData.ScorePreload.kNo);
+        scorePreloadBox.setDefaultOption("Yes", AutonomousTabData.ScorePreload.kYes);
+        
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(scorePreloadBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(14, 0)
             .withSize(4, 3);
@@ -190,7 +211,7 @@ public class AutonomousTab
     {
         autonomousTabData.startingLocation = startingLocationBox.getSelected();
         autonomousTabData.containingPreload = containingPreloadBox.getSelected();
-        autonomousTabData.playPreload = playPreloadBox.getSelected();
+        autonomousTabData.scorePreload = scorePreloadBox.getSelected();
     }
 
     // FIXME check this again
@@ -253,9 +274,9 @@ public class AutonomousTab
         boolean isValid = true;
         
         boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
-        boolean isPlayPreload = (playPreloadBox.getSelected() == AutonomousTabData.PlayPreload.kYes);
+        boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
         
-        if(!isContainingPreload && isPlayPreload)
+        if(!isContainingPreload && isScorePreload)
         {
             isValid = false;
             
