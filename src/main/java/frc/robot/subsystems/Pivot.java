@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 
 import frc.robot.motors.TalonFX4237;
+import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Constants;
 
@@ -35,6 +36,9 @@ public class Pivot extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
+    private BangBangController controller = new BangBangController();
+
+
 
     public Pivot()
     {
@@ -52,12 +56,11 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         motor.setPosition(0.0);
-
+        motor.setupPositionConversionFactor(0.00048828);
 
         // Soft Limits
-        motor.setupForwardSoftLimit(10000.0, true);
-        motor.setupReverseSoftLimit(-10000.0, true);
-
+        motor.setupForwardSoftLimit(6144.0, true);
+        motor.setupReverseSoftLimit(-6144.0, true);
     }
 
     public void moveUp(double speed)
@@ -69,22 +72,35 @@ public class Pivot extends Subsystem4237
     public void moveDown(double speed)
     {
         periodicData.motorSpeed = -speed;
-        // motor.set(periodicData.motorSpeed);
     }
 
-    public void stopPivot()
+    public void stop()
     {
         periodicData.motorSpeed = 0.0;
-        // motor.set(periodicData.motorSpeed); 
     }
 
-    public double returnPivotAngle()
+    public double returnAngle()
     {
-        return 360.0 * rotaryEncoder.getAbsolutePosition();
+        // return 360.0 * rotaryEncoder.getAbsolutePosition();
+        return periodicData.currentAngle;
     }
 
     public void setAngle(double degrees, double speed)
     {
+        //setAngle using FalconFX encoder
+        if(periodicData.currentAngle > (degrees + 16))
+        {
+            moveDown(speed);
+        }
+        else if(periodicData.currentAngle < (degrees - 16))
+        {
+            moveUp(speed);
+        }
+        else
+        {
+            stop();
+        }
+
 
         //setAngle using rotary encoder
         // if(periodicData.currentAngle > (degrees + 2))
@@ -99,22 +115,6 @@ public class Pivot extends Subsystem4237
         // {
         //     stopPivot();
         // }
-        
-        //setAngle using FalconFX encoder
-        //5.689 is encoder ticks per degree
-        //11.37 accounts for error
-        if(periodicData.currentPosition > (degrees * 5.689) + 11.37)
-        {
-            moveDown(speed);
-        }
-        else if(periodicData.currentPosition < (degrees * 5.689) + 11.37)
-        {
-            moveUp(speed);
-        }
-        else
-        {
-            stopPivot();
-        }
     }
 
     @Override
@@ -124,24 +124,22 @@ public class Pivot extends Subsystem4237
         //periodicData.currentAngle = 360.0 * rotaryEncoder.getAbsolutePosition();
 
         //Using TalonFX encoder
-        periodicData.currentPosition = motor.getPosition() * 2048;
-        periodicData.currentAngle = periodicData.currentPosition / 5.689;
+        periodicData.currentPosition = motor.getPosition();
+        periodicData.currentAngle = periodicData.currentPosition / Constants.Pivot.ENCODER_TICKS_PER_DEGREE;
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        System.out.println("currentAngle = " + periodicData.currentAngle); 
-        System.out.println("currentPosition = " + periodicData.currentPosition);
+        //System.out.println("currentAngle = " + periodicData.currentAngle); 
+        System.out.println("currentPosition = " + motor.getPosition());
         motor.set(periodicData.motorSpeed);
     }
 
     @Override
     public void periodic()
     {
-        
         // This method will be called once per scheduler run
-        
     }
 
     @Override
