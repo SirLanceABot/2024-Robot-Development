@@ -24,6 +24,11 @@ public class Index extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
+
+    public enum Direction
+    {
+        kToFlywheel, kFromShuttle;
+    }
     
     private class PeriodicData
     {

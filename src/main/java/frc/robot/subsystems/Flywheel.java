@@ -34,6 +34,11 @@ public class Flywheel extends Subsystem4237
         kStart, kTry, kDone;
     }
 
+    public enum Action
+    {
+        kShoot, kIntake;
+    }
+
     private class PeriodicData
     {
         // INPUTS
