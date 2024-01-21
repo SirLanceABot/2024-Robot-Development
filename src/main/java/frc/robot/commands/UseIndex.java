@@ -7,7 +7,7 @@ package frc.robot.commands;
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
-import frc.robot.subsystems.Index.Direction;
+import frc.robot.subsystems.Index.Direction1;
 
 /** 
  * An example command that uses an example subsystem. 
@@ -26,7 +26,7 @@ public class UseIndex extends Command
 
     // *** CLASS AND INSTANCE VARIABLES ***
     private final Index index;
-    private final Direction direction;
+    private final Direction1 direction;
     private final double speed;
 
 
@@ -35,7 +35,7 @@ public class UseIndex extends Command
      *
      * @param subsystem The subsystem used by this command.
      */
-    public UseIndex(Index index, Direction direction, double speed) 
+    public UseIndex(Index index, Direction1 direction, double speed) 
     {
         this.index = index;
         this.direction = direction;
@@ -57,11 +57,11 @@ public class UseIndex extends Command
     @Override
     public void execute()
     {
-        if(direction == Direction.kToFlywheel)
+        if(direction == Direction1.kToFlywheel)
         {
             index.feedNote(speed);
         }
-        else if(direction == Direction.kFromShuttle)
+        else if(direction == Direction1.kFromShuttle)
         {
             index.acceptNote();
         }

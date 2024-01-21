@@ -11,6 +11,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Intake.Direction;
+import frc.robot.subsystems.Index.Direction1;
+
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+// import edu.wpi.first.wpilibj2.command.;
 
 /** 
  * An example command that uses an example subsystem. 
@@ -33,7 +38,7 @@ public class IntakeFromFloor extends Command
     private final Shuttle shuttle;
     private final Index index;
     private final Direction direction;
-
+    SequentialCommandGroup group = new SequentialCommandGroup(this);
 
     /**
      * Creates a new IntakeFromFloor.
@@ -65,7 +70,14 @@ public class IntakeFromFloor extends Command
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute()
-    {}
+    {
+        // addCommands(new ParallelCommandGroup(
+        //     () -> (shuttle.moveUpward()), shuttle),
+        //     () -> (intakePositioning.extend()), intakePositioning)((
+        // ));
+
+        // Commands.run(new UseIndex(index, Direction1.kToFlywheel, 0.1));
+    }
 
     // Called once the command ends or is interrupted.
     @Override
