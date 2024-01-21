@@ -27,7 +27,7 @@ public class GretaTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Shuttle shuttleSuzie = new Shuttle();
+    private final Shuttle shuttleSuzie;
     private final Joystick joystick = new Joystick(0); 
     
     // *** CLASS CONSTRUCTOR ***
@@ -36,6 +36,7 @@ public class GretaTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        shuttleSuzie = robotContainer.shuttle;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -68,6 +69,8 @@ public class GretaTest implements Test
         {
             shuttleSuzie.resetEncoder();
         }
+
+        robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
     }
     
     /**

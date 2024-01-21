@@ -117,7 +117,8 @@ public class Robot extends TimedRobot
             {
                 // Create a copy of the Autonomous Tab Data that is on the Autonomous Tab
                 autonomousTabData = new AutonomousTabData(robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData());
-
+                System.out.println(autonomousTabData);
+                
                 // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
                 autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
 

@@ -272,8 +272,12 @@ public class AutonomousTab
     private void updateAutonomousTabData()
     {
         autonomousTabData.startingLocation = startingLocationBox.getSelected();
+        autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
         autonomousTabData.containingPreload = containingPreloadBox.getSelected();
         autonomousTabData.scorePreload = scorePreloadBox.getSelected();
+        autonomousTabData.driveDelay = driveDelayBox.getSelected();
+        autonomousTabData.shootDelay = shootDelayBox.getSelected();
+        
     }
 
     // FIXME check this again
@@ -337,12 +341,20 @@ public class AutonomousTab
         
         boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
         boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
+        boolean isShootDelay = 
+        (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 ||
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 );
         
         if(!isContainingPreload && isScorePreload)
         {
             isValid = false;
             
-            msg += "[ Not Possible ]  \n";
+            msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
+
         }
 
         // Do NOT remove any of the remaining code

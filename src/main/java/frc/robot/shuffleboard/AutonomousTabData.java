@@ -26,12 +26,12 @@ public class AutonomousTabData
         kYes, kNo;
     }
 
-    public static enum ScorePreload
+     public static enum DriveOutOfStartZone
     {
         kYes, kNo;
     }
 
-    public static enum DriveOutOfStartZone
+    public static enum ScorePreload
     {
         kYes, kNo;
     }
@@ -49,9 +49,9 @@ public class AutonomousTabData
 
     // IMPORTANT: Any variables added here must be initialized in the copy constructor below
     public StartingLocation startingLocation = StartingLocation.kMiddle;
+    public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
     public ContainingPreload containingPreload = ContainingPreload.kYes;
     public ScorePreload scorePreload = ScorePreload.kYes;
-    public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
     public ShootDelay shootDelay = ShootDelay.k0;
     public DriveDelay driveDelay = DriveDelay.k0;
   
@@ -64,9 +64,9 @@ public class AutonomousTabData
     public AutonomousTabData(AutonomousTabData atd)
     {
         startingLocation = atd.startingLocation;
+        driveOutOfStartZone = atd.driveOutOfStartZone;
         containingPreload = atd.containingPreload;
         scorePreload = atd.scorePreload;
-        driveOutOfStartZone = atd.driveOutOfStartZone;
         shootDelay = atd.shootDelay;
         driveDelay = atd.driveDelay;
 
@@ -78,9 +78,9 @@ public class AutonomousTabData
 
         str += "\n*****  AUTONOMOUS SELECTION  *****\n";
         str += "Starting Location           : " + startingLocation   + "\n";
+        str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
         str += "Containing Preload          : " + containingPreload + "\n";
         str += "Score Preload               : " + scorePreload  + "\n";  
-        str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
         str += "Shoot Delay                 : " + shootDelay + "\n";   
         str += "Drive Delay                 : " + driveDelay + "\n";  
 

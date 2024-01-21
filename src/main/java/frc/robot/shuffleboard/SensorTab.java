@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shuttle;
 
 public class SensorTab
 {
@@ -24,11 +25,13 @@ public class SensorTab
     private ShuffleboardTab sensorTab = Shuffleboard.getTab("Sensor");
     private Gyro4237 gyro;
     private Drivetrain drivetrain;
+    private Shuttle shuttle;
     private GenericEntry gyroBox;
     private GenericEntry flsEncoderBox;
     private GenericEntry frsEncoderBox;
     private GenericEntry blsEncoderBox;
     private GenericEntry brsEncoderBox;
+    private GenericEntry shuttleEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -37,6 +40,7 @@ public class SensorTab
 
         this.drivetrain = robotContainer.drivetrain;
         this.gyro = robotContainer.gyro;
+        this.shuttle = robotContainer.shuttle;
 
         if(drivetrain != null)
         {
@@ -49,6 +53,11 @@ public class SensorTab
         if(gyro != null)
         {
             gyroBox = createGyroBox();
+        }
+
+        if(shuttle != null)
+        {
+            shuttleEncoderBox = createShuttleEncoderBox();
         }
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -99,6 +108,15 @@ public class SensorTab
         .getEntry();
     }
 
+    private GenericEntry createShuttleEncoderBox()
+    {
+        return sensorTab.add("Shuttle", shuttle.getPosition())
+        .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
+        .withPosition(8, 6)  // sets position of widget
+        .withSize(4, 2)    // sets size of widget
+        .getEntry();
+    }
+
     public void updateEncoderData()
     {
         if(drivetrain != null)
@@ -112,6 +130,11 @@ public class SensorTab
         if(gyro != null)
         {
             gyroBox.setDouble(gyro.getPitch());
+        }
+
+        if(shuttle != null)
+        {
+            shuttleEncoderBox.setDouble(shuttle.getPosition());
         }
     }
 }

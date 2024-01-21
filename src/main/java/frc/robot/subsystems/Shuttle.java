@@ -40,6 +40,7 @@ public class Shuttle extends Subsystem4237
     {
  
         private double motorSpeed = 0.0;
+        private double position = 0.0;
 
         // OUTPUTS
 
@@ -67,9 +68,16 @@ public class Shuttle extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
+    public double getPosition()
+    {
+        return periodicData.position;
+    }
+
     @Override
     public void readPeriodicInputs()
-    {}
+    {
+        periodicData.position = motor.getPosition();
+    }
 
     @Override
     public void writePeriodicOutputs()
@@ -80,7 +88,7 @@ public class Shuttle extends Subsystem4237
     @Override
     public void periodic()
     {
-        System.out.println("Encoder = " + motor.getPosition());
+        //System.out.println("Encoder = " + motor.getPosition());
         
         // This method will be called once per scheduler run
     }
