@@ -23,7 +23,24 @@ public class Intake extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
-    
+
+    public enum Direction
+    {
+        kForward(0.1), kBackward(-0.1), kOff(0.0);
+
+        public final double value;
+        
+        private Direction(double value)
+        {
+            this.value = value;
+        }
+    }
+
+    public enum Action
+    {
+        kPickup, kEject;
+    }
+
     private class PeriodicData
     {
         // INPUTS
@@ -95,31 +112,31 @@ public class Intake extends Subsystem4237
     public void pickupFront()
     {
         periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = 0.1;
+        periodicData.bottomIntakeSpeed = Direction.kForward.value;
     }
 
     public void ejectFront()
     {
         periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = -0.1;
+        periodicData.bottomIntakeSpeed = Direction.kBackward.value;
     }
 
     public void pickupBack()
     {
         periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = -0.1;
+        periodicData.bottomIntakeSpeed = Direction.kBackward.value;
     }
 
     public void ejectBack()
     {
         periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = 0.1;
+        periodicData.bottomIntakeSpeed = Direction.kForward.value;
     }
 
     public void off()
     {
         periodicData.topIntakeSpeed = 0.0;
-        periodicData.bottomIntakeSpeed = 0.0;
+        periodicData.bottomIntakeSpeed = Direction.kOff.value;
     }
 
     public void in(double speed)

@@ -10,6 +10,7 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.Intake.Direction;
 
 /** 
  * An example command that uses an example subsystem. 
@@ -31,6 +32,7 @@ public class IntakeFromFloor extends Command
     private final IntakePositioning intakePositioning;
     private final Shuttle shuttle;
     private final Index index;
+    private final Direction direction;
 
 
     /**
@@ -38,12 +40,13 @@ public class IntakeFromFloor extends Command
      *
      * @param subsystem The subsystem used by this command.
      */ 
-    public IntakeFromFloor(Intake intake, IntakePositioning intakePositioning, Shuttle shuttle, Index index) 
+    public IntakeFromFloor(Intake intake, IntakePositioning intakePositioning, Shuttle shuttle, Index index, Direction direction) 
     {
         this.intake = intake;
         this.intakePositioning = intakePositioning;
         this.shuttle = shuttle;
         this.index = index;
+        this.direction = direction;
         // Use addRequirements() here to declare subsystem dependencies.
         if(intake != null && intakePositioning != null && shuttle != null && index != null)
         {
