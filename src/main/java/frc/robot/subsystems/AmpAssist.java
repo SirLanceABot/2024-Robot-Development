@@ -4,6 +4,9 @@ import java.lang.invoke.MethodHandles;
 
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
@@ -21,20 +24,33 @@ public class AmpAssist extends Subsystem4237
     {
         System.out.println("Loading: " + fullClassName);
     }
+
+    public enum AmpAssistPosition
+    {
+        kOut(Value.kForward), kIn(Value.kReverse), kOff(Value.kOff);
+
+        public final Value value;
+
+        private AmpAssistPosition(Value value)
+        {
+            this.value = value;
+        }
+    }
     
     private class PeriodicData
     {
         // INPUTS
-        private double ampAssistPosition = 0.0;
+        
 
         // OUTPUTS
-        private double ampAssistSpeed = 0.0;
+        private AmpAssistPosition ampAssistPosition = AmpAssistPosition.kOff;
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.AmpAssist.MOTOR_PORT, Constants.AmpAssist.MOTOR_CAN_BUS, "ampAssistMotor");
-    private RelativeEncoder encoder;
+    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.AmpAssist.SOLENOID_PORT,PneumaticsModuleType.CTREPCM, OUT_POSITION, IN_POSITION);
+    public static final int OUT_POSITION             = 0;
+    public static final int IN_POSITION              = 1;
 
     /** 
      * Creates a new AmpAssist. 
@@ -43,58 +59,30 @@ public class AmpAssist extends Subsystem4237
     {
         super("Amp Assist");
         System.out.println("  Constructor Started:  " + fullClassName);
-
-        configCANSparkMax();
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    private void configCANSparkMax()
+    public void extend()
     {
-        // Restore factory Defaults
-        motor.setupFactoryDefaults();
-
-        // Do Not invert Motor
-        motor.setupInverted(false);
-
-        motor.setupBrakeMode();
-
-        motor.setupForwardSoftLimit(-75, true);
-        motor.setupReverseSoftLimit(-100, true);
-
-        // encoder.setPosition(0.0);
+        periodicData.ampAssistPosition = AmpAssistPosition.kOut;
     }
 
-    public double getAmpAssistPosition()
+    public void retract()
     {
-        return periodicData.ampAssistPosition;
-    }
-
-    public void moveOut()
-    {
-        periodicData.ampAssistSpeed = 0.1;
-    }
-
-    public void moveIn()
-    {
-        periodicData.ampAssistSpeed = -0.1;
-    }
-
-    public void off()
-    {
-        periodicData.ampAssistSpeed = 0.0;
+        periodicData.ampAssistPosition = AmpAssistPosition.kIn;
     }
 
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.ampAssistPosition = motor.getPosition();
+        
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        motor.set(periodicData.ampAssistSpeed);
+        solenoid.set(periodicData.ampAssistPosition.value);
     }
 
     @Override
