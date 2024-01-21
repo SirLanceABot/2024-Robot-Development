@@ -70,9 +70,9 @@ public class Index extends Subsystem4237
         periodicData.motorSpeed = 0.1;
     }
 
-    public void feedNote()
+    public void feedNote(double speed)
     {
-        periodicData.motorSpeed = 0.25;
+        periodicData.motorSpeed = speed;
     }
 
 
