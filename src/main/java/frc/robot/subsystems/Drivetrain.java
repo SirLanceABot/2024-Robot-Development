@@ -70,6 +70,7 @@ public class Drivetrain extends Subsystem4237
         // OUTPUTS
         private ChassisSpeeds chassisSpeeds;
         private SwerveModuleState[] swerveModuleStates;
+        private SwerveModuleState[] targetStatesPP;
         private SwerveDriveOdometry odometry;
     }
 
@@ -240,7 +241,7 @@ public class Drivetrain extends Subsystem4237
     public void configureAutoBuilder()
     {
         AutoBuilder.configureHolonomic(
-                poseEstimator::getEstimatedPose, // Robot pose supplier
+                this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
@@ -422,16 +423,39 @@ public class Drivetrain extends Subsystem4237
 
     public ChassisSpeeds getRobotRelativeSpeedsForPP()
     {
+        SwerveModuleState[] moduleStates = new SwerveModuleState[] 
+            {
+                frontLeft.getState(),
+                frontRight.getState(),
+                backLeft.getState(),
+                backRight.getState()
+            }; 
+        
+        return kinematics.toChassisSpeeds(moduleStates);
+
+        // return periodicData.chassisSpeeds;
+
         // System.out.println(new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn));
-        return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
+        // return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
     }
 
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
-        System.out.println(chassisSpeeds);
-        driveMode = DriveMode.kDrive;
-        periodicData.fieldRelative = false;
-        periodicData.chassisSpeeds = chassisSpeeds;
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
+        // System.out.println(targetSpeeds);
+        periodicData.targetStatesPP = kinematics.toSwerveModuleStates(targetSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.targetStatesPP, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+        // System.out.println(periodicData.targetStatesPP);
+
+        // frontLeft.setDesiredState(targetStates[0]);
+        // frontRight.setDesiredState(targetStates[1]);
+        // backLeft.setDesiredState(targetStates[2]);
+        // backRight.setDesiredState(targetStates[3]);
+        
+        // System.out.println(chassisSpeeds);
+        // driveMode = DriveMode.kDrive;
+        // periodicData.fieldRelative = false;
+        // periodicData.chassisSpeeds = chassisSpeeds;
         // periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
         // SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
         // System.out.println(periodicData.swerveModuleStates);
@@ -504,14 +528,14 @@ public class Drivetrain extends Subsystem4237
         {
             case kDrive:
 
-                System.out.println(periodicData.chassisSpeeds);
+                // System.out.println(periodicData.chassisSpeeds);
 
                 if(periodicData.fieldRelative)
                     periodicData.chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn, gyro.getRotation2d());
                 else
                     periodicData.chassisSpeeds = new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
 
-                System.out.println(periodicData.chassisSpeeds);
+                // System.out.println(periodicData.chassisSpeeds);
 
                 periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
 
@@ -599,16 +623,25 @@ public class Drivetrain extends Subsystem4237
             backLeft.stopModule();
             backRight.stopModule();
         }
-        else 
+        else if (DriverStation.isAutonomousEnabled())
         {
             // System.out.println(periodicData.swerveModuleStates[0] + "   "
             // + periodicData.swerveModuleStates[1] + "   "
             // + periodicData.swerveModuleStates[2] + "   "
             // + periodicData.swerveModuleStates[3]);
-            frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
-            frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
-            backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
-            backRight.setDesiredState(periodicData.swerveModuleStates[3]);
+            // frontLeft.setDesiredState(periodicData.targetStatesPP[0]);
+            // frontRight.setDesiredState(periodicData.targetStatesPP[1]);
+            // backLeft.setDesiredState(periodicData.targetStatesPP[2]);
+            // backRight.setDesiredState(periodicData.targetStatesPP[3]);
+
+            
+        }
+        else
+        {
+            // frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
+            // frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
+            // backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
+            // backRight.setDesiredState(periodicData.swerveModuleStates[3]);
         }
         
 
