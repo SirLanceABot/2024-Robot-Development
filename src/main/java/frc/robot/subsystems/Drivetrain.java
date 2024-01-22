@@ -623,25 +623,22 @@ public class Drivetrain extends Subsystem4237
             backLeft.stopModule();
             backRight.stopModule();
         }
-        else if (DriverStation.isAutonomousEnabled())
+        else
         {
             // System.out.println(periodicData.swerveModuleStates[0] + "   "
             // + periodicData.swerveModuleStates[1] + "   "
             // + periodicData.swerveModuleStates[2] + "   "
             // + periodicData.swerveModuleStates[3]);
+            frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
+            frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
+            backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
+            backRight.setDesiredState(periodicData.swerveModuleStates[3]);
             // frontLeft.setDesiredState(periodicData.targetStatesPP[0]);
             // frontRight.setDesiredState(periodicData.targetStatesPP[1]);
             // backLeft.setDesiredState(periodicData.targetStatesPP[2]);
             // backRight.setDesiredState(periodicData.targetStatesPP[3]);
 
             
-        }
-        else
-        {
-            // frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
-            // frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
-            // backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
-            // backRight.setDesiredState(periodicData.swerveModuleStates[3]);
         }
         
 
