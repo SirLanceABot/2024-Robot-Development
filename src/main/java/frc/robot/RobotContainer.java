@@ -34,6 +34,7 @@ import frc.robot.controls.OperatorButtonBindings;
 import frc.robot.controls.OperatorController;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
+import frc.robot.sensors.Proximity;
 import frc.robot.sensors.Ultrasonic;
 import frc.robot.shuffleboard.MainShuffleboard;
 import frc.robot.controls.Xbox;
@@ -72,6 +73,7 @@ public class RobotContainer
     private boolean useUltrasonic           = false;
     private boolean useShooter              = false;
     private boolean useCandle               = false;
+    private boolean useProximity            = false;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -104,6 +106,7 @@ public class RobotContainer
     public final Ultrasonic ultrasonic;
     public final Shooter shooter;
     public final Candle4237 candle;
+    public final Proximity proximity;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -128,7 +131,7 @@ public class RobotContainer
 
         exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
         gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
-        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)                                 : null;
+        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)  : null;
         compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
         intake              = (useIntake)                                   ? new Intake()                                              : null;
         ampAssist           = (useAmpAssist)                                ? new AmpAssist()                                           : null;
@@ -139,9 +142,9 @@ public class RobotContainer
         index               = (useIndex)                                    ? new Index()                                               : null;
         ultrasonic          = (useUltrasonic)                               ? new Ultrasonic()                                          : null;
         flywheel            = (useFullRobot || useFlywheel)                 ? new Flywheel()                                            : null;
-        shooter             = (useFullRobot || useShooter)                  ? new Shooter(pivot, index, flywheel)                       : null;   
+        shooter             = (useFullRobot || useShooter)                  ? new Shooter(pivot, index, flywheel)                       : null;
         candle              = (useFullRobot || useCandle)                   ? new Candle4237()                                          : null;
-
+        proximity           = (useFullRobot || useProximity)                ? new Proximity(9)                         : null;
 
         cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight-one")                       : null;
         cameraArray[1]      = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
