@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.AmpAssist;
+import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -70,6 +71,7 @@ public class RobotContainer
     private boolean useIndex                = false;
     private boolean useUltrasonic           = false;
     private boolean useShooter              = false;
+    private boolean useCandle               = false;
     
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
@@ -101,6 +103,7 @@ public class RobotContainer
     public final Index index;
     public final Ultrasonic ultrasonic;
     public final Shooter shooter;
+    public final Candle4237 candle;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -135,12 +138,12 @@ public class RobotContainer
         climb               = (useClimb)                                    ? new Climb()                                               : null;
         index               = (useIndex)                                    ? new Index()                                               : null;
         ultrasonic          = (useUltrasonic)                               ? new Ultrasonic()                                          : null;
-        flywheel            = (useFullRobot || useFlywheel)                ? new Flywheel()                                            : null;
+        flywheel            = (useFullRobot || useFlywheel)                 ? new Flywheel()                                            : null;
         shooter             = (useFullRobot || useShooter)                  ? new Shooter(pivot, index, flywheel)                       : null;   
+        candle              = (useFullRobot || useCandle)                   ? new Candle4237()                                          : null;
 
 
-
-        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight-one")                           : null;
+        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight-one")                       : null;
         cameraArray[1]      = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
         cameraArray[2]      = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
         cameraArray[3]      = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
