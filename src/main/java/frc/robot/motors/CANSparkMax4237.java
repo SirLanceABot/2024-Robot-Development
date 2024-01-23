@@ -2,13 +2,13 @@ package frc.robot.motors;
 
 import java.lang.invoke.MethodHandles;
 
-
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.SparkPIDController;
 
 public class CANSparkMax4237 extends MotorController4237
 {
@@ -26,6 +26,7 @@ public class CANSparkMax4237 extends MotorController4237
     private final RelativeEncoder encoder;
     private SparkLimitSwitch forwardLimitSwitch;
     private SparkLimitSwitch reverseLimitSwitch;
+    private SparkPIDController pidController;
     private final String motorControllerName;
 
     /**
@@ -43,6 +44,7 @@ public class CANSparkMax4237 extends MotorController4237
         
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
+        pidController = motor.getPIDController();
         this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
@@ -218,6 +220,27 @@ public class CANSparkMax4237 extends MotorController4237
     }
 
     /**
+     * Set the PID controls for the motor.
+     * @param kP The Proportional constant
+     * @param kI The Integral constant
+     * @param kD The Derivative constant
+     */
+    public void setupPIDController(int slotId, double kP, double kI, double kD)
+    {
+        if(slotId >= 0 && slotId <= 3)
+        {
+            // set PID coefficients
+            pidController.setP(kP, slotId);
+            pidController.setI(kI, slotId);
+            pidController.setD(kD, slotId);            
+        }
+
+        // pidController.setIZone(kIz);
+        // pidController.setFF(kFF);
+        // pidController.setOutputRange(kMinOutput, kMaxOutput);
+    }
+
+    /**
      * Set the position of the encoder.
      * Units are rotations by default, but can be changed using the conversion factor.
      * @param position The position of the encoder
@@ -279,6 +302,9 @@ public class CANSparkMax4237 extends MotorController4237
         return motor.get();
     }
 
+    /**
+     * @deprecated Use <b>setupInverted()</b> instead
+     */
     @Override
     public void setInverted(boolean isInverted)
     {

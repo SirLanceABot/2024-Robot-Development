@@ -7,6 +7,10 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.configs.Slot2Configs;
+import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
@@ -240,6 +244,26 @@ public class TalonFX4237 extends MotorController4237
     }
 
     /**
+     * Set the PID controls for the motor.
+     * @param kP The Proportional constant
+     * @param kI The Integral constant
+     * @param kD The Derivative constant
+     */
+    public void setupPIDController(int slotId, double kP, double kI, double kD)
+    {
+        if(slotId >= 0 && slotId <= 2)
+        {
+            SlotConfigs slotConfigs = new SlotConfigs();
+            motor.getConfigurator().refresh(slotConfigs);
+            slotConfigs.SlotNumber = slotId;
+            slotConfigs.kP = kP;
+            slotConfigs.kI = kI;
+            slotConfigs.kD = kD;
+            motor.getConfigurator().apply(slotConfigs); 
+        }
+    }
+
+    /**
      * Set the position of the encoder.
      * Units are rotations by default, but can be changed using the conversion factor.
      * @param position The position of the encoder
@@ -301,6 +325,9 @@ public class TalonFX4237 extends MotorController4237
         return motor.get();
     }
 
+    /**
+     * @deprecated Use <b>setupInverted()</b> instead
+     */
     @Override
     public void setInverted(boolean isInverted)
     {
