@@ -30,8 +30,8 @@ public class SamTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        prox1 = new Proximity();
-        prox2 = new Proximity();
+        prox1 = new Proximity(8);
+        prox2 = new Proximity(9);
         candle = new Candle4237();
 
         System.out.println("  Constructor Finished: " + fullClassName);

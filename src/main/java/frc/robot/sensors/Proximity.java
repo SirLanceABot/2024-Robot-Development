@@ -26,15 +26,16 @@ public class Proximity extends Sensor4237
         // OUTPUTS
     }
 
-    DigitalInput proximity = new DigitalInput(9);
+    DigitalInput proximity;
     private PeriodicData periodicData;
-
-    public Proximity()
+    
+    public Proximity(int digitalInputPort)
     {   
         super("Proximity");
         System.out.println("  Constructor Started:  " + fullClassName);
 
         periodicData = new PeriodicData();
+        proximity = new DigitalInput(digitalInputPort);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }

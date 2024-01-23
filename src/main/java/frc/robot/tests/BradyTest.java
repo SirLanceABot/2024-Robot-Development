@@ -36,7 +36,7 @@ public class BradyTest implements Test
         this.robotContainer = robotContainer;
         candle = new Candle4237();
         // bradysJoystick = new Joystick(0);
-        proximity = new Proximity();
+        proximity = new Proximity(9);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
