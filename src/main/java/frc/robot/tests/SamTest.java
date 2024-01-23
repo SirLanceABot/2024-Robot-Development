@@ -2,6 +2,8 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
+import frc.robot.sensors.Proximity;
+import frc.robot.subsystems.Candle4237;
 
 public class SamTest implements Test
 {
@@ -18,7 +20,9 @@ public class SamTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-
+    private final Proximity prox1;
+    private final Proximity prox2;
+    private final Candle4237 candle;
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -26,6 +30,9 @@ public class SamTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
+        prox1 = new Proximity();
+        prox2 = new Proximity();
+        candle = new Candle4237();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -40,13 +47,28 @@ public class SamTest implements Test
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        if(prox1.isDetected() && prox2.isDetected())
+        {
+            candle.setGreen(false);
+        }
+        else if(prox1.isDetected() || prox2.isDetected())
+        {
+            candle.setRed(false);
+        }
+        else
+        {
+            candle.setOff();
+        }
+    }
     
     /**
      * This method runs one time after the periodic() method.
      */
     public void exit()
-    {}
+    {
+        candle.setOff();
+    }
 
     // *** METHODS ***
     // Put any additional methods here.

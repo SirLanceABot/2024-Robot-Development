@@ -42,7 +42,7 @@ public class Proximity extends Sensor4237
     /**
      * This method returns true if sensor detects something.
      */
-    public boolean getIsDetected()
+    public boolean isDetected()
     {
         return periodicData.isDetected;
     }
