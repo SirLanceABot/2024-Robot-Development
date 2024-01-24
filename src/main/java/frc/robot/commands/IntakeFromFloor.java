@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /** 
  * An example command that uses an example subsystem. 
  */
-public class IntakeFromFloor extends Command 
+public class IntakeFromFloor extends SequentialCommandGroup 
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -59,36 +60,41 @@ public class IntakeFromFloor extends Command
             addRequirements(this.intakePositioning);
             addRequirements(this.shuttle);
             addRequirements(this.index);
+
+            build();
         }
     }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize()
-    {}
+    // // Called when the command is initially scheduled.
+    // @Override
+    // public void initialize()
+    // {}
 
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute()
-    {
-        // addCommands(new ParallelCommandGroup(
-        //     () -> (shuttle.moveUpward()), shuttle),
-        //     () -> (intakePositioning.extend()), intakePositioning)((
-        // ));
-
-        // Commands.run(new UseIndex(index, Direction1.kToFlywheel, 0.1));
-    }
+    // // Called every time the scheduler runs while the command is scheduled.
+    // @Override
+    // public void execute()
+    // {
+    //     addCommands(new ParallelCommandGroup(
+    // }
 
     // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted)
-    {}
+    // @Override
+    // public void end(boolean interrupted)
+    // {}
 
     // Returns true when the command should end.
-    @Override
-    public boolean isFinished() 
+    // @Override
+    // public boolean isFinished() 
+    // {
+    //     return false;
+    // }
+
+    private void build()
     {
-        return false;
+        addCommands( new ParallelCommandGroup(
+        new InstantCommand(() -> intake.pickupFront()),
+        new InstantCommand(() -> intakePositioning.extend()))
+        );
     }
     
     @Override
