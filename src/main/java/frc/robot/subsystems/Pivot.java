@@ -35,7 +35,11 @@ public class Pivot extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
-
+    //PID values
+    private final double kP = 0.00003;
+    private final double kD = 0.0;
+    private final double kI = 0.0;
+    private final int slotId = 0;
 
 
 
@@ -56,6 +60,7 @@ public class Pivot extends Subsystem4237
         motor.setupBrakeMode();
         motor.setPosition(0.0);
         motor.setupPositionConversionFactor(0.00048828);
+        motor.setupPIDController(slotId, kP, kI, kD);
 
         // Soft Limits
         motor.setupForwardSoftLimit(6144.0, true);
@@ -77,7 +82,7 @@ public class Pivot extends Subsystem4237
         periodicData.motorSpeed = 0.0;
     }
 
-    public double returnAngle()
+    public double getAngle()
     {
         return periodicData.currentAngle;
     }
@@ -106,15 +111,15 @@ public class Pivot extends Subsystem4237
         //setAngle using rotary encoder
         // if(periodicData.currentAngle > (degrees + 2))
         // {
-        //     moveDown(0.25);
+        //     moveDown(speed);
         // }
         // else if(periodicData.currentAngle < (degrees - 2))
         // {
-        //     moveUp(0.25);
+        //     moveUp(speed);
         // } 
         // else
         // {
-        //     stopPivot();
+        //     stop();
         // }
     }
 
@@ -133,7 +138,7 @@ public class Pivot extends Subsystem4237
     public void writePeriodicOutputs()
     {
         //System.out.println("currentAngle = " + periodicData.currentAngle); 
-        System.out.println("currentPosition = " + motor.getPosition());
+        //System.out.println("currentPosition = " + motor.getPosition());
         motor.set(periodicData.motorSpeed);
     }
 
