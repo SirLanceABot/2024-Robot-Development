@@ -6,8 +6,10 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.RobotContainer;
+// import frc.robot.Constants.Pivot;
 import frc.robot.subsystems.Shuttle;
 
 public class SensorTab
@@ -26,12 +28,14 @@ public class SensorTab
     private Gyro4237 gyro;
     private Drivetrain drivetrain;
     private Shuttle shuttle;
+    private Pivot pivot;
     private GenericEntry gyroBox;
     private GenericEntry flsEncoderBox;
     private GenericEntry frsEncoderBox;
     private GenericEntry blsEncoderBox;
     private GenericEntry brsEncoderBox;
     private GenericEntry shuttleEncoderBox;
+    private GenericEntry pivotEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -41,6 +45,7 @@ public class SensorTab
         this.drivetrain = robotContainer.drivetrain;
         this.gyro = robotContainer.gyro;
         this.shuttle = robotContainer.shuttle;
+        this.pivot = robotContainer.pivot;
 
         if(drivetrain != null)
         {
@@ -58,6 +63,11 @@ public class SensorTab
         if(shuttle != null)
         {
             shuttleEncoderBox = createShuttleEncoderBox();
+        }
+        
+        if(pivot != null)
+        {
+            pivotEncoderBox = createPivotEncoderBox();
         }
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -113,7 +123,15 @@ public class SensorTab
         return sensorTab.add("Shuttle", shuttle.getPosition())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(8, 6)  // sets position of widget
-        .withSize(4, 2)    // sets size of widget
+        .withSize(2, 2)    // sets size of widget
+        .getEntry();
+    }
+
+    private GenericEntry createPivotEncoderBox()
+    {
+        return sensorTab.add("Pivot", 0.0)//pivot.getPosition())
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withSize(4,2)  // sets size of widge
         .getEntry();
     }
 
@@ -134,7 +152,12 @@ public class SensorTab
 
         if(shuttle != null)
         {
-            shuttleEncoderBox.setDouble(shuttle.getPosition());
+            shuttleEncoderBox.setDouble(Math.round(shuttle.getPosition()*1000.0)/1000.0);
+        }
+
+        if(pivot != null)
+        {
+            pivotEncoderBox.setDouble(0.0);//pivot.getPosition());
         }
     }
 }
