@@ -81,7 +81,7 @@ public class OperatorButtonBindings
             configRightTrigger();
             configLeftStick();
             configRightStick();
-            configDpad();
+            configDpadDown();
             configRumble();
             configDefaultCommands();
         }
@@ -209,11 +209,40 @@ public class OperatorButtonBindings
         {}
     }
 
-    private void configDpad()
+    private void configDpadDown()
     {
         // Dpad down button
         BooleanSupplier dPadDown = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kDown);
         Trigger dPadDownTrigger = new Trigger(dPadDown);
+
+        if(true)
+        {}
+    }
+    private void configDpadUp()
+    {
+        // Dpad down button
+        BooleanSupplier dPadUp = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kUp);
+        Trigger dPadDownTrigger = new Trigger(dPadUp);
+
+        if(true)
+        {}
+    }
+
+    private void configDpadLeft()
+    {
+        // Dpad down button
+        BooleanSupplier dPadLeft = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kLeft);
+        Trigger dPadLeftTrigger = new Trigger(dPadLeft);
+
+        if(true)
+        {}
+    }
+
+    private void configDpadRight()
+    {
+        // Dpad down button
+        BooleanSupplier dPadRight = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kRight);
+        Trigger dPadRightTrigger = new Trigger(dPadRight);
 
         if(true)
         {}
