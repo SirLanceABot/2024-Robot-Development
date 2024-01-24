@@ -104,13 +104,13 @@ public class LoganTest implements Test
         if(joystick.getRawButton(1)) // A button
         {
             System.out.println("Out.");
-            intakePositioning.extend();
+            ampAssist.extend();
         }
         
         if(joystick.getRawButton(2)) // B button
         {
             System.out.println("In.");
-            intakePositioning.retract();
+            ampAssist.retract();
         }
     }
     

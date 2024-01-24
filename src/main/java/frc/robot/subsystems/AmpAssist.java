@@ -27,7 +27,7 @@ public class AmpAssist extends Subsystem4237
 
     public enum AmpAssistPosition
     {
-        kOut(Value.kForward), kIn(Value.kReverse), kOff(Value.kOff);
+        kIn(Value.kForward), kOut(Value.kReverse), kOff(Value.kOff);
 
         public final Value value;
 
