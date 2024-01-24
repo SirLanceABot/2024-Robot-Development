@@ -2,6 +2,9 @@ package frc.robot.controls;
 
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 
@@ -82,6 +85,9 @@ public class OperatorButtonBindings
             configLeftStick();
             configRightStick();
             configDpadDown();
+            configDpadUp();
+            configDpadLeft();
+            configDpadRight();
             configRumble();
             configDefaultCommands();
         }
@@ -215,17 +221,21 @@ public class OperatorButtonBindings
         BooleanSupplier dPadDown = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kDown);
         Trigger dPadDownTrigger = new Trigger(dPadDown);
 
-        if(true)
-        {}
+        if(robotContainer.climb != null)
+        {
+            dPadDownTrigger.onTrue(new InstantCommand( () -> robotContainer.climb.retract()));
+        }
     }
     private void configDpadUp()
     {
         // Dpad down button
         BooleanSupplier dPadUp = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kUp);
-        Trigger dPadDownTrigger = new Trigger(dPadUp);
+        Trigger dPadUpTrigger = new Trigger(dPadUp);
 
-        if(true)
-        {}
+        if(robotContainer.climb != null)
+        {
+            dPadUpTrigger.whileTrue(new InstantCommand( () -> robotContainer.climb.extend()));
+        }
     }
 
     private void configDpadLeft()
@@ -234,8 +244,12 @@ public class OperatorButtonBindings
         BooleanSupplier dPadLeft = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kLeft);
         Trigger dPadLeftTrigger = new Trigger(dPadLeft);
 
-        if(true)
-        {}
+        if(robotContainer.ampAssist != null)
+        {
+            dPadLeftTrigger.toggleOnTrue( new StartEndCommand(() -> robotContainer.ampAssist.extend(),
+                                                              () -> robotContainer.ampAssist.retract(), 
+                                                              robotContainer.ampAssist));
+        }
     }
 
     private void configDpadRight()

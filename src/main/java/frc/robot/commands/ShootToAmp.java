@@ -6,6 +6,9 @@ package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
@@ -15,7 +18,7 @@ import frc.robot.subsystems.Pivot;
 /** 
  * An example command that uses an example subsystem. 
  */
-public class ShootToAmp extends Command 
+public class ShootToAmp extends SequentialCommandGroup 
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -52,29 +55,42 @@ public class ShootToAmp extends Command
             addRequirements(this.index);
             addRequirements(this.pivot);
             addRequirements(this.ampAssist);
+
+            build();
         }
     }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize()
-    {}
+    // // Called when the command is initially scheduled.
+    // @Override
+    // public void initialize()
+    // {}
 
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute()
-    {}
+    // // Called every time the scheduler runs while the command is scheduled.
+    // @Override
+    // public void execute()
+    // {}
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted)
-    {}
+    // // Called once the command ends or is interrupted.
+    // @Override
+    // public void end(boolean interrupted)
+    // {}
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() 
+    // // Returns true when the command should end.
+    // @Override
+    // public boolean isFinished() 
+    // {
+    //     return false;
+    // }
+    
+    private void build()
     {
-        return false;
+
+        addCommands(new ParallelCommandGroup(
+        (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        (new InstantCommand( () -> flywheel.shoot(0.6)))
+        ));
+
+        // addCommands(new InstantCommands)
     }
     
     @Override
