@@ -106,7 +106,9 @@ public class RobotContainer
     public final Ultrasonic ultrasonic;
     public final Shooter shooter;
     public final Candle4237 candle;
-    public final Proximity proximity;
+    public final Proximity firstShuttleProximity;
+    public final Proximity secondShuttleProximity;
+    public final Proximity indexProximity;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -129,35 +131,37 @@ public class RobotContainer
         // Create the needed subsystems
         fullRobot 			    = (useFullRobot);
 
-        exampleSubsystem 	= (useExampleSubsystem)							? new ExampleSubsystem() 							    	: null;
-        gyro 				= (useFullRobot || useGyro)						? new Gyro4237()									    	: null;	
-        drivetrain 			= (useFullRobot || useDrivetrain) 				? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)  : null;
-        compressor			= (true)                                        ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
-        intake              = (useIntake)                                   ? new Intake()                                              : null;
-        ampAssist           = (useAmpAssist)                                ? new AmpAssist()                                           : null;
-        pivot               = (usePivot)                                    ? new Pivot()                                               : null;
-        intakePositioning   = (useIntakePositioning)                        ? new IntakePositioning()                                   : null;
-        shuttle             = (useShuttle)                                  ? new Shuttle()                                             : null;
-        climb               = (useClimb)                                    ? new Climb()                                               : null;
-        index               = (useIndex)                                    ? new Index()                                               : null;
-        ultrasonic          = (useUltrasonic)                               ? new Ultrasonic()                                          : null;
-        flywheel            = (useFullRobot || useFlywheel)                 ? new Flywheel()                                            : null;
-        shooter             = (useFullRobot || useShooter)                  ? new Shooter(pivot, index, flywheel)                       : null;
-        candle              = (useFullRobot || useCandle)                   ? new Candle4237()                                          : null;
-        proximity           = (useFullRobot || useProximity)                ? new Proximity(9)                         : null;
+        exampleSubsystem 	    = (useExampleSubsystem)						? new ExampleSubsystem() 							    	: null;
+        gyro 				    = (useFullRobot || useGyro)					? new Gyro4237()									    	: null;	
+        drivetrain 			    = (useFullRobot || useDrivetrain) 			? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)  : null;
+        compressor			    = (true)                                    ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
+        intake                  = (useIntake)                               ? new Intake()                                              : null;
+        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                           : null;
+        pivot                   = (usePivot)                                ? new Pivot()                                               : null;
+        intakePositioning       = (useIntakePositioning)                    ? new IntakePositioning()                                   : null;
+        shuttle                 = (useShuttle)                              ? new Shuttle()                                             : null;
+        climb                   = (useClimb)                                ? new Climb()                                               : null;
+        index                   = (useIndex)                                ? new Index()                                               : null;
+        ultrasonic              = (useUltrasonic)                           ? new Ultrasonic()                                          : null;
+        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                            : null;
+        shooter                 = (useFullRobot || useShooter)              ? new Shooter(pivot, index, flywheel)                       : null;
+        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
+        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(9)                         : null;
+        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                         : null;
+        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                         : null;
 
-        cameraArray[0]      = (useFullRobot || useCameraOne)                ? new Camera("limelight-one")                       : null;
-        cameraArray[1]      = (useFullRobot || useCameraTwo)                ? new Camera("limelight-two")                       : null;
-        cameraArray[2]      = (useFullRobot || useCameraThree)              ? new Camera("limelight-three")                     : null;
-        cameraArray[3]      = (useFullRobot || useCameraFour)               ? new Camera("limelight-four")                      : null;
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                     : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                      : null;
 
         
 
-        mainShuffleboard 	= (useFullRobot || useMainShuffleboard)			? new MainShuffleboard(this)						    	: null;
-        driverController 	= (useFullRobot || useDriverController) 		? new DriverController(Constants.Controller.DRIVER)     	: null;
+        mainShuffleboard 	    = (useFullRobot || useMainShuffleboard)		? new MainShuffleboard(this)						    	: null;
+        driverController 	    = (useFullRobot || useDriverController) 	? new DriverController(Constants.Controller.DRIVER)     	: null;
         driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 					    	: null;
 
-        operatorController 	= (useFullRobot || useOperatorController) 		? new OperatorController(Constants.Controller.OPERATOR) 	: null;
+        operatorController 	    = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR) 	: null;
         operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 	    					: null;
 
 
