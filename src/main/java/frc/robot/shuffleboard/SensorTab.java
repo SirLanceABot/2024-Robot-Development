@@ -77,7 +77,7 @@ public class SensorTab
     {
         return sensorTab.add("Front Left Turn Encoder", drivetrain.fls())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(5, 0)  // sets position of widget
+        .withPosition(3, 2)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
@@ -86,7 +86,7 @@ public class SensorTab
     {
         return sensorTab.add("Front Right Turn Encoder", drivetrain.frs())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(5, 3)  // sets position of widget
+        .withPosition(3, 4)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
@@ -95,7 +95,7 @@ public class SensorTab
     {
         return sensorTab.add("Back Left Turn Encoder", drivetrain.bls())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(5, 6)  // sets position of widget
+        .withPosition(3, 6)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
@@ -104,7 +104,7 @@ public class SensorTab
     {
         return sensorTab.add("Back Right Turn Encoder", drivetrain.brs())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(5, 9)  // sets position of widget
+        .withPosition(3, 8)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
@@ -122,16 +122,17 @@ public class SensorTab
     {
         return sensorTab.add("Shuttle", shuttle.getPosition())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(8, 6)  // sets position of widget
+        .withPosition(8, 5)  // sets position of widget
         .withSize(2, 2)    // sets size of widget
         .getEntry();
     }
 
     private GenericEntry createPivotEncoderBox()
     {
-        return sensorTab.add("Pivot", 0.0)//pivot.getPosition())
+        return sensorTab.add("Pivot", pivot.getPosition())
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withSize(4,2)  // sets size of widge
+        .withPosition(10,5) // sets position of widget
+        .withSize(2,2)  // sets size of widge
         .getEntry();
     }
 
@@ -152,12 +153,18 @@ public class SensorTab
 
         if(shuttle != null)
         {
-            shuttleEncoderBox.setDouble(Math.round(shuttle.getPosition()*1000.0)/1000.0);
+            shuttleEncoderBox.setDouble(round(shuttle.getPosition(), 3));
         }
 
         if(pivot != null)
         {
-            pivotEncoderBox.setDouble(0.0);//pivot.getPosition());
+            pivotEncoderBox.setDouble(round(pivot.getPosition(), 3));
         }
+    }
+
+    public double round(double value, int digits)
+    {
+        double x = Math.pow(10.0, digits);
+        return Math.round(value * x) / x;
     }
 }
