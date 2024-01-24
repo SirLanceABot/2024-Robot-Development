@@ -49,26 +49,28 @@ public class DaneTest implements Test
     public void periodic()
     {
         // move to position
-        if(joystick.getRawButton(1))
-        {
-            pivot.setAngle(180.0, 0.02);
-        }
+        
 
         // controls to move up/down
         // if(pivot.returnAngle() > 0.0 && pivot.returnAngle() < 90.0)
         // {
-        //     if(joystick.getRawAxis(1) > 0.25)
-        //     {
-        //         pivot.moveUp(0.1);
-        //     }
-        //     else if(joystick.getRawAxis(1) < -0.25)
-        //     {
-        //         pivot.moveDown(0.1);
-        //     }
-        //     else
-        //     {
-        //         pivot.stop();
-        //     }
+        if(joystick.getRawButton(2))
+        {
+            pivot.moveUp(0.1);
+        }
+        else if(joystick.getRawButton(3))
+        {
+            pivot.moveDown(0.1);
+        }
+        else if(joystick.getRawButton(1)  && (pivot.returnAngle() > 182.0 || pivot.returnAngle() < 172.0))
+        {
+            pivot.setAngle(180.0, 0.02);
+        }
+        else
+        {
+            pivot.stop();
+        }
+            
         // }
         
     }

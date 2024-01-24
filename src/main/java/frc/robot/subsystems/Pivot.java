@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 
 import frc.robot.motors.TalonFX4237;
-import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Constants;
 
@@ -36,7 +35,7 @@ public class Pivot extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
-    private BangBangController controller = new BangBangController();
+
 
 
 
@@ -66,7 +65,6 @@ public class Pivot extends Subsystem4237
     public void moveUp(double speed)
     {
         periodicData.motorSpeed = speed;
-        // motor.set(periodicData.motorSpeed);
     }
 
     public void moveDown(double speed)
@@ -81,18 +79,22 @@ public class Pivot extends Subsystem4237
 
     public double returnAngle()
     {
-        // return 360.0 * rotaryEncoder.getAbsolutePosition();
         return periodicData.currentAngle;
+    }
+
+    public double getPosition()
+    {
+        return periodicData.currentPosition;
     }
 
     public void setAngle(double degrees, double speed)
     {
         //setAngle using FalconFX encoder
-        if(periodicData.currentAngle > (degrees + 16))
+        if(periodicData.currentAngle > (degrees + 2))
         {
             moveDown(speed);
         }
-        else if(periodicData.currentAngle < (degrees - 16))
+        else if(periodicData.currentAngle < (degrees - 2))
         {
             moveUp(speed);
         }
@@ -100,7 +102,6 @@ public class Pivot extends Subsystem4237
         {
             stop();
         }
-
 
         //setAngle using rotary encoder
         // if(periodicData.currentAngle > (degrees + 2))
