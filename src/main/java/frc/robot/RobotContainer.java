@@ -65,9 +65,9 @@ public class RobotContainer
     private boolean useFlywheel             = false;
     private boolean useIntake               = false;
     private boolean useAmpAssist            = false; 
-    private boolean usePivot                = false;
+    private boolean usePivot                = true;
     private boolean useIntakePositioning    = false;
-    private boolean useShuttle              = false;
+    private boolean useShuttle              = true;
     private boolean useClimb                = false;
     private boolean useIndex                = false;
     private boolean useUltrasonic           = false;
@@ -81,7 +81,7 @@ public class RobotContainer
     private boolean useCameraFour           = false;
     private boolean usePoseEstimator        = false;
 
-    private boolean useMainShuffleboard		= false;    
+    private boolean useMainShuffleboard		= true;    
     private boolean useDriverController		= false;
     private boolean useOperatorController 	= false;
     private boolean useBindings				= false;

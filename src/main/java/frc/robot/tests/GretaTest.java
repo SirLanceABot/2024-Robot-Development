@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.CANSparkMax;
 
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
 
 public class GretaTest implements Test
@@ -28,6 +29,7 @@ public class GretaTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Shuttle shuttleSuzie;
+    private final Pivot pivotPriscilla;
     private final Joystick joystick = new Joystick(0); 
     
     // *** CLASS CONSTRUCTOR ***
@@ -37,6 +39,7 @@ public class GretaTest implements Test
 
         this.robotContainer = robotContainer;
         shuttleSuzie = robotContainer.shuttle;
+        pivotPriscilla = robotContainer.pivot;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -55,14 +58,17 @@ public class GretaTest implements Test
         if (joystick.getRawButton(1))
         {
             shuttleSuzie.moveUpward();
+            pivotPriscilla.moveUp(0.11);
         }
         else if (joystick.getRawButton(2))
         {
             shuttleSuzie.moveDownward();
+            pivotPriscilla.moveDown(-0.11);
         }
         else
         {
             shuttleSuzie.off();
+            pivotPriscilla.stop();
         }
         
         if (joystick.getRawButton(3))
