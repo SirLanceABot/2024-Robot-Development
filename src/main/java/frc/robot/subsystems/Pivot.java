@@ -36,7 +36,7 @@ public class Pivot extends Subsystem4237
     private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
     //PID values
-    private final double kP = 0.00003;
+    private final double kP = 0.00005;
     private final double kD = 0.0;
     private final double kI = 0.0;
     private final int slotId = 0;
@@ -92,14 +92,19 @@ public class Pivot extends Subsystem4237
         return periodicData.currentPosition;
     }
 
+    public void resetEncoder()
+    {
+        motor.setPosition(0.0);
+    }
+
     public void setAngle(double degrees, double speed)
     {
         //setAngle using FalconFX encoder
-        if(periodicData.currentAngle > (degrees + 2))
+        if(periodicData.currentAngle > (degrees + 1))
         {
             moveDown(speed);
         }
-        else if(periodicData.currentAngle < (degrees - 2))
+        else if(periodicData.currentAngle < (degrees - 1))
         {
             moveUp(speed);
         }
@@ -137,7 +142,7 @@ public class Pivot extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        //System.out.println("currentAngle = " + periodicData.currentAngle); 
+        System.out.println("currentAngle = " + periodicData.currentAngle); 
         //System.out.println("currentPosition = " + motor.getPosition());
         motor.set(periodicData.motorSpeed);
     }
