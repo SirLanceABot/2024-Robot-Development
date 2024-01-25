@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -20,6 +22,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
@@ -233,7 +236,7 @@ public class Drivetrain extends Subsystem4237
 
         // setSafetyEnabled(true);
 
-        configureAutoBuilder();
+        // configureAutoBuilder();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -441,10 +444,10 @@ public class Drivetrain extends Subsystem4237
 
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
-        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
+        // ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);
         // System.out.println(targetSpeeds);
-        periodicData.targetStatesPP = kinematics.toSwerveModuleStates(targetSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.targetStatesPP, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+        // periodicData.targetStatesPP = kinematics.toSwerveModuleStates(targetSpeeds);
+        // SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.targetStatesPP, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
         // System.out.println(periodicData.targetStatesPP);
 
         // frontLeft.setDesiredState(targetStates[0]);
@@ -453,11 +456,11 @@ public class Drivetrain extends Subsystem4237
         // backRight.setDesiredState(targetStates[3]);
         
         // System.out.println(chassisSpeeds);
-        // driveMode = DriveMode.kDrive;
-        // periodicData.fieldRelative = false;
+        driveMode = DriveMode.kDrive;
+        periodicData.fieldRelative = false;
         // periodicData.chassisSpeeds = chassisSpeeds;
-        // periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-        // SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+        periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
         // System.out.println(periodicData.swerveModuleStates);
     }
 
@@ -975,6 +978,38 @@ public class Drivetrain extends Subsystem4237
 
     //     return (Math.abs(angleToTurn) < angleThreshold);
     // }
+
+    public Command followPathCommand(String pathName) {
+        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+
+        // path.getPreviewStartingHolonomicPose()
+
+        return new FollowPathHolonomic(
+                path,
+                poseEstimator::getEstimatedPose, // Robot pose supplier
+                this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                        Constants.DrivetrainConstants.MAX_DRIVE_SPEED, // Max module speed, in m/s
+                        0.417, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+    }
 
 
 }
