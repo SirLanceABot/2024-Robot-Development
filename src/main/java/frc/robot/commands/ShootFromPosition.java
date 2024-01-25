@@ -9,16 +9,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.ShootingPosition;
 import frc.robot.subsystems.AmpAssist;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Pivot;
 // import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.PoseEstimator;
 
 /** 
  * An example command that uses an example subsystem. 
  */
-public class ShootToAmp extends SequentialCommandGroup 
+public class ShootFromPosition extends SequentialCommandGroup 
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -35,26 +38,34 @@ public class ShootToAmp extends SequentialCommandGroup
     private final Index index;
     private final Pivot pivot;
     private final AmpAssist ampAssist;
+    private final ShootingPosition shootingPosition;
+    private final PoseEstimator poseEstimator;
+    private final Drivetrain drivetrain;
 
     /**
      * Creates a new ExampleCommand.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ShootToAmp(Flywheel flywheel, Index index, Pivot pivot, AmpAssist ampAssist) 
+    public ShootFromPosition(Flywheel flywheel, Index index, Pivot pivot, AmpAssist ampAssist, PoseEstimator poseEstimator, Drivetrain drivetrain, ShootingPosition shootingPosition) 
     {
         this.flywheel = flywheel;
         this.index = index;
         this.pivot = pivot;
         this.ampAssist = ampAssist;
+        this.shootingPosition = shootingPosition;
+        this.poseEstimator = poseEstimator;
+        this.drivetrain = drivetrain;
         
         // Use addRequirements() here to declare subsystem dependencies.
-        if(flywheel != null && index != null && pivot != null && ampAssist != null)
+        if(flywheel != null && index != null && pivot != null && ampAssist != null && poseEstimator != null && drivetrain != null)
         {
             addRequirements(this.flywheel);
             addRequirements(this.index);
             addRequirements(this.pivot);
             addRequirements(this.ampAssist);
+            addRequirements(this.poseEstimator);
+            addRequirements(this.drivetrain);
 
             build();
         }
@@ -84,13 +95,44 @@ public class ShootToAmp extends SequentialCommandGroup
     
     private void build()
     {
+        switch(shootingPosition)
+        {
+            case kSpeakerBase:
+                break;
 
+            case kPodium:
+                break;
+
+            case kRandomPosition:
+                
+                break;
+
+            case kToAmp:
+                addCommands(new ParallelCommandGroup(
+                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                (new InstantCommand( () -> flywheel.shoot(0.4))),
+                (new InstantCommand( () -> ampAssist.extend()))
+                ));
+                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
+                break;
+
+            case kOff:
+                addCommands(new ParallelCommandGroup(
+                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                (new InstantCommand( () -> flywheel.shoot(0.0))),
+                (new InstantCommand( () -> ampAssist.extend()))
+                ));
+                addCommands(new InstantCommand( () -> index.feedNote(0.0)));
+                break;
+            
+
+            
+        }
         addCommands(new ParallelCommandGroup(
         (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
         (new InstantCommand( () -> flywheel.shoot(0.6)))
         ));
-
-        // addCommands(new InstantCommands)
+        addCommands(new InstantCommand( () -> index.feedNote(0.6)));
     }
     
     @Override

@@ -173,6 +173,8 @@ public final class Constants
 
         public static final double ENCODER_TICKS_PER_DEGREE     = 5.689;
         public static final double ENCODER_TICKS_PER_REVOLUTION = 2048;
+        public static final double CAN_CODER                    = 20.0;
+        public static final String CAN_CODER_CAN_BUS            = ROBORIO;
     }
 
     public static class Shuttle
@@ -349,5 +351,10 @@ public final class Constants
         public static final int rotationPitchDegreesIndex = 4;
         public static final int rotationYawDegreesIndex = 5;
         public static final int totalLatencyIndex = 6;
+    }
+
+    public enum ShootingPosition
+    {
+        kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;
     }
 }
