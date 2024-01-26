@@ -99,7 +99,7 @@ public class ShootFromPosition extends SequentialCommandGroup
         {
             case kSpeakerBase:
                 addCommands(new ParallelCommandGroup(
-                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.4))),
                 (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
@@ -108,7 +108,7 @@ public class ShootFromPosition extends SequentialCommandGroup
 
             case kPodium:
                 addCommands(new ParallelCommandGroup(
-                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.4))),
                 (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
@@ -117,7 +117,7 @@ public class ShootFromPosition extends SequentialCommandGroup
 
             case kRandomPosition:
                 addCommands(new ParallelCommandGroup(
-                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.4))),
                 (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
@@ -126,7 +126,7 @@ public class ShootFromPosition extends SequentialCommandGroup
 
             case kToAmp:
                 addCommands(new ParallelCommandGroup(
-                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.4))),
                 (new InstantCommand( () -> ampAssist.extend()))
                 ));
@@ -135,7 +135,7 @@ public class ShootFromPosition extends SequentialCommandGroup
 
             case kOff:
                 addCommands(new ParallelCommandGroup(
-                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.0))),
                 (new InstantCommand( () -> ampAssist.retract()))
                 ));

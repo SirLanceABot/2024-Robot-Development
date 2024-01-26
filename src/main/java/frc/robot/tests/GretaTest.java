@@ -61,13 +61,13 @@ public class GretaTest implements Test
         if (joystick.getRawButton(1))
         {
             shuttleSuzie.moveUpward();
-            pivotPriscilla.moveUp(0.35);
+            // pivotPriscilla.moveUp(0.35);
             flyWheelFiona.shoot(0.35);
         }
         else if (joystick.getRawButton(2))
         {
             shuttleSuzie.moveDownward();
-            pivotPriscilla.moveDown(-0.35);
+            // pivotPriscilla.moveDown(-0.35);
         }
         else
         {
