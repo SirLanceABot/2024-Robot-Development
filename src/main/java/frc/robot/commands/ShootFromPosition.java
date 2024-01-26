@@ -100,7 +100,8 @@ public class ShootFromPosition extends SequentialCommandGroup
             case kSpeakerBase:
                 addCommands(new ParallelCommandGroup(
                 (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                (new InstantCommand( () -> flywheel.shoot(0.4))),
+                (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
                 addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
@@ -108,7 +109,8 @@ public class ShootFromPosition extends SequentialCommandGroup
             case kPodium:
                 addCommands(new ParallelCommandGroup(
                 (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                (new InstantCommand( () -> flywheel.shoot(0.4))),
+                (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
                 addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
@@ -116,7 +118,8 @@ public class ShootFromPosition extends SequentialCommandGroup
             case kRandomPosition:
                 addCommands(new ParallelCommandGroup(
                 (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                (new InstantCommand( () -> flywheel.shoot(0.4))),
+                (new InstantCommand( () -> drivetrain.rotateForShooting()))
                 ));
                 addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
