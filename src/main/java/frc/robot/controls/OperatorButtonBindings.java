@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.ShootingPosition;
+import frc.robot.commands.ShootFromPosition;
 
 
 // ------------------------------------------------------------------------------------------
@@ -101,8 +103,10 @@ public class OperatorButtonBindings
         BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        if(robotContainer.drivetrain != null)
-        {}
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
+        {
+            aButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kSpeakerBase));
+        }
     }
 
     private void configBButton()
@@ -111,8 +115,10 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        if(true)
-        {}
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
+        {
+            bButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kToAmp));
+        }
     }
 
     private void configXButton()
@@ -121,8 +127,10 @@ public class OperatorButtonBindings
         BooleanSupplier xButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kX);
         Trigger xButtonTrigger = new Trigger(xButton);
 
-        if(true)
-        {}
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
+        {
+            xButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kRandomPosition));
+        }
     }
 
     private void configYButton()
@@ -131,8 +139,10 @@ public class OperatorButtonBindings
         BooleanSupplier yButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        if(true)
-        {}
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
+        {
+            yButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kPodium));
+        }
     }
 
     private void configLeftBumper()

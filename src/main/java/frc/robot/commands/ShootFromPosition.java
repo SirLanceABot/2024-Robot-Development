@@ -16,7 +16,7 @@ import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Pivot;
 // import frc.robot.subsystems.Shuttle;
-import frc.robot.subsystems.PoseEstimator;
+// import frc.robot.subsystems.PoseEstimator;
 
 /** 
  * An example command that uses an example subsystem. 
@@ -39,7 +39,7 @@ public class ShootFromPosition extends SequentialCommandGroup
     private final Pivot pivot;
     private final AmpAssist ampAssist;
     private final ShootingPosition shootingPosition;
-    private final PoseEstimator poseEstimator;
+    // private final PoseEstimator poseEstimator;
     private final Drivetrain drivetrain;
 
     /**
@@ -47,24 +47,24 @@ public class ShootFromPosition extends SequentialCommandGroup
      *
      * @param subsystem The subsystem used by this command.
      */
-    public ShootFromPosition(Flywheel flywheel, Index index, Pivot pivot, AmpAssist ampAssist, PoseEstimator poseEstimator, Drivetrain drivetrain, ShootingPosition shootingPosition) 
+    public ShootFromPosition(Flywheel flywheel, Index index, Pivot pivot, AmpAssist ampAssist, Drivetrain drivetrain, ShootingPosition shootingPosition) 
     {
         this.flywheel = flywheel;
         this.index = index;
         this.pivot = pivot;
         this.ampAssist = ampAssist;
         this.shootingPosition = shootingPosition;
-        this.poseEstimator = poseEstimator;
+        // this.poseEstimator = poseEstimator;
         this.drivetrain = drivetrain;
         
         // Use addRequirements() here to declare subsystem dependencies.
-        if(flywheel != null && index != null && pivot != null && ampAssist != null && poseEstimator != null && drivetrain != null)
+        if(flywheel != null && index != null && pivot != null && ampAssist != null && drivetrain != null)
         {
             addRequirements(this.flywheel);
             addRequirements(this.index);
             addRequirements(this.pivot);
             addRequirements(this.ampAssist);
-            addRequirements(this.poseEstimator);
+            // addRequirements(this.poseEstimator);
             addRequirements(this.drivetrain);
 
             build();
@@ -98,13 +98,27 @@ public class ShootFromPosition extends SequentialCommandGroup
         switch(shootingPosition)
         {
             case kSpeakerBase:
+                addCommands(new ParallelCommandGroup(
+                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                ));
+                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
 
             case kPodium:
+                addCommands(new ParallelCommandGroup(
+                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                ));
+                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
 
             case kRandomPosition:
-                
+                addCommands(new ParallelCommandGroup(
+                (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+                (new InstantCommand( () -> flywheel.shoot(0.4)))
+                ));
+                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
                 break;
 
             case kToAmp:
@@ -120,7 +134,7 @@ public class ShootFromPosition extends SequentialCommandGroup
                 addCommands(new ParallelCommandGroup(
                 (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
                 (new InstantCommand( () -> flywheel.shoot(0.0))),
-                (new InstantCommand( () -> ampAssist.extend()))
+                (new InstantCommand( () -> ampAssist.retract()))
                 ));
                 addCommands(new InstantCommand( () -> index.feedNote(0.0)));
                 break;
@@ -128,11 +142,6 @@ public class ShootFromPosition extends SequentialCommandGroup
 
             
         }
-        addCommands(new ParallelCommandGroup(
-        (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-        (new InstantCommand( () -> flywheel.shoot(0.6)))
-        ));
-        addCommands(new InstantCommand( () -> index.feedNote(0.6)));
     }
     
     @Override
