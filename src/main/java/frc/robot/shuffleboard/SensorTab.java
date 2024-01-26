@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
+// import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.RobotContainer;
@@ -29,6 +32,9 @@ public class SensorTab
     private Drivetrain drivetrain;
     private Shuttle shuttle;
     private Pivot pivot;
+    private Flywheel flyWheel;
+    // private Index index;
+
     private GenericEntry gyroBox;
     private GenericEntry flsEncoderBox;
     private GenericEntry frsEncoderBox;
@@ -36,6 +42,8 @@ public class SensorTab
     private GenericEntry brsEncoderBox;
     private GenericEntry shuttleEncoderBox;
     private GenericEntry pivotEncoderBox;
+    private GenericEntry flyWheelEncoderBox;
+    // private GenericEntry indexEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -46,6 +54,8 @@ public class SensorTab
         this.gyro = robotContainer.gyro;
         this.shuttle = robotContainer.shuttle;
         this.pivot = robotContainer.pivot;
+        this.flyWheel = robotContainer.flywheel;
+        // this.index = robotContainer.index;
 
         if(drivetrain != null)
         {
@@ -69,6 +79,16 @@ public class SensorTab
         {
             pivotEncoderBox = createPivotEncoderBox();
         }
+
+        if(flyWheel != null)
+        {
+            flyWheelEncoderBox = createFlyWheelEncoderBox();
+        }
+
+        // // if(index != null)
+        // {
+        //     // indexEncoderBox = createIndexEncoderBox();
+        // }
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -123,16 +143,25 @@ public class SensorTab
         return sensorTab.add("Shuttle", shuttle.getPosition())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(8, 5)  // sets position of widget
-        .withSize(2, 2)    // sets size of widget
+        .withSize(3, 2)    // sets size of widget
         .getEntry();
     }
 
     private GenericEntry createPivotEncoderBox()
     {
-        return sensorTab.add("Pivot", pivot.getPosition())
+        return sensorTab.add("Pivot", pivot.getAngle())
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(10,5) // sets position of widget
-        .withSize(2,2)  // sets size of widge
+        .withPosition(8,7) // sets position of widget
+        .withSize(3,2)  // sets size of widget
+        .getEntry();
+    }
+
+    private GenericEntry createFlyWheelEncoderBox()
+    {
+        return sensorTab.add("Fly Wheel", flyWheel.getPosition())
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(8,10) // sets position of widget
+        .withSize(4,2) //sets size of widget
         .getEntry();
     }
 
@@ -158,7 +187,12 @@ public class SensorTab
 
         if(pivot != null)
         {
-            pivotEncoderBox.setDouble(round(pivot.getPosition(), 3));
+            pivotEncoderBox.setDouble(round(pivot.getAngle(), 3));
+        }
+
+        if(flyWheel != null)
+        {
+            flyWheelEncoderBox.setDouble(round(flyWheel.getPosition(),3));
         }
     }
 

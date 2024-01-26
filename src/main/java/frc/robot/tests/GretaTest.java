@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import com.revrobotics.CANSparkMax;
 
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
 
@@ -30,6 +31,7 @@ public class GretaTest implements Test
     private final RobotContainer robotContainer;
     private final Shuttle shuttleSuzie;
     private final Pivot pivotPriscilla;
+    private final Flywheel flyWheelFiona;
     private final Joystick joystick = new Joystick(0); 
     
     // *** CLASS CONSTRUCTOR ***
@@ -40,6 +42,7 @@ public class GretaTest implements Test
         this.robotContainer = robotContainer;
         shuttleSuzie = robotContainer.shuttle;
         pivotPriscilla = robotContainer.pivot;
+        flyWheelFiona = robotContainer.flywheel;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -58,22 +61,26 @@ public class GretaTest implements Test
         if (joystick.getRawButton(1))
         {
             shuttleSuzie.moveUpward();
-            pivotPriscilla.moveUp(0.11);
+            pivotPriscilla.moveUp(0.35);
+            flyWheelFiona.shoot(0.35);
         }
         else if (joystick.getRawButton(2))
         {
             shuttleSuzie.moveDownward();
-            pivotPriscilla.moveDown(-0.11);
+            pivotPriscilla.moveDown(-0.35);
         }
         else
         {
             shuttleSuzie.off();
             pivotPriscilla.stop();
+            flyWheelFiona.turnOff();
         }
         
         if (joystick.getRawButton(3))
         {
             shuttleSuzie.resetEncoder();
+            pivotPriscilla.resetEncoder();
+            flyWheelFiona.resetEncoder();
         }
 
         robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
