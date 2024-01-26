@@ -357,4 +357,9 @@ public final class Constants
     {
         kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;
     }
+
+    public enum TeamColor
+    {
+        kBlue, kRed;
+    }
 }
