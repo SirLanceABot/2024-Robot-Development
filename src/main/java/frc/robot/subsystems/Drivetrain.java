@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
@@ -28,6 +29,7 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
 import frc.robot.Constants.TeamColor;
 import frc.robot.controls.AdaptiveSlewRateLimiter;
+import frc.robot.controls.Xbox;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 
@@ -525,6 +527,15 @@ public class Drivetrain extends Subsystem4237
         adaptiveYRateLimiter.reset(0.0);
     }
 
+    public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale)
+    {
+        return this.runOnce(
+            () -> drive(
+                xSpeed.getAsDouble() * scale.getAsDouble(),
+                ySpeed.getAsDouble() * scale.getAsDouble(),
+                turn.getAsDouble(), 
+                true));
+    }
 
     @Override
     public void readPeriodicInputs()

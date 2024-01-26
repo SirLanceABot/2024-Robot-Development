@@ -3,9 +3,9 @@ package frc.robot.controls;
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
-import frc.robot.commands.SwerveDrive;
 
 
 // ------------------------------------------------------------------------------------------
@@ -60,7 +60,12 @@ public class DriverButtonBindings
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-   
+
+    private double scaleFactor = 0.5;
+    private DoubleSupplier leftYAxis;
+    private DoubleSupplier leftXAxis;
+    private DoubleSupplier rightXAxis;
+    private DoubleSupplier scaleFactorSupplier;
 
     // *** CLASS CONSTRUCTOR ***
     public DriverButtonBindings(RobotContainer robotContainer)
@@ -71,6 +76,11 @@ public class DriverButtonBindings
         
         if(robotContainer.driverController != null)
         {
+            scaleFactorSupplier = () -> scaleFactor;
+            leftYAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftY, scaleFactorSupplier);
+            leftXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftX, scaleFactorSupplier);
+            rightXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kRightX);
+            
             configAButton();
             configBButton();
             configXButton();
@@ -147,8 +157,11 @@ public class DriverButtonBindings
         BooleanSupplier rightBumper = robotContainer.driverController.getButtonSupplier(Xbox.Button.kRightBumper);
         Trigger rightBumperTrigger = new Trigger(rightBumper);
 
-        if(true)
-        {}
+        if(robotContainer.drivetrain != null)
+        {
+            rightBumperTrigger.toggleOnTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.5));
+            // rightBumperTrigger.onFalse(Commands.runOnce(() -> scaleFactor = 1.0));
+        }
     }
 
     private void configBackButton()
@@ -229,14 +242,15 @@ public class DriverButtonBindings
     private void configDefaultCommands()
     {
         // Axis, driving and rotating
-        DoubleSupplier leftYAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftY);
-        DoubleSupplier leftXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftX);
-        DoubleSupplier rightXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kRightX);
+        // DoubleSupplier leftYAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftY);
+        // DoubleSupplier leftXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kLeftX);
+        // DoubleSupplier rightXAxis = robotContainer.driverController.getAxisSupplier(Xbox.Axis.kRightX);
         
         // Default Commands
         if(robotContainer.drivetrain != null)
         {
-            robotContainer.drivetrain.setDefaultCommand(new SwerveDrive(robotContainer.drivetrain, leftYAxis, leftXAxis, rightXAxis, true));
+            robotContainer.drivetrain.setDefaultCommand(robotContainer.drivetrain.driveCommand(leftYAxis, leftXAxis, rightXAxis, scaleFactorSupplier));
+            // robotContainer.drivetrain.setDefaultCommand(new SwerveDrive(robotContainer.drivetrain, leftYAxis, leftXAxis, rightXAxis, true));
         }
     }
 }
