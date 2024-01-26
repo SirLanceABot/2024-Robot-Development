@@ -42,7 +42,9 @@ public class PoseEstimator extends Subsystem4237
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
-    
+    private double[] blueSpeakerCoords = {0.0, 5.55};
+    private double[] redSpeakerCoords = {16.54, 5.55};
+
     private class Cam
     {
         private Pose3d pose;
@@ -115,6 +117,26 @@ public class PoseEstimator extends Subsystem4237
             return new Pose2d();
         }
         
+    }
+
+    public double getAngleToBlueSpeaker()
+    {
+        double deltaX = blueSpeakerCoords[0] - periodicData.estimatedPose.getX();
+        deltaX = Math.abs(deltaX);
+        double deltaY = blueSpeakerCoords[1] - periodicData.estimatedPose.getY();
+        deltaY = Math.abs(deltaY);
+        double angleRads = Math.asin(deltaY / deltaX);
+        return 180 - Math.toDegrees(angleRads);
+    }
+
+        public double getAngleToRedSpeaker()
+    {
+        double deltaX = redSpeakerCoords[0] - periodicData.estimatedPose.getX();
+        deltaX = Math.abs(deltaX);
+        double deltaY = redSpeakerCoords[1] - periodicData.estimatedPose.getY();
+        deltaY = Math.abs(deltaY);
+        double angleRads = Math.asin(deltaY / deltaX);
+        return Math.toDegrees(angleRads);
     }
 
     @Override
