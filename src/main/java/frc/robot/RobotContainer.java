@@ -65,7 +65,7 @@ public class RobotContainer
     private boolean useFlywheel             = false;
     private boolean useIntake               = false;
     private boolean useAmpAssist            = false; 
-    private boolean usePivot                = false;
+    private boolean usePivot                = true;
     private boolean useIntakePositioning    = false;
     private boolean useShuttle              = false;
     private boolean useClimb                = false;

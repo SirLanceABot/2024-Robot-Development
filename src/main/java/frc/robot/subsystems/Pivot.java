@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+
 import frc.robot.motors.TalonFX4237;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import frc.robot.Constants;
@@ -31,15 +33,17 @@ public class Pivot extends Subsystem4237
     }
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-
+    private final CANcoder pivotAngle = new CANcoder(20, Constants.Pivot.MOTOR_CAN_BUS);
     private PeriodicData periodicData = new PeriodicData();
-    private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
+    // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
     //PID values
-    private final double kP = 0.00005;
+    private final double kP = 4.0;
     private final double kD = 0.0;
     private final double kI = 0.0;
     private final int slotId = 0;
+
+    private double position = 0.0;
 
 
 
@@ -59,22 +63,25 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         motor.setPosition(0.0);
-        motor.setupPositionConversionFactor(0.00048828);
+        //motor.setupPositionConversionFactor(0.00048828);
+        motor.setupRemoteCANCoder(20);
         motor.setupPIDController(slotId, kP, kI, kD);
+        
+
 
         // Soft Limits
-        motor.setupForwardSoftLimit(6144.0, true);
-        motor.setupReverseSoftLimit(-6144.0, true);
+        motor.setupForwardSoftLimit(6144.0, false);
+        motor.setupReverseSoftLimit(-6144.0, false);
     }
 
-    public void moveUp(double speed)
+    public void moveUp()
     {
-        periodicData.motorSpeed = speed;
+        periodicData.motorSpeed = Constants.Pivot.MOTOR_SPEED;
     }
 
-    public void moveDown(double speed)
+    public void moveDown()
     {
-        periodicData.motorSpeed = -speed;
+        periodicData.motorSpeed = -Constants.Pivot.MOTOR_SPEED;
     }
 
     public void stop()
@@ -95,18 +102,26 @@ public class Pivot extends Subsystem4237
     public void resetEncoder()
     {
         motor.setPosition(0.0);
+        pivotAngle.setPosition(0.0);
     }
 
-    public void setAngle(double degrees, double speed)
+    public void setPosition(double degrees)
+    {
+        position = degrees;
+    }
+
+    
+
+    public void setAngle(double degrees)
     {
         //setAngle using FalconFX encoder
-        if(periodicData.currentAngle > (degrees + 1))
+        if(periodicData.currentAngle > (degrees + 5))
         {
-            moveDown(speed);
+            moveDown();
         }
-        else if(periodicData.currentAngle < (degrees - 1))
+        else if(periodicData.currentAngle < (degrees - 5))
         {
-            moveUp(speed);
+            moveUp();
         }
         else
         {
@@ -135,8 +150,8 @@ public class Pivot extends Subsystem4237
         //periodicData.currentAngle = 360.0 * rotaryEncoder.getAbsolutePosition();
 
         //Using TalonFX encoder
-        periodicData.currentPosition = motor.getPosition();
-        periodicData.currentAngle = periodicData.currentPosition / Constants.Pivot.ENCODER_TICKS_PER_DEGREE;
+        periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
+        periodicData.currentAngle = periodicData.currentPosition * 360.0;
     }
 
     @Override
@@ -144,7 +159,8 @@ public class Pivot extends Subsystem4237
     {
         System.out.println("currentAngle = " + periodicData.currentAngle); 
         //System.out.println("currentPosition = " + motor.getPosition());
-        motor.set(periodicData.motorSpeed);
+        //motor.set(periodicData.motorSpeed);
+        motor.setPosition(position);
     }
 
     @Override

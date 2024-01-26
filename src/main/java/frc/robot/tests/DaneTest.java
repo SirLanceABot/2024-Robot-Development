@@ -56,15 +56,16 @@ public class DaneTest implements Test
         // {
         if(joystick.getRawButton(2))
         {
-            pivot.moveUp(0.05);
+            pivot.moveUp();
         }
         else if(joystick.getRawButton(3))
         {
-            pivot.moveDown(0.05);
+            pivot.moveDown();
         }
         else if(joystick.getRawButton(1))
         {
-            pivot.setAngle(180.0, 0.0125);
+            // pivot.setAngle(180.0);
+            pivot.setPosition(0.0);
         }
         else
         {
@@ -72,7 +73,8 @@ public class DaneTest implements Test
         }
             
         // }
-        
+        if(joystick.getRawButton(4))
+            pivot.resetEncoder();
     }
     
     /**
@@ -80,7 +82,6 @@ public class DaneTest implements Test
      */
     public void exit()
     {
-        pivot.resetEncoder();
         pivot.stop();
     }
 

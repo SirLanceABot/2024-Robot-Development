@@ -51,6 +51,7 @@ public class TalonFX4237 extends MotorController4237
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
         motor.getConfigurator().refresh(feedbackConfigs);
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        motor.getConfigurator().apply(feedbackConfigs);
         this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
@@ -62,6 +63,15 @@ public class TalonFX4237 extends MotorController4237
     public void setupFactoryDefaults()
     {
         motor.getConfigurator().apply(new TalonFXConfiguration());
+    }
+
+    public void setupRemoteCANCoder(int remoteSensorId)
+    {
+        FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
+        motor.getConfigurator().refresh(feedbackConfigs);
+        feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        feedbackConfigs.FeedbackRemoteSensorID = remoteSensorId;
+        motor.getConfigurator().apply(feedbackConfigs);
     }
 
     /**
