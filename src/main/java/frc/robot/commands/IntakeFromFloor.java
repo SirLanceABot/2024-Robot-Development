@@ -13,10 +13,13 @@ import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Intake.Direction;
 import frc.robot.subsystems.Index.Direction1;
+import frc.robot.sensors.Proximity;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 /** 
  * An example command that uses an example subsystem. 
@@ -39,6 +42,8 @@ public class IntakeFromFloor extends SequentialCommandGroup
     private final Shuttle shuttle;
     private final Index index;
     private final Direction direction;
+    private final Proximity secondShuttleProximity;
+    private final Proximity indexProximity;
     SequentialCommandGroup group = new SequentialCommandGroup(this);
 
     /**
@@ -46,13 +51,15 @@ public class IntakeFromFloor extends SequentialCommandGroup
      *
      * @param subsystem The subsystem used by this command.
      */ 
-    public IntakeFromFloor(Intake intake, IntakePositioning intakePositioning, Shuttle shuttle, Index index, Direction direction) 
+    public IntakeFromFloor(Intake intake, IntakePositioning intakePositioning, Shuttle shuttle, Index index, Direction direction, Proximity secondShuttleProximity, Proximity indexProximity) 
     {
         this.intake = intake;
         this.intakePositioning = intakePositioning;
         this.shuttle = shuttle;
         this.index = index;
         this.direction = direction;
+        this.secondShuttleProximity = secondShuttleProximity;
+        this.indexProximity = indexProximity;
         // Use addRequirements() here to declare subsystem dependencies.
         if(intake != null && intakePositioning != null && shuttle != null && index != null)
         {
@@ -92,9 +99,18 @@ public class IntakeFromFloor extends SequentialCommandGroup
     private void build()
     {
         addCommands( new ParallelCommandGroup(
-        new InstantCommand(() -> intake.pickupFront()),
-        new InstantCommand(() -> intakePositioning.extend()))
-        );
+                     new InstantCommand(() -> intake.pickupFront()),
+                     new InstantCommand(() -> intakePositioning.extend()),
+                     new InstantCommand(() -> shuttle.moveUpward()),
+                     new InstantCommand(() -> index.acceptNote())));
+        addCommands( new WaitUntilCommand(() -> secondShuttleProximity.isDetected()));
+        addCommands( new ParallelCommandGroup(
+                     new InstantCommand(() -> intake.off()),
+                     new InstantCommand(() -> intakePositioning.retract())));
+        addCommands( new WaitUntilCommand(() -> indexProximity.isDetected()));
+        addCommands( new ParallelCommandGroup(
+                     new InstantCommand(() -> shuttle.off()),
+                     new InstantCommand(() -> index.turnOff())));
     }
     
     @Override

@@ -5,6 +5,10 @@ import java.lang.invoke.MethodHandles;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.IntakePositioning;
+import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake.Direction;
+import frc.robot.sensors.Proximity;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
+import frc.robot.commands.IntakeFromFloor;
 
 public class LoganTest implements Test
 {
@@ -36,6 +41,11 @@ public class LoganTest implements Test
     private Intake intake;
     private AmpAssist ampAssist;
     private IntakePositioning intakePositioning;
+    private Shuttle shuttle;
+    private Index index;
+    private Direction direction;
+    private Proximity secondShuttleProximity;
+    private Proximity indexProximity;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -44,9 +54,13 @@ public class LoganTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        intake = this.robotContainer.intake;
-        ampAssist = this.robotContainer.ampAssist;
-        intakePositioning = this.robotContainer.intakePositioning;
+        intake = robotContainer.intake;
+        ampAssist = robotContainer.ampAssist;
+        intakePositioning = robotContainer.intakePositioning;
+        shuttle = robotContainer.shuttle;
+        index = robotContainer.index;
+        secondShuttleProximity = robotContainer.secondShuttleProximity;
+        indexProximity = robotContainer.indexProximity;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -62,6 +76,7 @@ public class LoganTest implements Test
      */
     public void periodic()
     {
+        //MOTORS
         // if(joystick.getRawButton(1)) // A button
         // {
         //     topEncoderPosition = intake.getTopPosition();
@@ -101,16 +116,22 @@ public class LoganTest implements Test
         //     intake.off();
         // }
 
-        if(joystick.getRawButton(1)) // A button
-        {
-            System.out.println("Out.");
-            ampAssist.extend();
-        }
+        //PNEUMATICS
+    //     if(joystick.getRawButton(1)) // A button
+    //     {
+    //         System.out.println("Out.");
+    //         ampAssist.extend();
+    //     }
         
-        if(joystick.getRawButton(2)) // B button
+    //     if(joystick.getRawButton(2)) // B button
+    //     {
+    //         System.out.println("In.");
+    //         ampAssist.retract();
+    //     }
+
+        if(joystick.getRawButton(1))
         {
-            System.out.println("In.");
-            ampAssist.retract();
+            new IntakeFromFloor(intake, intakePositioning, shuttle, index, direction, secondShuttleProximity, indexProximity);
         }
     }
     
