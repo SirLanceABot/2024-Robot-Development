@@ -470,7 +470,7 @@ public class Drivetrain extends Subsystem4237
         // backLeft.setDesiredState(targetStates[2]);
         // backRight.setDesiredState(targetStates[3]);
         
-        // System.out.println(chassisSpeeds);
+        System.out.println(chassisSpeeds);
         driveMode = DriveMode.kDrive;
         periodicData.fieldRelative = false;
         // periodicData.chassisSpeeds = chassisSpeeds;
@@ -997,7 +997,7 @@ public class Drivetrain extends Subsystem4237
     public Command followPathCommand(String pathName) {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
-        // path.getPreviewStartingHolonomicPose()
+        resetPose(path.getPreviewStartingHolonomicPose());
 
         return new FollowPathHolonomic(
                 path,
