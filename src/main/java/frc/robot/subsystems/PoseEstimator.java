@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
@@ -58,7 +60,7 @@ public class PoseEstimator extends Subsystem4237
         // INPUTS
         private Rotation2d gyroRotation;
         private SwerveModulePosition[] swerveModulePositions;
-        private DriverStation.Alliance alliance;
+        private Optional<Alliance> alliance;
 
         private Cam cam1;
         private Cam cam2;
@@ -126,7 +128,19 @@ public class PoseEstimator extends Subsystem4237
         double deltaY = blueSpeakerCoords[1] - periodicData.estimatedPose.getY();
         deltaY = Math.abs(deltaY);
         double angleRads = Math.asin(deltaY / deltaX);
-        return 180 - Math.toDegrees(angleRads);
+        if(periodicData.estimatedPose.getY() > blueSpeakerCoords[1])
+        {
+            return 180.00 + Math.toDegrees(angleRads);
+        }
+        else if(periodicData.estimatedPose.getY() < blueSpeakerCoords[1])
+        {
+            return 180.00 - Math.toDegrees(angleRads);
+        }
+        else
+        {
+            return 180.00;
+        }
+        
     }
 
         public double getAngleToRedSpeaker()
@@ -153,7 +167,7 @@ public class PoseEstimator extends Subsystem4237
 
         
         
-        // periodicData.alliance = DriverStation.getAlliance();
+        periodicData.alliance = DriverStation.getAlliance();
 
         for(Camera camera : cameraArray)
         {
@@ -161,8 +175,8 @@ public class PoseEstimator extends Subsystem4237
             {
                 // update pose esitmator with limelight data (vision part)
                 poseEstimator.addVisionMeasurement(
-                    camera.getBotPose(periodicData.alliance).toPose2d(), 
-                    Timer.getFPGATimestamp() - (camera.getTotalLatency(periodicData.alliance) / 1000));
+                    camera.getBotPoseWPIBlue().toPose2d(), 
+                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
             }
         }
         

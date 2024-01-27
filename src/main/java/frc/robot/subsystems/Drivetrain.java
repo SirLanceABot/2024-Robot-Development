@@ -458,6 +458,11 @@ public class Drivetrain extends Subsystem4237
         // return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
     }
 
+    public double getAngleToBlueSpeaker()
+    {
+        return poseEstimator.getAngleToBlueSpeaker();
+    }
+
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
         // ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(chassisSpeeds, 0.02);

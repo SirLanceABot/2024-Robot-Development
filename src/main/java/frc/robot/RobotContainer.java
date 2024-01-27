@@ -60,8 +60,8 @@ public class RobotContainer
     private boolean useFullRobot			= false;
 
     private boolean useExampleSubsystem		= false;
-    private boolean useGyro					= true;
-    private boolean useDrivetrain   		= true;
+    private boolean useGyro					= false;
+    private boolean useDrivetrain   		= false;
     private boolean useFlywheel             = false;
     private boolean useIntake               = false;
     private boolean useAmpAssist            = false; 
@@ -82,9 +82,9 @@ public class RobotContainer
     private boolean usePoseEstimator        = false;
 
     private boolean useMainShuffleboard		= false;    
-    private boolean useDriverController		= true;
+    private boolean useDriverController		= false;
     private boolean useOperatorController 	= false;
-    private boolean useBindings				= true;
+    private boolean useBindings				= false;
 
     private boolean useDataLog				= false;
 

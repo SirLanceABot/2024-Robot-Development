@@ -4,8 +4,12 @@ import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
+import frc.robot.sensors.Camera;
+import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
 import frc.robot.subsystems.Candle4237;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Candle4237.LedStatus;
 
 public class BradyTest implements Test
@@ -23,9 +27,13 @@ public class BradyTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Candle4237 candle;
+    // private final Candle4237 candle;
     // private final Joystick bradysJoystick;
-    private final Proximity proximity;
+    // private final Proximity proximity;
+    private final Drivetrain drivetrain;
+    private final Gyro4237 gyro;
+    private final Camera[] cameraArray;
+    // private final PoseEstimator poseEstimator;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -34,9 +42,12 @@ public class BradyTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        candle = new Candle4237();
+        this.drivetrain = robotContainer.drivetrain;
+        this.gyro = robotContainer.gyro;
+        this.cameraArray = robotContainer.cameraArray;
+        // candle = new Candle4237();
         // bradysJoystick = new Joystick(0);
-        proximity = new Proximity(9);
+        // proximity = new Proximity(9);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -85,14 +96,16 @@ public class BradyTest implements Test
         //     candle.setRed(false);
         // }
 
-        if(proximity.isDetected())
-        {
-            System.out.println("True");
-        }
-        else
-        {
-            System.out.println("False");
-        }
+        // if(proximity.isDetected())
+        // {
+        //     System.out.println("True");
+        // }
+        // else
+        // {
+        //     System.out.println("False");
+        // }
+
+        System.out.println(drivetrain.getAngleToBlueSpeaker());
     }
     
     /**
