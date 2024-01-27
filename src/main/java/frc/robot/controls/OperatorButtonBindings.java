@@ -3,13 +3,16 @@ package frc.robot.controls;
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShootingPosition;
 import frc.robot.commands.ShootFromPosition;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 
 // ------------------------------------------------------------------------------------------
@@ -282,5 +285,46 @@ public class OperatorButtonBindings
     {
         // Default Commands
 
+    }
+
+    public Command intakeFromFloor()
+    {
+        SequentialCommandGroup scg = new SequentialCommandGroup();
+        // Command command = new SequentialCommandGroup();
+
+        scg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
+        scg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
+        scg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
+        ParallelCommandGroup pcg = new ParallelCommandGroup();
+
+        pcg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
+        pcg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
+        pcg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
+
+        // return
+        // Commands.runOnce(() -> robotContainer.intakePositioning.extend(),  robotContainer.intakePositioning)
+        //     .alongWith(
+        //         Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake),
+        //         Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle),
+        //         Commands.runOnce(() -> robotContainer.index.acceptNote(), robotContainer.index))
+        //     .andThen(
+        //         Commands.waitUntil(() -> robotContainer.secondShuttleProximity.isDetected()))
+        //     .andThen(
+        //         Commands.runOnce(() -> robotContainer.intake.stop(), robotContainer.intake)
+        //         .alongWith(
+        //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
+
+        return
+        robotContainer.intakePositioning.extendCommand()
+            .alongWith(
+                robotContainer.intake.pickupFrontCommand(),
+                robotContainer.shuttle.moveUpwardCommand(),
+                Commands.runOnce(() -> robotContainer.index.acceptNote(), robotContainer.index))
+            .andThen(
+                Commands.waitUntil(() -> robotContainer.secondShuttleProximity.isDetected()))
+            .andThen(
+                Commands.runOnce(() -> robotContainer.intake.stop(), robotContainer.intake)
+                .alongWith(
+                    Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
     }
 }

@@ -109,6 +109,7 @@ public class RobotContainer
     public final Proximity firstShuttleProximity;
     public final Proximity secondShuttleProximity;
     public final Proximity indexProximity;
+    public final Proximity indexWheelsProximity;
 
     public final Camera[] cameraArray = new Camera[4];
 
@@ -149,6 +150,7 @@ public class RobotContainer
         firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(9)                         : null;
         secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                         : null;
         indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                         : null;
+        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(6)                         : null;
 
         cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
         cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;

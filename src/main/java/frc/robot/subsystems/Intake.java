@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
@@ -143,6 +145,11 @@ public class Intake extends Subsystem4237
     {
         periodicData.topIntakeSpeed = speed;
         periodicData.bottomIntakeSpeed = speed;
+    }
+
+    public Command pickupFrontCommand()
+    {
+        return Commands.runOnce(() -> pickupFront(), this);
     }
 
     @Override

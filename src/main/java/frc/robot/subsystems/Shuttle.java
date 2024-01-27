@@ -7,6 +7,9 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 import com.revrobotics.RelativeEncoder; 
 import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
@@ -68,35 +71,29 @@ public class Shuttle extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
+    /**
+     * sets a soft limit, hard limit, brake mode and conversion factor for the Shuttle motor
+     */
+    private void configMotor()
+    {
+        motor.setupCoastMode();
+        motor.setupForwardSoftLimit(3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
+        motor.setupReverseSoftLimit(-3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
+
+        // motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
+        // motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled); // kReverse is downward movement
+        // motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        //motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    
+        motor.setupForwardHardLimitSwitch(true, true);
+        motor.setupReverseHardLimitSwitch(true, true);
+
+        motor.setupPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
+    }
+
     public double getPosition()
     {
         return periodicData.position;
-    }
-
-    @Override
-    public void readPeriodicInputs()
-    {
-        periodicData.position = motor.getPosition();
-    }
-
-    @Override
-    public void writePeriodicOutputs()
-    {
-        motor.set(periodicData.motorSpeed);
-    }
-
-    @Override
-    public void periodic()
-    {
-        //System.out.println("Encoder = " + motor.getPosition());
-        
-        // This method will be called once per scheduler run
-    }
-
-    @Override
-    public void simulationPeriodic()
-    {
-        // This method will be called once per scheduler run during simulation
     }
    
     /**
@@ -124,32 +121,42 @@ public class Shuttle extends Subsystem4237
         periodicData.motorSpeed = -0.02;
     }
 
-
-    /**
-     * sets a soft limit, hard limit, brake mode and conversion factor for the Shuttle motor
-     */
-    private void configMotor()
-    {
-        motor.setupBrakeMode();
-        motor.setupForwardSoftLimit(3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
-        motor.setupReverseSoftLimit(-3.0 * ROLLER_CIRCUMFRENCE_INCHES, true);
-
-        // motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
-        // motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled); // kReverse is downward movement
-        // motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        //motor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    
-        motor.setupForwardHardLimitSwitch(true, true);
-        motor.setupReverseHardLimitSwitch(true, true);
-
-        motor.setupPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
-    }
-
     /**
      * Resets the Encoder value to 0.
      */
     public void resetEncoder()
     {
         motor.setPosition(0.0);
+    }
+
+    public Command moveUpwardCommand()
+    {
+        return Commands.runOnce(() -> moveUpward(), this);
+    }
+
+    @Override
+    public void readPeriodicInputs()
+    {
+        periodicData.position = motor.getPosition();
+    }
+
+    @Override
+    public void writePeriodicOutputs()
+    {
+        motor.set(periodicData.motorSpeed);
+    }
+
+    @Override
+    public void periodic()
+    {
+        //System.out.println("Encoder = " + motor.getPosition());
+        
+        // This method will be called once per scheduler run
+    }
+
+    @Override
+    public void simulationPeriodic()
+    {
+        // This method will be called once per scheduler run during simulation
     }
 }
