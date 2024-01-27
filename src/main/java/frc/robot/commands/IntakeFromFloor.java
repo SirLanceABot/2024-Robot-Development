@@ -109,7 +109,7 @@ public class IntakeFromFloor extends SequentialCommandGroup
                      new InstantCommand(() -> intakePositioning.retract())));
         addCommands( new WaitUntilCommand(() -> indexProximity.isDetected()));
         addCommands( new ParallelCommandGroup(
-                     new InstantCommand(() -> shuttle.off()),
+                     new InstantCommand(() -> shuttle.stop()),
                      new InstantCommand(() -> index.turnOff())));
     }
     

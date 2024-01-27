@@ -102,7 +102,7 @@ public class Shuttle extends Subsystem4237
     /**
      * shuts off motor
      */
-    public void off()
+    public void stop()
     {
         periodicData.motorSpeed = 0.0;
     }

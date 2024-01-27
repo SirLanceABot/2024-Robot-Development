@@ -71,7 +71,7 @@ public class GretaTest implements Test
         }
         else
         {
-            shuttleSuzie.off();
+            shuttleSuzie.stop();
             pivotPriscilla.stop();
             flyWheelFiona.turnOff();
         }

@@ -33,7 +33,7 @@ public class SensorTab
     private Shuttle shuttle;
     private Pivot pivot;
     private Flywheel flyWheel;
-    // private Index index;
+    private Index index;
 
     private GenericEntry gyroBox;
     private GenericEntry fltEncoderBox;
@@ -43,7 +43,7 @@ public class SensorTab
     private GenericEntry shuttleEncoderBox;
     private GenericEntry pivotEncoderBox;
     private GenericEntry flyWheelEncoderBox;
-    // private GenericEntry indexEncoderBox;
+    private GenericEntry indexEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -55,7 +55,7 @@ public class SensorTab
         this.shuttle = robotContainer.shuttle;
         this.pivot = robotContainer.pivot;
         this.flyWheel = robotContainer.flywheel;
-        // this.index = robotContainer.index;
+        this.index = robotContainer.index;
 
         if(drivetrain != null)
         {
@@ -85,10 +85,10 @@ public class SensorTab
             flyWheelEncoderBox = createFlyWheelEncoderBox();
         }
 
-        // // if(index != null)
-        // {
-        //     // indexEncoderBox = createIndexEncoderBox();
-        // }
+        if(index != null)
+        {
+            indexEncoderBox = createIndexEncoderBox();
+        }
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -165,6 +165,15 @@ public class SensorTab
         .getEntry();
     }
 
+    private GenericEntry createIndexEncoderBox()
+    {
+        return sensorTab.add("Index", index.getPosition())
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(8,12) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
     public void updateEncoderData()
     {
         if(drivetrain != null)
@@ -193,6 +202,11 @@ public class SensorTab
         if(flyWheel != null)
         {
             flyWheelEncoderBox.setDouble(round(flyWheel.getPosition(),3));
+        }
+
+        if(index != null)
+        {
+            indexEncoderBox.setDouble(round(index.getPosition(),3));
         }
     }
 
