@@ -86,7 +86,7 @@ public class Index extends Subsystem4237
         periodicData.motorSpeed = -0.1;
     }
 
-    public void turnOff()
+    public void stop()
     {
         periodicData.motorSpeed = 0.0;
     }

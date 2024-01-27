@@ -110,7 +110,7 @@ public class IntakeFromFloor extends SequentialCommandGroup
         addCommands( new WaitUntilCommand(() -> indexProximity.isDetected()));
         addCommands( new ParallelCommandGroup(
                      new InstantCommand(() -> shuttle.stop()),
-                     new InstantCommand(() -> index.turnOff())));
+                     new InstantCommand(() -> index.stop())));
     }
     
     @Override

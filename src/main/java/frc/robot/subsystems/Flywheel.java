@@ -123,7 +123,7 @@ public class Flywheel extends Subsystem4237
         periodicData.flywheelSpeed = -0.1;
     }
 
-    public void turnOff()
+    public void stop()
     {
         periodicData.flywheelSpeed = 0.0;
     }
