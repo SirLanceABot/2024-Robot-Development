@@ -7,6 +7,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.motors.TalonFX4237;
 
@@ -114,6 +116,16 @@ public class Index extends Subsystem4237
     public void setVelocity(double speed)
     {
         periodicData.motorSpeed = speed;
+    }
+
+    public Command acceptNoteCommand()
+    {
+        return Commands.runOnce(() -> acceptNoteCommand(), this);
+    }
+
+    public Command stopCommand()
+    {
+        return Commands.runOnce(() -> stop(), this);
     }
 
     @Override

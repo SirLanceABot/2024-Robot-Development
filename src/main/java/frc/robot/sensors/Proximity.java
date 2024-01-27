@@ -1,9 +1,12 @@
 package frc.robot.sensors;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class Proximity extends Sensor4237
 {
@@ -54,6 +57,11 @@ public class Proximity extends Sensor4237
     public boolean getValue()
     {
         return periodicData.value;
+    }
+
+    public BooleanSupplier isDetectedSupplier()
+    {
+        return () -> isDetected();
     }
 
     @Override

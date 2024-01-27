@@ -77,6 +77,11 @@ public class IntakePositioning extends Subsystem4237
         return Commands.runOnce(() -> extend(), this);
     }
 
+    public Command retractCommand()
+    {
+        return Commands.runOnce(() -> retract(), this);
+    }
+
     @Override
     public void readPeriodicInputs()
     {

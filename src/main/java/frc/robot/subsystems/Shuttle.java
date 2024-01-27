@@ -134,6 +134,11 @@ public class Shuttle extends Subsystem4237
         return Commands.runOnce(() -> moveUpward(), this);
     }
 
+    public Command stopCommand()
+    {
+        return Commands.runOnce(() -> stop(), this);
+    }
+
     @Override
     public void readPeriodicInputs()
     {

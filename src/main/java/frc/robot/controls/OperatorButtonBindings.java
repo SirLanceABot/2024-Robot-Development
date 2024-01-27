@@ -289,17 +289,17 @@ public class OperatorButtonBindings
 
     public Command intakeFromFloor()
     {
-        SequentialCommandGroup scg = new SequentialCommandGroup();
-        // Command command = new SequentialCommandGroup();
+        // SequentialCommandGroup scg = new SequentialCommandGroup();
+        // // Command command = new SequentialCommandGroup();
 
-        scg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
-        scg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
-        scg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
-        ParallelCommandGroup pcg = new ParallelCommandGroup();
+        // scg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
+        // scg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
+        // scg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
+        // ParallelCommandGroup pcg = new ParallelCommandGroup();
 
-        pcg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
-        pcg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
-        pcg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
+        // pcg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
+        // pcg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
+        // pcg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
 
         // return
         // Commands.runOnce(() -> robotContainer.intakePositioning.extend(),  robotContainer.intakePositioning)
@@ -315,16 +315,22 @@ public class OperatorButtonBindings
         //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
 
         return
-        robotContainer.intakePositioning.extendCommand()
+            robotContainer.intakePositioning.extendCommand()
             .alongWith(
                 robotContainer.intake.pickupFrontCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
-                Commands.runOnce(() -> robotContainer.index.acceptNote(), robotContainer.index))
+                robotContainer.index.acceptNoteCommand())
             .andThen(
-                Commands.waitUntil(() -> robotContainer.secondShuttleProximity.isDetected()))
+                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
             .andThen(
-                Commands.runOnce(() -> robotContainer.intake.stop(), robotContainer.intake)
+                robotContainer.intake.stopCommand()
                 .alongWith(
-                    Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
+                    robotContainer.intakePositioning.retractCommand()))
+            .andThen(
+                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.shuttle.stopCommand()
+                .alongWith(
+                    robotContainer.index.stopCommand()));
     }
 }

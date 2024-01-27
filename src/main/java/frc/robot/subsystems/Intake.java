@@ -152,6 +152,11 @@ public class Intake extends Subsystem4237
         return Commands.runOnce(() -> pickupFront(), this);
     }
 
+    public Command stopCommand()
+    {
+        return Commands.runOnce(() -> stop(), this);
+    }
+
     @Override
     public void readPeriodicInputs()
     {
