@@ -1017,6 +1017,7 @@ public class Drivetrain extends Subsystem4237
 
         return new FollowPathHolonomic(
                 path,
+                // this::getPose,
                 poseEstimator::getEstimatedPose, // Robot pose supplier
                 this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
