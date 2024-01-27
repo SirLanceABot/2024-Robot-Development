@@ -47,25 +47,12 @@ public class PoseEstimator extends Subsystem4237
     private double[] blueSpeakerCoords = {0.0, 5.55};
     private double[] redSpeakerCoords = {16.54, 5.55};
 
-    private class Cam
-    {
-        private Pose3d pose;
-        private double totalLatency;
-        private boolean isTargetFound;
-    }
-
-
     private class PeriodicData
     {
         // INPUTS
         private Rotation2d gyroRotation;
         private SwerveModulePosition[] swerveModulePositions;
-        private Optional<Alliance> alliance;
-
-        private Cam cam1;
-        private Cam cam2;
-        private Cam cam3;
-        private Cam cam4;
+        // private Optional<Alliance> alliance;
 
         // OUTPUTS
         private Pose2d estimatedPose;
@@ -86,10 +73,6 @@ public class PoseEstimator extends Subsystem4237
         this.gyro = gyro;
         this.drivetrain = drivetrain;
         this.cameraArray = cameraArray;
-        // this.cam1 = cam1;
-        // this.cam2 = cam2;
-        // this.cam3 = cam3;
-        // this.cam4 = cam4;
 
         if(drivetrain != null && gyro != null)
         {
@@ -123,12 +106,9 @@ public class PoseEstimator extends Subsystem4237
 
     public double getAngleToBlueSpeaker()
     {
-        double deltaX = blueSpeakerCoords[0] - periodicData.estimatedPose.getX();
-        deltaX = Math.abs(deltaX);
-        double deltaY = blueSpeakerCoords[1] - periodicData.estimatedPose.getY();
-        deltaY = Math.abs(deltaY);
+        double deltaX = Math.abs(blueSpeakerCoords[0] - periodicData.estimatedPose.getX());
+        double deltaY = Math.abs(blueSpeakerCoords[1] - periodicData.estimatedPose.getY());
         double angleRads = Math.atan2(deltaY, deltaX);
-        // double angleRads = Math.asin(deltaY / deltaX);
         if(periodicData.estimatedPose.getY() > blueSpeakerCoords[1])
         {
             return Math.toDegrees(angleRads);
@@ -141,7 +121,6 @@ public class PoseEstimator extends Subsystem4237
         {
             return 0.0;
         }
-        
     }
 
     public double getAngleToRedSpeaker()
@@ -166,9 +145,7 @@ public class PoseEstimator extends Subsystem4237
             periodicData.estimatedPose = poseEstimator.update(periodicData.gyroRotation, periodicData.swerveModulePositions);
         }
 
-        
-        
-        periodicData.alliance = DriverStation.getAlliance();
+        // periodicData.alliance = DriverStation.getAlliance();
 
         for(Camera camera : cameraArray)
         {
@@ -176,39 +153,10 @@ public class PoseEstimator extends Subsystem4237
             {
                 // update pose esitmator with limelight data (vision part)
                 poseEstimator.addVisionMeasurement(
-                    camera.getBotPoseWPIBlue().toPose2d(), 
+                    camera.getBotPoseBlue().toPose2d(), 
                     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
             }
         }
-        
-        // if(cam1 != null)
-        // {
-        //     periodicData.cam1.pose = cam1.getBotPose(periodicData.alliance);
-        //     periodicData.cam1.totalLatency = cam1.getTotalLatency(periodicData.alliance);
-        //     periodicData.cam1.isTargetFound = cam1.isTargetFound();
-        // }
-    
-        
-        // if(cam2 != null)
-        // {
-        //     periodicData.cam2.pose = cam2.getBotPose(periodicData.alliance);
-        //     periodicData.cam2.totalLatency = cam2.getTotalLatency(periodicData.alliance);
-        //     periodicData.cam2.isTargetFound = cam2.isTargetFound();
-        // }
-
-        // if(cam3 != null)
-        // {
-        //     periodicData.cam3.pose = cam3.getBotPose(periodicData.alliance);
-        //     periodicData.cam3.totalLatency = cam3.getTotalLatency(periodicData.alliance);
-        //     periodicData.cam3.isTargetFound = cam3.isTargetFound();
-        // }
-
-        // if(cam4 != null)
-        // {
-        //     periodicData.cam4.pose = cam4.getBotPose(periodicData.alliance);
-        //     periodicData.cam4.totalLatency = cam4.getTotalLatency(periodicData.alliance);
-        //     periodicData.cam4.isTargetFound = cam4.isTargetFound();
-        // }
     }
 
     @Override
@@ -216,41 +164,6 @@ public class PoseEstimator extends Subsystem4237
     {
         if(poseEstimator != null && drivetrain != null && gyro != null)
         {
-            // update pose estimator with drivetrain encoders (odometry part)
-            // periodicData.estimatedPose = poseEstimator.update(periodicData.gyroRotation, periodicData.swerveModulePositions);
-
-            // if(cam1 != null && periodicData.cam1.isTargetFound)
-            // {
-            //     // update pose esitmator with limelight data (vision part)
-            //     poseEstimator.addVisionMeasurement(
-            //         periodicData.cam1.pose.toPose2d(), 
-            //         Timer.getFPGATimestamp() - (periodicData.cam1.totalLatency / 1000));
-            // }
-
-            // if(cam2 != null && periodicData.cam2.isTargetFound)
-            // {
-            //     // update pose esitmator with limelight-two data (vision part)
-            //     poseEstimator.addVisionMeasurement(
-            //         periodicData.cam2.pose.toPose2d(), 
-            //         Timer.getFPGATimestamp() - (periodicData.cam2.totalLatency / 1000));
-            // }
-
-            // if(cam3 != null && periodicData.cam3.isTargetFound)
-            // {
-            //     // update pose esitmator with limelight-three data (vision part)
-            //     poseEstimator.addVisionMeasurement(
-            //         periodicData.cam3.pose.toPose2d(), 
-            //         Timer.getFPGATimestamp() - (periodicData.cam3.totalLatency / 1000));
-            // }
-
-            // if(cam4 != null && periodicData.cam4.isTargetFound)
-            // {
-            //     // update pose esitmator with limelight-four data (vision part)
-            //     poseEstimator.addVisionMeasurement(
-            //         periodicData.cam4.pose.toPose2d(), 
-            //         Timer.getFPGATimestamp() - (periodicData.cam4.totalLatency / 1000));
-            // }
-
             periodicData.estimatedPose = poseEstimator.getEstimatedPosition();
             periodicData.poseForAS = poseEstimator.getEstimatedPosition(); // variable for testing in AdvantageScope
 

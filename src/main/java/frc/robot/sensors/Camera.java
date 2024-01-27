@@ -108,13 +108,13 @@ public class Camera extends Sensor4237
     }
 
     /** @return the robot pose on the field (double[]) blue driverstration origin*/
-    public Pose3d getBotPoseWPIBlue()
+    public Pose3d getBotPoseBlue()
     {
         return toPose3d(periodicData.botPoseWPIBlue);
     }
 
     /** @return the robot pose on the field (double[]) red driverstration origin*/
-    public Pose3d getBotPoseWPIRed()
+    public Pose3d getBotPoseRed()
     {
         return toPose3d(periodicData.botPoseWPIRed);
     }
