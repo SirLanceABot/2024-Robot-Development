@@ -7,6 +7,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.motors.TalonFX4237;
@@ -128,6 +129,20 @@ public class Flywheel extends Subsystem4237
         periodicData.flywheelSpeed = 0.0;
     }
 
+    public Command shootCommand(double speed)
+    {
+        return this.runOnce( () -> shoot(speed));
+    }
+
+    public Command intakeCommand()
+    {
+        return this.runOnce( () -> intake());
+    }
+
+    public Command stopCommand()
+    {
+        return this.runOnce( () -> stop());
+    }
 
     @Override
     public void readPeriodicInputs()
