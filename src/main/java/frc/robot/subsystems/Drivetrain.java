@@ -306,11 +306,12 @@ public class Drivetrain extends Subsystem4237
             ySpeed = 0.0;
         if(Math.abs(turn) < 0.04)
             turn = 0.0;    
-        // periodicIO.xSpeed = xSpeed;
-        // periodicIO.ySpeed = ySpeed;
+        periodicData.xSpeed = xSpeed;
+        periodicData.ySpeed = ySpeed;
 
-        periodicData.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
-        periodicData.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
+        // commented out for driver practice/tryouts
+        // periodicData.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
+        // periodicData.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
 
         periodicData.turn = turn;
         periodicData.fieldRelative = fieldRelative;
