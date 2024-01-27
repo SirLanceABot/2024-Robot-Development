@@ -2,8 +2,9 @@ package frc.robot.tests;
 
 import frc.robot.subsystems.Pivot;
 import java.lang.invoke.MethodHandles;
+
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj.AnalogEncoder;
+//import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class DaneTest implements Test
@@ -41,22 +42,20 @@ public class DaneTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+        pivot.resetEncoder();
+    }
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
     {
-        // move to position
-        
-
-        // controls to move up/down
-        // if(pivot.returnAngle() > 0.0 && pivot.returnAngle() < 90.0)
-        // {
+    
         if(joystick.getRawButton(2))
         {
             pivot.moveUp();
+
         }
         else if(joystick.getRawButton(3))
         {
@@ -65,16 +64,16 @@ public class DaneTest implements Test
         else if(joystick.getRawButton(1))
         {
             // pivot.setAngle(180.0);
-            pivot.setPosition(0.0);
+            pivot.setAngle(30.0);
         }
         else
         {
             pivot.stop();
         }
             
-        // }
+
         if(joystick.getRawButton(4))
-            pivot.resetEncoder();
+            pivot.stop();
     }
     
     /**

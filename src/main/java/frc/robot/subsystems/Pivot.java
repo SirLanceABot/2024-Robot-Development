@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import frc.robot.motors.TalonFX4237;
@@ -35,10 +36,11 @@ public class Pivot extends Subsystem4237
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(20, Constants.Pivot.MOTOR_CAN_BUS);
     private PeriodicData periodicData = new PeriodicData();
+    
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
     //PID values
-    private final double kP = 4.0;
+    private final double kP = 1.0;
     private final double kD = 0.0;
     private final double kI = 0.0;
     private final int slotId = 0;
@@ -77,16 +79,19 @@ public class Pivot extends Subsystem4237
     public void moveUp()
     {
         periodicData.motorSpeed = Constants.Pivot.MOTOR_SPEED;
+        motor.set(periodicData.motorSpeed);
     }
 
     public void moveDown()
     {
         periodicData.motorSpeed = -Constants.Pivot.MOTOR_SPEED;
+        motor.set(periodicData.motorSpeed);
     }
 
     public void stop()
     {
         periodicData.motorSpeed = 0.0;
+        motor.set(periodicData.motorSpeed);
     }
 
     public double getAngle()
@@ -101,7 +106,7 @@ public class Pivot extends Subsystem4237
 
     public void resetEncoder()
     {
-        motor.setPosition(0.0);
+        // motor.setPosition(0.0);
         pivotAngle.setPosition(0.0);
     }
 
@@ -113,20 +118,22 @@ public class Pivot extends Subsystem4237
     
 
     public void setAngle(double degrees)
-    {
+    { 
+            motor.setControl(degrees / 360);
+        
         //setAngle using FalconFX encoder
-        if(periodicData.currentAngle > (degrees + 5))
-        {
-            moveDown();
-        }
-        else if(periodicData.currentAngle < (degrees - 5))
-        {
-            moveUp();
-        }
-        else
-        {
-            stop();
-        }
+        // if(periodicData.currentAngle > (degrees + 5))
+        // {
+        //     moveDown();
+        // }
+        // else if(periodicData.currentAngle < (degrees - 5))
+        // {
+        //     moveUp();
+        // }
+        // else
+        // {
+        //     stop();
+        // }
 
         //setAngle using rotary encoder
         // if(periodicData.currentAngle > (degrees + 2))
@@ -159,8 +166,7 @@ public class Pivot extends Subsystem4237
     {
         System.out.println("currentAngle = " + periodicData.currentAngle); 
         //System.out.println("currentPosition = " + motor.getPosition());
-        //motor.set(periodicData.motorSpeed);
-        motor.setPosition(position);
+        
     }
 
     @Override

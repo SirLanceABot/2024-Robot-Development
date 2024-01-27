@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
@@ -32,6 +33,7 @@ public class TalonFX4237 extends MotorController4237
     }
 
     private final TalonFX motor;
+    private final PositionVoltage positionVoltage;
     private final String motorControllerName;
 
     /**
@@ -53,6 +55,7 @@ public class TalonFX4237 extends MotorController4237
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         motor.getConfigurator().apply(feedbackConfigs);
         this.motorControllerName = motorControllerName;
+        positionVoltage = new PositionVoltage(0.0);
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
@@ -278,6 +281,11 @@ public class TalonFX4237 extends MotorController4237
     public void setPosition(double position)
     {
         motor.setPosition(position);
+    }
+
+    public void setControl(double position)
+    {
+        motor.setControl(positionVoltage.withPosition(position));
     }
 
     /**
