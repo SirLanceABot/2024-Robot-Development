@@ -36,10 +36,10 @@ public class SensorTab
     // private Index index;
 
     private GenericEntry gyroBox;
-    private GenericEntry flsEncoderBox;
-    private GenericEntry frsEncoderBox;
-    private GenericEntry blsEncoderBox;
-    private GenericEntry brsEncoderBox;
+    private GenericEntry fltEncoderBox;
+    private GenericEntry frtEncoderBox;
+    private GenericEntry bltEncoderBox;
+    private GenericEntry brtEncoderBox;
     private GenericEntry shuttleEncoderBox;
     private GenericEntry pivotEncoderBox;
     private GenericEntry flyWheelEncoderBox;
@@ -59,10 +59,10 @@ public class SensorTab
 
         if(drivetrain != null)
         {
-            flsEncoderBox = createFrontLeftTurnEncoderBox();
-            frsEncoderBox = createFrontRightTurnEncoderBox();
-            blsEncoderBox = createBackLeftTurnEncoderBox();
-            brsEncoderBox = createBackRightTurnEncoderBox();
+            fltEncoderBox = createFrontLeftTurnEncoderBox();
+            frtEncoderBox = createFrontRightTurnEncoderBox();
+            bltEncoderBox = createBackLeftTurnEncoderBox();
+            brtEncoderBox = createBackRightTurnEncoderBox();
         }
 
         if(gyro != null)
@@ -95,7 +95,7 @@ public class SensorTab
 
     private GenericEntry createFrontLeftTurnEncoderBox()
     {
-        return sensorTab.add("Front Left Turn Encoder", drivetrain.fls())
+        return sensorTab.add("Front Left Turn Encoder", drivetrain.flt())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 2)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -104,7 +104,7 @@ public class SensorTab
 
     private GenericEntry createFrontRightTurnEncoderBox()
     {
-        return sensorTab.add("Front Right Turn Encoder", drivetrain.frs())
+        return sensorTab.add("Front Right Turn Encoder", drivetrain.frt())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 4)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -113,7 +113,7 @@ public class SensorTab
 
     private GenericEntry createBackLeftTurnEncoderBox()
     {
-        return sensorTab.add("Back Left Turn Encoder", drivetrain.bls())
+        return sensorTab.add("Back Left Turn Encoder", drivetrain.blt())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 6)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -122,7 +122,7 @@ public class SensorTab
 
     private GenericEntry createBackRightTurnEncoderBox()
     {
-        return sensorTab.add("Back Right Turn Encoder", drivetrain.brs())
+        return sensorTab.add("Back Right Turn Encoder", drivetrain.brt())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 8)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -169,10 +169,10 @@ public class SensorTab
     {
         if(drivetrain != null)
         {
-            flsEncoderBox.setDouble(drivetrain.fls());
-            frsEncoderBox.setDouble(drivetrain.frs());
-            blsEncoderBox.setDouble(drivetrain.bls());
-            brsEncoderBox.setDouble(drivetrain.brs());
+            fltEncoderBox.setDouble(drivetrain.flt());
+            frtEncoderBox.setDouble(drivetrain.frt());
+            bltEncoderBox.setDouble(drivetrain.blt());
+            brtEncoderBox.setDouble(drivetrain.brt());
         }
 
         if(gyro != null)

@@ -29,7 +29,6 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
 import frc.robot.Constants.TeamColor;
 import frc.robot.controls.AdaptiveSlewRateLimiter;
-import frc.robot.controls.Xbox;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 
@@ -64,14 +63,14 @@ public class Drivetrain extends Subsystem4237
         private SwerveModulePosition backRightPosition;
 
 
-        DoubleLogEntry flsLogEntry;
-        DoubleLogEntry frsLogEntry;
-        DoubleLogEntry blsLogEntry;
-        DoubleLogEntry brsLogEntry;
-        DoubleLogEntry fldLogEntry;
-        DoubleLogEntry frdLogEntry;
-        DoubleLogEntry bldLogEntry;
-        DoubleLogEntry brdLogEntry;
+        private DoubleLogEntry fltLogEntry;
+        private DoubleLogEntry frtLogEntry;
+        private DoubleLogEntry bltLogEntry;
+        private DoubleLogEntry brtLogEntry;
+        private DoubleLogEntry fldLogEntry;
+        private DoubleLogEntry frdLogEntry;
+        private DoubleLogEntry bldLogEntry;
+        private DoubleLogEntry brdLogEntry;
         
         // OUTPUTS
         private ChassisSpeeds chassisSpeeds;
@@ -110,19 +109,19 @@ public class Drivetrain extends Subsystem4237
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
 
-    private final Translation2d FRONT_LEFT_LOCATION = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    private final Translation2d FRONT_RIGHT_LOCATION = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    private final Translation2d BACK_LEFT_LOCATION = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
-    private final Translation2d BACK_RIGHT_LOCATION = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d frontLeftLocation = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d frontRightLocation = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d backLeftLocation = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
+    private final Translation2d backRightLocation = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
     
-    private final SwerveModuleConfig FRONT_LEFT_SWERVE_MODULE = new SwerveModuleConfig(
-        "Front Left", FRONT_LEFT_LOCATION, Constants.Drivetrain.FRONT_LEFT_DRIVE, true, Constants.Drivetrain.FRONT_LEFT_ENCODER, SwerveModuleSetup.FRONT_LEFT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_LEFT_TURN);
-    private final SwerveModuleConfig FRONT_RIGHT_SWERVE_MODULE = new SwerveModuleConfig(
-        "Front Right", FRONT_RIGHT_LOCATION, Constants.Drivetrain.FRONT_RIGHT_DRIVE, false, Constants.Drivetrain.FRONT_RIGHT_ENCODER, SwerveModuleSetup.FRONT_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_RIGHT_TURN);
-    private final SwerveModuleConfig BACK_LEFT_SWERVE_MODULE = new SwerveModuleConfig(
-        "Back Left", BACK_LEFT_LOCATION, Constants.Drivetrain.BACK_LEFT_DRIVE, true, Constants.Drivetrain.BACK_LEFT_ENCODER, SwerveModuleSetup.BACK_LEFT_ENCODER_OFFSET, Constants.Drivetrain.BACK_LEFT_TURN);
-    private final SwerveModuleConfig BACK_RIGHT_SWERVE_MODULE = new SwerveModuleConfig(
-        "Back Right", BACK_RIGHT_LOCATION, Constants.Drivetrain.BACK_RIGHT_DRIVE, false, Constants.Drivetrain.BACK_RIGHT_ENCODER, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN); 
+    private final SwerveModuleConfig frontLeftSwerveModule = new SwerveModuleConfig(
+        "Front Left", frontLeftLocation, Constants.Drivetrain.FRONT_LEFT_DRIVE, true, Constants.Drivetrain.FRONT_LEFT_ENCODER, SwerveModuleSetup.FRONT_LEFT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_LEFT_TURN);
+    private final SwerveModuleConfig frontRightSwerveModule = new SwerveModuleConfig(
+        "Front Right", frontRightLocation, Constants.Drivetrain.FRONT_RIGHT_DRIVE, false, Constants.Drivetrain.FRONT_RIGHT_ENCODER, SwerveModuleSetup.FRONT_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_RIGHT_TURN);
+    private final SwerveModuleConfig backLeftSwerveModule = new SwerveModuleConfig(
+        "Back Left", backLeftLocation, Constants.Drivetrain.BACK_LEFT_DRIVE, true, Constants.Drivetrain.BACK_LEFT_ENCODER, SwerveModuleSetup.BACK_LEFT_ENCODER_OFFSET, Constants.Drivetrain.BACK_LEFT_TURN);
+    private final SwerveModuleConfig backRightSwerveModule = new SwerveModuleConfig(
+        "Back Right", backRightLocation, Constants.Drivetrain.BACK_RIGHT_DRIVE, false, Constants.Drivetrain.BACK_RIGHT_ENCODER, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN); 
     
     private final SwerveModule frontLeft;
     private final SwerveModule frontRight;
@@ -207,10 +206,10 @@ public class Drivetrain extends Subsystem4237
         // }
         
         
-        frontLeft = new SwerveModule(FRONT_LEFT_SWERVE_MODULE);
-        frontRight = new SwerveModule(FRONT_RIGHT_SWERVE_MODULE);
-        backLeft = new SwerveModule(BACK_LEFT_SWERVE_MODULE);
-        backRight = new SwerveModule(BACK_RIGHT_SWERVE_MODULE);
+        frontLeft = new SwerveModule(frontLeftSwerveModule);
+        frontRight = new SwerveModule(frontRightSwerveModule);
+        backLeft = new SwerveModule(backLeftSwerveModule);
+        backRight = new SwerveModule(backRightSwerveModule);
 
         // gyro = new WPI_Pigeon2(Port.Sensor.PIGEON, Port.Motor.CAN_BUS);
 
@@ -221,10 +220,10 @@ public class Drivetrain extends Subsystem4237
         //     dd.backRightSwerveModule.moduleLocation);
 
         kinematics = new SwerveDriveKinematics(
-            FRONT_LEFT_LOCATION,
-            FRONT_RIGHT_LOCATION,
-            BACK_LEFT_LOCATION,
-            BACK_RIGHT_LOCATION);
+            frontLeftLocation,
+            frontRightLocation,
+            backLeftLocation,
+            backRightLocation);
 
         periodicData.odometry = new SwerveDriveOdometry(
             kinematics, 
@@ -692,10 +691,10 @@ public class Drivetrain extends Subsystem4237
 
     String EncoderName = new String("/SwerveEncoders/"); // make a prefix tree structure for the ultrasonic data
     // f front; b back; r right; l left; s steer; d drive
-    periodicData.flsLogEntry = new DoubleLogEntry(log, EncoderName+"fls", "RawCounts");
-    periodicData.frsLogEntry = new DoubleLogEntry(log, EncoderName+"frs", "RawCounts");
-    periodicData.blsLogEntry = new DoubleLogEntry(log, EncoderName+"bls", "RawCounts");
-    periodicData.brsLogEntry = new DoubleLogEntry(log, EncoderName+"brs", "RawCounts");
+    periodicData.fltLogEntry = new DoubleLogEntry(log, EncoderName+"flt", "RawCounts");
+    periodicData.frtLogEntry = new DoubleLogEntry(log, EncoderName+"frt", "RawCounts");
+    periodicData.bltLogEntry = new DoubleLogEntry(log, EncoderName+"blt", "RawCounts");
+    periodicData.brtLogEntry = new DoubleLogEntry(log, EncoderName+"brt", "RawCounts");
     periodicData.fldLogEntry = new DoubleLogEntry(log, EncoderName+"fld", "RawCounts");
     periodicData.frdLogEntry = new DoubleLogEntry(log, EncoderName+"frd", "RawCounts");
     periodicData.bldLogEntry = new DoubleLogEntry(log, EncoderName+"bld", "RawCounts");
@@ -704,32 +703,32 @@ public class Drivetrain extends Subsystem4237
 
   void logEncoders()
   {
-    periodicData.flsLogEntry.append(frontLeft.getTurningEncoderPosition());
-    periodicData.frsLogEntry.append(frontRight.getTurningEncoderPosition());
-    periodicData.blsLogEntry.append(backLeft.getTurningEncoderPosition());
-    periodicData.brsLogEntry.append(backRight.getTurningEncoderPosition());
+    periodicData.fltLogEntry.append(frontLeft.getTurningEncoderPosition());
+    periodicData.frtLogEntry.append(frontRight.getTurningEncoderPosition());
+    periodicData.bltLogEntry.append(backLeft.getTurningEncoderPosition());
+    periodicData.brtLogEntry.append(backRight.getTurningEncoderPosition());
     periodicData.fldLogEntry.append(frontLeft.getDrivingEncoderRate());
     periodicData.frdLogEntry.append(frontRight.getDrivingEncoderRate());
     periodicData.bldLogEntry.append(backLeft.getDrivingEncoderRate());
     periodicData.brdLogEntry.append(backRight.getDrivingEncoderRate());
   }
 
-  public double fls()
+  public double flt()
   {
     return frontLeft.getTurningEncoderPosition();
   }
 
-  public double frs()
+  public double frt()
   {
     return frontRight.getTurningEncoderPosition();
   }
 
-  public double bls()
+  public double blt()
   {
     return backLeft.getTurningEncoderPosition();
   }
 
-  public double brs()
+  public double brt()
   {
     return backRight.getTurningEncoderPosition();
   }
