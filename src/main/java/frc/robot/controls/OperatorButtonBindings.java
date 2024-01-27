@@ -3,6 +3,7 @@ package frc.robot.controls;
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -256,9 +257,9 @@ public class OperatorButtonBindings
 
         if(robotContainer.ampAssist != null)
         {
-            dPadLeftTrigger.toggleOnTrue( new StartEndCommand(() -> robotContainer.ampAssist.extend(),
-                                                              () -> robotContainer.ampAssist.retract(), 
-                                                              robotContainer.ampAssist));
+            // dPadLeftTrigger.toggleOnTrue( Commands.(() -> robotContainer.ampAssist.extend(),
+            //                                                   () -> robotContainer.ampAssist.retract(), 
+            //                                                   robotContainer.ampAssist));
         }
     }
 
