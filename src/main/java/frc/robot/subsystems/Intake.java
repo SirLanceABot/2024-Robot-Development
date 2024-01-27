@@ -133,7 +133,7 @@ public class Intake extends Subsystem4237
         periodicData.bottomIntakeSpeed = Direction.kForward.value;
     }
 
-    public void off()
+    public void stop()
     {
         periodicData.topIntakeSpeed = 0.0;
         periodicData.bottomIntakeSpeed = Direction.kOff.value;

@@ -24,7 +24,7 @@ public class IntakePositioning extends Subsystem4237
 
     public enum IntakePosition
     {
-        kUp(Value.kForward), kDown(Value.kReverse), kOff(Value.kOff);
+        kUp(Value.kReverse), kDown(Value.kForward), kOff(Value.kOff);
 
         public final Value value;
 
