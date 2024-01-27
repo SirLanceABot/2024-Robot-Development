@@ -57,8 +57,8 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 topMotor = new CANSparkMax4237(5, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
-    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(3, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
+    private final CANSparkMax4237 topMotor = new CANSparkMax4237(3, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
+    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(5, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
     private RelativeEncoder topEncoder;
     private RelativeEncoder bottomEncoder;
 
@@ -114,31 +114,31 @@ public class Intake extends Subsystem4237
     public void pickupFront()
     {
         periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = Direction.kForward.value;
+        periodicData.bottomIntakeSpeed = 0.1;
     }
 
     public void ejectFront()
     {
         periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = Direction.kBackward.value;
+        periodicData.bottomIntakeSpeed = -0.1;
     }
 
     public void pickupBack()
     {
         periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = Direction.kBackward.value;
+        periodicData.bottomIntakeSpeed = -0.1;
     }
 
     public void ejectBack()
     {
         periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = Direction.kForward.value;
+        periodicData.bottomIntakeSpeed = 0.1;
     }
 
     public void stop()
     {
         periodicData.topIntakeSpeed = 0.0;
-        periodicData.bottomIntakeSpeed = Direction.kOff.value;
+        periodicData.bottomIntakeSpeed = 0.0;
     }
 
     public void in(double speed)
