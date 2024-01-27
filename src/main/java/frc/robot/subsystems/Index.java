@@ -70,6 +70,11 @@ public class Index extends Subsystem4237
         motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
     }
 
+    public void resetEncoder()
+    {
+        motor.setPosition(0.0);
+    }
+
     public void acceptNote()
     {
         periodicData.motorSpeed = 0.1;
