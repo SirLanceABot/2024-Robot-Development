@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj2.command.Command;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
@@ -215,6 +216,21 @@ public class Climb extends Subsystem4237
     public double getRightPosition()
     {
         return periodicData.currentRightPosition;
+    }
+
+    public Command extendClimbCommand()
+    {
+        return this.runOnce( () -> extend());
+    }
+
+    public Command retractClimbCommand()
+    {
+        return this.runOnce( () -> extend());
+    }
+
+    public Command stopClimbCommand()
+    {
+        return this.runOnce( () -> stop());
     }
 
     @Override
