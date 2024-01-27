@@ -139,8 +139,8 @@ public final class Constants
 
     public static class Intake
     {
-        public static final int TOP_MOTOR_PORT           = 0;
-        public static final int BOTTOM_MOTOR_PORT        = 0;
+        public static final int TOP_MOTOR_PORT           = 1;
+        public static final int BOTTOM_MOTOR_PORT        = 1;
         public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
         public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
     }
@@ -156,19 +156,19 @@ public final class Constants
 
     public static class Flywheel
     {
-        public static final int MOTOR_PORT               = 0;
-        public static final String MOTOR_CAN_BUS         = CANIVORE;
+        public static final int MOTOR_PORT               = 1;
+        public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
     public static class Index
     {
-        public static final int MOTOR_PORT               = 0;
-        public static final String MOTOR_CAN_BUS         = CANIVORE;
+        public static final int MOTOR_PORT               = 1;
+        public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
     public static class Pivot
     {
-        public static final int MOTOR_PORT                      = 12;
+        public static final int MOTOR_PORT                      = 1;
         public static final double MOTOR_SPEED                  = 0.05;
         public static final String MOTOR_CAN_BUS                = ROBORIO;
 
@@ -180,7 +180,7 @@ public final class Constants
 
     public static class Shuttle
     {
-        public static final int MOTOR_PORT               = 3;
+        public static final int MOTOR_PORT               = 1;
         public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
@@ -192,9 +192,9 @@ public final class Constants
     public static class Climb
     {
         public static final int LEFT_MOTOR_PORT          = 1;
-        public static final int RIGHT_MOTOR_PORT         = 12;
-        public static final String LEFT_MOTOR_CAN_BUS    = CANIVORE;
-        public static final String RIGHT_MOTOR_CAN_BUS   = CANIVORE;
+        public static final int RIGHT_MOTOR_PORT         = 1;
+        public static final String LEFT_MOTOR_CAN_BUS    = ROBORIO;
+        public static final String RIGHT_MOTOR_CAN_BUS   = ROBORIO;
 
         
 

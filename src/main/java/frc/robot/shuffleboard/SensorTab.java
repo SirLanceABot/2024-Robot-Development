@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
@@ -12,8 +13,9 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.RobotContainer;
-// import frc.robot.Constants.Pivot;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.subsystems.Intake;
 
 public class SensorTab
 {
@@ -34,6 +36,8 @@ public class SensorTab
     private Pivot pivot;
     private Flywheel flyWheel;
     private Index index;
+    private Intake intake;
+    private Climb climb;
 
     private GenericEntry gyroBox;
     private GenericEntry fltEncoderBox;
@@ -44,6 +48,10 @@ public class SensorTab
     private GenericEntry pivotEncoderBox;
     private GenericEntry flyWheelEncoderBox;
     private GenericEntry indexEncoderBox;
+    private GenericEntry topIntakeEncoderBox;
+    private GenericEntry bottomIntakeEncoderBox;
+    private GenericEntry rightClimbEncoderBox;
+    private GenericEntry leftClimbEncoderBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -56,6 +64,8 @@ public class SensorTab
         this.pivot = robotContainer.pivot;
         this.flyWheel = robotContainer.flywheel;
         this.index = robotContainer.index;
+        this.intake = robotContainer.intake;
+        this.climb = robotContainer.climb;
 
         if(drivetrain != null)
         {
@@ -90,12 +100,26 @@ public class SensorTab
             indexEncoderBox = createIndexEncoderBox();
         }
 
+        if(intake != null)
+        {
+            topIntakeEncoderBox = createTopIntakeEncoderBox();
+            bottomIntakeEncoderBox = createBottomIntakeEncoderBox();
+        }
+
+        if(climb != null)
+        {
+            rightClimbEncoderBox = createRightClimbEncoderBox();
+            leftClimbEncoderBox = createLeftClimbEncoderBox();
+        }
+
+    
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     private GenericEntry createFrontLeftTurnEncoderBox()
     {
-        return sensorTab.add("Front Left Turn Encoder", drivetrain.flt())
+        return sensorTab.add("Front Left Turn Encoder", round(drivetrain.flt(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 2)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -104,7 +128,7 @@ public class SensorTab
 
     private GenericEntry createFrontRightTurnEncoderBox()
     {
-        return sensorTab.add("Front Right Turn Encoder", drivetrain.frt())
+        return sensorTab.add("Front Right Turn Encoder", round(drivetrain.frt(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 4)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -113,7 +137,7 @@ public class SensorTab
 
     private GenericEntry createBackLeftTurnEncoderBox()
     {
-        return sensorTab.add("Back Left Turn Encoder", drivetrain.blt())
+        return sensorTab.add("Back Left Turn Encoder", round(drivetrain.blt(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 6)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -122,7 +146,7 @@ public class SensorTab
 
     private GenericEntry createBackRightTurnEncoderBox()
     {
-        return sensorTab.add("Back Right Turn Encoder", drivetrain.brt())
+        return sensorTab.add("Back Right Turn Encoder", round(drivetrain.brt(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(3, 8)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
@@ -133,14 +157,14 @@ public class SensorTab
     {
         return sensorTab.add("Gyro", gyro.getPitch())
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(1, 9)  // sets position of widget
+        .withPosition(3, 10)  // sets position of widget
         .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
 
     private GenericEntry createShuttleEncoderBox()
     {
-        return sensorTab.add("Shuttle", shuttle.getPosition())
+        return sensorTab.add("Shuttle", round(shuttle.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
         .withPosition(8, 5)  // sets position of widget
         .withSize(3, 2)    // sets size of widget
@@ -149,7 +173,7 @@ public class SensorTab
 
     private GenericEntry createPivotEncoderBox()
     {
-        return sensorTab.add("Pivot", pivot.getAngle())
+        return sensorTab.add("Pivot", round(pivot.getAngle(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
         .withPosition(8,7) // sets position of widget
         .withSize(3,2)  // sets size of widget
@@ -158,7 +182,7 @@ public class SensorTab
 
     private GenericEntry createFlyWheelEncoderBox()
     {
-        return sensorTab.add("Fly Wheel", flyWheel.getPosition())
+        return sensorTab.add("Fly Wheel", round(flyWheel.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
         .withPosition(8,10) // sets position of widget
         .withSize(4,2) //sets size of widget
@@ -167,21 +191,58 @@ public class SensorTab
 
     private GenericEntry createIndexEncoderBox()
     {
-        return sensorTab.add("Index", index.getPosition())
+        return sensorTab.add("Index", round(index.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(8,12) // sets position of widget
+        .withPosition(13,2) // sets position of widget
         .withSize(4,2) //sets size of widget
         .getEntry();
     }
+
+    private GenericEntry createTopIntakeEncoderBox()
+    {
+        return sensorTab.add("Intake Top", round(intake.getTopPosition(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(13,5) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
+    private GenericEntry createBottomIntakeEncoderBox()
+    {
+        return sensorTab.add("Intake Bottom", round(intake.getBottomPosition(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(13,7) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
+     private GenericEntry createRightClimbEncoderBox()
+    {
+        return sensorTab.add("Right Climb", round(climb.getRightPosition(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(18,5) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
+     private GenericEntry createLeftClimbEncoderBox()
+    {
+        return sensorTab.add("Left Climb", round(climb.getLeftPosition(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(18,8) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+    
 
     public void updateEncoderData()
     {
         if(drivetrain != null)
         {
-            fltEncoderBox.setDouble(drivetrain.flt());
-            frtEncoderBox.setDouble(drivetrain.frt());
-            bltEncoderBox.setDouble(drivetrain.blt());
-            brtEncoderBox.setDouble(drivetrain.brt());
+            fltEncoderBox.setDouble(round(drivetrain.flt(),3));
+            frtEncoderBox.setDouble(round(drivetrain.frt(),3));
+            bltEncoderBox.setDouble(round(drivetrain.blt(),3));
+            brtEncoderBox.setDouble(round(drivetrain.brt(),3));
         }
 
         if(gyro != null)
@@ -207,6 +268,18 @@ public class SensorTab
         if(index != null)
         {
             indexEncoderBox.setDouble(round(index.getPosition(),3));
+        }
+
+        if(intake != null)
+        {
+            topIntakeEncoderBox.setDouble(round(intake.getTopPosition(),3));
+            bottomIntakeEncoderBox.setDouble(round(intake.getBottomPosition(),3));
+        }
+
+        if(climb != null)
+        {
+            leftClimbEncoderBox.setDouble(round(climb.getLeftPosition(),3));
+            rightClimbEncoderBox.setDouble(round(climb.getRightPosition(),3));
         }
     }
 

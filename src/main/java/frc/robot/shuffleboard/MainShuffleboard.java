@@ -17,7 +17,7 @@ public class MainShuffleboard
 
 
     // *** CLASS & INSTANCE VARIABLES ***
-    private boolean useAutonomousTab            = false;
+    private boolean useAutonomousTab            = true;
     private boolean useCameraTab                = false;
     private boolean useSensorTab                = true;
     private boolean useDriverControllerTab      = false;
