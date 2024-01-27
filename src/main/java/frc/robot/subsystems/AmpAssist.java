@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
@@ -78,34 +79,25 @@ public class AmpAssist extends Subsystem4237
         periodicData.ampAssistPosition = AmpAssistPosition.kOff;
     }
 
-    public Command climbCommand(AmpAssistPosition ampAssistPosition)
+    public Command ampAssistCommand(AmpAssistPosition ampAssistPosition)
     {
         if(ampAssistPosition == AmpAssistPosition.kIn || ampAssistPosition == AmpAssistPosition.kOff)
         {
-            return this.runOnce( () -> extend());
+            return Commands.runOnce( () -> extend(), this);
         }
         else if(ampAssistPosition == AmpAssistPosition.kOut)
         {
-            return this.runOnce( () -> retract());
+            return Commands.runOnce( () -> retract(), this);
         }
         else
         {
-            return this.runOnce( () -> stop());
+            return Commands.runOnce( () -> stop(), this);
         }
 
         // return this.runOnce( () -> extend());
     }
 
-    // public Command shootCommand(double angle)
-    // {
-    //     return this.runOnce( new ParallelCommandGroup(
-    //     () -> flywheel.shoot(0.4),
-    //     () -> drivetrain.rotateForShooting(),
-    //     () -> pivot.setAngle(angle, 0.02),
-    //     this.waitUntil(flywheel.getVelocity() == 0.4),
-    //     () -> index.feedNote(0.4)
-    //     ));
-    // }
+   
 
     @Override
     public void readPeriodicInputs()

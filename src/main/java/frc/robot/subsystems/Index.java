@@ -120,7 +120,12 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteCommand()
     {
-        return Commands.runOnce(() -> acceptNoteCommand(), this);
+        return Commands.runOnce(() -> acceptNote(), this);
+    }
+
+    public Command feedNoteCommand(double speed)
+    {
+        return Commands.runOnce(() -> feedNote(speed), this);
     }
 
     public Command stopCommand()

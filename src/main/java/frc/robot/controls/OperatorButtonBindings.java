@@ -2,6 +2,7 @@ package frc.robot.controls;
 
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShootingPosition;
+import frc.robot.subsystems.AmpAssist.AmpAssistPosition;
 import frc.robot.commands.ShootFromPosition;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -237,7 +239,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadDownTrigger.onTrue(new InstantCommand( () -> robotContainer.climb.retract()));
+            dPadDownTrigger.whileTrue(robotContainer.climb.retractClimbCommand());
         }
     }
     private void configDpadUp()
@@ -248,7 +250,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadUpTrigger.whileTrue(new InstantCommand( () -> robotContainer.climb.extend()));
+            dPadUpTrigger.whileTrue(robotContainer.climb.extendClimbCommand());
         }
     }
 
@@ -260,9 +262,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.ampAssist != null)
         {
-            // dPadLeftTrigger.toggleOnTrue( Commands.(() -> robotContainer.ampAssist.extend(),
-            //                                                   () -> robotContainer.ampAssist.retract(), 
-            //                                                   robotContainer.ampAssist));
+            dPadLeftTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kIn));
         }
     }
 
@@ -273,7 +273,9 @@ public class OperatorButtonBindings
         Trigger dPadRightTrigger = new Trigger(dPadRight);
 
         if(true)
-        {}
+        {
+            dPadRightTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kOut));
+        }
     }
 
     private void configRumble()
@@ -332,5 +334,15 @@ public class OperatorButtonBindings
                 robotContainer.shuttle.stopCommand()
                 .alongWith(
                     robotContainer.index.stopCommand()));
+    }
+
+     public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
+    {
+        return 
+        robotContainer.flywheel.shootCommand(0.5)
+        .alongWith(
+            // robotContainer.pivot.movePivotCommand(pivotAngle),
+            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+        .andThen(robotContainer.index.feedNoteCommand(0.5));
     }
 }

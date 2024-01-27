@@ -95,56 +95,56 @@ public class ShootFromPosition extends SequentialCommandGroup
     
     private void build()
     {
-        switch(shootingPosition)
-        {
-            case kSpeakerBase:
-                addCommands(new ParallelCommandGroup(
-                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4))),
-                (new InstantCommand( () -> drivetrain.rotateForShooting()))
-                ));
-                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
-                break;
+        // switch(shootingPosition)
+        // {
+        //     case kSpeakerBase:
+        //         addCommands(new ParallelCommandGroup(
+        //         // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        //         (new InstantCommand( () -> flywheel.shoot(0.4))),
+        //         // (new InstantCommand( () -> drivetrain.rotateForShooting()))
+        //         ));
+        //         addCommands(new InstantCommand( () -> index.feedNote(0.4)));
+        //         break;
 
-            case kPodium:
-                addCommands(new ParallelCommandGroup(
-                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4))),
-                (new InstantCommand( () -> drivetrain.rotateForShooting()))
-                ));
-                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
-                break;
+        //     case kPodium:
+        //         addCommands(new ParallelCommandGroup(
+        //         // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        //         (new InstantCommand( () -> flywheel.shoot(0.4))),
+        //         (new InstantCommand( () -> drivetrain.rotateForShooting()))
+        //         ));
+        //         addCommands(new InstantCommand( () -> index.feedNote(0.4)));
+        //         break;
 
-            case kRandomPosition:
-                addCommands(new ParallelCommandGroup(
-                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4))),
-                (new InstantCommand( () -> drivetrain.rotateForShooting()))
-                ));
-                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
-                break;
+        //     case kRandomPosition:
+        //         addCommands(new ParallelCommandGroup(
+        //         // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        //         (new InstantCommand( () -> flywheel.shoot(0.4))),
+        //         (new InstantCommand( () -> drivetrain.rotateForShooting()))
+        //         ));
+        //         addCommands(new InstantCommand( () -> index.feedNote(0.4)));
+        //         break;
 
-            case kToAmp:
-                addCommands(new ParallelCommandGroup(
-                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.4))),
-                (new InstantCommand( () -> ampAssist.extend()))
-                ));
-                addCommands(new InstantCommand( () -> index.feedNote(0.4)));
-                break;
+        //     case kToAmp:
+        //         addCommands(new ParallelCommandGroup(
+        //         // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        //         (new InstantCommand( () -> flywheel.shoot(0.4))),
+        //         (new InstantCommand( () -> ampAssist.extend()))
+        //         ));
+        //         addCommands(new InstantCommand( () -> index.feedNote(0.4)));
+        //         break;
 
-            case kOff:
-                addCommands(new ParallelCommandGroup(
-                // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
-                (new InstantCommand( () -> flywheel.shoot(0.0))),
-                (new InstantCommand( () -> ampAssist.retract()))
-                ));
-                addCommands(new InstantCommand( () -> index.feedNote(0.0)));
-                break;
+        //     case kOff:
+        //         addCommands(new ParallelCommandGroup(
+        //         // (new InstantCommand( () -> pivot.setAngle(45, 0.02))),
+        //         (new InstantCommand( () -> flywheel.shoot(0.0))),
+        //         (new InstantCommand( () -> ampAssist.retract()))
+        //         ));
+        //         addCommands(new InstantCommand( () -> index.feedNote(0.0)));
+        //         break;
             
 
             
-        }
+        // }
     }
     
     @Override

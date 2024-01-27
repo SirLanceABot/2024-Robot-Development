@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.motors.TalonFX4237;
@@ -131,17 +132,17 @@ public class Flywheel extends Subsystem4237
 
     public Command shootCommand(double speed)
     {
-        return this.runOnce( () -> shoot(speed));
+        return Commands.runOnce( () -> shoot(speed), this);
     }
 
     public Command intakeCommand()
     {
-        return this.runOnce( () -> intake());
+        return Commands.runOnce( () -> intake(), this);
     }
 
     public Command stopCommand()
     {
-        return this.runOnce( () -> stop());
+        return Commands.runOnce( () -> stop(), this);
     }
 
     @Override

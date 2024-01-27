@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
@@ -220,17 +221,17 @@ public class Climb extends Subsystem4237
 
     public Command extendClimbCommand()
     {
-        return this.runOnce( () -> extend());
+        return Commands.startEnd( () -> extend(), () -> stop(), this);
     }
 
     public Command retractClimbCommand()
     {
-        return this.runOnce( () -> extend());
+        return Commands.startEnd( () -> retract(), () -> stop(), this);
     }
 
     public Command stopClimbCommand()
     {
-        return this.runOnce( () -> stop());
+        return Commands.runOnce( () -> stop(), this);
     }
 
     @Override
