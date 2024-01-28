@@ -60,65 +60,70 @@ public class RobotContainer
     private boolean useFullRobot			= false;
 
     private boolean useExampleSubsystem		= false;
-    private boolean useGyro					= false;
+
+    private boolean useAmpAssist            = false;
+    private boolean useCandle               = false;
+    private boolean useClimb                = false;
     private boolean useDrivetrain   		= false;
     private boolean useFlywheel             = false;
-    private boolean useIntake               = false;
-    private boolean useAmpAssist            = false; 
-    private boolean usePivot                = false;
-    private boolean useIntakePositioning    = false;
-    private boolean useShuttle              = false;
-    private boolean useClimb                = false;
     private boolean useIndex                = false;
-    private boolean useUltrasonic           = false;
+    private boolean useIntake               = false;
+    private boolean useIntakePositioning    = false;
+    private boolean usePivot                = false;
+    private boolean usePoseEstimator        = false;
     private boolean useShooter              = false;
-    private boolean useCandle               = false;
-    private boolean useProximity            = false;
-    
+    private boolean useShuttle              = false;
+
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
     private boolean useCameraThree          = false;
     private boolean useCameraFour           = false;
-    private boolean usePoseEstimator        = false;
+    private boolean useGyro					= false;
+    private boolean useProximity            = false;
+    private boolean useUltrasonic           = false;
 
     private boolean useMainShuffleboard		= false;    
+
+    private boolean useBindings				= false;
     private boolean useDriverController		= false;
     private boolean useOperatorController 	= false;
-    private boolean useBindings				= false;
-
+    
     private boolean useDataLog				= false;
 
 
     public final boolean fullRobot;
 
     public final ExampleSubsystem exampleSubsystem;
-    public final Gyro4237 gyro;
-    public final Drivetrain drivetrain;
+
     public final Compressor compressor;
-    public final Flywheel flywheel;
-    public final Intake intake;
+
     public final AmpAssist ampAssist;
-    public final Pivot pivot;
-    public final IntakePositioning intakePositioning;
-    public final Shuttle shuttle;
-    public final Climb climb;
-    public final Index index;
-    public final Ultrasonic ultrasonic;
-    public final Shooter shooter;
     public final Candle4237 candle;
+    public final Climb climb;
+    public final Drivetrain drivetrain;
+    public final Flywheel flywheel;
+    public final Index index;
+    public final Intake intake;
+    public final IntakePositioning intakePositioning;
+    public final Pivot pivot;
+    public final Shooter shooter;
+    public final Shuttle shuttle;
+
+    public final Camera[] cameraArray = new Camera[4];
+    public final Gyro4237 gyro;
     public final Proximity firstShuttleProximity;
     public final Proximity secondShuttleProximity;
     public final Proximity indexProximity;
     public final Proximity indexWheelsProximity;
-
-    public final Camera[] cameraArray = new Camera[4];
-
+    public final Ultrasonic ultrasonic;
+    
     public final MainShuffleboard mainShuffleboard;
-    public final DriverController driverController;
-    public final OperatorController operatorController;
-    public final DriverButtonBindings driverButtonBindings;
-    public final OperatorButtonBindings operatorButtonBindings;
 
+    public final DriverButtonBindings driverButtonBindings;
+    public final DriverController driverController;
+    public final OperatorButtonBindings operatorButtonBindings;
+    public final OperatorController operatorController;
+    
     public DataLog log = null;
     public SchedulerLog schedulerLog;
 
@@ -133,38 +138,39 @@ public class RobotContainer
         fullRobot 			    = (useFullRobot);
 
         exampleSubsystem 	    = (useExampleSubsystem)						? new ExampleSubsystem() 							    	: null;
+
         gyro 				    = (useFullRobot || useGyro)					? new Gyro4237()									    	: null;	
         drivetrain 			    = (useFullRobot || useDrivetrain) 			? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)  : null;
+        
         compressor			    = (true)                                    ? new Compressor(0, PneumaticsModuleType.CTREPCM)    : null;
-        intake                  = (useIntake)                               ? new Intake()                                              : null;
-        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                           : null;
-        pivot                   = (usePivot)                                ? new Pivot()                                               : null;
-        intakePositioning       = (useIntakePositioning)                    ? new IntakePositioning()                                   : null;
-        shuttle                 = (useShuttle)                              ? new Shuttle()                                             : null;
-        climb                   = (useClimb)                                ? new Climb()                                               : null;
-        index                   = (useIndex)                                ? new Index()                                               : null;
-        ultrasonic              = (useUltrasonic)                           ? new Ultrasonic()                                          : null;
-        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                            : null;
-        shooter                 = (useFullRobot || useShooter)              ? new Shooter(pivot, index, flywheel)                       : null;
-        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
-        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(9)                         : null;
-        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                         : null;
-        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                         : null;
-        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(6)                         : null;
 
+        ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                           : null;
+        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
+        climb                   = (useFullRobot || useClimb)                ? new Climb()                                               : null;
+        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                            : null;
+        index                   = (useFullRobot || useIndex)                ? new Index()                                               : null;
+        intake                  = (useFullRobot || useIntake)               ? new Intake()                                              : null;
+        intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                   : null;
+        pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
+        shooter                 = (useFullRobot || useShooter)              ? new Shooter(pivot, index, flywheel)                       : null;
+        shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
+        
         cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
         cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;
         cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                     : null;
         cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                      : null;
-
-        
+        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(9)                         : null;
+        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                         : null;
+        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                         : null;
+        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(6)                         : null;
+        ultrasonic              = (useFullRobot || useUltrasonic)           ? new Ultrasonic()                                          : null;
 
         mainShuffleboard 	    = (useFullRobot || useMainShuffleboard)		? new MainShuffleboard(this)						    	: null;
-        driverController 	    = (useFullRobot || useDriverController) 	? new DriverController(Constants.Controller.DRIVER)     	: null;
+        
         driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 					    	: null;
-
-        operatorController 	    = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR) 	: null;
+        driverController 	    = (useFullRobot || useDriverController) 	? new DriverController(Constants.Controller.DRIVER)     	: null;
         operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 	    					: null;
+        operatorController 	    = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR) 	: null;
 
 
         if(useFullRobot || useDataLog)
