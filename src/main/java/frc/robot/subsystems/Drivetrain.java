@@ -101,8 +101,6 @@ public class Drivetrain extends Subsystem4237
 
     // *** CLASS & INSTANCE VARIABLES ***
     private final Gyro4237 gyro; //Pigeon2
-    private final Camera[] cameraArray;
-    private boolean usePoseEstimator;
     private boolean useDataLog = true;
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
@@ -162,9 +160,7 @@ public class Drivetrain extends Subsystem4237
         periodicData = new PeriodicData(); // all the periodic I/O appear here
         
         this.gyro = gyro;
-        this.cameraArray = cameraArray;
         this.log = log;
-        this.usePoseEstimator = usePoseEstimator;
         if(log == null)
         {
             useDataLog = false;
