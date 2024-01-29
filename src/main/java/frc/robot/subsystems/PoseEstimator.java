@@ -169,7 +169,12 @@ public class PoseEstimator extends Subsystem4237
             periodicData.poseForAS = poseEstimator.getEstimatedPosition(); // variable for testing in AdvantageScope
 
             // put the pose onto the NT so AdvantageScope can read it
-            ASTable.getEntry("poseEstimator").setDoubleArray(Camera.toQuaternions(periodicData.poseForAS));
+            // ASTable.getEntry("poseEstimator").setDoubleArray(Camera.toQuaternions(periodicData.poseForAS));
+            double[] pose = {
+                periodicData.poseForAS.getX(), periodicData.poseForAS.getY(), periodicData.poseForAS.getRotation().getDegrees()
+            };
+            ASTable.getEntry("poseEstimator").setDoubleArray(pose);
+
         }
     }
 

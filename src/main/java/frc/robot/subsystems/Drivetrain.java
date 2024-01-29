@@ -691,7 +691,11 @@ public class Drivetrain extends Subsystem4237
 
         feedWatchdog();
 
-        ASTable.getEntry("drivetrain odometry").setDoubleArray(Camera.toQuaternions(periodicData.odometry.getPoseMeters()));
+        // ASTable.getEntry("drivetrain odometry").setDoubleArray(Camera.toQuaternions(periodicData.odometry.getPoseMeters()));
+        double[] pose = {
+            periodicData.odometry.getPoseMeters().getX(), periodicData.odometry.getPoseMeters().getY(), periodicData.odometry.getPoseMeters().getRotation().getDegrees()
+        };
+        ASTable.getEntry("drivetrain odometry").setDoubleArray(pose);
         double[] moduleStates = {
         periodicData.swerveModuleStates[0].angle.getDegrees(), periodicData.swerveModuleStates[0].speedMetersPerSecond,
         periodicData.swerveModuleStates[1].angle.getDegrees(), periodicData.swerveModuleStates[1].speedMetersPerSecond,
