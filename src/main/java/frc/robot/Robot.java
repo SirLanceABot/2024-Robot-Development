@@ -195,11 +195,6 @@ public class Robot extends TimedRobot
             autonomousCommand = null;
             autonomousTabData = null;
         }
-        
-        if(robotContainer.compressor != null)
-        {
-            robotContainer.compressor.enableDigital();
-        }
     }
 
     /**

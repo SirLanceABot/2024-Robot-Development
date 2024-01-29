@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class SchedulerLog 
 {
-
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
@@ -20,87 +19,99 @@ public class SchedulerLog
         System.out.println("Loading: " + fullClassName);
     }
 
-    public SchedulerLog()
+    private StringLogEntry commandLogEntry = null;
+    private boolean useConsole = false;
+    private boolean useDataLog = false;
+    private boolean useShuffleBoardLog = false;
+
+    /**
+     * Command Event Loggers
+     * <p>Set the scheduler to log events for command initialize, interrupt, finish, and execute.
+     * Log to the ShuffleBoard and the WPILib data log tool.
+     * If ShuffleBoard is recording, these events are added to the recording.
+     * Convert recording to csv and they show nicely in Excel.
+     * If using data log tool, the recording is automatic so run that tool to retrieve and convert the log.
+     */ 
+    SchedulerLog(boolean useConsole, boolean useDataLog, boolean useShuffleBoardLog)
     {
-        configureSchedulerLog();
+        this.useConsole = useConsole;
+        this.useDataLog = useDataLog;
+        this.useShuffleBoardLog = useShuffleBoardLog;
     }
 
-    /////////////////////////////////////////
-    // Command Event Loggers
-    /////////////////////////////////////////
-    void configureSchedulerLog()
+    /**
+     * Log commands that run the initialize method.
+     */
+    public void logCommandInitialize()
     {
-        boolean useDataLog = true;
-        boolean useShuffleBoardLog = true;
-        StringLogEntry commandLogEntry = null;
-
-        // if(useShuffleBoardLog || useDataLog)
-        {
-        // Set the scheduler to log events for command initialize, interrupt,
-        // finish, execute
-        // Log to the ShuffleBoard and the WPILib data log tool.
-        // If ShuffleBoard is recording these events are added to the recording. Convert
-        // recording to csv and they show nicely in Excel. 
-        // If using data log tool, the recording is automatic so run that tool to retrieve and convert the log.
-        //_________________________________________________________________________________
-
         CommandScheduler.getInstance()
             .onCommandInitialize(
                 command ->
                 {
-                    if(useDataLog)
-                        commandLogEntry.append(command.getClass() + " " + command.getName() + " initialized");
-                        
-                    if(useShuffleBoardLog)
-                    {
-                        Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal);
+                    if(useConsole)
                         System.out.println("Command initialized " + command.getName());
-                    }
+                    if(useDataLog)
+                        commandLogEntry.append(command.getClass() + " " + command.getName() + " initialized");  
+                    if(useShuffleBoardLog)
+                        Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal);
                 }
             );
-        //_________________________________________________________________________________
+    }
 
+    /**
+     * Log commands that have been interrupted.
+     */
+    public void logCommandInterrupt()
+    {
         CommandScheduler.getInstance()
             .onCommandInterrupt(
                 command ->
                 {
-                    if(useDataLog) commandLogEntry.append(command.getClass() + " " + command.getName() + " interrupted");
-                    if(useShuffleBoardLog)
-                    {
-                        Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal);
+                    if(useConsole)
                         System.out.println("Command interrupted " + command.getName());
-                    }
+                    if(useDataLog) 
+                        commandLogEntry.append(command.getClass() + " " + command.getName() + " interrupted");
+                    if(useShuffleBoardLog)
+                        Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal);
                 }
             );
-        //_________________________________________________________________________________
+    }
 
+    /**
+     * Log commands that run the finish method.
+     */
+    public void logCommandFinish()
+    {
         CommandScheduler.getInstance()
             .onCommandFinish(
                 command ->
                 {
-                    if(useDataLog) commandLogEntry.append(command.getClass() + " " + command.getName() + " finished");
-                    if(useShuffleBoardLog)
-                    {
-                        Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal);
+                    if(useConsole)
                         System.out.println("Command finished " + command.getName());
-                    }
+                    if(useDataLog) 
+                        commandLogEntry.append(command.getClass() + " " + command.getName() + " finished");
+                    if(useShuffleBoardLog)
+                        Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal);
                 }
             );
-        //_________________________________________________________________________________
+    }
 
+    /**
+     * Log commands that run the execute method. This can generate a lot of events.
+     */
+    public void logCommandExecute()
+    {
         CommandScheduler.getInstance()
-            .onCommandExecute( // this can generate a lot of events
+            .onCommandExecute(
                 command ->
                 {
-                    if(useDataLog) commandLogEntry.append(command.getClass() + " " + command.getName() + " executed");
+                    if(useConsole)
+                        System.out.println("Command executed " + command.getName());
+                    if(useDataLog) 
+                        commandLogEntry.append(command.getClass() + " " + command.getName() + " executed");
                     if(useShuffleBoardLog)
-                    {
                         Shuffleboard.addEventMarker("Command executed", command.getName(), EventImportance.kNormal);
-                        // System.out.println("Command executed " + command.getName());
-                    }
                 }
             );
-        //_________________________________________________________________________________
-        }
     }
 }
