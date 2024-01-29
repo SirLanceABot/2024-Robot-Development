@@ -546,13 +546,14 @@ public class Drivetrain extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        if(DriverStation.isAutonomousEnabled())
-        {
+        // commented because we want to update odometry always, not just in autonomous
+        // if(DriverStation.isAutonomousEnabled())
+        // {
             periodicData.frontLeftPosition = frontLeft.getPosition();
             periodicData.frontRightPosition =  frontRight.getPosition();
             periodicData.backLeftPosition = backLeft.getPosition();
             periodicData.backRightPosition = backRight.getPosition();
-        }
+        // }
 
     }
 
@@ -610,23 +611,8 @@ public class Drivetrain extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        if (DriverStation.isDisabled() && resetOdometry)
-        {
-            periodicData.odometry.resetPosition(
-                new Rotation2d(), /*zero*/
-                new SwerveModulePosition[]
-                {/*zeros distance, angle*/
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition()
-                },
-                new Pose2d(/*zeros facing X*/));
-            resetOdometry = false;
-        }
-        else if (DriverStation.isAutonomousEnabled())
-        {
-            periodicData.odometry.update(
+        // update odometry all the time
+        periodicData.odometry.update(
                 gyro.getRotation2d(),
                 new SwerveModulePosition[] 
                 {
@@ -636,8 +622,34 @@ public class Drivetrain extends Subsystem4237
                     periodicData.backRightPosition
                 });
 
-                // System.out.println(gyro.getYaw());
-        }
+        // if (DriverStation.isDisabled() && resetOdometry)
+        // {
+        //     periodicData.odometry.resetPosition(
+        //         new Rotation2d(), /*zero*/
+        //         new SwerveModulePosition[]
+        //         {/*zeros distance, angle*/
+        //             new SwerveModulePosition(),
+        //             new SwerveModulePosition(),
+        //             new SwerveModulePosition(),
+        //             new SwerveModulePosition()
+        //         },
+        //         new Pose2d(/*zeros facing X*/));
+        //     resetOdometry = false;
+        // }
+        // else if (DriverStation.isAutonomousEnabled())
+        // {
+        //     periodicData.odometry.update(
+        //         gyro.getRotation2d(),
+        //         new SwerveModulePosition[] 
+        //         {
+        //             periodicData.frontLeftPosition,
+        //             periodicData.frontRightPosition,
+        //             periodicData.backLeftPosition,
+        //             periodicData.backRightPosition
+        //         });
+
+        //         // System.out.println(gyro.getYaw());
+        // }
 
         if (resetEncoders)
         {   //FIXME do we need to add a time delay to reset the encoders?
