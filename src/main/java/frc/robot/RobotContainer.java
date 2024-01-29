@@ -18,7 +18,6 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Shooter;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
@@ -26,7 +25,6 @@ import frc.robot.controls.OperatorController;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
-import frc.robot.sensors.Ultrasonic;
 import frc.robot.shuffleboard.MainShuffleboard;
 
 
@@ -71,7 +69,6 @@ public class RobotContainer
     private boolean useCameraFour           = false;
     private boolean useGyro                 = false;
     private boolean useProximity            = false;
-    private boolean useUltrasonic           = false;
 
     private boolean useMainShuffleboard     = false;
 
@@ -95,7 +92,6 @@ public class RobotContainer
     public final Intake intake;
     public final IntakePositioning intakePositioning;
     public final Pivot pivot;
-    public final Shooter shooter;
     public final Shuttle shuttle;
 
     public final Camera[] cameraArray = new Camera[4];
@@ -104,7 +100,6 @@ public class RobotContainer
     public final Proximity secondShuttleProximity;
     public final Proximity indexProximity;
     public final Proximity indexWheelsProximity;
-    public final Ultrasonic ultrasonic;
     
     public final MainShuffleboard mainShuffleboard;
 
@@ -139,7 +134,6 @@ public class RobotContainer
         intake                  = (useFullRobot || useIntake)               ? new Intake()                                              : null;
         intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                   : null;
         pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
-        shooter                 = (useFullRobot || useShooter)              ? new Shooter(pivot, index, flywheel)                       : null;
         shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
         
         cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                               : null;
@@ -150,7 +144,7 @@ public class RobotContainer
         secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                                          : null;
         indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                                          : null;
         indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(6)                                          : null;
-        ultrasonic              = (useFullRobot || useUltrasonic)           ? new Ultrasonic()                                          : null;
+        // ultrasonic              = (useFullRobot || useUltrasonic)           ? new Ultrasonic()                                          : null;
 
         mainShuffleboard        = (useFullRobot || useMainShuffleboard)     ? new MainShuffleboard(this)                                : null;
 

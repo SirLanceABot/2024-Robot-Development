@@ -33,7 +33,7 @@ public class OwenTest implements Test
     // private final Flywheel flywheel;
     // private final Index index;
     // private final Climb climb;
-    private final Ultrasonic ultrasonic;
+    // private final Ultrasonic ultrasonic;
     private final Joystick joystick = new Joystick(0);
     // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
     // Trigger trigger = new Trigger(true);
@@ -48,7 +48,7 @@ public class OwenTest implements Test
         // flywheel = this.robotContainer.flywheel;
         // index = this.robotContainer.index;
         // climb = this.robotContainer.climb;
-        ultrasonic = this.robotContainer.ultrasonic;
+        // ultrasonic = this.robotContainer.ultrasonic;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -66,7 +66,7 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
-        System.out.println("distance = " + ultrasonic.getDistance());
+        // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
         // {
         //     System.out.println("Chain Position");
