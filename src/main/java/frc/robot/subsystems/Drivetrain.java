@@ -18,6 +18,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -105,6 +107,9 @@ public class Drivetrain extends Subsystem4237
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
     private final PoseEstimator poseEstimator;
+
+    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
+
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -677,6 +682,8 @@ public class Drivetrain extends Subsystem4237
         
 
         feedWatchdog();
+
+        ASTable.getEntry("drivetrain odometry").setDoubleArray(Camera.toQuaternions(periodicData.odometry.getPoseMeters()));
     }
 
     public void feedWatchdog() 
