@@ -17,7 +17,7 @@ import frc.robot.Constants;
 import frc.robot.motors.TalonFX4237;
 
 /**
- * Use this class as a template to create other subsystems.
+ * This class creates the climb
  */
 public class Climb extends Subsystem4237
 {
@@ -60,7 +60,7 @@ public class Climb extends Subsystem4237
         kNotMoving, kMoving;
     }
     
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
         private double currentLeftPosition = 0.0;
@@ -81,18 +81,18 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    public static final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 80.0;
-    public static final double LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0.0;
-    public static final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 80.0;
-    public static final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
+    private final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 80.0;
+    private final double LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0.0;
+    private final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 80.0;
+    private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
-    public static final double CHAIN_ENCODER_POSITION              = 60.0;
-    public static final double OUTER_ROBOT_ENCODER_POSITION        = 30.0;
-    public static final double INNER_ROBOT_ENCODER_POSITION        = 20.0;
+    private static final double CHAIN_ENCODER_POSITION              = 60.0;
+    private static final double OUTER_ROBOT_ENCODER_POSITION        = 30.0;
+    private static final double INNER_ROBOT_ENCODER_POSITION        = 20.0;
 
-    public static final double CURRENT_LIMIT                       = 10.0;
-    public static final double CURRENT_THRESHOLD                   = 10.0;
-    public static final double TIME_THRESHOLD                      = 10.0;
+    private final double CURRENT_LIMIT                       = 10.0;
+    private final double CURRENT_THRESHOLD                   = 10.0;
+    private final double TIME_THRESHOLD                      = 10.0;
 
     private final double kP = 0.00003;
     private final double kI = 0.0; // 0.0001
@@ -142,6 +142,8 @@ public class Climb extends Subsystem4237
         leftMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
         rightMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
         rightMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
+
+        // rightMotor.follow(leftMotor);
     }
 
     public void resetEncoder()
@@ -288,7 +290,16 @@ public class Climb extends Subsystem4237
         }
         else
         {
-            setLeftAndRightPosiiton(targetPosition);
+            if(targetPosition.value > leftMotor.getPosition())
+            {
+                leftMotor.set(0.05);
+                rightMotor.set(0.05);        
+            }
+            else
+            {
+                leftMotor.set(0.0);
+                rightMotor.set(0.0); 
+            }
         }
         
 
@@ -308,13 +319,6 @@ public class Climb extends Subsystem4237
     }
 
     @Override
-    public String toString()
-    {
-        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
-
-    }
-
-    @Override
     public void periodic()
     {
         // This method will be called once per scheduler run
@@ -325,4 +329,12 @@ public class Climb extends Subsystem4237
     {
         // This method will be called once per scheduler run during simulation
     }
+
+    @Override
+    public String toString()
+    {
+        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
+
+    }
+
 }

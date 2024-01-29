@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 
 /**
- * Use this class as a template to create other subsystems.
+ * Creates an intake positioning which moves the intake
  */
 public class IntakePositioning extends Subsystem4237
 {
@@ -36,7 +36,7 @@ public class IntakePositioning extends Subsystem4237
         }
     }
     
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
 
@@ -47,9 +47,8 @@ public class IntakePositioning extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.IntakePositioning.SOLENOID_PORT, PneumaticsModuleType.CTREPCM, UP_POSITION, DOWN_POSITION);
-    public static final int UP_POSITION                = 0;
-    public static final int DOWN_POSITION              = 1;
+    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.IntakePositioning.SOLENOID_PORT, PneumaticsModuleType.CTREPCM, Constants.IntakePositioning.UP_POSITION, Constants.IntakePositioning.DOWN_POSITION);
+
 
     /** 
      * Creates a new IntakePositioning. 

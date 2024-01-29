@@ -139,8 +139,8 @@ public final class Constants
 
     public static class Intake
     {
-        public static final int TOP_MOTOR_PORT           = 1;
-        public static final int BOTTOM_MOTOR_PORT        = 1;
+        public static final int TOP_MOTOR_PORT           = 3;
+        public static final int BOTTOM_MOTOR_PORT        = 5;
         public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
         public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
     }
@@ -191,6 +191,8 @@ public final class Constants
     public static class IntakePositioning
     {
         public static final int SOLENOID_PORT     = 0;
+        public static final int UP_POSITION                = 0;
+        public static final int DOWN_POSITION              = 1;
     }
 
     public static class Climb

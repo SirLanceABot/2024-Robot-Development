@@ -111,7 +111,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
         {
-            aButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kSpeakerBase));
+            aButtonTrigger.onTrue(shootCommand(30, () -> 30));
         }
     }
 
@@ -123,7 +123,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
         {
-            bButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kToAmp));
+            
         }
     }
 
@@ -135,7 +135,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
         {
-            xButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kRandomPosition));
+
         }
     }
 
@@ -147,7 +147,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
         {
-            yButtonTrigger.onTrue(new ShootFromPosition(robotContainer.flywheel, robotContainer.index, robotContainer.pivot, robotContainer.ampAssist, robotContainer.drivetrain, ShootingPosition.kPodium));
+
         }
     }
 

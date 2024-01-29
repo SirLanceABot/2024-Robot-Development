@@ -12,7 +12,7 @@ import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
 /**
- * Use this class as a template to create other subsystems.
+ * create intake which pick up notes
  */
 public class Intake extends Subsystem4237
 {
@@ -43,7 +43,7 @@ public class Intake extends Subsystem4237
         kPickup, kEject;
     }
 
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
         private double topIntakePosition = 0.0;
@@ -57,8 +57,8 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final CANSparkMax4237 topMotor = new CANSparkMax4237(3, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
-    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(5, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
+    private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
+    private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
     private RelativeEncoder topEncoder;
     private RelativeEncoder bottomEncoder;
 
