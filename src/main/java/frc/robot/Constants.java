@@ -360,6 +360,12 @@ public final class Constants
         public static final int totalLatencyIndex = 6;
     }
 
+    public static class Candle
+    {
+        public static final int PORT            = 0;
+        public static final String CAN_BUS      = ROBORIO;
+    }
+
     public enum ShootingPosition
     {
         kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;

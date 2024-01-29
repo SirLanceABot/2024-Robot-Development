@@ -14,6 +14,7 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
 import frc.robot.Constants;
 
+/** Represents a CTRE CANdle that controls the leds on our robot. */
 public class Candle4237 extends Subsystem4237
 {
     // This string gets the full name of the class, including the package name
@@ -36,17 +37,16 @@ public class Candle4237 extends Subsystem4237
         // INPUTS
 
         // OUTPUTS
-        private LedStatus ledStatus = LedStatus.kOff;
-        private boolean isBlinking = true;
+        // private LedStatus ledStatus = LedStatus.kOff;
+        // private boolean isBlinking = true;
     }
 
-    private PeriodicData periodicData = new PeriodicData();
-    // private final CANdle candle = new CANdle(Constants.Candle.CANDLE_PORT, "rio");
-    private final CANdle candle = new CANdle(1, "rio");    
-    private int startLed = 0;
-    private int ledCount = 68;
+    private final PeriodicData periodicData = new PeriodicData();
+    private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);    
     private Animation animation;
     private double blinkSpeed = 0.4;
+    public static final int LED_COUNT = 68;
+    public static final int INITIAL_LED = 0;
 
     /** 
      * Creates a new Candle4237. 
@@ -58,6 +58,99 @@ public class Candle4237 extends Subsystem4237
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
+    }
+    
+    public void setPurple(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 0, 255, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(255, 0, 255, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
+
+    
+    public void setRed(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 0, 0, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(255, 0, 0, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
+
+    public void setGreen(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(0, 255, 0, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(0, 255, 0, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
+
+    public void setBlue(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(0, 0, 255, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(0, 0, 255, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
+
+    
+    public void stop()
+    {
+        candle.animate(null, 0);
+        candle.setLEDs(0, 0, 0, 0, INITIAL_LED, LED_COUNT);
+    }
+
+    
+    public void setRGBFade()
+    {
+        stop();
+
+        candle.animate(new RgbFadeAnimation(1, 0.65, LED_COUNT));
+    }
+
+    public void setColorFlow()
+    {
+        stop();
+
+        candle.animate(new ColorFlowAnimation(255, 0, 0, 255, 0.3, LED_COUNT, Direction.Forward));
+    }
+
+    public void setRainbow()
+    {
+        stop();
+
+        candle.animate(new RainbowAnimation(1, 0.8, LED_COUNT));
+    }
+
+    public void setLarson()
+    {
+        stop();
+
+        candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.5, LED_COUNT, BounceMode.Center, 7));
     }
 
     // public void signalPurple()
@@ -71,100 +164,6 @@ public class Candle4237 extends Subsystem4237
     //     periodicData.isBlinking = true;
     // }
 
-    
-    public void setPurple(boolean shouldBlink)
-    {
-        setOff();
-
-        if(shouldBlink)
-        {
-            candle.animate(new StrobeAnimation(255, 0, 255, 255, blinkSpeed, ledCount));
-        }
-        else
-        {
-            candle.setLEDs(255, 0, 255, 255, startLed, ledCount);
-        }
-    }
-
-    
-    public void setRed(boolean shouldBlink)
-    {
-        setOff();
-
-        if(shouldBlink)
-        {
-            candle.animate(new StrobeAnimation(255, 0, 0, 255, blinkSpeed, ledCount));
-        }
-        else
-        {
-            candle.setLEDs(255, 0, 0, 255, startLed, ledCount);
-        }
-    }
-
-    public void setGreen(boolean shouldBlink)
-    {
-        setOff();
-
-        if(shouldBlink)
-        {
-            candle.animate(new StrobeAnimation(0, 255, 0, 255, blinkSpeed, ledCount));
-        }
-        else
-        {
-            candle.setLEDs(0, 255, 0, 255, startLed, ledCount);
-        }
-    }
-
-    public void setBlue(boolean shouldBlink)
-    {
-        setOff();
-
-        if(shouldBlink)
-        {
-            candle.animate(new StrobeAnimation(0, 0, 255, 255, blinkSpeed, ledCount));
-        }
-        else
-        {
-            candle.setLEDs(0, 0, 255, 255, startLed, ledCount);
-        }
-    }
-
-    
-    public void setOff()
-    {
-        candle.animate(null, 0);
-        candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
-    }
-
-    
-    public void setRGBFade()
-    {
-        setOff();
-
-        candle.animate(new RgbFadeAnimation(1, 0.65, ledCount));
-    }
-
-    public void setColorFlow()
-    {
-        setOff();
-
-        candle.animate(new ColorFlowAnimation(255, 0, 0, 255, 0.3, ledCount, Direction.Forward));
-    }
-
-    public void setRainbow()
-    {
-        setOff();
-
-        candle.animate(new RainbowAnimation(1, 0.8, ledCount));
-    }
-
-    public void setLarson()
-    {
-        setOff();
-
-        candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.5, ledCount,BounceMode.Center, 7));
-    }
-
     // public void signalRed()
     // {
     //     periodicData.ledStatus = LedStatus.kRed;
@@ -176,43 +175,43 @@ public class Candle4237 extends Subsystem4237
     //     candle.animate(null, 0);
     // }
 
-    private void setColor(int startLed, int ledCount, LedStatus status)
-    {
-        switch (status)
-        {
-            case kPurple: 
-                candle.setLEDs(255, 0, 255, 255, startLed, ledCount);
-                break;
-            case kYellow: 
-                candle.setLEDs(255, 185, 0, 255, startLed, ledCount);
-                break; 
-            case kRed: 
-                candle.setLEDs(255, 0, 0, 255, startLed, ledCount);
-                break;
-            case kGreen:
-                candle.setLEDs(0, 255, 0, 255, startLed, ledCount);
-                break;
-            case kWhite:
-                candle.setLEDs(255, 255, 255, 255, startLed, ledCount);
-                break;
-            case kOff: 
-                candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
-                break;
-            default:
-                candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
-                break;
-        }
-    }
+    // private void setColor(int startLed, int ledCount, LedStatus status)
+    // {
+    //     switch (status)
+    //     {
+    //         case kPurple: 
+    //             candle.setLEDs(255, 0, 255, 255, startLed, ledCount);
+    //             break;
+    //         case kYellow: 
+    //             candle.setLEDs(255, 185, 0, 255, startLed, ledCount);
+    //             break; 
+    //         case kRed: 
+    //             candle.setLEDs(255, 0, 0, 255, startLed, ledCount);
+    //             break;
+    //         case kGreen:
+    //             candle.setLEDs(0, 255, 0, 255, startLed, ledCount);
+    //             break;
+    //         case kWhite:
+    //             candle.setLEDs(255, 255, 255, 255, startLed, ledCount);
+    //             break;
+    //         case kOff: 
+    //             candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
+    //             break;
+    //         default:
+    //             candle.setLEDs(0, 0, 0, 0, startLed, ledCount);
+    //             break;
+    //     }
+    // }
 
-    private void setBlink()
-    {
-        switch (periodicData.ledStatus)
-        {
-            case kPurple:
-                animation = new StrobeAnimation(255, 0, 255, 255, 0.1, ledCount);
-        }
-        candle.animate(animation, 0);
-    }
+    // private void setBlink()
+    // {
+    //     switch (periodicData.ledStatus)
+    //     {
+    //         case kPurple:
+    //             animation = new StrobeAnimation(255, 0, 255, 255, 0.1, LED_COUNT);
+    //     }
+    //     candle.animate(animation, 0);
+    // }
 
     @Override
     public void readPeriodicInputs()
@@ -248,5 +247,11 @@ public class Candle4237 extends Subsystem4237
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Led Count: " + LED_COUNT;
     }
 }

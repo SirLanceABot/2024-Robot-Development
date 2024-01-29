@@ -58,7 +58,7 @@ public class SamTest implements Test
         }
         else
         {
-            candle.setOff();
+            candle.stop();
         }
     }
     
@@ -67,7 +67,7 @@ public class SamTest implements Test
      */
     public void exit()
     {
-        candle.setOff();
+        candle.stop();
     }
 
     // *** METHODS ***
