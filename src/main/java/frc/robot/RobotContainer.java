@@ -167,11 +167,11 @@ public class RobotContainer
 
         mainShuffleboard 	    = (useFullRobot || useMainShuffleboard)		? new MainShuffleboard(this)						    	: null;
         
-        driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 					    	: null;
         driverController 	    = (useFullRobot || useDriverController) 	? new DriverController(Constants.Controller.DRIVER)     	: null;
-        operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 	    					: null;
+        driverButtonBindings	= (useFullRobot || useBindings) 			? new DriverButtonBindings(this) 					    	: null;
         operatorController 	    = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR) 	: null;
-
+        operatorButtonBindings	= (useFullRobot || useBindings) 			? new OperatorButtonBindings(this) 	    					: null;
+        
 
         if(useFullRobot || useDataLog)
         {
