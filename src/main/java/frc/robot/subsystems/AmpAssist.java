@@ -13,7 +13,7 @@ import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
 /**
- * Use this class as a template to create other subsystems.
+ * This class is used to operate the Amp Assist which uses pnuematics to control a bar.
  */
 public class AmpAssist extends Subsystem4237
 {
@@ -39,7 +39,7 @@ public class AmpAssist extends Subsystem4237
         }
     }
     
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
         
@@ -50,9 +50,8 @@ public class AmpAssist extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.AmpAssist.SOLENOID_PORT,PneumaticsModuleType.CTREPCM, OUT_POSITION, IN_POSITION);
-    public static final int OUT_POSITION             = 0;
-    public static final int IN_POSITION              = 1;
+    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.AmpAssist.SOLENOID_PORT,PneumaticsModuleType.CTREPCM, Constants.AmpAssist.OUT_POSITION, Constants.AmpAssist.IN_POSITION);
+    
 
     /** 
      * Creates a new AmpAssist. 

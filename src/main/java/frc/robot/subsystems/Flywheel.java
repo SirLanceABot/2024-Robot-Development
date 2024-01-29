@@ -14,8 +14,7 @@ import frc.robot.subsystems.PoseEstimator;
 import frc.robot.motors.TalonFX4237;
 
 /**
- * Use this class as a template to create other subsystems.
- * 
+ *This class creates a flywheel which is the wheels that shoots the notes.
  */
 public class Flywheel extends Subsystem4237
 {
@@ -29,7 +28,6 @@ public class Flywheel extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    // test
     
     public enum ResetState
     {
@@ -41,7 +39,7 @@ public class Flywheel extends Subsystem4237
         kShoot, kIntake;
     }
 
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
         // private double currentDistance;
@@ -76,11 +74,11 @@ public class Flywheel extends Subsystem4237
 
 
     /** 
-     * Creates a new Shooter. 
+     * Creates a new flywheel. 
      */
     public Flywheel()
     {
-        super("Shooter");
+        super("Flywheel");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
         
@@ -158,11 +156,6 @@ public class Flywheel extends Subsystem4237
         motor.set(periodicData.flywheelSpeed);
     }
 
-    @Override
-    public String toString()
-    {
-        return "Current Shooter Speed: " + periodicData.flywheelSpeed;
-    }
 
     @Override
     public void periodic()
@@ -174,5 +167,11 @@ public class Flywheel extends Subsystem4237
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Current Shooter Speed: " + periodicData.flywheelSpeed;
     }
 }

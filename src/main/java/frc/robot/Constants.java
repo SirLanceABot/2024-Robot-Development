@@ -152,6 +152,10 @@ public final class Constants
 
         // public static final int OUT_SOFT_LIMIT           = 4237;
         // public static final int IN_SOFT_LIMIT            = 0;
+
+                
+        public static final int OUT_POSITION             = 0;
+        public static final int IN_POSITION              = 1;
     }
 
     public static class Flywheel

@@ -13,7 +13,7 @@ import frc.robot.Constants;
 import frc.robot.motors.TalonFX4237;
 
 /**
- * Use this class as a template to create other subsystems.
+ * This class creates an index that feeds notes to the flywheel.
  */
 public class Index extends Subsystem4237
 {
@@ -32,7 +32,7 @@ public class Index extends Subsystem4237
         kToFlywheel, kFromShuttle;
     }
     
-    private class PeriodicData
+    private final class PeriodicData
     {
         // INPUTS
         private double currentPosition;
@@ -147,12 +147,6 @@ public class Index extends Subsystem4237
     }
 
     @Override
-    public String toString()
-    {
-        return "Current Index Speed: " + periodicData.motorSpeed;
-    }
-
-    @Override
     public void periodic()
     {
         // This method will be called once per scheduler run
@@ -162,5 +156,11 @@ public class Index extends Subsystem4237
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Current Index Speed: " + periodicData.motorSpeed;
     }
 }
