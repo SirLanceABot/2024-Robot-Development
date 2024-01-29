@@ -118,13 +118,13 @@ public class Drivetrain extends Subsystem4237
     private final Translation2d backRightLocation = new Translation2d(-DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, -DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);
     
     private final SwerveModuleConfig frontLeftSwerveModule = new SwerveModuleConfig(
-        "Front Left", frontLeftLocation, Constants.Drivetrain.FRONT_LEFT_DRIVE, true, Constants.Drivetrain.FRONT_LEFT_ENCODER, SwerveModuleSetup.FRONT_LEFT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_LEFT_TURN);
+        "Front Left", frontLeftLocation, Constants.Drivetrain.FRONT_LEFT_DRIVE_PORT, true, Constants.Drivetrain.FRONT_LEFT_ENCODER_PORT, SwerveModuleSetup.FRONT_LEFT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_LEFT_TURN_PORT);
     private final SwerveModuleConfig frontRightSwerveModule = new SwerveModuleConfig(
-        "Front Right", frontRightLocation, Constants.Drivetrain.FRONT_RIGHT_DRIVE, false, Constants.Drivetrain.FRONT_RIGHT_ENCODER, SwerveModuleSetup.FRONT_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_RIGHT_TURN);
+        "Front Right", frontRightLocation, Constants.Drivetrain.FRONT_RIGHT_DRIVE_PORT, false, Constants.Drivetrain.FRONT_RIGHT_ENCODER_PORT, SwerveModuleSetup.FRONT_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.FRONT_RIGHT_TURN_PORT);
     private final SwerveModuleConfig backLeftSwerveModule = new SwerveModuleConfig(
-        "Back Left", backLeftLocation, Constants.Drivetrain.BACK_LEFT_DRIVE, true, Constants.Drivetrain.BACK_LEFT_ENCODER, SwerveModuleSetup.BACK_LEFT_ENCODER_OFFSET, Constants.Drivetrain.BACK_LEFT_TURN);
+        "Back Left", backLeftLocation, Constants.Drivetrain.BACK_LEFT_DRIVE_PORT, true, Constants.Drivetrain.BACK_LEFT_ENCODER_PORT, SwerveModuleSetup.BACK_LEFT_ENCODER_OFFSET, Constants.Drivetrain.BACK_LEFT_TURN_PORT);
     private final SwerveModuleConfig backRightSwerveModule = new SwerveModuleConfig(
-        "Back Right", backRightLocation, Constants.Drivetrain.BACK_RIGHT_DRIVE, false, Constants.Drivetrain.BACK_RIGHT_ENCODER, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN); 
+        "Back Right", backRightLocation, Constants.Drivetrain.BACK_RIGHT_DRIVE_PORT, false, Constants.Drivetrain.BACK_RIGHT_ENCODER_PORT, SwerveModuleSetup.BACK_RIGHT_ENCODER_OFFSET, Constants.Drivetrain.BACK_RIGHT_TURN_PORT); 
     
     private final SwerveModule frontLeft;
     private final SwerveModule frontRight;
@@ -144,7 +144,7 @@ public class Drivetrain extends Subsystem4237
     private double shootingAngle = 0.0;
     private TeamColor teamColor = TeamColor.kBlue;
 
-    private PeriodicData periodicData;
+    private PeriodicData periodicData = new PeriodicData();;
     
     // *** CLASS CONSTRUCTOR ***
     public Drivetrain(Gyro4237 gyro, DataLog log, Camera[] cameraArray, boolean usePoseEstimator)//, DriverController driverController)
@@ -155,9 +155,6 @@ public class Drivetrain extends Subsystem4237
         // DrivetrainConfig dd = Constants.DrivetrainSetup.DRIVETRAIN_DATA;
         // super();  // call the RobotDriveBase constructor
         // setSafetyEnabled(false);
-  
-  
-        periodicData = new PeriodicData(); // all the periodic I/O appear here
         
         this.gyro = gyro;
         this.log = log;

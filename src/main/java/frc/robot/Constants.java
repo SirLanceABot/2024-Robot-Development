@@ -117,21 +117,21 @@ public final class Constants
             }
         }
 
-        public static final int FRONT_LEFT_DRIVE       = 7;
-        public static final int FRONT_LEFT_ENCODER     = 8;  
-        public static final int FRONT_LEFT_TURN        = 9;  
+        public static final int FRONT_LEFT_DRIVE_PORT       = 7;
+        public static final int FRONT_LEFT_ENCODER_PORT     = 8;  
+        public static final int FRONT_LEFT_TURN_PORT        = 9;  
 
-        public static final int FRONT_RIGHT_DRIVE      = 10;
-        public static final int FRONT_RIGHT_ENCODER    = 11;  
-        public static final int FRONT_RIGHT_TURN       = 12;  
+        public static final int FRONT_RIGHT_DRIVE_PORT      = 10;
+        public static final int FRONT_RIGHT_ENCODER_PORT    = 11;  
+        public static final int FRONT_RIGHT_TURN_PORT       = 12;  
 
-        public static final int BACK_LEFT_DRIVE        = 4; 
-        public static final int BACK_LEFT_ENCODER      = 5; 
-        public static final int BACK_LEFT_TURN         = 6;  
+        public static final int BACK_LEFT_DRIVE_PORT        = 4; 
+        public static final int BACK_LEFT_ENCODER_PORT      = 5; 
+        public static final int BACK_LEFT_TURN_PORT         = 6;  
 
-        public static final int BACK_RIGHT_DRIVE       = 1; 
-        public static final int BACK_RIGHT_ENCODER     = 2; 
-        public static final int BACK_RIGHT_TURN        = 3;
+        public static final int BACK_RIGHT_DRIVE_PORT       = 1; 
+        public static final int BACK_RIGHT_ENCODER_PORT     = 2; 
+        public static final int BACK_RIGHT_TURN_PORT        = 3;
 
         public static final String CANCODER_CAN_BUS = cancoderCanBus;
         public static final String MOTOR_CAN_BUS = motorCanBus;
