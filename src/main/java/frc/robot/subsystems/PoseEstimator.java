@@ -17,9 +17,7 @@ import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 
 
-/**
- * Use this class as a template to create other subsystems.
- */
+/** Represents a WPILib SwerveDrivePoseEstimator. */
 public class PoseEstimator extends Subsystem4237
 {
     // This string gets the full name of the class, including the package name
@@ -37,10 +35,6 @@ public class PoseEstimator extends Subsystem4237
     private final Camera[] cameraArray;
 
     private final SwerveDrivePoseEstimator poseEstimator;
-    // private final Camera cam1;
-    // private final Camera cam2;
-    // private final Camera cam3;
-    // private final Camera cam4;
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
@@ -60,7 +54,7 @@ public class PoseEstimator extends Subsystem4237
 
     }
 
-    private PeriodicData periodicData = new PeriodicData();
+    private final PeriodicData periodicData = new PeriodicData();
 
     /** 
      * Creates a new PoseEstimator. 
@@ -188,5 +182,11 @@ public class PoseEstimator extends Subsystem4237
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Estimated Pose: " + getEstimatedPose();
     }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
+/**Represents a Sharp infrared proximity switch. */
 public class Proximity extends Sensor4237
 {
     // This string gets the full name of the class, including the package name
@@ -29,15 +30,14 @@ public class Proximity extends Sensor4237
         // OUTPUTS
     }
 
-    DigitalInput proximity;
-    private PeriodicData periodicData;
+    private final DigitalInput proximity;
+    private PeriodicData periodicData = new PeriodicData();
     
     public Proximity(int digitalInputPort)
     {   
         super("Proximity");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        periodicData = new PeriodicData();
         proximity = new DigitalInput(digitalInputPort);
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -86,6 +86,6 @@ public class Proximity extends Sensor4237
     @Override
     public String toString()
     {
-        return null;
+        return "Is detected: " + isDetected();
     }
 }
