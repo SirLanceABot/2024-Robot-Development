@@ -140,11 +140,10 @@ public class RobotContainer
         cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                               : null;
         cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                             : null;
         cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                              : null;
-        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(9)                                          : null;
-        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(8)                                          : null;
-        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(7)                                          : null;
-        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(6)                                          : null;
-        // ultrasonic              = (useFullRobot || useUltrasonic)           ? new Ultrasonic()                                          : null;
+        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)                                          : null;
+        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)                                          : null;
+        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)                                          : null;
+        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)                                          : null;
 
         mainShuffleboard        = (useFullRobot || useMainShuffleboard)     ? new MainShuffleboard(this)                                : null;
 

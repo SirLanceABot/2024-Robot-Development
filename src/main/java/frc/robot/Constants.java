@@ -223,6 +223,16 @@ public final class Constants
         public static final double RESET_GYRO_DELAY = 0.1;
         public static final String PIGEON_CAN_BUS = CANIVORE;
     }
+    
+    public static class Proximity
+    {
+        public static final int FIRST_SHUTTLE_PORT = 9;
+        public static final int SECOND_SHUTTLE_PORT = 8;
+        public static final int MIDDLE_INDEX_PORT = 7;
+        public static final int INDEX_WHEELS_PORT = 6;
+
+        
+    }
 
     public static class Controller
     {
