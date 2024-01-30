@@ -1,16 +1,20 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
-import com.ctre.phoenix6.Orchestra;
-import com.ctre.phoenix6.configs.AudioConfigs;
-import com.ctre.phoenix6.hardware.TalonFX;
+// import com.ctre.phoenix6.Orchestra;
+// import com.ctre.phoenix6.configs.AudioConfigs;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.controls.Xbox;
 // import frc.robot.motors.CANSparkMax4237;
-import frc.robot.motors.TalonFX4237;
+// import frc.robot.motors.TalonFX4237;
 
 /**
  * Test class for JWood
@@ -36,7 +40,7 @@ public class JWoodTest implements Test
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final RobotContainer robotContainer;
-    private final TalonFX4237 mc;
+    // private final TalonFX4237 mc;
     private final Joystick joystick;
     // private TalonFX talon;
 
@@ -56,9 +60,11 @@ public class JWoodTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        mc = new TalonFX4237(1, Constants.ROBORIO, "JWoodTest Motor");
+        // mc = new TalonFX4237(1, Constants.ROBORIO, "JWoodTest Motor");
         joystick = new Joystick(0);
-        configMotor();
+        // configMotor();
+
+        configStartButton();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -67,14 +73,55 @@ public class JWoodTest implements Test
     // *** CLASS METHODS & INSTANCE METHODS ***
     // Put all class methods and instance methods here
 
-    public void configMotor()
+    private void configStartButton()
     {
-        mc.setupFactoryDefaults();
-        mc.setupBrakeMode();
-        mc.setupInverted(isInverted);
-        mc.setupForwardSoftLimit(50, true);
-        mc.setupReverseSoftLimit(0, true);
+        // Start Button
+        BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
+        Trigger startButtonTrigger = new Trigger(startButton);
+
+        startButtonTrigger.onTrue(intakeFromFloor());
     }
+
+    public Command intakeFromFloor()
+    {
+        if(robotContainer.intakePositioning != null &&
+            robotContainer.intake != null &&
+            robotContainer.shuttle != null &&
+            robotContainer.index != null &&
+            robotContainer.secondShuttleProximity != null &&
+            robotContainer.indexProximity != null)
+        {
+            return
+            robotContainer.intakePositioning.extendCommand()
+            .alongWith(
+                robotContainer.intake.pickupFrontCommand(),
+                robotContainer.shuttle.moveUpwardCommand(),
+                robotContainer.index.acceptNoteCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.intake.stopCommand()
+                .alongWith(
+                    robotContainer.intakePositioning.retractCommand()))
+            .andThen(
+                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.shuttle.stopCommand()
+                .alongWith(
+                    robotContainer.index.stopCommand()))
+            .withName("Intake From Floor");
+        }
+        else
+            return Commands.none();
+    }
+    // public void configMotor()
+    // {
+    //     mc.setupFactoryDefaults();
+    //     mc.setupBrakeMode();
+    //     mc.setupInverted(isInverted);
+    //     mc.setupForwardSoftLimit(50, true);
+    //     mc.setupReverseSoftLimit(0, true);
+    // }
 
     // public void configTalonFX()
     // {
@@ -111,36 +158,36 @@ public class JWoodTest implements Test
     @Override
     public void periodic()
     {
-        if(joystick.getRawButton(1))
-        {
-            mc.set(0.1);
-            System.out.println(mc.getPosition());
-        }
-        else if(joystick.getRawButton(2))
-        {
-            mc.set(-0.1);
-            System.out.println(mc.getPosition());
-        }
-        else
-            mc.set(0.0);
+        // if(joystick.getRawButton(1))
+        // {
+        //     mc.set(0.1);
+        //     System.out.println(mc.getPosition());
+        // }
+        // else if(joystick.getRawButton(2))
+        // {
+        //     mc.set(-0.1);
+        //     System.out.println(mc.getPosition());
+        // }
+        // else
+        //     mc.set(0.0);
 
-        if(joystick.getRawButtonPressed(3))
-        {
-            isInverted = !isInverted;
-            mc.setupInverted(isInverted);
-        }
+        // if(joystick.getRawButtonPressed(3))
+        // {
+        //     isInverted = !isInverted;
+        //     mc.setupInverted(isInverted);
+        // }
 
-        if(joystick.getRawButtonPressed(4))
-        {
-            isBrake = !isBrake;
-            if(isBrake)
-                mc.setupBrakeMode();
-            else
-                mc.setupCoastMode();
-        }
+        // if(joystick.getRawButtonPressed(4))
+        // {
+        //     isBrake = !isBrake;
+        //     if(isBrake)
+        //         mc.setupBrakeMode();
+        //     else
+        //         mc.setupCoastMode();
+        // }
 
-        if(joystick.getRawButtonPressed(7))
-            mc.setPosition(0.0);
+        // if(joystick.getRawButtonPressed(7))
+        //     mc.setPosition(0.0);
 
     }
     
