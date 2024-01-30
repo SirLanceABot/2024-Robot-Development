@@ -34,18 +34,12 @@ public class Pivot extends Subsystem4237
         private double motorSpeed;
 
     }
+    
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(20, Constants.Pivot.MOTOR_CAN_BUS);
-    private PeriodicData periodicData = new PeriodicData();
-    
+    private PeriodicData periodicData = new PeriodicData();    
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
-
-    //PID values
-    private final double kP = 1.0;
-    private final double kD = 0.0;
-    private final double kI = 0.0;
-    private final int slotId = 0;
 
     private double position = 0.0;
 
@@ -69,7 +63,7 @@ public class Pivot extends Subsystem4237
         motor.setPosition(0.0);
         //motor.setupPositionConversionFactor(0.00048828);
         motor.setupRemoteCANCoder(20);
-        motor.setupPIDController(slotId, kP, kI, kD);
+        motor.setupPIDController(Constants.Pivot.slotId, Constants.Pivot.kP, Constants.Pivot.kI, Constants.Pivot.kD);
         
 
 
