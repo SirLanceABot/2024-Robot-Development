@@ -184,7 +184,7 @@ public final class Constants
 
         // public static final double ENCODER_TICKS_PER_DEGREE     = 5.689;
         // public static final double ENCODER_TICKS_PER_REVOLUTION = 2048;
-        public static final double CAN_CODER                    = 20.0;
+        public static final int CAN_CODER_PORT                  = 20;
         public static final String CAN_CODER_CAN_BUS            = ROBORIO;
     }
 
@@ -214,14 +214,14 @@ public final class Constants
 
     public static class PowerDistributionHub
     {
-        public static final int PDH_CAN_ID              = 1;
+        public static final int PDH_CAN_PORT              = 1;
 
         public static final String CAN_BUS = ROBORIO;
     }
 
     public static class Gyro 
     {
-        public static final int PIGEON_ID = 0;
+        public static final int PIGEON_PORT = 0;
 
         // public static final AxisDirection FORWARD_AXIS = AxisDirection.PositiveX;
         // public static final AxisDirection UP_AXIS = AxisDirection.PositiveZ;
