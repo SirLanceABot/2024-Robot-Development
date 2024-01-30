@@ -40,6 +40,15 @@ public class Camera extends Sensor4237
         private double[] botPoseWPIRed;
     }
 
+    public static final int TRANSLATION_X_METERS_INDEX = 0;
+    public static final int TRANSLATION_Y_METERS_INDEX = 1;
+    public static final int TRANSLATION_Z_METERS_INDEX = 2;
+    public static final int ROTATION_ROLL_DEGREES_INDEX = 3;
+    public static final int ROTATION_PITCH_DEGREES_INDEX = 4;
+    public static final int ROTATION_YAW_DEGREES_INDEX = 5;
+    public static final int TOTAL_LATENCY_INDEX = 6;
+    
+
     private PeriodicData periodicData;
     private Pose3d poseForAS;
     private NetworkTable cameraTable;
@@ -76,14 +85,14 @@ public class Camera extends Sensor4237
     {
         return new Pose3d(
             new Translation3d(
-                poseArray[Constants.Camera.translationXMetersIndex],
-                poseArray[Constants.Camera.translationYMetersIndex],
-                poseArray[Constants.Camera.translationZMetersIndex]
+                poseArray[TRANSLATION_X_METERS_INDEX],
+                poseArray[TRANSLATION_Y_METERS_INDEX],
+                poseArray[TRANSLATION_Z_METERS_INDEX]
                 ),
             new Rotation3d(
-                Units.degreesToRadians(poseArray[Constants.Camera.rotationRollDegreesIndex]),
-                Units.degreesToRadians(poseArray[Constants.Camera.rotationPitchDegreesIndex]),
-                Units.degreesToRadians(poseArray[Constants.Camera.rotationYawDegreesIndex])
+                Units.degreesToRadians(poseArray[ROTATION_ROLL_DEGREES_INDEX]),
+                Units.degreesToRadians(poseArray[ROTATION_PITCH_DEGREES_INDEX]),
+                Units.degreesToRadians(poseArray[ROTATION_YAW_DEGREES_INDEX])
                 )
         );
     }
@@ -141,13 +150,13 @@ public class Camera extends Sensor4237
     /** @return the total latency from WPIBlue botpose measurements (double)*/
     public double getTotalLatencyBlue()
     {
-        return periodicData.botPoseWPIBlue[Constants.Camera.totalLatencyIndex];
+        return periodicData.botPoseWPIBlue[TOTAL_LATENCY_INDEX];
     }
 
     /** @return the total latency from WPIRed botpose measurements (double)*/
     public double getTotalLatencyRed()
     {
-        return periodicData.botPoseWPIRed[Constants.Camera.totalLatencyIndex];
+        return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
     }
 
     /** @return the total latency from botpose measurements (double)*/
@@ -156,11 +165,11 @@ public class Camera extends Sensor4237
     {
         if(allianceColor == DriverStation.Alliance.Red)
         {
-            return periodicData.botPoseWPIRed[Constants.Camera.totalLatencyIndex];
+            return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
         }
         else if(allianceColor == DriverStation.Alliance.Blue)
         {
-            return periodicData.botPoseWPIBlue[Constants.Camera.totalLatencyIndex];
+            return periodicData.botPoseWPIBlue[TOTAL_LATENCY_INDEX];
         }
         else
         {

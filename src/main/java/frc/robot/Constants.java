@@ -365,17 +365,6 @@ public final class Constants
     //         SwerveModuleSetup.FRONT_LEFT, SwerveModuleSetup.FRONT_RIGHT, SwerveModuleSetup.BACK_LEFT, SwerveModuleSetup.BACK_RIGHT);
     // }
 
-    public static class Camera
-    {
-        public static final int translationXMetersIndex = 0;
-        public static final int translationYMetersIndex = 1;
-        public static final int translationZMetersIndex = 2;
-        public static final int rotationRollDegreesIndex = 3;
-        public static final int rotationPitchDegreesIndex = 4;
-        public static final int rotationYawDegreesIndex = 5;
-        public static final int totalLatencyIndex = 6;
-    }
-
     public static class Candle
     {
         public static final int PORT            = 0;
