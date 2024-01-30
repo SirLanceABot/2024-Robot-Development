@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 
+/** Represents a Limelight to track AprilTags. */
 public class Camera extends Sensor4237
 {
     // This string gets the full name of the class, including the package name
@@ -30,9 +31,9 @@ public class Camera extends Sensor4237
         //INPUTS
         
         // Entry variables named with LL convention (not camelcase)
-        NetworkTableEntry tv;
-        NetworkTableEntry botpose_wpiblue;
-        NetworkTableEntry botpose_wpired;
+        private NetworkTableEntry tv;
+        private NetworkTableEntry botpose_wpiblue;
+        private NetworkTableEntry botpose_wpired;
 
         // Our class variables named with our convention (yes camelcase)
         private boolean isTargetFound;
@@ -49,7 +50,7 @@ public class Camera extends Sensor4237
     public static final int TOTAL_LATENCY_INDEX = 6;
     
 
-    private PeriodicData periodicData;
+    private final PeriodicData periodicData = new PeriodicData();
     private Pose3d poseForAS;
     private NetworkTable cameraTable;
 
@@ -60,8 +61,6 @@ public class Camera extends Sensor4237
     {   
         super("Camera");
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + camName);
-
-        periodicData = new PeriodicData();
 
         // Assign the Network Table variable in the constructor so the camName parameter can be used
         cameraTable = NetworkTableInstance.getDefault().getTable(camName);   // official limelight table
