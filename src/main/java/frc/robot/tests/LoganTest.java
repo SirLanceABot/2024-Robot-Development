@@ -16,7 +16,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
-import frc.robot.commands.IntakeFromFloor;
 
 public class LoganTest implements Test
 {
@@ -129,10 +128,6 @@ public class LoganTest implements Test
     //         ampAssist.retract();
     //     }
 
-        if(joystick.getRawButton(1))
-        {
-            new IntakeFromFloor(intake, intakePositioning, shuttle, index, direction, secondShuttleProximity, indexProximity);
-        }
     }
     
     /** 

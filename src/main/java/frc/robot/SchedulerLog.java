@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -32,11 +33,13 @@ public class SchedulerLog
      * Convert recording to csv and they show nicely in Excel.
      * If using data log tool, the recording is automatic so run that tool to retrieve and convert the log.
      */ 
-    SchedulerLog(boolean useConsole, boolean useDataLog, boolean useShuffleBoardLog)
+    SchedulerLog(boolean useConsole, boolean useDataLog, boolean useShuffleBoardLog, DataLog log)
     {
         this.useConsole = useConsole;
         this.useDataLog = useDataLog;
         this.useShuffleBoardLog = useShuffleBoardLog;
+
+        commandLogEntry = new StringLogEntry(log, "/Commands/events", "Event");
     }
 
     /**

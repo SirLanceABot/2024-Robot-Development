@@ -166,7 +166,7 @@ public class RobotContainer
         DataLogManager.start();
         log = DataLogManager.getLog();
 
-        schedulerLog = new SchedulerLog(useConsole, useDataLog, useShuffleBoardLog);
+        schedulerLog = new SchedulerLog(useConsole, useDataLog, useShuffleBoardLog, log);
         schedulerLog.logCommandInitialize();
         schedulerLog.logCommandInterrupt();
         schedulerLog.logCommandFinish();

@@ -187,8 +187,10 @@ public class OperatorButtonBindings
         BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
         Trigger startButtonTrigger = new Trigger(startButton);
 
-        if(true)
-        {}
+        if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
+        {
+            startButtonTrigger.onTrue(intakeFromFloor());
+        }
     }
 
     private void configLeftStick()
@@ -272,7 +274,7 @@ public class OperatorButtonBindings
         BooleanSupplier dPadRight = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kRight);
         Trigger dPadRightTrigger = new Trigger(dPadRight);
 
-        if(true)
+        if(robotContainer.ampAssist != null)
         {
             dPadRightTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kOut));
         }
@@ -333,7 +335,8 @@ public class OperatorButtonBindings
             .andThen(
                 robotContainer.shuttle.stopCommand()
                 .alongWith(
-                    robotContainer.index.stopCommand()));
+                    robotContainer.index.stopCommand()))
+            .withName("Intake From Floor");
     }
 
      public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
