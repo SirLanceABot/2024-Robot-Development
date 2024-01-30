@@ -25,7 +25,7 @@ public class ExampleTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final ExampleSubsystem exampleSubsystem;
+    // private final ExampleSubsystem exampleSubsystem;
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -40,7 +40,7 @@ public class ExampleTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        this.exampleSubsystem = robotContainer.exampleSubsystem;
+        // this.exampleSubsystem = robotContainer.exampleSubsystem;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }

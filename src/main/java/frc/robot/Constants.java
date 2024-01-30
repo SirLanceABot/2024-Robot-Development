@@ -207,9 +207,6 @@ public final class Constants
         public static final int RIGHT_MOTOR_PORT         = 1;
         public static final String LEFT_MOTOR_CAN_BUS    = ROBORIO;
         public static final String RIGHT_MOTOR_CAN_BUS   = ROBORIO;
-
-        
-
     }
 
     public static class PowerDistributionHub
@@ -236,8 +233,6 @@ public final class Constants
         public static final int SECOND_SHUTTLE_PORT = 8;
         public static final int MIDDLE_INDEX_PORT = 7;
         public static final int INDEX_WHEELS_PORT = 6;
-
-        
     }
 
     public static class Controller
@@ -374,10 +369,5 @@ public final class Constants
     public enum ShootingPosition
     {
         kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;
-    }
-
-    public enum TeamColor
-    {
-        kBlue, kRed;
     }
 }

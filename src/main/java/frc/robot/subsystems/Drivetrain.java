@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
-import frc.robot.Constants.TeamColor;
 import frc.robot.controls.AdaptiveSlewRateLimiter;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
@@ -142,7 +141,6 @@ public class Drivetrain extends Subsystem4237
     private boolean resetOdometry = false;
 
     private double shootingAngle = 0.0;
-    private TeamColor teamColor = TeamColor.kBlue;
 
     private PeriodicData periodicData = new PeriodicData();;
     
