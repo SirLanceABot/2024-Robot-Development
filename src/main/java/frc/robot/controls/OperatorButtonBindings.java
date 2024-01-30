@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShootingPosition;
 import frc.robot.subsystems.AmpAssist.AmpAssistPosition;
+import frc.robot.commands.Commands4237;
 import frc.robot.commands.ShootFromPosition;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -187,10 +188,8 @@ public class OperatorButtonBindings
         BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
         Trigger startButtonTrigger = new Trigger(startButton);
 
-        if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
-        {
-            startButtonTrigger.onTrue(intakeFromFloor());
-        }
+        
+        startButtonTrigger.onTrue(Commands4237.intakeFromFloor());
     }
 
     private void configLeftStick()
@@ -289,54 +288,6 @@ public class OperatorButtonBindings
     {
         // Default Commands
 
-    }
-
-    public Command intakeFromFloor()
-    {
-        // SequentialCommandGroup scg = new SequentialCommandGroup();
-        // // Command command = new SequentialCommandGroup();
-
-        // scg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
-        // scg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
-        // scg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
-        // ParallelCommandGroup pcg = new ParallelCommandGroup();
-
-        // pcg.addCommands(Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake));
-        // pcg.addCommands(Commands.runOnce(() -> robotContainer.intakePositioning.extend(), robotContainer.intakePositioning));
-        // pcg.addCommands(Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle));
-
-        // return
-        // Commands.runOnce(() -> robotContainer.intakePositioning.extend(),  robotContainer.intakePositioning)
-        //     .alongWith(
-        //         Commands.runOnce(() -> robotContainer.intake.pickupFront(), robotContainer.intake),
-        //         Commands.runOnce(() -> robotContainer.shuttle.moveUpward(), robotContainer.shuttle),
-        //         Commands.runOnce(() -> robotContainer.index.acceptNote(), robotContainer.index))
-        //     .andThen(
-        //         Commands.waitUntil(() -> robotContainer.secondShuttleProximity.isDetected()))
-        //     .andThen(
-        //         Commands.runOnce(() -> robotContainer.intake.stop(), robotContainer.intake)
-        //         .alongWith(
-        //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
-
-        return
-            robotContainer.intakePositioning.extendCommand()
-            .alongWith(
-                robotContainer.intake.pickupFrontCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.intake.stopCommand()
-                .alongWith(
-                    robotContainer.intakePositioning.retractCommand()))
-            .andThen(
-                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.shuttle.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand()))
-            .withName("Intake From Floor");
     }
 
      public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
