@@ -17,6 +17,7 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
+import frc.robot.commands.Commands4237;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
@@ -72,7 +73,7 @@ public class RobotContainer
     private boolean useDriverController     = false;
     private boolean useOperatorController   = false;
     
-    private boolean useDataLog              = false;
+    private boolean useDataLog              = true;
 
 
     public final boolean fullRobot;
@@ -102,8 +103,8 @@ public class RobotContainer
     public final OperatorButtonBindings operatorButtonBindings;
     public final OperatorController operatorController;
     
-    public DataLog log = null;
-    public SchedulerLog schedulerLog = null;
+    private DataLog log = null;
+    private SchedulerLog schedulerLog = null;
 
 
     /** 
@@ -128,14 +129,19 @@ public class RobotContainer
         pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
         shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
         
-        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
-        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;
-        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                     : null;
-        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                      : null;
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                               : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                               : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                             : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                              : null;
         firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
         secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         indexProximity          = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
         indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
+
+        // DO NOT MOVE THIS STATEMENT
+        // This statement must be after the subsystems have been instantiated
+        //   and must be before the button bindings.
+        Commands4237.setRobotContainer(this);
 
         mainShuffleboard        = (useFullRobot || useMainShuffleboard)     ? new MainShuffleboard(this)                                : null;
 
@@ -143,7 +149,6 @@ public class RobotContainer
         driverButtonBindings    = (useFullRobot || useBindings)             ? new DriverButtonBindings(this)                            : null;
         operatorController      = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR)     : null;
         operatorButtonBindings  = (useFullRobot || useBindings)             ? new OperatorButtonBindings(this)                          : null;
-
 
         if(useFullRobot || useDataLog)
             configLog();
@@ -162,7 +167,7 @@ public class RobotContainer
         schedulerLog.logCommandInitialize();
         schedulerLog.logCommandInterrupt();
         schedulerLog.logCommandFinish();
-        schedulerLog.logCommandExecute();
+        schedulerLog.logCommandExecute();  // Generates a lot of output
     }
 
     public void resetRobot()
