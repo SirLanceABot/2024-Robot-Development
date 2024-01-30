@@ -90,8 +90,8 @@ public class GretaTest implements Test
             shuttleSuzie.resetEncoder();
             pivotPriscilla.resetEncoder();
             flyWheelFiona.resetEncoder();
-            //intakeIrene.ejectBack();
             climbCindy.resetEncoder();
+            //intakeIrene.ejectBack();
         }
         //else if(joystick.getRawButton(4))
         //{

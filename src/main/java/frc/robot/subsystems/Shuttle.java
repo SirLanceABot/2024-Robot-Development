@@ -17,6 +17,7 @@ import frc.robot.motors.CANSparkMax4237;
 
 /**
  *This is shuttle / transfer from intake to shooter
+ *Creates a new shuttle
  */
 public class Shuttle extends Subsystem4237
 {
@@ -30,9 +31,7 @@ public class Shuttle extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    /**
-     * makes a new motor
-     */
+    //makes a new motor, can spark max instantiation
     private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.Shuttle.MOTOR_PORT, Constants.Shuttle.MOTOR_CAN_BUS, "Shuttle Motor");
     // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
     
@@ -49,9 +48,8 @@ public class Shuttle extends Subsystem4237
 
     }
 
-    private PeriodicData periodicData = new PeriodicData();
+    private final PeriodicData periodicData = new PeriodicData();
     
-    // creates shuttle encoder
     
 
     /** 
@@ -164,4 +162,11 @@ public class Shuttle extends Subsystem4237
     {
         // This method will be called once per scheduler run during simulation
     }
+
+    // @Override
+    // private static final void toString()
+    // {
+
+    // }
+
 }
