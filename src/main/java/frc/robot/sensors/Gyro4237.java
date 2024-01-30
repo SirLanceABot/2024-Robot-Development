@@ -10,7 +10,9 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
-
+/*
+ * This class creates gyro which is used for rotation 
+ */
 public class Gyro4237 extends Sensor4237
 {
     // This string gets the full name of the class, including the package name
@@ -39,8 +41,10 @@ public class Gyro4237 extends Sensor4237
         // Outputs
     }
 
+    public static final double RESET_GYRO_DELAY = 0.1;
+
     // private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
-    private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
+    private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_PORT, Constants.Gyro.PIGEON_CAN_BUS);
     private ResetState resetState = ResetState.kDone;
     private Timer timer = new Timer();
 
@@ -163,7 +167,7 @@ public class Gyro4237 extends Sensor4237
                 resetState = ResetState.kTry;
                 break;
             case kTry:
-                if(timer.hasElapsed(Constants.Gyro.RESET_GYRO_DELAY))
+                if(timer.hasElapsed(RESET_GYRO_DELAY))
                     resetState = ResetState.kDone;
                 break;
             case kDone:
