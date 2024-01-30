@@ -83,6 +83,8 @@ public final class Commands4237
         //         Commands.runOnce(() -> robotContainer.intake.stop(), robotContainer.intake)
         //         .alongWith(
         //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
+
+        //TODO: Add timeout in case of sensor failure until we can test live
         if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
         {
             return
