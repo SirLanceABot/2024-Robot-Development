@@ -1,7 +1,11 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Pivot;
 
 public class MatthewTest implements Test
 {
@@ -18,13 +22,14 @@ public class MatthewTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private double kP;
 
 
     // *** CLASS CONSTRUCTOR ***
     public MatthewTest(RobotContainer robotContainer)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
-
+    
         this.robotContainer = robotContainer;
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -34,13 +39,19 @@ public class MatthewTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+        SmartDashboard.putData(robotContainer.pivot);
+        //setName("Pivot");
+    }
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
-    {}
+    {
+        kP = SmartDashboard.getNumber("p", 0.0);
+        System.out.println("Number: " + kP);
+    }
     
     /**
      * This method runs one time after the periodic() method.
