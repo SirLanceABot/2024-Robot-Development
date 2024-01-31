@@ -1,6 +1,7 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.AmpAssist;
@@ -15,7 +16,11 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
+import frc.robot.controls.Xbox;
 
 public class LoganTest implements Test
 {
@@ -78,11 +83,7 @@ public class LoganTest implements Test
         //MOTORS
         // if(joystick.getRawButton(1)) // A button
         // {
-        //     topEncoderPosition = intake.getTopPosition();
-        //     bottomEncoderPosition = intake.getBottomPosition();
-        //     System.out.println("Pickup Front.  Top Encoder Position: " + topEncoderPosition);
-        //     System.out.println("Bottom Encoder Position: " + bottomEncoderPosition);
-        //     intake.pickupFront();
+        //     intakeFromSource();
         // }
         // else if(joystick.getRawButton(2)) // B button
         // {
@@ -131,6 +132,8 @@ public class LoganTest implements Test
     
 
     }
+
+    
     
     /** 
      * This method runs one time after the periodic() method.
@@ -140,6 +143,35 @@ public class LoganTest implements Test
 
     // *** METHODS ***
     // Put any additional methods here.
+
+    public Command intakeFromSource()
+    {
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            robotContainer.flywheel.intakeCommand()
+            .alongWith(
+                robotContainer.index.reverseCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.flywheel.stopCommand())
+                .alongWith(robotContainer.index.stopCommand());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    private void configBackButton()
+    {
+        // Back Button
+        BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
+        Trigger backButtonTrigger = new Trigger(backButton);
+
+        backButtonTrigger.onTrue(intakeFromSource());
+    }
 
         
 }
