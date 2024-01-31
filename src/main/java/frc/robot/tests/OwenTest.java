@@ -1,11 +1,15 @@
 package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
@@ -40,6 +44,7 @@ public class OwenTest implements Test
     private final Joystick joystick = new Joystick(0);
     private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
     private CANSparkMax motor1 = new CANSparkMax(1, MotorType.kBrushless);
+    private BooleanSupplier false1 = () -> false;
     // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
     // Trigger trigger = new Trigger(true);
 
@@ -119,6 +124,23 @@ public class OwenTest implements Test
      */
     public void exit()
     {}
+
+    public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
+    {
+        return 
+        robotContainer.flywheel.shootCommand(0.5)
+        .alongWith(
+            robotContainer.pivot.movePivotCommand(120))
+            // robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+            
+        .andThen(robotContainer.index.feedNoteCommand(0.5))
+        .andThen(Commands.waitUntil(() -> (robotContainer.indexProximity.isDetectedSupplier() == false1)))
+        .andThen(robotContainer.flywheel.stopCommand())
+        .alongWith(
+            robotContainer.index.stopCommand())
+        .andThen(robotContainer.pivot.movePivotCommand(45))
+        .withName("Shoot");
+    }
 
     // *** METHODS ***
     // Put any additional methods here.
