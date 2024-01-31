@@ -264,7 +264,7 @@ public final class Constants
             {
                 drivetrainWheelbaseMeters = 23.5 * INCHES_TO_METERS; // Front to back
                 drivetrainTrackwidthMeters = 23.5 * INCHES_TO_METERS; // Side to side
-                driveMotorEncoderResolution = 42;  // Neo1650
+                driveMotorEncoderResolution = 1;  //42 // Neo1650
             }
             else
             {

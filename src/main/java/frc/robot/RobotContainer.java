@@ -56,7 +56,7 @@ public class RobotContainer
     private boolean useIndex                = false;
     private boolean useIntake               = false;
     private boolean useIntakePositioning    = false;
-    private boolean usePivot                = true;
+    private boolean usePivot                = false;
     private boolean usePoseEstimator        = false;
     private boolean useShuttle              = false;
 
@@ -73,7 +73,7 @@ public class RobotContainer
     private boolean useDriverController     = false;
     private boolean useOperatorController   = false;
     
-    private boolean useDataLog              = true;
+    private boolean useDataLog              = false;
 
 
     public final boolean fullRobot;
