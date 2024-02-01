@@ -50,7 +50,7 @@ public class RobotContainer
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
-    private boolean useClimb                = false;
+    private boolean useClimb                = true;
     private boolean useDrivetrain           = false;
     private boolean useFlywheel             = false;
     private boolean useIndex                = false;

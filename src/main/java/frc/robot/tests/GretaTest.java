@@ -70,26 +70,26 @@ public class GretaTest implements Test
     {
         if (joystick.getRawButton(1))
         {
-            shuttleSuzie.moveUpward();
-            pivotPriscilla.moveUp();
-            flyWheelFiona.shoot(0.35);
-            indexIzzy.acceptNote();
+            // shuttleSuzie.moveUpward();
+            // pivotPriscilla.moveUp();
+            // flyWheelFiona.shoot(0.35);
+            // indexIzzy.acceptNote();
             climbCindy.extend();
             //intakeIrene.ejectFront();
         }
         else if (joystick.getRawButton(2))
         {
-            shuttleSuzie.moveDownward();
-            pivotPriscilla.moveDown();
-            indexIzzy.reverse();
+            // shuttleSuzie.moveDownward();
+            // pivotPriscilla.moveDown();
+            // indexIzzy.reverse();
             climbCindy.retract();
            // intakeIrene.pickupBack();
         }
         else if(joystick.getRawButton(3))
         {
-            shuttleSuzie.resetEncoder();
-            pivotPriscilla.resetEncoder();
-            flyWheelFiona.resetEncoder();
+            // shuttleSuzie.resetEncoder();
+            // pivotPriscilla.resetEncoder();
+            // flyWheelFiona.resetEncoder();
             climbCindy.resetEncoder();
             //intakeIrene.ejectBack();
         }
@@ -99,11 +99,11 @@ public class GretaTest implements Test
         //}
          else
         {
-            shuttleSuzie.stop();
-            pivotPriscilla.stop();
-            flyWheelFiona.stop();
-            indexIzzy.stop();
-            //intakeIrene.stop();
+            // shuttleSuzie.stop();
+            // pivotPriscilla.stop();
+            // flyWheelFiona.stop();
+            // indexIzzy.stop();
+            // //intakeIrene.stop();
             climbCindy.stop();
         }
         
