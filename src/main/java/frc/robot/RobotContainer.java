@@ -65,7 +65,7 @@ public class RobotContainer
     private boolean useCameraThree          = false;
     private boolean useCameraFour           = false;
     private boolean useGyro                 = false;
-    private boolean useProximity            = false;
+    private boolean useAllProximity         = false;
 
     private boolean useMainShuffleboard     = false;
 
@@ -129,14 +129,14 @@ public class RobotContainer
         pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
         shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
         
-        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                               : null;
-        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                               : null;
-        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                             : null;
-        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                              : null;
-        firstShuttleProximity   = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
-        secondShuttleProximity  = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
-        indexProximity          = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
-        indexWheelsProximity    = (useFullRobot || useProximity)            ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                     : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                      : null;
+        firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
+        secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
+        indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
+        indexWheelsProximity    = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
 
         // DO NOT MOVE THIS STATEMENT
         // This statement must be after the subsystems have been instantiated
