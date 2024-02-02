@@ -81,9 +81,18 @@ public class LoganTest implements Test
     public void periodic()
     {
         //MOTORS
-        // if(joystick.getRawButton(1)) // A button
+        if(joystick.getRawButton(1)) // A button
+        {
+            configAButton();
+            // intakePositioning.extend();
+        }
+        // else if(joystick.getRawButton(2))
         // {
-        //     intakeFromSource();
+        //     intakePositioning.retract();
+        // }
+        // else if(joystick.getRawButton(3))
+        // {
+        //     intakePositioning.floating();
         // }
         // else if(joystick.getRawButton(2)) // B button
         // {
@@ -144,34 +153,12 @@ public class LoganTest implements Test
     // *** METHODS ***
     // Put any additional methods here.
 
-    public Command intakeFromSource()
+    private void configAButton()
     {
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
-        {
-            return
-            robotContainer.flywheel.intakeCommand()
-            .alongWith(
-                robotContainer.index.reverseCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.flywheel.stopCommand())
-                .alongWith(robotContainer.index.stopCommand());
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+        // A Button
+        BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
+        Trigger aButtonTrigger = new Trigger(aButton);
 
-    private void configBackButton()
-    {
-        // Back Button
-        BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
-        Trigger backButtonTrigger = new Trigger(backButton);
-
-        backButtonTrigger.onTrue(intakeFromSource());
-    }
-
-        
+        // aButtonTrigger.onTrue();
+    }        
 }

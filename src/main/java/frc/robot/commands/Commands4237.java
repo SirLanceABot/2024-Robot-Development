@@ -112,4 +112,24 @@ public final class Commands4237
             return Commands.none();
         }
     }
+
+    public static Command intakeFromSource()
+    {
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            robotContainer.flywheel.intakeCommand()
+            .alongWith(
+                robotContainer.index.reverseCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(robotContainer.index.stopCommand()));
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 }

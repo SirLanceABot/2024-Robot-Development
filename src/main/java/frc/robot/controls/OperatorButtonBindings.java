@@ -158,8 +158,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        if(true)
-        {}
+        leftBumperTrigger.onTrue(Commands4237.intakeFromSource());
     }
 
     private void configRightBumper()
@@ -168,8 +167,7 @@ public class OperatorButtonBindings
         BooleanSupplier rightBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightBumper);
         Trigger rightBumperTrigger = new Trigger(rightBumper);
 
-        if(true)
-        {}
+        rightBumperTrigger.onTrue(Commands4237.intakeFromFloor());
     }
 
     private void configBackButton()
@@ -189,7 +187,7 @@ public class OperatorButtonBindings
         Trigger startButtonTrigger = new Trigger(startButton);
 
         
-        startButtonTrigger.onTrue(Commands4237.intakeFromFloor());
+        
     }
 
     private void configLeftStick()

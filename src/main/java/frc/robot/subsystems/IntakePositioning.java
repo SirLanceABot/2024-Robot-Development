@@ -26,13 +26,18 @@ public class IntakePositioning extends Subsystem4237
 
     public enum IntakePosition
     {
-        kUp(Value.kReverse), kDown(Value.kForward), kOff(Value.kOff);
+        kUp(Value.kReverse, Value.kForward), 
+        kDown(Value.kForward, Value.kReverse), 
+        kFloat(Value.kReverse, Value.kReverse);
 
-        public final Value value;
+        public final Value extendValue;
+        public final Value retractValue;
 
-        private IntakePosition(Value value)
+
+        private IntakePosition(Value extendValue, Value retractValue)
         {
-            this.value = value;
+            this.extendValue = extendValue;
+            this.retractValue = retractValue;
         }
     }
     
@@ -41,14 +46,17 @@ public class IntakePositioning extends Subsystem4237
         // INPUTS
 
         // OUTPUTS
-        private IntakePosition intakePosition = IntakePosition.kOff;
-
+        private IntakePosition intakePosition = IntakePosition.kUp;
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.IntakePositioning.SOLENOID_PORT, PneumaticsModuleType.CTREPCM, Constants.IntakePositioning.UP_POSITION, Constants.IntakePositioning.DOWN_POSITION);
-
+    private final DoubleSolenoid extendSolenoid = new DoubleSolenoid(
+        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.CTREPCM, 
+        Constants.IntakePositioning.EXTEND_ACTIVE_PORT, Constants.IntakePositioning.EXTEND_FLOAT_PORT);
+    private final DoubleSolenoid retractSolenoid = new DoubleSolenoid(
+        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.CTREPCM,
+        Constants.IntakePositioning.RETRACT_ACTIVE_PORT, Constants.IntakePositioning.RETRACT_FLOAT_PORT);
 
     /** 
      * Creates a new IntakePositioning. 
@@ -71,6 +79,11 @@ public class IntakePositioning extends Subsystem4237
         periodicData.intakePosition = IntakePosition.kUp;
     }
 
+    public void floating()
+    {
+        periodicData.intakePosition = IntakePosition.kFloat;
+    }
+
     public Command extendCommand()
     {
         return Commands.runOnce(() -> extend(), this);
@@ -90,7 +103,8 @@ public class IntakePositioning extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        solenoid.set(periodicData.intakePosition.value);
+        extendSolenoid.set(periodicData.intakePosition.extendValue);
+        retractSolenoid.set(periodicData.intakePosition.retractValue);
     }
 
     @Override
