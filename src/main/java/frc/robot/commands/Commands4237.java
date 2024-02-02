@@ -25,7 +25,7 @@ public final class Commands4237
 
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
-    private static RobotContainer robotContainer;
+    private static RobotContainer robotContainer = null;
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -39,7 +39,8 @@ public final class Commands4237
 
     public static void setRobotContainer(RobotContainer robotContainer)
     {
-        Commands4237.robotContainer = robotContainer;
+        if(robotContainer == null)
+            Commands4237.robotContainer = robotContainer;
     }
 
 
