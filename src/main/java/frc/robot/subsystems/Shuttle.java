@@ -31,10 +31,6 @@ public class Shuttle extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
-    public enum ResetState
-    {
-        kStart, kTry, kDone;
-    }
 
     //makes a new motor, can spark max instantiation
     private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.Shuttle.MOTOR_PORT, Constants.Shuttle.MOTOR_CAN_BUS, "Shuttle Motor");
@@ -53,7 +49,8 @@ public class Shuttle extends Subsystem4237
         // OUTPUTS
 
     }
-    private ResetState resetState = ResetState.kDone;
+
+    private boolean reset = false;
 
     private final PeriodicData periodicData = new PeriodicData();
     
@@ -131,7 +128,7 @@ public class Shuttle extends Subsystem4237
      */
     public void resetEncoder()
     {
-        resetState = ResetState.kStart;
+        reset = true;
     }
 
     public Command moveUpwardCommand()
@@ -154,7 +151,14 @@ public class Shuttle extends Subsystem4237
     public void writePeriodicOutputs()
     {
         motor.set(periodicData.motorSpeed);
-        motor.setPosition(0.0);
+        
+        if (reset)
+        {
+            motor.setPosition(0.0);
+        }
+        
+        reset = false;
+        
     }
 
     @Override

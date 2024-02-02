@@ -104,6 +104,7 @@ public class Climb extends Subsystem4237
     private final double kMinOutput = -0.7;
     private final double kRobotMaxOutput = 0.7;
     private final double kRobotMinOutput = -0.7;
+    private boolean reset = false;
 
     private LimitSwitchState reverseLSState = LimitSwitchState.kStillReleased;
     private TargetPosition position = TargetPosition.kOverride;
@@ -149,7 +150,7 @@ public class Climb extends Subsystem4237
 
     public void resetEncoder()
     {
-        resetState = ResetState.kStart;
+        reset = true;
     }
 
     public void extend()
@@ -192,7 +193,7 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = 0.0;
     }
 
-    public void setLeftAndRightPosiiton(TargetPosition position)
+    public void setLeftAndRightPosition(TargetPosition position)
     {
         if(position.value > leftMotor.getPosition())
         {
@@ -301,6 +302,12 @@ public class Climb extends Subsystem4237
                 leftMotor.set(0.0);
                 rightMotor.set(0.0); 
             }
+        }
+
+        if (reset)
+        {
+            leftMotor.setPosition(0);
+            rightMotor.setPosition(0);
         }
         
 
