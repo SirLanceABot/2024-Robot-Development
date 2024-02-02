@@ -39,7 +39,8 @@ public class SchedulerLog
         this.useDataLog = useDataLog;
         this.useShuffleBoardLog = useShuffleBoardLog;
 
-        commandLogEntry = new StringLogEntry(log, "/Commands/events", "Event");
+        if(useDataLog)
+            commandLogEntry = new StringLogEntry(log, "/Commands/events", "Event");
     }
 
     /**
