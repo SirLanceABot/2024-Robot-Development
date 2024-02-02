@@ -126,7 +126,8 @@ public final class Commands4237
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
             .andThen(
                 robotContainer.flywheel.stopCommand()
-                .alongWith(robotContainer.index.stopCommand()));
+                .alongWith(robotContainer.index.stopCommand()))
+            .withName("Intake From Source");
         }
         else
         {

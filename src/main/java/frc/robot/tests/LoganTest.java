@@ -83,17 +83,17 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            configAButton();
-            // intakePositioning.extend();
+            // configAButton();
+            intakePositioning.extend();
         }
-        // else if(joystick.getRawButton(2))
-        // {
-        //     intakePositioning.retract();
-        // }
-        // else if(joystick.getRawButton(3))
-        // {
-        //     intakePositioning.floating();
-        // }
+        else if(joystick.getRawButton(2))
+        {
+            intakePositioning.retract();
+        }
+        else if(joystick.getRawButton(3))
+        {
+            intakePositioning.floating();
+        }
         // else if(joystick.getRawButton(2)) // B button
         // {
         //     topEncoderPosition = intake.getTopPosition();

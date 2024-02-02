@@ -131,10 +131,10 @@ public class OwenTest implements Test
         return 
         robotContainer.flywheel.shootCommand(0.5)
         .alongWith(
-            robotContainer.pivot.movePivotCommand(120)
-            // robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+            robotContainer.pivot.movePivotCommand(pivotAngle),
+            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
             .andThen(
-                robotContainer.index.feedNoteCommand(0.5)))
+                robotContainer.index.feedNoteCommand(0.5))
         .andThen(
             Commands.waitSeconds(3.0))
         .andThen(

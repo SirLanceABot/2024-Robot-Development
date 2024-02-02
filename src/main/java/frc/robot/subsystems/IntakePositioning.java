@@ -52,10 +52,10 @@ public class IntakePositioning extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
 
     private final DoubleSolenoid extendSolenoid = new DoubleSolenoid(
-        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.CTREPCM, 
+        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.REVPH, 
         Constants.IntakePositioning.EXTEND_ACTIVE_PORT, Constants.IntakePositioning.EXTEND_FLOAT_PORT);
     private final DoubleSolenoid retractSolenoid = new DoubleSolenoid(
-        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.CTREPCM,
+        Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.REVPH,
         Constants.IntakePositioning.RETRACT_ACTIVE_PORT, Constants.IntakePositioning.RETRACT_FLOAT_PORT);
 
     /** 
@@ -92,6 +92,11 @@ public class IntakePositioning extends Subsystem4237
     public Command retractCommand()
     {
         return Commands.runOnce(() -> retract(), this);
+    }
+
+    public Command floatingCommand()
+    {
+        return Commands.runOnce(() -> floating(), this);
     }
 
     @Override
