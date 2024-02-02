@@ -41,9 +41,9 @@ public class OwenTest implements Test
     // private final Index index;
     // private final Climb climb;
     // private final Ultrasonic ultrasonic;
-    private final Joystick joystick = new Joystick(0);
-    private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
-    private CANSparkMax motor1 = new CANSparkMax(1, MotorType.kBrushless);
+    // private final Joystick joystick = new Joystick(0);
+    // private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
+    // private CANSparkMax motor1 = new CANSparkMax(1, MotorType.kBrushless);
     private BooleanSupplier false1 = () -> false;
     // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
     // Trigger trigger = new Trigger(true);
@@ -76,7 +76,8 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
-        motor.follow(motor1);
+        // motor.follow(motor1);
+        configBackButton();
         // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
         // {
@@ -130,16 +131,40 @@ public class OwenTest implements Test
         return 
         robotContainer.flywheel.shootCommand(0.5)
         .alongWith(
-            robotContainer.pivot.movePivotCommand(120))
+            robotContainer.pivot.movePivotCommand(120)
             // robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
-            
-        .andThen(robotContainer.index.feedNoteCommand(0.5))
-        .andThen(Commands.waitUntil(() -> (robotContainer.indexProximity.isDetectedSupplier() == false1)))
-        .andThen(robotContainer.flywheel.stopCommand())
-        .alongWith(
-            robotContainer.index.stopCommand())
-        .andThen(robotContainer.pivot.movePivotCommand(45))
+            .andThen(
+                robotContainer.index.feedNoteCommand(0.5)))
+        .andThen(
+            Commands.waitSeconds(3.0))
+        .andThen(
+            robotContainer.flywheel.stopCommand()
+            .alongWith(
+                robotContainer.index.stopCommand()))
+                .andThen(
+                    robotContainer.pivot.movePivotCommand(45))
         .withName("Shoot");
+    }
+
+    private void configLeftTrigger()
+    {
+        //Left trigger 
+        BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
+        Trigger leftTriggerTrigger = new Trigger(leftTrigger);
+
+        if(true)
+        {
+            leftTriggerTrigger.onTrue(shootCommand(0.5, () -> 0.0));
+        }
+    }
+
+    private void configBackButton()
+    {
+        // Back Button
+        BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
+        Trigger backButtonTrigger = new Trigger(backButton);
+
+        backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
     }
 
     // *** METHODS ***
