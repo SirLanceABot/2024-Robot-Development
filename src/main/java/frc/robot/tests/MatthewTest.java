@@ -2,6 +2,8 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
@@ -22,6 +24,7 @@ public class MatthewTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+
     private double kP;
 
 
@@ -40,8 +43,7 @@ public class MatthewTest implements Test
      */
     public void init()
     {
-        SmartDashboard.putData(robotContainer.pivot);
-        //setName("Pivot");
+
     }
 
     /**
@@ -49,15 +51,16 @@ public class MatthewTest implements Test
      */
     public void periodic()
     {
-        kP = SmartDashboard.getNumber("p", 0.0);
-        System.out.println("Number: " + kP);
+
     }
     
     /**
      * This method runs one time after the periodic() method.
      */
     public void exit()
-    {}
+    {
+
+    }
 
     // *** METHODS ***
     // Put any additional methods here.

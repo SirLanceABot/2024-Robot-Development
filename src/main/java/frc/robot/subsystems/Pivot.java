@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -30,22 +31,11 @@ public class Pivot extends Subsystem4237
 
     private class MyConstants
     {
-        public double kP = 17.0;
-        public double kD = 0.0;
+        public double kP = 0.0;
         public double kI = 0.0;
+        public double kD = 0.0;
         public int slotId = 0;
 
-        public double iZone = 0.0;
-        public double setPoint = 00;
-        public boolean haveSetpoint = false;
-        public boolean continuous = false;
-        public double minimumInput = 0.0;
-        public double maximumInput = 0.0;
-        public double measurement = 0.0;
-        public double positionError = 0.0;
-        public double prevError = 0.0;
-        public double period = 0.0;
-        public double velocityError = 0.0;
     }
 
     private class PeriodicData
@@ -66,10 +56,10 @@ public class Pivot extends Subsystem4237
     private final CANcoder pivotAngle = new CANcoder(20, Constants.Pivot.MOTOR_CAN_BUS);
     private PeriodicData periodicData = new PeriodicData();  
     private MyConstants myConstants = new MyConstants();
-    private PIDController PIDcontroller;
-    // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
+    private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
 
-    private double position = 0.0;
+    
+    // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
 
 
@@ -79,8 +69,10 @@ public class Pivot extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configPivotMotor();
-        SendableRegistry.addLW(this, "Pivot", "PID");
+        // SendableRegistry.addLW(this, "Pivot", "PID");
         System.out.println("  Constructor Finished: " + fullClassName);
+        LiveWindow.setEnabled(true);
+        LiveWindow.enableTelemetry(this.PIDcontroller);
     }
 
     private void configPivotMotor()
@@ -94,8 +86,6 @@ public class Pivot extends Subsystem4237
         motor.setupRemoteCANCoder(20);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
-
-
         // Soft Limits
         motor.setupForwardSoftLimit(6144.0, false);
         motor.setupReverseSoftLimit(-6144.0, false);
@@ -135,9 +125,9 @@ public class Pivot extends Subsystem4237
         pivotAngle.setPosition(0.0);
     }
 
-    public void setPosition(double degrees)
+    public void setArtificialPosition(double degrees)
     {
-        position = degrees;
+        periodicData.currentAngle = degrees;
     }
 
     public void setAngle(double degrees)
@@ -187,12 +177,23 @@ public class Pivot extends Subsystem4237
         //Using TalonFX encoder
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
         periodicData.currentAngle = periodicData.currentPosition * 360.0;
+
+        //For PID widget
+        PIDcontroller.setP(PIDcontroller.getP());
+        PIDcontroller.setI(PIDcontroller.getI());
+        PIDcontroller.setD(PIDcontroller.getD());
+        myConstants.kP = PIDcontroller.getP();
+        myConstants.kI = PIDcontroller.getI();
+        myConstants.kD = PIDcontroller.getD();
+        motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+        
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        //System.out.println("currentAngle = " + periodicData.currentAngle); 
+        // System.out.println("kP = " + PIDcontroller.getP());
+        System.out.println("currentAngle = " + periodicData.currentAngle); 
         //System.out.println("currentPosition = " + motor.getPosition());
         
     }
@@ -209,143 +210,4 @@ public class Pivot extends Subsystem4237
         // This method will be called once per scheduler run during simulation
     }
 
-
-        /**
-     * Sets the Proportional coefficient of the PID controller gain.
-     *
-     * @param kp The proportional coefficient. Must be &gt;= 0.
-     */
-    public void setP(double kp) 
-    {
-         myConstants.kP = kp;
-    }
-
-    /**
-     * Sets the Integral coefficient of the PID controller gain.
-     *
-     * @param ki The integral coefficient. Must be &gt;= 0.
-     */
-    public void setI(double ki) 
-    {
-        myConstants.kI = ki;
-    }
-
-    /**
-     * Sets the Differential coefficient of the PID controller gain.
-     *
-     * @param kd The differential coefficient. Must be &gt;= 0.
-     */
-    public void setD(double kd) 
-    {
-        myConstants.kD = kd;
-    }
-
-        /**
-     * Get the Proportional coefficient.
-     *
-     * @return proportional coefficient
-     */
-    public double getP() 
-    {
-        return myConstants.kP;
-    }
-
-    /**
-     * Get the Integral coefficient.
-     *
-     * @return integral coefficient
-     */
-    public double getI() 
-    {
-        return myConstants.kI;
-    }
-
-    /**
-     * Get the Differential coefficient.
-     *
-     * @return differential coefficient
-     */
-    public double getD() 
-    {
-        return myConstants.kD;
-    }
-
-        /**
-     * Get the IZone range.
-     *
-     * @return Maximum magnitude of error to allow integral control.
-     */
-    public double getIZone() 
-    {
-        return myConstants.iZone;
-    }
-
-        /**
-     * Sets the IZone range. When the absolute value of the position error is greater than IZone, the
-     * total accumulated error will reset to zero, disabling integral gain until the absolute value of
-     * the position error is less than IZone. This is used to prevent integral windup. Must be
-     * non-negative. Passing a value of zero will effectively disable integral gain. Passing a value
-     * of {@link Double#POSITIVE_INFINITY} disables IZone functionality.
-     *
-     * @param iZone Maximum magnitude of error to allow integral control.
-     * @throws IllegalArgumentException if iZone &lt; 0
-     */
-    public void setIZone(double iZone) 
-    {
-        if (iZone < 0) 
-        {
-            throw new IllegalArgumentException("IZone must be a non-negative number!");
-        }
-        myConstants.iZone = iZone;
-    }
-
-        /**
-     * Returns the current setpoint of the PIDController.
-     *
-     * @return The current setpoint.
-     */
-    public double getSetpoint() 
-    {
-        return myConstants.setPoint;
-    }
-
-        /**
-     * Sets the setpoint for the PIDController.
-     *
-     * @param setpoint The desired setpoint.
-     */
-    public void setSetpoint(double setpoint)
-    {
-        myConstants.setPoint = setpoint;
-        myConstants.haveSetpoint = true;
-
-        if (myConstants.continuous) {
-        double errorBound = (myConstants.maximumInput - myConstants.minimumInput) / 2.0;
-        myConstants.positionError = MathUtil.inputModulus(myConstants.setPoint - myConstants.measurement, -errorBound, errorBound);
-        } else {
-        myConstants.positionError = myConstants.setPoint - myConstants.measurement;
-        }
-
-        myConstants.velocityError = (myConstants.positionError - myConstants.prevError) / myConstants.period;
-    }
-
-    @Override
-    public void initSendable(SendableBuilder builder) 
-    {
-        builder.setSmartDashboardType("PIDController");
-        builder.addDoubleProperty("p", this::getP, this::setP);
-        builder.addDoubleProperty("i", this::getI, this::setI);
-        builder.addDoubleProperty("d", this::getD, this::setD);
-        builder.addDoubleProperty(
-            "izone",
-            this::getIZone,
-            (double toSet) -> {
-            try {
-                setIZone(toSet);
-            } catch (IllegalArgumentException e) {
-                MathSharedStore.reportError("IZone must be a non-negative number!", e.getStackTrace());
-            }
-            });
-        builder.addDoubleProperty("setpoint", this::getSetpoint, this::setSetpoint);
-    }
 }
