@@ -20,6 +20,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
 import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
+
+
 public class TalonFX4237 extends MotorController4237
 {
     // This string gets the full name of the class, including the package name
@@ -360,5 +363,13 @@ public class TalonFX4237 extends MotorController4237
     {
         motor.disable();
     }
-
+    
+    @Override
+    public void initSendable(SendableBuilder builder) 
+    {
+        builder.setSmartDashboardType("MotorController");
+        builder.setActuator(true);
+        builder.setSafeState(this::stopMotor);
+        builder.addDoubleProperty("Value", this::get, this::set);
+    }
 }

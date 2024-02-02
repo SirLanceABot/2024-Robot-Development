@@ -10,6 +10,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
+
 public class CANSparkMax4237 extends MotorController4237
 {
     // This string gets the full name of the class, including the package name
@@ -321,5 +323,14 @@ public class CANSparkMax4237 extends MotorController4237
     public void disable()
     {
         motor.disable();
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) 
+    {
+        builder.setSmartDashboardType("Motor Controller");
+        builder.setActuator(true);
+        builder.setSafeState(this::stopMotor);
+        builder.addDoubleProperty("Value", this::get, this::set);
     }
 }

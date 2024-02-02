@@ -2,6 +2,7 @@ package frc.robot.motors;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
  * This abstract class defines the abstract methods that all motor controllers have.
  * Every motor controller will automatically have the Watchdog enabled.
  */
-public abstract class MotorController4237 extends MotorSafety implements MotorController
+public abstract class MotorController4237 extends MotorSafety implements MotorController, Sendable
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
