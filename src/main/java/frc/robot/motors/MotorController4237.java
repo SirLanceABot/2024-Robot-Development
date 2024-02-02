@@ -59,6 +59,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setupPositionConversionFactor(double factor);
     public abstract void setupVelocityConversionFactor(double factor);
     public abstract void setupPIDController(int slotId, double kP, double kI, double kD);
+    public abstract void setupFollower(int leaderId, boolean isInverted);
 
     public abstract void setPosition(double position);
     public abstract double getPosition();

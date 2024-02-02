@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -274,6 +275,11 @@ public class TalonFX4237 extends MotorController4237
             slotConfigs.kD = kD;
             motor.getConfigurator().apply(slotConfigs); 
         }
+    }
+
+    public void setupFollower(int leaderId, boolean isInverted)
+    {
+        motor.setControl(new Follower(leaderId, isInverted));
     }
 
     /**

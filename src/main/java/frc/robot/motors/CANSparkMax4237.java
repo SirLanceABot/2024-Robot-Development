@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -240,6 +241,11 @@ public class CANSparkMax4237 extends MotorController4237
         // pidController.setIZone(kIz);
         // pidController.setFF(kFF);
         // pidController.setOutputRange(kMinOutput, kMaxOutput);
+    }
+
+    public void setupFollower(int leaderId, boolean isInverted)
+    {
+        motor.follow(CANSparkBase.ExternalFollower.kFollowerSpark, leaderId, isInverted);
     }
 
     /**
