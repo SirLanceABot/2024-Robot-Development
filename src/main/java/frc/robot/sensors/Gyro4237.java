@@ -106,7 +106,7 @@ public class Gyro4237 extends Sensor4237
         // gyro.configMountPose(Constants.Gyro.FORWARD_AXIS, Constants.Gyro.UP_AXIS); //forward axis and up axis
         gyro.reset();
         Timer.delay(0.5);
-        gyro.setYaw(180.0);  // 2022 robot started with front facing away from the driver station, 2023 will not
+        gyro.setYaw(0.0);  // 2022 robot started with front facing away from the driver station, 2023 will not
         Timer.delay(0.5);
     }
 
