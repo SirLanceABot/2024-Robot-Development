@@ -128,6 +128,11 @@ public class PoseEstimator extends Subsystem4237
         return Math.toDegrees(angleRads);
     }
 
+    public void resetPosition(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions, Pose2d newPose)
+    {
+        poseEstimator.resetPosition(gyroAngle, modulePositions, newPose);
+    }
+
     @Override
     public void readPeriodicInputs()
     {

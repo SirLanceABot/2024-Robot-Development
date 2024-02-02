@@ -155,6 +155,10 @@ public class Robot extends TimedRobot
     {
         System.out.println("Autonomous Mode");
 
+        // robotContainer.drivetrain.followPathCommand("Example Path")
+        //     .withName("Follow Path")
+        //     .schedule();
+
         if(autonomousCommand != null)
         {
             autonomousCommand.schedule();

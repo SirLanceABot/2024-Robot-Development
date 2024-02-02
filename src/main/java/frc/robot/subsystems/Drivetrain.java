@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
@@ -247,7 +248,7 @@ public class Drivetrain extends Subsystem4237
         AutoBuilder.configureHolonomic(
                 poseEstimator::getEstimatedPose, // Robot pose supplier
                 // this::getPose,
-                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::resetOdometryPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
@@ -498,7 +499,7 @@ public class Drivetrain extends Subsystem4237
         resetOdometry = true;
     }
 
-    public void resetPose(Pose2d newPose)
+    public void resetOdometryPose(Pose2d newPose)
     {
         periodicData.odometry.resetPosition(
             gyro.getRotation2d(), 
@@ -510,6 +511,11 @@ public class Drivetrain extends Subsystem4237
                 backRight.getPosition()
             }, 
             newPose);
+    }
+
+    public void resetPoseEstimator(Pose2d newPose)
+    {
+        poseEstimator.resetPosition(gyro.getRotation2d(), getSwerveModulePositions(), newPose);
     }
 
     //@Override
@@ -1034,9 +1040,16 @@ public class Drivetrain extends Subsystem4237
     public Command followPathCommand(String pathName) {
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
-        resetPose(path.getPreviewStartingHolonomicPose());
+        return
+        Commands.runOnce( () -> 
+                {
+                    resetOdometryPose(path.getPreviewStartingHolonomicPose());
+                    resetPoseEstimator(path.getPreviewStartingHolonomicPose());
+                })
+        
 
-        return new FollowPathHolonomic(
+
+        .andThen( new FollowPathHolonomic(
                 path,
                 // this::getPose,
                 poseEstimator::getEstimatedPose, // Robot pose supplier
@@ -1061,7 +1074,7 @@ public class Drivetrain extends Subsystem4237
                     return false;
                 },
                 this // Reference to this subsystem to set requirements
-        );
+        ));
     }
 
 
