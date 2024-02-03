@@ -78,7 +78,10 @@ public class OwenTest implements Test
     public void periodic()
     {
         // motor.follow(motor1);
+        configLeftTrigger();
+        configRightTrigger();
         configBackButton();
+        System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
         // {
@@ -137,8 +140,9 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.whileTrue(climb.extendLeftClimbCommand(0.4));
+            leftTriggerTrigger.whileTrue(climb.extendClimbCommand(0.1));
             leftTriggerTrigger.onFalse(climb.stopClimbCommand());
+            // leftTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
     }
 
@@ -150,8 +154,9 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.whileTrue(climb.extendRightClimbCommand(0.4));
+            rightTriggerTrigger.whileTrue(climb.retractClimbCommand(-0.1));
             rightTriggerTrigger.onFalse(climb.stopClimbCommand());
+            // rightTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
     }
 
@@ -163,8 +168,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            backButtonTrigger.whileTrue(climb.extendClimbCommand(0.4));
-            backButtonTrigger.onFalse(climb.stopClimbCommand());
+            backButtonTrigger.onTrue(climb.moveToPositionCommand(TargetPosition.kChain));
+            // backButtonTrigger.onFalse(climb.stopClimbCommand());
         }
 
         // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));

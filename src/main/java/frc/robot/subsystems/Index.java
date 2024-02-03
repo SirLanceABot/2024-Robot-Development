@@ -45,7 +45,7 @@ public class Index extends Subsystem4237
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private final TalonFX4237 motor = new TalonFX4237(12, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
+    private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
     public static final double CURRENT_LIMIT                       = 10.0;
     public static final double CURRENT_THRESHOLD                   = 10.0;
     public static final double TIME_THRESHOLD                      = 10.0;
