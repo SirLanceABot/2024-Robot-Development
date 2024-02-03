@@ -192,10 +192,13 @@ public class Pivot extends Subsystem4237
 
         //For displaying currentAngle
         SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
-        SmartDashboard.putBoolean("Activate PID", myConstants.isActive);
+        if(myConstants.isActive)
+            SmartDashboard.putBoolean("Activate PID", true);
+        else
+            SmartDashboard.putBoolean("Activate PID", false);
 
         //For activating PID values
-        myConstants.isActive = SmartDashboard.getBoolean("Activate PID", true);
+        myConstants.isActive = SmartDashboard.getBoolean("Activate PID", false);
         if(myConstants.isActive)
         {
             SmartDashboard.setDefaultBoolean("Activate PID", true);
@@ -208,7 +211,7 @@ public class Pivot extends Subsystem4237
         }
         else
         {
-            SmartDashboard.setDefaultBoolean("Activate PID", true);
+            SmartDashboard.setDefaultBoolean("Activate PID", false);
         }
 
     }
