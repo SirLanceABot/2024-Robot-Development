@@ -34,8 +34,9 @@ public class Pivot extends Subsystem4237
         public double kP = 17.0;
         public double kI = 10.0;
         public double kD = 0.0;
+        public double setPoint = 0.0;
         public int slotId = 0;
-
+        private boolean isActive = false;
     }
 
     private class PeriodicData
@@ -70,7 +71,6 @@ public class Pivot extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configPivotMotor();
-        // SendableRegistry.addLW(this, "Pivot", "PID");
         System.out.println("  Constructor Finished: " + fullClassName);
         LiveWindow.setEnabled(true);
         LiveWindow.enableTelemetry(this.PIDcontroller);
@@ -122,7 +122,6 @@ public class Pivot extends Subsystem4237
 
     public void resetCANcoder()
     {
-        // motor.setPosition(0.0);
         pivotAngle.setPosition(0.0);
     }
 
@@ -189,13 +188,28 @@ public class Pivot extends Subsystem4237
         PIDcontroller.setP(PIDcontroller.getP());
         PIDcontroller.setI(PIDcontroller.getI());
         PIDcontroller.setD(PIDcontroller.getD());
-        myConstants.kP = PIDcontroller.getP();
-        myConstants.kI = PIDcontroller.getI();
-        myConstants.kD = PIDcontroller.getD();
-        motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+        PIDcontroller.setSetpoint(PIDcontroller.getSetpoint());
 
         //For displaying currentAngle
         SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
+        SmartDashboard.putBoolean("Activate PID", myConstants.isActive);
+
+        //For activating PID values
+        myConstants.isActive = SmartDashboard.getBoolean("Activate PID", true);
+        if(myConstants.isActive)
+        {
+            SmartDashboard.setDefaultBoolean("Activate PID", true);
+            myConstants.kP = PIDcontroller.getP();
+            myConstants.kI = PIDcontroller.getI();
+            myConstants.kD = PIDcontroller.getD();
+            myConstants.setPoint = PIDcontroller.getSetpoint();
+            motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+            setAngle(myConstants.setPoint);
+        }
+        else
+        {
+            SmartDashboard.setDefaultBoolean("Activate PID", true);
+        }
 
     }
 
