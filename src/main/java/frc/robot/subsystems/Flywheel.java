@@ -133,6 +133,16 @@ public class Flywheel extends Subsystem4237
         return Commands.runOnce( () -> shoot(speed), this);
     }
 
+    public Command shootSpeakerCommand()
+    {
+        return Commands.runOnce(() -> shoot(0.6), this);
+    }
+
+    public Command shootAmpCommand()
+    {
+        return Commands.runOnce(() -> shoot(0.2), this);
+    }
+
     public Command intakeCommand()
     {
         return Commands.runOnce( () -> intake(), this);
@@ -153,7 +163,14 @@ public class Flywheel extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        motor.set(periodicData.flywheelSpeed);
+        if(periodicData.currentVelocity < periodicData.flywheelSpeed)
+        {
+            motor.set(periodicData.flywheelSpeed);
+        }
+        else if(periodicData.currentVelocity >= periodicData.flywheelSpeed)
+        {
+            motor.set(0.0);
+        }
     }
 
 

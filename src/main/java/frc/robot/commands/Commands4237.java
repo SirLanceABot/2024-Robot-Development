@@ -1,8 +1,11 @@
 package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public final class Commands4237
@@ -141,5 +144,25 @@ public final class Commands4237
         {
             return Commands.none();
         }
+    }
+
+    public static Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
+    {
+        return 
+        robotContainer.flywheel.shootCommand(0.5)
+        .alongWith(
+            robotContainer.pivot.movePivotCommand(pivotAngle),
+            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+        .andThen(
+            robotContainer.index.feedNoteCommand(0.5))
+        .andThen(
+            Commands.waitSeconds(1.0))
+        .andThen(
+            robotContainer.flywheel.stopCommand()
+            .alongWith(
+                robotContainer.index.stopCommand()))
+        .andThen(
+                robotContainer.pivot.movePivotCommand(Constants.Pivot.DEFAULT_ANGLE))
+        .withName("Shoot");
     }
 }

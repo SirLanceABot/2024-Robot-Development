@@ -238,7 +238,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadDownTrigger.whileTrue(robotContainer.climb.retractClimbCommand());
+            dPadDownTrigger.whileTrue(robotContainer.climb.retractClimbCommand(-0.2));
         }
     }
     private void configDpadUp()
@@ -249,7 +249,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadUpTrigger.whileTrue(robotContainer.climb.extendClimbCommand());
+            dPadUpTrigger.whileTrue(robotContainer.climb.extendClimbCommand(0.2));
         }
     }
 

@@ -77,27 +77,6 @@ public class Index extends Subsystem4237
         motor.setPosition(0.0);
     }
 
-    public void acceptNote()
-    {
-        periodicData.motorSpeed = 0.1;
-    }
-
-    public void feedNote(double speed)
-    {
-        periodicData.motorSpeed = speed;
-    }
-
-
-    public void reverse()
-    {
-        periodicData.motorSpeed = -0.1;
-    }
-
-    public void stop()
-    {
-        periodicData.motorSpeed = 0.0;
-    }
-
     public double getPosition()
     {
         return periodicData.currentPosition;
@@ -118,19 +97,40 @@ public class Index extends Subsystem4237
         periodicData.motorSpeed = speed;
     }
 
+    public void acceptNoteFromShuttle()
+    {
+        periodicData.motorSpeed = 0.1;
+    }
+
+    public void feedNoteToFlywheel(double speed)
+    {
+        periodicData.motorSpeed = speed;
+    }
+
+
+    public void intake()
+    {
+        periodicData.motorSpeed = -0.1;
+    }
+
+    public void stop()
+    {
+        periodicData.motorSpeed = 0.0;
+    }
+
     public Command acceptNoteCommand()
     {
-        return Commands.runOnce(() -> acceptNote(), this);
+        return Commands.runOnce(() -> acceptNoteFromShuttle(), this);
     }
 
     public Command feedNoteCommand(double speed)
     {
-        return Commands.runOnce(() -> feedNote(speed), this);
+        return Commands.runOnce(() -> feedNoteToFlywheel(speed), this);
     }
 
     public Command reverseCommand()
     {
-        return Commands.runOnce(() -> reverse(), this);
+        return Commands.runOnce(() -> intake(), this);
     }
 
     public Command stopCommand()

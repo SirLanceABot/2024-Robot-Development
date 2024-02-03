@@ -40,12 +40,12 @@ public class OwenTest implements Test
     private final RobotContainer robotContainer;
     // private final Flywheel flywheel;
     // private final Index index;
-    // private final Climb climb;
+    private final Climb climb;
     // private final Ultrasonic ultrasonic;
     // private final Joystick joystick = new Joystick(0);
     // private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
     // private CANSparkMax motor1 = new CANSparkMax(1, MotorType.kBrushless);
-    private BooleanSupplier false1 = () -> false;
+    // private BooleanSupplier false1 = () -> false;
     // BooleanSupplier buttonA = operatorController.getRawButton(Xbox.Button.kA);
     // Trigger trigger = new Trigger(true);
 
@@ -58,7 +58,7 @@ public class OwenTest implements Test
         this.robotContainer = robotContainer;
         // flywheel = this.robotContainer.flywheel;
         // index = this.robotContainer.index;
-        // climb = this.robotContainer.climb;
+        climb = this.robotContainer.climb;
         // ultrasonic = this.robotContainer.ultrasonic;
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -127,25 +127,7 @@ public class OwenTest implements Test
     public void exit()
     {}
 
-    public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
-    {
-        return 
-        robotContainer.flywheel.shootCommand(0.5)
-        .alongWith(
-            robotContainer.pivot.movePivotCommand(pivotAngle),
-            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
-            .andThen(
-                robotContainer.index.feedNoteCommand(0.5))
-        .andThen(
-            Commands.waitSeconds(3.0))
-        .andThen(
-            robotContainer.flywheel.stopCommand()
-            .alongWith(
-                robotContainer.index.stopCommand()))
-                .andThen(
-                    robotContainer.pivot.movePivotCommand(Constants.Pivot.DEFAULT_ANGLE))
-        .withName("Shoot");
-    }
+    
 
     private void configLeftTrigger()
     {
@@ -155,7 +137,21 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.onTrue(shootCommand(0.5, () -> 0.0));
+            leftTriggerTrigger.whileTrue(climb.extendLeftClimbCommand(0.4));
+            leftTriggerTrigger.onFalse(climb.stopClimbCommand());
+        }
+    }
+
+    private void configRightTrigger()
+    {
+        //Left trigger 
+        BooleanSupplier rightTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightTrigger);
+        Trigger rightTriggerTrigger = new Trigger(rightTrigger);
+
+        if(true)
+        {
+            rightTriggerTrigger.whileTrue(climb.extendRightClimbCommand(0.4));
+            rightTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
     }
 
@@ -165,8 +161,16 @@ public class OwenTest implements Test
         BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
-        backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
+        if(true)
+        {
+            backButtonTrigger.whileTrue(climb.extendClimbCommand(0.4));
+            backButtonTrigger.onFalse(climb.stopClimbCommand());
+        }
+
+        // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
     }
+
+    
 
     // *** METHODS ***
     // Put any additional methods here.

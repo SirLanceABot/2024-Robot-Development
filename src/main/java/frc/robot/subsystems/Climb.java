@@ -35,8 +35,7 @@ public class Climb extends Subsystem4237
     public enum TargetPosition
     {
         kChain(CHAIN_ENCODER_POSITION),
-        kInnerRobot(INNER_ROBOT_ENCODER_POSITION),
-        kOuterRobot(OUTER_ROBOT_ENCODER_POSITION),
+        kRobot(ROBOT_ENCODER_POSITION),
         kOverride(-4237.0);
 
         public final double value;
@@ -71,12 +70,13 @@ public class Climb extends Subsystem4237
         // OUTPUTS
         private DoubleLogEntry positionEntry;
         private DoubleLogEntry velocityEntry;
-        private double motorSpeed;
+        private double leftMotorSpeed = 0.0;
+        private double rightMotorSpeed = 0.0;
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private final CANSparkMax4237 leftMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
-    private final CANSparkMax4237 rightMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
+    private final CANSparkMax4237 leftLeadMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
+    private final CANSparkMax4237 rightFollowMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
     private TargetPosition targetPosition = TargetPosition.kOverride;
     private OverrideMode overrideMode = OverrideMode.kNotMoving;
     // private RelativeEncoder leftMotorEncoder;
@@ -88,8 +88,7 @@ public class Climb extends Subsystem4237
     private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
     private static final double CHAIN_ENCODER_POSITION              = 60.0;
-    private static final double OUTER_ROBOT_ENCODER_POSITION        = 30.0;
-    private static final double INNER_ROBOT_ENCODER_POSITION        = 20.0;
+    private static final double ROBOT_ENCODER_POSITION        = 30.0;
 
     private final double CURRENT_LIMIT                       = 10.0;
     private final double CURRENT_THRESHOLD                   = 10.0;
@@ -129,87 +128,28 @@ public class Climb extends Subsystem4237
 
     private void configMotors()
     {
-        leftMotor.setupBrakeMode();
-        rightMotor.setupBrakeMode();
-        leftMotor.setupFactoryDefaults();
-        rightMotor.setupFactoryDefaults();
-        leftMotor.setupInverted(false);
-        rightMotor.setupInverted(false);
-        leftMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        rightMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        leftMotor.setPosition(0.0);
-        rightMotor.setPosition(0.0);
+        leftLeadMotor.setupBrakeMode();
+        rightFollowMotor.setupBrakeMode();
+        leftLeadMotor.setupFactoryDefaults();
+        rightFollowMotor.setupFactoryDefaults();
+        leftLeadMotor.setupInverted(false);
+        rightFollowMotor.setupInverted(false);
+        leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        leftLeadMotor.setPosition(0.0);
+        rightFollowMotor.setPosition(0.0);
+        rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
 
-        leftMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
-        leftMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
-        rightMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
-        rightMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
-
-        // rightMotor.follow(leftMotor);
+        leftLeadMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
+        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
+        rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
+        rightFollowMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
     }
 
     public void resetEncoder()
     {
-        reset = true;
-    }
-
-    public void extend()
-    {
-        
-        targetPosition = TargetPosition.kOverride;
-        overrideMode = OverrideMode.kMoving;
-        periodicData.motorSpeed = 0.2;
-    }
-
-    public void retract()
-    {
-        targetPosition = TargetPosition.kOverride;
-        overrideMode = OverrideMode.kMoving;
-        periodicData.motorSpeed = -0.2;
-    }
-
-    public void holdClimb()
-    {
-        periodicData.motorSpeed = -0.05;
-    }
-
-    public void moveToChain()
-    {
-        targetPosition = TargetPosition.kChain;
-    }
-
-    public void moveToOuterRobot()
-    {
-        targetPosition = TargetPosition.kOuterRobot;
-    }
-
-    public void moveToInnerRobot()
-    {
-        targetPosition = TargetPosition.kInnerRobot;
-    }
-
-    public void stop()
-    {
-        periodicData.motorSpeed = 0.0;
-    }
-
-    public void setLeftAndRightPosition(TargetPosition position)
-    {
-        if(position.value > leftMotor.getPosition())
-        {
-            leftMotor.set(0.05);
-            rightMotor.set(0.05);        
-        }
-        else
-        {
-            leftMotor.set(0.0);
-            rightMotor.set(0.0); 
-        }
-        // if(position.value < leftMotor.getPosition() && (Math.abs(position.value - leftMotor.getPosition()) > 5))
-        // {
-        //     leftMotor.set(-0.05);
-        //     rightMotor.set(-0.05);        
-        // }
+        leftLeadMotor.setPosition(0.0);
+        rightFollowMotor.setPosition(0.0);
     }
 
     public double getLeftPosition()
@@ -223,14 +163,97 @@ public class Climb extends Subsystem4237
         return periodicData.currentRightPosition;
     }
 
-    public Command extendClimbCommand()
+    public void extendLeft(double speed)
     {
-        return Commands.startEnd( () -> extend(), () -> stop(), this);
+        
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
+        periodicData.leftMotorSpeed = speed;
     }
 
-    public Command retractClimbCommand()
+    public void extendRight(double speed)
     {
-        return Commands.startEnd( () -> retract(), () -> stop(), this);
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
+        periodicData.rightMotorSpeed = speed;
+    }
+
+    public void retractLeft(double speed)
+    {
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
+        periodicData.leftMotorSpeed = speed;
+    }
+
+    public void retractRight(double speed)
+    {
+        targetPosition = TargetPosition.kOverride;
+        overrideMode = OverrideMode.kMoving;
+        periodicData.rightMotorSpeed = speed;
+    }
+
+    public void extendClimb(double speed)
+    {
+        extendLeft(speed);
+        extendRight(speed);
+    }
+
+    public void retractClimb(double speed)
+    {
+        retractLeft(speed);
+        retractRight(speed);
+    }
+
+    public void holdClimb()
+    {
+        periodicData.leftMotorSpeed = 0.05;
+        periodicData.rightMotorSpeed = 0.05;
+    }
+
+    public void stop()
+    {
+        periodicData.leftMotorSpeed = 0.0;
+        periodicData.rightMotorSpeed = 0.0;
+    }
+
+    public void moveToChain()
+    {
+        targetPosition = TargetPosition.kChain;
+    }
+
+    public void moveToOuterRobot()
+    {
+        targetPosition = TargetPosition.kRobot;
+    }
+
+    public Command extendLeftClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> extendLeft(speed), () -> stop(), this);
+    }
+
+    public Command retractLeftClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> retractLeft(speed), () -> stop(), this);
+    }
+
+    public Command extendRightClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> extendRight(speed), () -> stop(), this);
+    }
+
+    public Command retractRightClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> retractRight(speed), () -> stop(), this);
+    }
+
+    public Command extendClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> extendClimb(speed), () -> stop(), this);
+    }
+
+    public Command retractClimbCommand(double speed)
+    {
+        return Commands.startEnd( () -> retractClimb(speed), () -> stop(), this);
     }
 
     public Command stopClimbCommand()
@@ -243,8 +266,8 @@ public class Climb extends Subsystem4237
     {
 
         
-        periodicData.currentLeftPosition = leftMotor.getPosition();
-        periodicData.currentRightPosition = rightMotor.getPosition();
+        periodicData.currentLeftPosition = leftLeadMotor.getPosition();
+        periodicData.currentRightPosition = rightFollowMotor.getPosition();
         // getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
@@ -287,27 +310,27 @@ public class Climb extends Subsystem4237
     {
         if(targetPosition == TargetPosition.kOverride)
         {
-            leftMotor.set(periodicData.motorSpeed);
-            rightMotor.set(periodicData.motorSpeed);
+            leftLeadMotor.set(periodicData.leftMotorSpeed);
+            rightFollowMotor.set(periodicData.leftMotorSpeed);
         }
         else
         {
-            if(targetPosition.value > leftMotor.getPosition())
+            if(targetPosition.value > leftLeadMotor.getPosition())
             {
-                leftMotor.set(0.05);
-                rightMotor.set(0.05);        
+                leftLeadMotor.set(0.05);
+                rightFollowMotor.set(0.05);        
             }
             else
             {
-                leftMotor.set(0.0);
-                rightMotor.set(0.0); 
+                leftLeadMotor.set(0.0);
+                rightFollowMotor.set(0.0); 
             }
         }
 
         if (reset)
         {
-            leftMotor.setPosition(0);
-            rightMotor.setPosition(0);
+            leftLeadMotor.setPosition(0);
+            rightFollowMotor.setPosition(0);
         }
         
 
@@ -341,7 +364,7 @@ public class Climb extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftMotor.getPosition();
+        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftLeadMotor.getPosition();
 
     }
 
