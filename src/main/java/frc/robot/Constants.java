@@ -186,6 +186,9 @@ public final class Constants
         // public static final double ENCODER_TICKS_PER_REVOLUTION = 2048;
         public static final int CAN_CODER_PORT                  = 20;
         public static final String CAN_CODER_CAN_BUS            = ROBORIO;
+
+        public static final int DEFAULT_ANGLE                   = 50; // Default angle for intaking from source and floor
+        public static final double SHOOT_FROM_SUBWOOFER_ANGLE      = 63.36;
     }
 
     public static class Shuttle

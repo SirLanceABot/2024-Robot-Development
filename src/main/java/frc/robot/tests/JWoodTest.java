@@ -92,7 +92,7 @@ public class JWoodTest implements Test
             robotContainer.indexProximity != null)
         {
             return
-            robotContainer.intakePositioning.extendCommand()
+            robotContainer.intakePositioning.moveUpCommand()
             .alongWith(
                 robotContainer.intake.pickupFrontCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
@@ -102,7 +102,7 @@ public class JWoodTest implements Test
             .andThen(
                 robotContainer.intake.stopCommand()
                 .alongWith(
-                    robotContainer.intakePositioning.retractCommand()))
+                    robotContainer.intakePositioning.moveDownCommand()))
             .andThen(
                 Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
             .andThen(

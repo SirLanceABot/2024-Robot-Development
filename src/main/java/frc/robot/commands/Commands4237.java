@@ -89,7 +89,7 @@ public final class Commands4237
         if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
         {
             return
-            robotContainer.intakePositioning.extendCommand()
+            robotContainer.intakePositioning.moveUpCommand()
             .alongWith(
                 robotContainer.intake.pickupFrontCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
@@ -99,7 +99,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.intake.stopCommand()
                 .alongWith(
-                    robotContainer.intakePositioning.retractCommand()))
+                    robotContainer.intakePositioning.moveDownCommand()))
             .andThen(
                 Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
             .andThen(
@@ -127,6 +127,12 @@ public final class Commands4237
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(robotContainer.index.stopCommand()))
+            .andThen(
+                robotContainer.index.acceptNoteCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.index.stopCommand())   
             .withName("Intake From Source");
         }
         else

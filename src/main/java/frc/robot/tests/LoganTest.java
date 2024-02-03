@@ -84,11 +84,11 @@ public class LoganTest implements Test
         if(joystick.getRawButton(1)) // A button
         {
             // configAButton();
-            intakePositioning.extend();
+            intakePositioning.moveUp();
         }
         else if(joystick.getRawButton(2))
         {
-            intakePositioning.retract();
+            intakePositioning.moveDown();
         }
         else if(joystick.getRawButton(3))
         {

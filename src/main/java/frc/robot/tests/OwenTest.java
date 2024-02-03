@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
@@ -142,7 +143,7 @@ public class OwenTest implements Test
             .alongWith(
                 robotContainer.index.stopCommand()))
                 .andThen(
-                    robotContainer.pivot.movePivotCommand(45))
+                    robotContainer.pivot.movePivotCommand(Constants.Pivot.DEFAULT_ANGLE))
         .withName("Shoot");
     }
 

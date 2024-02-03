@@ -69,12 +69,12 @@ public class IntakePositioning extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public void extend()
+    public void moveUp()
     {
         periodicData.intakePosition = IntakePosition.kDown;
     }
 
-    public void retract()
+    public void moveDown()
     {
         periodicData.intakePosition = IntakePosition.kUp;
     }
@@ -84,14 +84,14 @@ public class IntakePositioning extends Subsystem4237
         periodicData.intakePosition = IntakePosition.kFloat;
     }
 
-    public Command extendCommand()
+    public Command moveUpCommand()
     {
-        return Commands.runOnce(() -> extend(), this);
+        return Commands.runOnce(() -> moveUp(), this);
     }
 
-    public Command retractCommand()
+    public Command moveDownCommand()
     {
-        return Commands.runOnce(() -> retract(), this);
+        return Commands.runOnce(() -> moveDown(), this);
     }
 
     public Command floatingCommand()
