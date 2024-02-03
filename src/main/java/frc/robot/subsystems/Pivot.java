@@ -13,11 +13,11 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
-
 
 
 public class Pivot extends Subsystem4237
@@ -58,6 +58,7 @@ public class Pivot extends Subsystem4237
     private MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
 
+
     
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
 
@@ -87,8 +88,9 @@ public class Pivot extends Subsystem4237
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(6144.0, false);
-        motor.setupReverseSoftLimit(-6144.0, false);
+        motor.setupForwardSoftLimit(512.0, false);
+        motor.setupReverseSoftLimit(0.0, false);
+
     }
 
     public void moveUp()
@@ -119,7 +121,7 @@ public class Pivot extends Subsystem4237
         return periodicData.currentPosition;
     }
 
-    public void resetEncoder()
+    public void resetCANcoder()
     {
         // motor.setPosition(0.0);
         pivotAngle.setPosition(0.0);
@@ -130,9 +132,14 @@ public class Pivot extends Subsystem4237
         periodicData.currentAngle = degrees;
     }
 
+    public void humanIntake()
+    {
+        motor.setControl(60 / 360);
+    }
+
     public void setAngle(double degrees)
     { 
-            motor.setControl(degrees / 360);
+        motor.setControl(degrees / 360);
         
         //setAngle using FalconFX encoder
         // if(periodicData.currentAngle > (degrees + 5))
@@ -174,11 +181,12 @@ public class Pivot extends Subsystem4237
         //Using Rotary Encoder
         //periodicData.currentAngle = 360.0 * rotaryEncoder.getAbsolutePosition();
 
-        //Using TalonFX encoder
+        //Using CANcoder
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
         periodicData.currentAngle = periodicData.currentPosition * 360.0;
 
         //For PID widget
+        //Go to ShuffleBoard - Sources - NetworkTables to insert widget
         PIDcontroller.setP(PIDcontroller.getP());
         PIDcontroller.setI(PIDcontroller.getI());
         PIDcontroller.setD(PIDcontroller.getD());
@@ -186,15 +194,18 @@ public class Pivot extends Subsystem4237
         myConstants.kI = PIDcontroller.getI();
         myConstants.kD = PIDcontroller.getD();
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
-        
+
+        //For displaying currentAngle
+        SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
+
     }
 
     @Override
     public void writePeriodicOutputs()
     {
         // System.out.println("kP = " + PIDcontroller.getP());
-        System.out.println("currentAngle = " + periodicData.currentAngle); 
-        //System.out.println("currentPosition = " + motor.getPosition());
+        // System.out.println("currentAngle = " + periodicData.currentAngle); 
+        // System.out.println("currentPosition = " + motor.getPosition());
         
     }
 

@@ -6,6 +6,7 @@ import java.lang.invoke.MethodHandles;
 import frc.robot.RobotContainer;
 //import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DaneTest implements Test
 {
@@ -43,7 +44,7 @@ public class DaneTest implements Test
      */
     public void init()
     {
-        pivot.resetEncoder();
+        pivot.resetCANcoder();
     }
 
     /**
@@ -74,6 +75,7 @@ public class DaneTest implements Test
 
         if(joystick.getRawButton(4))
             pivot.stop();
+
     }
     
     /**
