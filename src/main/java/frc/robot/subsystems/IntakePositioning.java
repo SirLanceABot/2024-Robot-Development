@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -44,6 +45,8 @@ public class IntakePositioning extends Subsystem4237
     private final class PeriodicData
     {
         // INPUTS
+        private boolean isIntakeUp;
+        private boolean isIntakeDown;
 
         // OUTPUTS
         private IntakePosition intakePosition = IntakePosition.kUp;
@@ -57,6 +60,9 @@ public class IntakePositioning extends Subsystem4237
     private final DoubleSolenoid retractSolenoid = new DoubleSolenoid(
         Constants.IntakePositioning.PCM_PORT, PneumaticsModuleType.REVPH,
         Constants.IntakePositioning.RETRACT_ACTIVE_PORT, Constants.IntakePositioning.RETRACT_FLOAT_PORT);
+
+    private final DigitalInput intakeDownSensor = new DigitalInput(Constants.IntakePositioning.INTAKE_DOWN_SENSOR);
+    private final DigitalInput intakeUpSensor = new DigitalInput(Constants.IntakePositioning.INTAKE_UP_SENSOR);
 
     /** 
      * Creates a new IntakePositioning. 
@@ -84,6 +90,16 @@ public class IntakePositioning extends Subsystem4237
         periodicData.intakePosition = IntakePosition.kFloat;
     }
 
+    public boolean isIntakeDown()
+    {
+        return periodicData.isIntakeDown;
+    }
+
+    public boolean isIntakeUp()
+    {
+        return periodicData.isIntakeUp;
+    }
+
     public Command moveUpCommand()
     {
         return Commands.runOnce(() -> moveUp(), this);
@@ -102,7 +118,8 @@ public class IntakePositioning extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        
+        periodicData.isIntakeUp = !intakeUpSensor.get();
+        periodicData.isIntakeDown = !intakeDownSensor.get();
     }
 
     @Override

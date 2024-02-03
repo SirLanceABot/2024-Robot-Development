@@ -126,18 +126,25 @@ public final class Commands4237
             return
             robotContainer.flywheel.intakeCommand()
             .alongWith(
-                robotContainer.index.reverseCommand())
+                robotContainer.index.reverseCommand(),
+                robotContainer.shuttle.moveDownwardCommand())
             .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
             .andThen(
                 robotContainer.flywheel.stopCommand()
-                .alongWith(robotContainer.index.stopCommand()))
+                .alongWith(
+                    robotContainer.index.stopCommand()),
+                    robotContainer.shuttle.stopCommand())
             .andThen(
                 robotContainer.index.acceptNoteCommand())
+                .alongWith(
+                    robotContainer.shuttle.moveUpwardCommand())
             .andThen(
                 Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
             .andThen(
-                robotContainer.index.stopCommand())   
+                robotContainer.index.stopCommand()
+                .alongWith(
+                    robotContainer.shuttle. stopCommand()))   
             .withName("Intake From Source");
         }
         else

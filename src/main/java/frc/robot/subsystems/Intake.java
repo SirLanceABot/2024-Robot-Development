@@ -48,6 +48,8 @@ public class Intake extends Subsystem4237
         // INPUTS
         private double topIntakePosition = 0.0;
         private double bottomIntakePosition = 0.0;
+        private double topIntakeVelocity;
+        private double bottomIntakeVelocity;
 
         // OUTPUTS
         private double topIntakeSpeed = 0.0;
@@ -147,6 +149,16 @@ public class Intake extends Subsystem4237
         periodicData.bottomIntakeSpeed = speed;
     }
 
+    public double getTopVelocity()
+    {
+        return periodicData.topIntakeVelocity;
+    }
+
+    public double getBottomVelocity()
+    {
+        return periodicData.bottomIntakeVelocity;
+    }
+
     public Command pickupFrontCommand()
     {
         return Commands.runOnce(() -> pickupFront(), this);
@@ -162,6 +174,8 @@ public class Intake extends Subsystem4237
     {
         periodicData.topIntakePosition = topMotor.getPosition();
         periodicData.bottomIntakePosition = bottomMotor.getPosition();
+        periodicData.topIntakeVelocity = topMotor.getVelocity();
+        periodicData.bottomIntakeVelocity = bottomMotor.getVelocity();
     }
 
     @Override
