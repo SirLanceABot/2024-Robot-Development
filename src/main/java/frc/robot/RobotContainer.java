@@ -6,7 +6,10 @@ package frc.robot;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Candle4237;
@@ -66,6 +69,8 @@ public class RobotContainer
     private boolean useCameraFour           = false;
     private boolean useGyro                 = false;
     private boolean useAllProximity         = false;
+    private boolean useCompressor           = false;
+    private boolean usePneumaticHub         = false;
 
     private boolean useMainShuffleboard     = false;
 
@@ -88,6 +93,8 @@ public class RobotContainer
     public final IntakePositioning intakePositioning;
     public final Pivot pivot;
     public final Shuttle shuttle;
+    public final Compressor compressor;
+    public final PneumaticHub pneumaticHub;
 
     public final Camera[] cameraArray = new Camera[4];
     public final Gyro4237 gyro;
@@ -137,6 +144,8 @@ public class RobotContainer
         secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
         indexWheelsProximity    = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
+        compressor              = (useFullRobot || useCompressor)           ? new Compressor(PneumaticsModuleType.REVPH)                : null;
+        pneumaticHub            = (useFullRobot || usePneumaticHub)         ? new PneumaticHub(1)                                : null;
 
         // DO NOT MOVE THIS STATEMENT
         // This statement must be after the subsystems have been instantiated

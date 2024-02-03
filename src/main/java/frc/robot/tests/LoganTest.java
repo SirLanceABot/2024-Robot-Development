@@ -80,23 +80,24 @@ public class LoganTest implements Test
      */
     public void periodic()
     {
+        System.out.println("Pressure: " + robotContainer.intakePositioning.getPressure());
         //MOTORS
-        if(joystick.getRawButton(1)) // A button
-        {
-            // configAButton();
-            intakePositioning.moveUp();
-            System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
-        }
-        else if(joystick.getRawButton(2))
-        {
-            intakePositioning.moveDown();
-            System.out.println("Intake is Down: " + intakePositioning.isIntakeDown());
-        }
-        else if(joystick.getRawButton(3))
-        {
-            intakePositioning.floating();
-            System.out.println("Intake is Down: " + intakePositioning.isIntakeDown());
-        }
+        // if(joystick.getRawButton(1)) // A button
+        // {
+        //     // configAButton();
+        //     intakePositioning.moveUp();
+        //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
+        // }
+        // else if(joystick.getRawButton(2))
+        // {
+        //     intakePositioning.moveDown();
+        //     System.out.println("Intake is Down: " + intakePositioning.isIntakeDown());
+        // }
+        // else if(joystick.getRawButton(3))
+        // {
+        //     intakePositioning.floating();
+        //     System.out.println("Intake is Down: " + intakePositioning.isIntakeDown());
+        // }
         // else if(joystick.getRawButton(2)) // B button
         // {
         //     topEncoderPosition = intake.getTopPosition();
