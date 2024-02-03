@@ -28,7 +28,7 @@ public class BradyTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Candle4237 candle;
-    private final Joystick bradysJoystick;
+    private final Joystick bradysController;
     // private final Proximity proximity;
     // private final Drivetrain drivetrain;
     // private final Gyro4237 gyro;
@@ -46,7 +46,7 @@ public class BradyTest implements Test
         // this.gyro = robotContainer.gyro;
         // this.cameraArray = robotContainer.cameraArray;
         candle = new Candle4237();
-        bradysJoystick = new Joystick(0);
+        bradysController = new Joystick(0);
         // proximity = new Proximity(9);
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -65,23 +65,23 @@ public class BradyTest implements Test
      */
     public void periodic()
     {
-        if(bradysJoystick.getRawButton(1)) //A
+        if(bradysController.getRawButton(1)) //A
         {
             candle.setGreen(false);
         }
-        else if(bradysJoystick.getRawButton(2)) //B
+        else if(bradysController.getRawButton(2)) //B
         {
-            candle.setRed(false);
+            candle.setRedAndBlue();
         }
-        else if(bradysJoystick.getRawButton(3)) //X
+        else if(bradysController.getRawButton(3)) //X
         {
             candle.setBlue(false);
         }
-        else if(bradysJoystick.getRawButton(4)) //Y
+        else if(bradysController.getRawButton(4)) //Y
         {
             candle.setYellow(false);
         }
-        else if(bradysJoystick.getRawButton(6)) //RB
+        else if(bradysController.getRawButton(6)) //RB
         {
             candle.setPurple(false);
         }

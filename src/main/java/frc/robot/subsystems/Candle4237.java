@@ -168,6 +168,12 @@ public class Candle4237 extends Subsystem4237
         candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.5, LED_COUNT, BounceMode.Center, 7));
     }
 
+    public void setRedAndBlue()
+    {
+        candle.setLEDs(255, 0, 0, 255, 0, 4); //Red
+        candle.setLEDs(0, 0, 255, 255, 4, 4); //Blue
+    }
+
     public Command setRedCommand()
     {
         return Commands.runOnce( () -> setRed(false));
