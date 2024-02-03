@@ -71,38 +71,37 @@ public class GretaTest implements Test
         if (joystick.getRawButton(1))
         {
             shuttleSuzie.moveUpward();
-            // pivotPriscilla.moveUp();
-            // flyWheelFiona.shoot(0.35);
-            // indexIzzy.acceptNote();
-            // climbCindy.extend();
-            //intakeIrene.ejectFront();
+            pivotPriscilla.moveUp();
+            flyWheelFiona.shoot(0.35);
+            indexIzzy.acceptNote();
+            climbCindy.extend();
+            intakeIrene.ejectFront();
         }
         else if (joystick.getRawButton(2))
         {
             shuttleSuzie.moveDownward();
-            // pivotPriscilla.moveDown();
-            // indexIzzy.reverse();
-            // climbCindy.retract();
-           // intakeIrene.pickupBack();
+            pivotPriscilla.moveDown();
+            indexIzzy.reverse();
+            climbCindy.retract();
+            intakeIrene.ejectBack();
         }
 
         else
         {
             shuttleSuzie.stop();
-            // pivotPriscilla.stop();
-            // flyWheelFiona.stop();
-            // indexIzzy.stop();
-            // //intakeIrene.stop();
-            // climbCindy.stop();
+            pivotPriscilla.stop();
+            flyWheelFiona.stop();
+            indexIzzy.stop();
+            intakeIrene.stop();
+            climbCindy.stop();
         }
         
         if (joystick.getRawButton(3))
         {
             shuttleSuzie.resetEncoder();
-            // pivotPriscilla.resetEncoder();
-            // flyWheelFiona.resetEncoder();
-            // climbCindy.resetEncoder();
-            // intakeIrene.ejectBack();
+            pivotPriscilla.resetEncoder();
+            flyWheelFiona.resetEncoder();
+            climbCindy.resetEncoder();
         }
 
         robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
