@@ -12,6 +12,8 @@ import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 
 /** Represents a CTRE CANdle that controls the leds on our robot. */
@@ -117,6 +119,19 @@ public class Candle4237 extends Subsystem4237
         }
     }
 
+    public void setYellow(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 185, 0, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(255, 185, 0, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
     
     public void stop()
     {
@@ -151,6 +166,31 @@ public class Candle4237 extends Subsystem4237
         stop();
 
         candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.5, LED_COUNT, BounceMode.Center, 7));
+    }
+
+    public Command setRedCommand()
+    {
+        return Commands.runOnce( () -> setRed(false));
+    }
+
+    public Command setYellowCommand()
+    {
+        return Commands.runOnce( () -> setYellow(false));
+    }
+
+        public Command setGreenCommand()
+    {
+        return Commands.runOnce( () -> setGreen(false));
+    }
+
+        public Command setBlueCommand()
+    {
+        return Commands.runOnce( () -> setBlue(false));
+    }
+
+        public Command setPurpleCommand()
+    {
+        return Commands.runOnce( () -> setPurple(false));
     }
 
     // public void signalPurple()
