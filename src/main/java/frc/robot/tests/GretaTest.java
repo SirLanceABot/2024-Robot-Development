@@ -73,16 +73,16 @@ public class GretaTest implements Test
             shuttleSuzie.moveUpward();
             pivotPriscilla.moveUp();
             flyWheelFiona.shoot(0.35);
-            indexIzzy.acceptNote();
-            climbCindy.extend();
+            indexIzzy.acceptNoteFromShuttle();
+            climbCindy.holdClimb();
             intakeIrene.ejectFront();
         }
         else if (joystick.getRawButton(2))
         {
             shuttleSuzie.moveDownward();
             pivotPriscilla.moveDown();
-            indexIzzy.reverse();
-            climbCindy.retract();
+            indexIzzy.intake();
+            //climbCindy.retract();
             intakeIrene.ejectBack();
         }
 
@@ -99,7 +99,7 @@ public class GretaTest implements Test
         if (joystick.getRawButton(3))
         {
             shuttleSuzie.resetEncoder();
-            pivotPriscilla.resetEncoder();
+            //pivotPriscilla.resetEncoder();
             flyWheelFiona.resetEncoder();
             climbCindy.resetEncoder();
         }
