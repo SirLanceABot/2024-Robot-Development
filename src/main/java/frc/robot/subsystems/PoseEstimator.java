@@ -7,6 +7,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -126,6 +127,20 @@ public class PoseEstimator extends Subsystem4237
         deltaY = Math.abs(deltaY);
         double angleRads = Math.asin(deltaY / deltaX);
         return Math.toDegrees(angleRads);
+    }
+
+    public double getDistanceToBlueSpeaker()
+    {
+        Translation2d speakerTranslation = new Translation2d(blueSpeakerCoords[0], blueSpeakerCoords[1]);
+        Translation2d robotTranslation = periodicData.estimatedPose.getTranslation();
+        return robotTranslation.getDistance(speakerTranslation);
+    }
+
+    public double getDistanceToRedSpeaker()
+    {
+        Translation2d speakerTranslation = new Translation2d(redSpeakerCoords[0], redSpeakerCoords[1]);
+        Translation2d robotTranslation = periodicData.estimatedPose.getTranslation();
+        return robotTranslation.getDistance(speakerTranslation);
     }
 
     public void resetPosition(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions, Pose2d newPose)
