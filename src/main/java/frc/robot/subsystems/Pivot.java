@@ -31,8 +31,8 @@ public class Pivot extends Subsystem4237
 
     private class MyConstants
     {
-        public double kP = 0.0;
-        public double kI = 0.0;
+        public double kP = 17.0;
+        public double kI = 10.0;
         public double kD = 0.0;
         public int slotId = 0;
 
@@ -83,13 +83,12 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         motor.setPosition(0.0);
-        //motor.setupPositionConversionFactor(0.00048828);
         motor.setupRemoteCANCoder(20);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(512.0, false);
-        motor.setupReverseSoftLimit(0.0, false);
+        motor.setupForwardSoftLimit(0.2222, true);
+        motor.setupReverseSoftLimit(0.0278, true);
 
     }
 
@@ -134,12 +133,12 @@ public class Pivot extends Subsystem4237
 
     public void humanIntake()
     {
-        motor.setControl(60 / 360);
+        motor.setControl(60.0 / 360.0);
     }
 
     public void setAngle(double degrees)
     { 
-        motor.setControl(degrees / 360);
+        motor.setControl(degrees / 360.0);
         
         //setAngle using FalconFX encoder
         // if(periodicData.currentAngle > (degrees + 5))

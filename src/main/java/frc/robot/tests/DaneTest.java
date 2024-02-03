@@ -52,7 +52,6 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-    
         if(joystick.getRawButton(2))
         {
             pivot.moveUp();
@@ -67,14 +66,14 @@ public class DaneTest implements Test
             // pivot.setAngle(180.0);
             pivot.setAngle(30.0);
         }
+        else if(joystick.getRawButton(4))
+        {
+            pivot.humanIntake();
+        }
         else
         {
             pivot.stop();
         }
-            
-
-        if(joystick.getRawButton(4))
-            pivot.stop();
 
     }
     
