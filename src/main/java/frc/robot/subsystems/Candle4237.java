@@ -178,17 +178,17 @@ public class Candle4237 extends Subsystem4237
         return Commands.runOnce( () -> setYellow(false));
     }
 
-        public Command setGreenCommand()
+    public Command setGreenCommand()
     {
         return Commands.runOnce( () -> setGreen(false));
     }
 
-        public Command setBlueCommand()
+    public Command setBlueCommand()
     {
         return Commands.runOnce( () -> setBlue(false));
     }
 
-        public Command setPurpleCommand()
+    public Command setPurpleCommand()
     {
         return Commands.runOnce( () -> setPurple(false));
     }
