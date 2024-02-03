@@ -199,7 +199,7 @@ public final class Constants
 
     public static class IntakePositioning
     {
-        public static final int PCM_PORT                   = 0;
+        public static final int PCM_PORT                   = 1;
         public static final int EXTEND_ACTIVE_PORT         = 0;
         public static final int EXTEND_FLOAT_PORT          = 1;
         public static final int RETRACT_ACTIVE_PORT        = 2;

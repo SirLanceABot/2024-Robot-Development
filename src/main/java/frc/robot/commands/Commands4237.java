@@ -95,6 +95,8 @@ public final class Commands4237
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteCommand())
             .andThen(
+                robotContainer.intakePositioning.floatingCommand())
+            .andThen(
                 Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
             .andThen(
                 robotContainer.intake.stopCommand()
