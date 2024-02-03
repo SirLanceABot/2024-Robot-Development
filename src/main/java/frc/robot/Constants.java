@@ -66,7 +66,12 @@ public final class Constants
         System.out.println("The roboRIO comment is >" + comment + "<");
       
         // Use the comment variable to decide what to do
-        if(comment.contains("2023 Robot"))
+        
+        if (comment.contains("2024 Robot"))
+        {
+            robotName4237 = "2024 Robot";
+        }
+        else if(comment.contains("2023 Robot"))
         {
             robotName4237 = "2023 Robot";
             // Constants.DRIVETRAIN_WHEELBASE_METERS =  27.44 * DrivetrainConstants.INCHES_TO_METERS; // 23.5 Front to back
@@ -101,7 +106,12 @@ public final class Constants
 
         static
         {
-            if(robotName4237.equals("2023 Robot"))
+            if(robotName4237.equals("2024 Robot"))
+            {
+                cancoderCanBus = CANIVORE;
+                motorCanBus = ROBORIO;
+            }
+            else if(robotName4237.equals("2023 Robot"))
             {
                 cancoderCanBus = CANIVORE;
                 motorCanBus = CANIVORE;
@@ -262,7 +272,13 @@ public final class Constants
         {
             System.out.println("Loading: " + MethodHandles.lookup().lookupClass().getCanonicalName());
 
-            if(robotName4237.equals("2023 Robot"))
+            if(robotName4237.equals("2024 Robot"))
+            {
+                drivetrainWheelbaseMeters = 23.5 * INCHES_TO_METERS; // Front to back
+                drivetrainTrackwidthMeters = 23.5 * INCHES_TO_METERS; // Side to side
+                driveMotorEncoderResolution = 1; // Neo1650
+            }
+            else if(robotName4237.equals("2023 Robot"))
             {
                 drivetrainWheelbaseMeters = 27.44 * INCHES_TO_METERS; // Front to back
                 drivetrainTrackwidthMeters = 19.50 * INCHES_TO_METERS; // Side to side
@@ -315,7 +331,14 @@ public final class Constants
         {
             System.out.println("Loading: " + MethodHandles.lookup().lookupClass().getCanonicalName());
 
-            if(robotName4237.equals("2023 Robot"))
+            if(robotName4237.equals("2024 Robot"))
+            {
+                frontLeftEncoderOffset  = 0.0;
+                frontRightEncoderOffset = 0.0;
+                backLeftEncoderOffset   = 0.0;
+                backRightEncoderOffset  = 0.0;
+            }
+            else if(robotName4237.equals("2023 Robot"))
             {
                 frontLeftEncoderOffset   = 0.413818;  //-209.883; 
                 frontRightEncoderOffset  = -0.477051; //-171.562;  //-133.330; changed at state 
