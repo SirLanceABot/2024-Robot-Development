@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
@@ -146,7 +147,7 @@ public class Drivetrain extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();;
     
     // *** CLASS CONSTRUCTOR ***
-    public Drivetrain(Gyro4237 gyro, DataLog log, Camera[] cameraArray, boolean usePoseEstimator)//, DriverController driverController)
+    public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean usePoseEstimator)//, DriverController driverController)
     {
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -156,11 +157,8 @@ public class Drivetrain extends Subsystem4237
         // setSafetyEnabled(false);
         
         this.gyro = gyro;
-        this.log = log;
-        if(log == null)
-        {
-            useDataLog = false;
-        }
+
+        log = DataLogManager.getLog();
 
         if(useDataLog)
         {
