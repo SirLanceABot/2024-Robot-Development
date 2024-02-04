@@ -67,7 +67,7 @@ public class Index extends Subsystem4237
     {
         motor.setupCoastMode();
         motor.setupFactoryDefaults();
-        motor.setupInverted(true);
+        motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
     }
@@ -118,19 +118,19 @@ public class Index extends Subsystem4237
         periodicData.motorSpeed = 0.0;
     }
 
-    public Command acceptNoteCommand()
+    public Command acceptNoteFromShuttleCommand()
     {
-        return Commands.runOnce(() -> acceptNoteFromShuttle(), this);
+        return Commands.runEnd(() -> acceptNoteFromShuttle(), () -> stop(), this);
     }
 
-    public Command feedNoteCommand(double speed)
+    public Command feedNoteToFlywheelCommand(double speed)
     {
-        return Commands.runOnce(() -> feedNoteToFlywheel(speed), this);
+        return Commands.runEnd(() -> feedNoteToFlywheel(speed), () -> stop(), this);
     }
 
-    public Command reverseCommand()
+    public Command intakeCommand()
     {
-        return Commands.runOnce(() -> intake(), this);
+        return Commands.runEnd(() -> intake(), () -> stop(), this);
     }
 
     public Command stopCommand()

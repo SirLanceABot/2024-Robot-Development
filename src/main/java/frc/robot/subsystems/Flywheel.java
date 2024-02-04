@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,6 +45,7 @@ public class Flywheel extends Subsystem4237
         // INPUTS
         // private double currentDistance;
         private double currentVelocity;
+        private double RPMSpeed = 0.0;
 
         // OUTPUTS
        
@@ -57,8 +59,10 @@ public class Flywheel extends Subsystem4237
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Flywheel.MOTOR_PORT, Constants.Flywheel.MOTOR_CAN_BUS, "flywheelMotor");
     // private RelativeEncoder encoder;
+    BangBangController controller = new BangBangController();
 
     private ResetState resetState = ResetState.kDone;
+    
 
     // private final double kP = 0.0;
     // private final double kI = 0.0;
@@ -88,7 +92,7 @@ public class Flywheel extends Subsystem4237
     private void configTalonFX()
     {
         motor.setupFactoryDefaults();
-        motor.setupInverted(false);
+        motor.setupInverted(true);
         motor.setupCoastMode();
 
 
@@ -130,22 +134,22 @@ public class Flywheel extends Subsystem4237
 
     public Command shootCommand(double speed)
     {
-        return Commands.runOnce( () -> shoot(speed), this);
+        return Commands.runEnd( () -> shoot(speed), () -> stop(), this);
     }
 
     public Command shootSpeakerCommand()
     {
-        return Commands.runOnce(() -> shoot(0.6), this);
+        return Commands.runEnd(() -> shoot(0.6), () -> stop(), this);
     }
 
     public Command shootAmpCommand()
     {
-        return Commands.runOnce(() -> shoot(0.2), this);
+        return Commands.runEnd(() -> shoot(0.2),  () -> stop(), this);
     }
 
     public Command intakeCommand()
     {
-        return Commands.runOnce( () -> intake(), this);
+        return Commands.runEnd( () -> intake(), () -> stop(), this);
     }
 
     public Command stopCommand()
@@ -153,24 +157,33 @@ public class Flywheel extends Subsystem4237
         return Commands.runOnce( () -> stop(), this);
     }
 
+    public double speedConversionToRPM(double speed)
+    {
+        return speed * 6380;
+    }
+
     @Override
     public void readPeriodicInputs()
     {
         periodicData.currentVelocity = motor.getVelocity();
+        periodicData.RPMSpeed = speedConversionToRPM(periodicData.flywheelSpeed);
 
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        if(periodicData.currentVelocity < periodicData.flywheelSpeed)
-        {
-            motor.set(periodicData.flywheelSpeed);
-        }
-        else if(periodicData.currentVelocity >= periodicData.flywheelSpeed)
-        {
-            motor.set(0.0);
-        }
+        // if(periodicData.currentVelocity < periodicData.flywheelSpeed)
+        // {
+        //     motor.set(periodicData.flywheelSpeed);
+        // }
+        // else if(periodicData.currentVelocity >= periodicData.flywheelSpeed)
+        // {
+        //     motor.set(0.0);
+        // }
+        motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
+
+        // motor.set(periodicData.flywheelSpeed);
     }
 
 

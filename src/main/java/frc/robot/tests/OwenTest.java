@@ -38,9 +38,9 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    // private final Flywheel flywheel;
-    // private final Index index;
-    private final Climb climb;
+    private final Flywheel flywheel;
+    private final Index index;
+    // private final Climb climb;
     // private final Ultrasonic ultrasonic;
     // private final Joystick joystick = new Joystick(0);
     // private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
@@ -56,9 +56,9 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        // flywheel = this.robotContainer.flywheel;
-        // index = this.robotContainer.index;
-        climb = this.robotContainer.climb;
+        flywheel = this.robotContainer.flywheel;
+        index = this.robotContainer.index;
+        // climb = this.robotContainer.climb;
         // ultrasonic = this.robotContainer.ultrasonic;
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -81,7 +81,7 @@ public class OwenTest implements Test
         configLeftTrigger();
         configRightTrigger();
         configBackButton();
-        System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
+        // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
         // {
@@ -140,8 +140,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.whileTrue(climb.extendClimbCommand(0.1));
-            leftTriggerTrigger.onFalse(climb.stopClimbCommand());
+            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.25));
+            leftTriggerTrigger.onFalse(flywheel.stopCommand());
             // leftTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
     }
@@ -154,8 +154,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.whileTrue(climb.retractClimbCommand(-0.1));
-            rightTriggerTrigger.onFalse(climb.stopClimbCommand());
+            rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.25));
+            rightTriggerTrigger.onFalse(index.stopCommand());
             // rightTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
     }
@@ -168,7 +168,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            backButtonTrigger.onTrue(climb.moveToPositionCommand(TargetPosition.kChain));
+            backButtonTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.25).alongWith(flywheel.shootCommand(0.25)));
+            backButtonTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
             // backButtonTrigger.onFalse(climb.stopClimbCommand());
         }
 

@@ -292,6 +292,6 @@ public class OperatorButtonBindings
         .alongWith(
             // robotContainer.pivot.movePivotCommand(pivotAngle),
             robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
-        .andThen(robotContainer.index.feedNoteCommand(0.5));
+        .andThen(robotContainer.index.feedNoteToFlywheelCommand(0.5));
     }
 }

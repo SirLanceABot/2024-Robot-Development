@@ -97,7 +97,7 @@ public final class Commands4237
                 robotContainer.intakePositioning.moveUpCommand(),
                 robotContainer.intake.pickupFrontCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteCommand())
+                robotContainer.index.acceptNoteFromShuttleCommand())
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
@@ -130,7 +130,7 @@ public final class Commands4237
             robotContainer.candle.setYellowCommand()
             .alongWith(
                 robotContainer.flywheel.intakeCommand(),
-                robotContainer.index.reverseCommand(),
+                robotContainer.index.intakeCommand(),
                 robotContainer.shuttle.moveDownwardCommand())
             .andThen(
                 Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
@@ -140,7 +140,7 @@ public final class Commands4237
                     robotContainer.index.stopCommand()),
                     robotContainer.shuttle.stopCommand())
             .andThen(
-                robotContainer.index.acceptNoteCommand())
+                robotContainer.index.acceptNoteFromShuttleCommand())
                 .alongWith(
                     robotContainer.shuttle.moveUpwardCommand())
             .andThen(
@@ -185,7 +185,7 @@ public final class Commands4237
                 robotContainer.pivot.movePivotCommand(pivotAngle),
                 robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
             .andThen(
-                robotContainer.index.feedNoteCommand(0.5))
+                robotContainer.index.feedNoteToFlywheelCommand(0.5))
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
