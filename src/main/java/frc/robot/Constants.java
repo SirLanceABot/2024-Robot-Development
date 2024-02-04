@@ -182,7 +182,7 @@ public final class Constants
 
     public static class Pivot
     {
-        public static final int MOTOR_PORT                          = 20; //Will be changed to 53
+        public static final int MOTOR_PORT                          = 21; //Will be changed to 53
         public static final double MOTOR_SPEED                      = 0.25;
         public static final String MOTOR_CAN_BUS                    = ROBORIO;
 
@@ -191,7 +191,7 @@ public final class Constants
         public static final double kI = 0.0;
         public static final int slotId = 0;
 
-        public static final int CAN_CODER_PORT                      = 21;
+        public static final int CAN_CODER_PORT                      = 20;
         public static final String CAN_CODER_CAN_BUS                = ROBORIO;
 
         public static final int DEFAULT_ANGLE                       = 50; // Default angle for intaking from source and floor

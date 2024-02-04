@@ -146,6 +146,10 @@ public class Pivot extends Subsystem4237
         {
             motor.setControl(degrees / 360.0);
         }
+        else
+        {
+            PIDcontroller.setSetpoint(404.0);
+        }
 
         //setAngle using FalconFX encoder
         // if(periodicData.currentAngle > (degrees + 5))
@@ -207,6 +211,10 @@ public class Pivot extends Subsystem4237
             myConstants.setPoint = PIDcontroller.getSetpoint();
             motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
             setAngle(myConstants.setPoint);
+        }
+        else
+        {
+            stop();
         }
     }
 
