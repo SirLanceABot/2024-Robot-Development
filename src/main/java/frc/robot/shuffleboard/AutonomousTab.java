@@ -44,6 +44,8 @@ public class AutonomousTab
     private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.PickupSecondNote> pickupSecondNoteBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ScoreSecondNote> scoreSecondNoteBox = new SendableChooser<>();
     
 
     private GenericEntry successfulDownload;
@@ -67,6 +69,8 @@ public class AutonomousTab
         createDriveOutOfStartZoneBox();
         createShootDelayBox();
         createDriveDelayBox();
+        createPickupSecondNoteBox();
+        createScoreSecondNoteBox();
     
         
         createSendDataButton();
@@ -106,7 +110,7 @@ public class AutonomousTab
     * <b>Drive Out of Start Zone box</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-     private void createDriveOutOfStartZoneBox()
+    private void createDriveOutOfStartZoneBox()
     {
         //create and name the Box
         SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
@@ -217,7 +221,42 @@ public class AutonomousTab
             .withSize(10, 2);
     }
 
-   
+    private void createPickupSecondNoteBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(pickupSecondNoteBox, "Pickup Second Note?");
+        SendableRegistry.setName(pickupSecondNoteBox, "Pickup Second Note?");
+        
+        //add options to  Box
+        pickupSecondNoteBox.addOption("No", AutonomousTabData.PickupSecondNote.kNo);
+        pickupSecondNoteBox.setDefaultOption("Yes", AutonomousTabData.PickupSecondNote.kYes);
+        
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(pickupSecondNoteBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(12, 3)
+            .withSize(4, 3);
+    }
+
+
+    private void createScoreSecondNoteBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(scoreSecondNoteBox, "Score Second Note?");
+        SendableRegistry.setName(scoreSecondNoteBox, "Score Second Note?");
+        
+        //add options to  Box
+        scoreSecondNoteBox.addOption("No", AutonomousTabData.ScoreSecondNote.kNo);
+        scoreSecondNoteBox.setDefaultOption("Yes", AutonomousTabData.ScoreSecondNote.kYes);
+        
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(scoreSecondNoteBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(12, 5)
+            .withSize(4, 3);
+    }
 
     /**
      * <b>Send Data</b> Button
@@ -277,6 +316,8 @@ public class AutonomousTab
         autonomousTabData.scorePreload = scorePreloadBox.getSelected();
         autonomousTabData.driveDelay = driveDelayBox.getSelected();
         autonomousTabData.shootDelay = shootDelayBox.getSelected();
+        autonomousTabData.pickupSecondNote = pickupSecondNoteBox.getSelected();
+        autonomousTabData.scoreSecondNote = scoreSecondNoteBox.getSelected();
         
     }
 
@@ -348,7 +389,10 @@ public class AutonomousTab
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 ||
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 );
-        
+        boolean isPickupSecondNote = (pickupSecondNoteBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
+        boolean isScoreSecondNote = (scoreSecondNoteBox.getSelected() == AutonomousTabData.ScoreSecondNote.kYes);
+
+
         if(!isContainingPreload && isScorePreload)
         {
             isValid = false;
@@ -357,6 +401,13 @@ public class AutonomousTab
 
         }
 
+        if(!isPickupSecondNote && isScoreSecondNote)
+        {
+            isValid = false;
+            
+            msg += "[ Not Possible ] - Cannot Score Second Note without Picking It up \n";
+
+        }
         // Do NOT remove any of the remaining code
         // Check if the selections are valid
         if(!isValid)
