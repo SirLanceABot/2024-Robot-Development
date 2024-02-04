@@ -134,10 +134,7 @@ public class OperatorButtonBindings
         BooleanSupplier xButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kX);
         Trigger xButtonTrigger = new Trigger(xButton);
 
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
-        {
-
-        }
+        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand());
     }
 
     private void configYButton()

@@ -92,8 +92,9 @@ public final class Commands4237
         if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
         {
             return
-            robotContainer.intakePositioning.moveUpCommand()
+            robotContainer.candle.setYellowCommand()
             .alongWith(
+                robotContainer.intakePositioning.moveUpCommand(),
                 robotContainer.intake.pickupFrontCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteCommand())
@@ -111,6 +112,8 @@ public final class Commands4237
                 robotContainer.shuttle.stopCommand()
                 .alongWith(
                     robotContainer.index.stopCommand()))
+            .andThen(
+                robotContainer.candle.setGreenCommand())
             .withName("Intake From Floor");
         }
         else
@@ -124,8 +127,9 @@ public final class Commands4237
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
         {
             return
-            robotContainer.flywheel.intakeCommand()
+            robotContainer.candle.setYellowCommand()
             .alongWith(
+                robotContainer.flywheel.intakeCommand(),
                 robotContainer.index.reverseCommand(),
                 robotContainer.shuttle.moveDownwardCommand())
             .andThen(
@@ -144,7 +148,9 @@ public final class Commands4237
             .andThen(
                 robotContainer.index.stopCommand()
                 .alongWith(
-                    robotContainer.shuttle. stopCommand()))   
+                    robotContainer.shuttle. stopCommand()))
+            .andThen(
+                robotContainer.candle.setGreenCommand())   
             .withName("Intake From Source");
         }
         else
@@ -153,23 +159,48 @@ public final class Commands4237
         }
     }
 
+    public static Command getFlywheelToSpeedCommand()
+    {
+        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        {
+            return
+            robotContainer.candle.setBlueCommand()
+            .alongWith(
+                robotContainer.flywheel.shootCommand(0.5));
+        }
+        else
+        {
+            return Commands.none();
+        }
+        
+    }
+
     public static Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
     {
-        return 
-        robotContainer.flywheel.shootCommand(0.5)
-        .alongWith(
-            robotContainer.pivot.movePivotCommand(pivotAngle),
-            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
-        .andThen(
-            robotContainer.index.feedNoteCommand(0.5))
-        .andThen(
-            Commands.waitSeconds(1.0))
-        .andThen(
-            robotContainer.flywheel.stopCommand()
+        if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null && robotContainer.candle != null)
+        {
+            return 
+            robotContainer.candle.setPurpleCommand()
             .alongWith(
-                robotContainer.index.stopCommand()))
-        .andThen(
+                robotContainer.pivot.movePivotCommand(pivotAngle),
+                robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+            .andThen(
+                robotContainer.index.feedNoteCommand(0.5))
+            .andThen(
+                Commands.waitSeconds(1.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.index.stopCommand()))
+            .andThen(
                 robotContainer.pivot.movePivotCommand(Constants.Pivot.DEFAULT_ANGLE))
-        .withName("Shoot");
+            .andThen(
+                robotContainer.candle.setRedCommand())
+            .withName("Shoot");
+        }
+        else
+        {
+            return Commands.none();
+        }
     }
 }

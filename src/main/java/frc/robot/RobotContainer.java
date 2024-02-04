@@ -179,6 +179,12 @@ public class RobotContainer
         schedulerLog.logCommandExecute();  // Generates a lot of output
     }
 
+    public void configCompressor()
+    {
+        // compressor.enableAnalog(60.0, 90.0);
+        pneumaticHub.enableCompressorAnalog(60.0, 90.0);
+    }
+
     public void resetRobot()
     {
         if(gyro != null)
