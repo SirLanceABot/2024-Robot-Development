@@ -81,6 +81,7 @@ public class OwenTest implements Test
         configLeftTrigger();
         configRightTrigger();
         configBackButton();
+        System.out.println("Velocity: " + flywheel.getPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
