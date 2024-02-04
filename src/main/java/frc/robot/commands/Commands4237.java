@@ -42,7 +42,7 @@ public final class Commands4237
 
     public static void setRobotContainer(RobotContainer robotContainer)
     {
-        if(robotContainer == null)
+        if(Commands4237.robotContainer == null)
             Commands4237.robotContainer = robotContainer;
     }
 

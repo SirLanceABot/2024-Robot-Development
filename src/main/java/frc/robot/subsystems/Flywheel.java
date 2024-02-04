@@ -62,6 +62,8 @@ public class Flywheel extends Subsystem4237
     BangBangController controller = new BangBangController();
 
     private ResetState resetState = ResetState.kDone;
+
+    // kS is equal to 0.013 in dutycycles(* 12 for volts)
     
 
     // private final double kP = 0.0;

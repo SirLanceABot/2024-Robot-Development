@@ -140,7 +140,7 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.25));
+            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.75));
             leftTriggerTrigger.onFalse(flywheel.stopCommand());
             // leftTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
@@ -154,7 +154,7 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.25));
+            rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0));
             rightTriggerTrigger.onFalse(index.stopCommand());
             // rightTriggerTrigger.onFalse(climb.stopClimbCommand());
         }
@@ -168,7 +168,7 @@ public class OwenTest implements Test
 
         if(true)
         {
-            backButtonTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.25).alongWith(flywheel.shootCommand(0.25)));
+            backButtonTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.75)));
             backButtonTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
             // backButtonTrigger.onFalse(climb.stopClimbCommand());
         }
