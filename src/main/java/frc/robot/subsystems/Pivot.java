@@ -13,6 +13,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +37,6 @@ public class Pivot extends Subsystem4237
         public double kD = 0.0;
         public double setPoint = 0.0;
         public int slotId = 0;
-        private boolean isActive = false;
     }
 
     private class PeriodicData
@@ -45,6 +45,7 @@ public class Pivot extends Subsystem4237
     
         private double currentPosition;
         private double currentAngle;
+        private boolean isActive;
 
         // OUTPUTS
 
@@ -58,11 +59,8 @@ public class Pivot extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();  
     private MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
-
-
-    
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
-
+    
 
 
     public Pivot()
@@ -85,10 +83,12 @@ public class Pivot extends Subsystem4237
         motor.setPosition(0.0);
         motor.setupRemoteCANCoder(20);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+        periodicData.isActive = false;
+        
         
         // Soft Limits
-        motor.setupForwardSoftLimit(0.2222, true);
-        motor.setupReverseSoftLimit(0.0278, true);
+        motor.setupForwardSoftLimit(0.25, true);
+        motor.setupReverseSoftLimit(0.0, true);
 
     }
 
@@ -127,7 +127,7 @@ public class Pivot extends Subsystem4237
 
     public void setArtificialPosition(double degrees)
     {
-        periodicData.currentAngle = degrees;
+        pivotAngle.setPosition(degrees);
     }
 
     public void humanIntake()
@@ -137,6 +137,7 @@ public class Pivot extends Subsystem4237
 
     public void setAngle(double degrees)
     { 
+        //setAngle using CANcoder
         motor.setControl(degrees / 360.0);
         
         //setAngle using FalconFX encoder
@@ -183,25 +184,16 @@ public class Pivot extends Subsystem4237
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
         periodicData.currentAngle = periodicData.currentPosition * 360.0;
 
-        //For PID widget
+        //Displays any changed values on the PID controller widget
         //Go to ShuffleBoard - Sources - NetworkTables to insert widget
         PIDcontroller.setP(PIDcontroller.getP());
         PIDcontroller.setI(PIDcontroller.getI());
         PIDcontroller.setD(PIDcontroller.getD());
-        PIDcontroller.setSetpoint(PIDcontroller.getSetpoint());
+        PIDcontroller.setSetpoint(PIDcontroller.getSetpoint());        
 
-        //For displaying currentAngle
-        SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
-        if(myConstants.isActive)
-            SmartDashboard.putBoolean("Activate PID", true);
-        else
-            SmartDashboard.putBoolean("Activate PID", false);
-
-        //For activating PID values
-        myConstants.isActive = SmartDashboard.getBoolean("Activate PID", false);
-        if(myConstants.isActive)
+        //For activating PID values using toggle switch
+        if(periodicData.isActive)
         {
-            SmartDashboard.setDefaultBoolean("Activate PID", true);
             myConstants.kP = PIDcontroller.getP();
             myConstants.kI = PIDcontroller.getI();
             myConstants.kD = PIDcontroller.getD();
@@ -209,20 +201,19 @@ public class Pivot extends Subsystem4237
             motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
             setAngle(myConstants.setPoint);
         }
-        else
-        {
-            SmartDashboard.setDefaultBoolean("Activate PID", false);
-        }
-
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        // System.out.println("kP = " + PIDcontroller.getP());
-        // System.out.println("currentAngle = " + periodicData.currentAngle); 
-        // System.out.println("currentPosition = " + motor.getPosition());
-        
+        //Returns current state of the toggle switch
+        periodicData.isActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isActive);
+
+        //Toggle switch to use the PID controller widget (use toggle-button under Show as...)
+        SmartDashboard.putBoolean("Activate PID", periodicData.isActive);
+
+        //Displays the pivot's current angle
+        SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
     }
 
     @Override
