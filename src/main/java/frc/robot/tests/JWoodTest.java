@@ -15,6 +15,8 @@ import frc.robot.RobotContainer;
 import frc.robot.controls.Xbox;
 // import frc.robot.motors.CANSparkMax4237;
 // import frc.robot.motors.TalonFX4237;
+import frc.robot.motors.CANSparkMax4237;
+import frc.robot.motors.MotorController4237;
 
 /**
  * Test class for JWood
@@ -43,6 +45,8 @@ public class JWoodTest implements Test
     // private final TalonFX4237 mc;
     private final Joystick joystick;
     // private TalonFX talon;
+    private CANSparkMax4237 motor1 = new CANSparkMax4237(3, "rio", "motor1");
+    private CANSparkMax4237 motor2 = new CANSparkMax4237(5, "rio", "motor2");
 
     private boolean isInverted = false;
     private boolean isBrake = true;
@@ -62,9 +66,10 @@ public class JWoodTest implements Test
         this.robotContainer = robotContainer;
         // mc = new TalonFX4237(1, Constants.ROBORIO, "JWoodTest Motor");
         joystick = new Joystick(0);
-        // configMotor();
+        configMotor(motor1);
+        configMotor(motor2);
 
-        configStartButton();
+        // configStartButton();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -73,55 +78,56 @@ public class JWoodTest implements Test
     // *** CLASS METHODS & INSTANCE METHODS ***
     // Put all class methods and instance methods here
 
-    private void configStartButton()
-    {
-        // Start Button
-        BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
-        Trigger startButtonTrigger = new Trigger(startButton);
-
-        startButtonTrigger.onTrue(intakeFromFloor());
-    }
-
-    public Command intakeFromFloor()
-    {
-        if(robotContainer.intakePositioning != null &&
-            robotContainer.intake != null &&
-            robotContainer.shuttle != null &&
-            robotContainer.index != null &&
-            robotContainer.secondShuttleProximity != null &&
-            robotContainer.indexProximity != null)
-        {
-            return
-            robotContainer.intakePositioning.moveUpCommand()
-            .alongWith(
-                robotContainer.intake.pickupFrontCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.intake.stopCommand()
-                .alongWith(
-                    robotContainer.intakePositioning.moveDownCommand()))
-            .andThen(
-                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.shuttle.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand()))
-            .withName("Intake From Floor");
-        }
-        else
-            return Commands.none();
-    }
-    // public void configMotor()
+    // private void configStartButton()
     // {
-    //     mc.setupFactoryDefaults();
-    //     mc.setupBrakeMode();
-    //     mc.setupInverted(isInverted);
-    //     mc.setupForwardSoftLimit(50, true);
-    //     mc.setupReverseSoftLimit(0, true);
+    //     // Start Button
+    //     BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
+    //     Trigger startButtonTrigger = new Trigger(startButton);
+
+    //     startButtonTrigger.onTrue(intakeFromFloor());
     // }
+
+    // public Command intakeFromFloor()
+    // {
+    //     if(robotContainer.intakePositioning != null &&
+    //         robotContainer.intake != null &&
+    //         robotContainer.shuttle != null &&
+    //         robotContainer.index != null &&
+    //         robotContainer.secondShuttleProximity != null &&
+    //         robotContainer.indexProximity != null)
+    //     {
+    //         return
+    //         robotContainer.intakePositioning.moveUpCommand()
+    //         .alongWith(
+    //             robotContainer.intake.pickupFrontCommand(),
+    //             robotContainer.shuttle.moveUpwardCommand(),
+    //             robotContainer.index.acceptNoteCommand())
+    //         .andThen(
+    //             Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
+    //         .andThen(
+    //             robotContainer.intake.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.intakePositioning.moveDownCommand()))
+    //         .andThen(
+    //             Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+    //         .andThen(
+    //             robotContainer.shuttle.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.index.stopCommand()))
+    //         .withName("Intake From Floor");
+    //     }
+    //     else
+    //         return Commands.none();
+    // }
+
+    public void configMotor(MotorController4237 mc)
+    {
+        mc.setupFactoryDefaults();
+        mc.setupBrakeMode();
+        mc.setupInverted(isInverted);
+        // mc.setupForwardSoftLimit(50, true);
+        // mc.setupReverseSoftLimit(0, true);
+    }
 
     // public void configTalonFX()
     // {
@@ -158,18 +164,23 @@ public class JWoodTest implements Test
     @Override
     public void periodic()
     {
-        // if(joystick.getRawButton(1))
-        // {
-        //     mc.set(0.1);
-        //     System.out.println(mc.getPosition());
-        // }
-        // else if(joystick.getRawButton(2))
-        // {
-        //     mc.set(-0.1);
-        //     System.out.println(mc.getPosition());
-        // }
-        // else
-        //     mc.set(0.0);
+        if(joystick.getRawButton(1))
+        {
+            motor1.set(0.1);
+            motor2.set(0.1);
+            // System.out.println(mc.getPosition());
+        }
+        else if(joystick.getRawButton(2))
+        {
+            motor1.set(-0.1);
+            motor2.set(-0.1);
+            // System.out.println(mc.getPosition());
+        }
+        else
+        {
+            motor1.set(0.0);
+            motor2.set(0.0);
+        }
 
         // if(joystick.getRawButtonPressed(3))
         // {

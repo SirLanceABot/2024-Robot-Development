@@ -8,6 +8,7 @@ import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
@@ -26,12 +27,23 @@ public class CANSparkMax4237 extends MotorController4237
         System.out.println("Loading: " + fullClassName);
     }
 
+    @FunctionalInterface
+    private interface Function
+    {
+        public abstract REVLibError apply();
+    }
+
     private final CANSparkMax motor;
     private final RelativeEncoder encoder;
+    private SparkAbsoluteEncoder sparkAbsoluteEncoder;
     private SparkLimitSwitch forwardLimitSwitch;
     private SparkLimitSwitch reverseLimitSwitch;
     private SparkPIDController pidController;
     private final String motorControllerName;
+
+    private final int SETUP_ATTEMPT_LIMIT = 5;
+    private final boolean printAllSetupMessages = false;
+    private int setupErrorCount = 0;
 
     /**
      * Creates a CANSparkMax on the CANbus with a brushless motor (Neo550 or Neo1650).
@@ -49,9 +61,43 @@ public class CANSparkMax4237 extends MotorController4237
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
         pidController = motor.getPIDController();
+        clearStickyFaults();
+        setupFactoryDefaults();
         this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
+    }
+
+    /** 
+     * Check the motor controller for an error and print a message.
+     * @param message The message to print
+     */
+    private void setup(Function func, String message)
+    {
+        REVLibError errorCode = REVLibError.kOk;
+        int attemptCount = 0;
+        
+        do
+        {
+            errorCode = func.apply();
+            // errorCode = motor.getLastError();
+            if(errorCode != REVLibError.kOk || printAllSetupMessages)
+            {
+                System.out.println(motorControllerName + " : " + message + " " + errorCode);
+            }
+            attemptCount++;
+        }
+        while(errorCode != REVLibError.kOk && attemptCount < SETUP_ATTEMPT_LIMIT);
+
+        setupErrorCount += (attemptCount - 1);
+    }
+
+    /**
+     * Clear all sticky faults.
+     */
+    public void clearStickyFaults()
+    {
+        setup(() -> motor.clearFaults(), "Clear Sticky Faults");
     }
 
     /**
@@ -59,12 +105,12 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupFactoryDefaults()
     {
-        motor.restoreFactoryDefaults(false);
+        setup(() -> motor.restoreFactoryDefaults(false), "Setup Factory Defaults");
     }
 
     public void setupRemoteCANCoder(int remoteSensorId)
     {
-        motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.fromId(remoteSensorId));
+        sparkAbsoluteEncoder = motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.fromId(remoteSensorId));
     }
 
     /**
@@ -78,28 +124,28 @@ public class CANSparkMax4237 extends MotorController4237
         switch(frameNumber)
         {
             case 0:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus0, periodMs), "Setup Periodic Frame Period 0");
                 break;
             case 1:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus1, periodMs), "Setup Periodic Frame Period 1");
                 break;
             case 2:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus2, periodMs), "Setup Periodic Frame Period 2");
                 break;
             case 3:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus3, periodMs), "Setup Periodic Frame Period 3");
                 break;
             case 4:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus4, periodMs), "Setup Periodic Frame Period 4");
                 break;
             case 5:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus5, periodMs), "Setup Periodic Frame Period 5");
                 break;
             case 6:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus6, periodMs), "Setup Periodic Frame Period 6");
                 break;
             case 7:
-                motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus7, periodMs);
+                setup(() -> motor.setPeriodicFramePeriod(CANSparkLowLevel.PeriodicFrame.kStatus7, periodMs), "Setup Periodic Frame Period 7");
                 break;
             default:
                 System.out.println("ERROR - Invalid Status Frame Period");
@@ -121,7 +167,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupBrakeMode()
     {
-        motor.setIdleMode(IdleMode.kBrake);
+        setup(() -> motor.setIdleMode(IdleMode.kBrake), "Setup Brake Mode");
     }
     
     /**
@@ -129,7 +175,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupCoastMode()
     {
-        motor.setIdleMode(IdleMode.kCoast);
+        setup(() -> motor.setIdleMode(IdleMode.kCoast), "Setup Coast Mode");
     }
 
     /**
@@ -139,8 +185,8 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupForwardSoftLimit(double limit, boolean isEnabled)
     {
-        motor.setSoftLimit(SoftLimitDirection.kForward, (float) limit);
-        motor.enableSoftLimit(SoftLimitDirection.kForward, isEnabled);
+        setup(() -> motor.setSoftLimit(SoftLimitDirection.kForward, (float) limit), "Setup Forward Soft Limit");
+        setup(() -> motor.enableSoftLimit(SoftLimitDirection.kForward, isEnabled), "Enable Forward Soft Limit");
     }
 
     /**
@@ -150,8 +196,8 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupReverseSoftLimit(double limit, boolean isEnabled)
     {
-        motor.setSoftLimit(SoftLimitDirection.kReverse, (float) limit);
-        motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled);
+        setup(() -> motor.setSoftLimit(SoftLimitDirection.kReverse, (float) limit), "Setup Reverse Soft Limit");
+        setup(() -> motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled), "Enable Reverse Soft Limit");
     }
 
     /**
@@ -164,7 +210,7 @@ public class CANSparkMax4237 extends MotorController4237
             forwardLimitSwitch = motor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
         else
             forwardLimitSwitch = motor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
-        forwardLimitSwitch.enableLimitSwitch(isEnabled);
+        setup(() -> forwardLimitSwitch.enableLimitSwitch(isEnabled), "Setup Forward Hard Limit");
     }
 
     /**
@@ -177,7 +223,7 @@ public class CANSparkMax4237 extends MotorController4237
             reverseLimitSwitch = motor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
         else
             reverseLimitSwitch = motor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen);
-        reverseLimitSwitch.enableLimitSwitch(isEnabled);
+        setup(() -> reverseLimitSwitch.enableLimitSwitch(isEnabled), "Setup Reverse Hard Limit");
     }
 
     /**
@@ -188,8 +234,8 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupCurrentLimit(double currentLimit, double currentThreshold, double timeThreshold)
     {
-        motor.setSmartCurrentLimit((int) currentLimit);
-        motor.setSecondaryCurrentLimit(currentThreshold, (int) (timeThreshold / 0.00005) );
+        setup(() -> motor.setSmartCurrentLimit((int) currentLimit), "Setup Smart Current Limit");
+        setup(() -> motor.setSecondaryCurrentLimit(currentThreshold, (int) (timeThreshold / 0.00005) ), "Setup Secondary Current Limit");
     }
 
     /**
@@ -198,7 +244,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupOpenLoopRampRate(double rampRateSeconds)
     {
-        motor.setOpenLoopRampRate(rampRateSeconds);
+        setup(() -> motor.setOpenLoopRampRate(rampRateSeconds), "Setup Open Loop Ramp Rate");
     }
 
     /**
@@ -207,7 +253,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupVoltageCompensation(double voltageCompensation)
     {
-        motor.enableVoltageCompensation(voltageCompensation);
+        setup(() -> motor.enableVoltageCompensation(voltageCompensation), "Setup Voltage Compensation");
     }
 
     /**
@@ -216,7 +262,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupPositionConversionFactor(double factor)
     {
-        encoder.setPositionConversionFactor(factor);
+        setup(() -> encoder.setPositionConversionFactor(factor), "Setup Position Conversion Factor");
     }
 
     /**
@@ -225,7 +271,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupVelocityConversionFactor(double factor)
     {
-        encoder.setVelocityConversionFactor(factor);
+        setup(() -> encoder.setVelocityConversionFactor(factor), "Setup Velocity Conversion Factor");
     }
 
     /**
@@ -239,9 +285,9 @@ public class CANSparkMax4237 extends MotorController4237
         if(slotId >= 0 && slotId <= 3)
         {
             // set PID coefficients
-            pidController.setP(kP, slotId);
-            pidController.setI(kI, slotId);
-            pidController.setD(kD, slotId);            
+            setup(() -> pidController.setP(kP, slotId), "Setup PIDController(kP)");
+            setup(() -> pidController.setI(kI, slotId), "Setup PIDController(kI)");
+            setup(() -> pidController.setD(kD, slotId), "Setup PIDController(kD)");
         }
 
         // pidController.setIZone(kIz);
@@ -257,7 +303,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupFollower(int leaderId, boolean isInverted)
     {
-        motor.follow(CANSparkBase.ExternalFollower.kFollowerSpark, leaderId, isInverted);
+        setup(() -> motor.follow(CANSparkBase.ExternalFollower.kFollowerSpark, leaderId, isInverted), "Setup Follower");
     }
 
     /**
@@ -267,7 +313,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setControl(double position)
     {
-        pidController.setReference(position, CANSparkMax.ControlType.kPosition);
+        pidController.setReference(position, CANSparkBase.ControlType.kPosition);
     }
 
     /**
@@ -304,7 +350,6 @@ public class CANSparkMax4237 extends MotorController4237
     public void stopMotor()
     {
         set(0.0);
-        feed();
     }
 
     @Override

@@ -44,6 +44,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
 
     // *** ABSTRACT METHODS ***
     // These methods must be defined in any subclass that extends this class
+    public abstract void clearStickyFaults();
     public abstract void setupFactoryDefaults();
     public abstract void setupRemoteCANCoder(int remoteSensorId);
     public abstract void setupPeriodicFramePeriod(int frameNumber, int periodMs);
