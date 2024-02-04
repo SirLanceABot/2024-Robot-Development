@@ -44,8 +44,9 @@ public class Pivot extends Subsystem4237
         // INPUTS
     
         private double currentPosition;
-        private double currentAngle;
+        // private double currentAngle;
         private boolean isActive;
+        private boolean isPIDSet;
 
         // OUTPUTS
 
@@ -111,11 +112,13 @@ public class Pivot extends Subsystem4237
 
     public double getAngle()
     {
-        return periodicData.currentAngle;
+        var currentAngle = periodicData.currentPosition * 360.0;
+        return currentAngle;
     }
 
     public double getPosition()
     {
+        
         return periodicData.currentPosition;
     }
 
@@ -193,23 +196,28 @@ public class Pivot extends Subsystem4237
 
         //Using CANcoder
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
-        periodicData.currentAngle = periodicData.currentPosition * 360.0;
+        
+        // Decides if the PID controller should be setup again
+        if(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint())
+        {
+            periodicData.isPIDSet = false;
+        }
+        else
+        {
+            periodicData.isPIDSet = true;
+        }
 
-        //Displays any changed values on the PID controller widget
-        //Go to ShuffleBoard - Sources - NetworkTables to insert widget
-        PIDcontroller.setP(PIDcontroller.getP());
-        PIDcontroller.setI(PIDcontroller.getI());
-        PIDcontroller.setD(PIDcontroller.getD());
-        PIDcontroller.setSetpoint(PIDcontroller.getSetpoint());        
+        //Changes the PID values to the values displayed on the PID widget
+        myConstants.kP = PIDcontroller.getP();
+        myConstants.kI = PIDcontroller.getI();
+        myConstants.kD = PIDcontroller.getD();
+        myConstants.setPoint = PIDcontroller.getSetpoint();
 
         //For activating PID values using toggle switch
         if(periodicData.isActive)
         {
-            myConstants.kP = PIDcontroller.getP();
-            myConstants.kI = PIDcontroller.getI();
-            myConstants.kD = PIDcontroller.getD();
-            myConstants.setPoint = PIDcontroller.getSetpoint();
-            motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+            if(periodicData.isPIDSet == false)
+                motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
             setAngle(myConstants.setPoint);
         }
         else
@@ -221,6 +229,13 @@ public class Pivot extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
+        //Displays any changed values on the PID controller widget
+        //Go to ShuffleBoard - Sources - NetworkTables to insert widget
+        PIDcontroller.setP(myConstants.kP);
+        PIDcontroller.setI(myConstants.kI);
+        PIDcontroller.setD(myConstants.kD);
+        PIDcontroller.setSetpoint(myConstants.setPoint);   
+
         //Returns current state of the toggle switch
         periodicData.isActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isActive);
 
@@ -228,7 +243,7 @@ public class Pivot extends Subsystem4237
         SmartDashboard.putBoolean("Activate PID", periodicData.isActive);
 
         //Displays the pivot's current angle
-        SmartDashboard.putNumber("currentAngle", periodicData.currentAngle);
+        SmartDashboard.putNumber("currentAngle", getAngle());
     }
 
     @Override
