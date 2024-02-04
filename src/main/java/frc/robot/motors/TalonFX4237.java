@@ -22,7 +22,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
 import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 
 
 public class TalonFX4237 extends MotorController4237
@@ -47,8 +49,9 @@ public class TalonFX4237 extends MotorController4237
     private final PositionVoltage positionVoltage;
     private final String motorControllerName;
     
+    private final StringLogEntry motorLogEntry;
     private final int SETUP_ATTEMPT_LIMIT = 5;
-    private final boolean printAllSetupMessages = false;
+    private final boolean printAllSetupMessages = true;
     private int setupErrorCount = 0;
 
     /**
@@ -64,6 +67,7 @@ public class TalonFX4237 extends MotorController4237
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + motorControllerName);
 
+        motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
         motor = new TalonFX(deviceId, canbus);
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
         motor.getConfigurator().refresh(feedbackConfigs);
@@ -71,7 +75,7 @@ public class TalonFX4237 extends MotorController4237
         motor.getConfigurator().apply(feedbackConfigs);
         positionVoltage = new PositionVoltage(0.0);
         clearStickyFaults();
-        setupFactoryDefaults();        
+        setupFactoryDefaults();
         this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
@@ -91,7 +95,9 @@ public class TalonFX4237 extends MotorController4237
             errorCode = func.apply();
             if(errorCode != StatusCode.OK || printAllSetupMessages)
             {
-                System.out.println(motorControllerName + " : " + message + " " + errorCode);
+                // System.out.println(motorControllerName + " : " + message + " " + errorCode);
+                DriverStation.reportWarning(motorControllerName + " : " + message + " " + errorCode, true);
+                motorLogEntry.append(motorControllerName + " : " + message + " " + errorCode);
             }
             attemptCount++;
         }

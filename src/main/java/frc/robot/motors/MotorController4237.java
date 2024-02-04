@@ -2,7 +2,9 @@ package frc.robot.motors;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
@@ -40,6 +42,11 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
+
+    
+    // *** ABSTRACT CLASS VARAIBLES ***
+    // These varaibles are class variables (static)
+    public final static DataLog log = DataLogManager.getLog();
 
 
     // *** ABSTRACT METHODS ***

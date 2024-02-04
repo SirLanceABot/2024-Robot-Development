@@ -13,7 +13,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class CANSparkMax4237 extends MotorController4237
 {
@@ -35,14 +37,15 @@ public class CANSparkMax4237 extends MotorController4237
 
     private final CANSparkMax motor;
     private final RelativeEncoder encoder;
-    private SparkAbsoluteEncoder sparkAbsoluteEncoder;
-    private SparkLimitSwitch forwardLimitSwitch;
-    private SparkLimitSwitch reverseLimitSwitch;
-    private SparkPIDController pidController;
+    private SparkAbsoluteEncoder sparkAbsoluteEncoder = null;
+    private SparkLimitSwitch forwardLimitSwitch = null;
+    private SparkLimitSwitch reverseLimitSwitch = null;
+    private SparkPIDController pidController = null;
     private final String motorControllerName;
 
+    private final StringLogEntry motorLogEntry;
     private final int SETUP_ATTEMPT_LIMIT = 5;
-    private final boolean printAllSetupMessages = false;
+    private final boolean printAllSetupMessages = true;
     private int setupErrorCount = 0;
 
     /**
@@ -58,11 +61,13 @@ public class CANSparkMax4237 extends MotorController4237
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + motorControllerName);
         
+        motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
         pidController = motor.getPIDController();
         clearStickyFaults();
         setupFactoryDefaults();
+        
         this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
@@ -83,7 +88,9 @@ public class CANSparkMax4237 extends MotorController4237
             // errorCode = motor.getLastError();
             if(errorCode != REVLibError.kOk || printAllSetupMessages)
             {
-                System.out.println(motorControllerName + " : " + message + " " + errorCode);
+                // System.out.println(motorControllerName + " : " + message + " " + errorCode);
+                DriverStation.reportWarning(motorControllerName + " : " + message + " " + errorCode, true);
+                motorLogEntry.append(motorControllerName + " : " + message + " " + errorCode);
             }
             attemptCount++;
         }
