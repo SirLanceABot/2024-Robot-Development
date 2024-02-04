@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
@@ -59,6 +60,11 @@ public class CANSparkMax4237 extends MotorController4237
     public void setupFactoryDefaults()
     {
         motor.restoreFactoryDefaults(false);
+    }
+
+    public void setupRemoteCANCoder(int remoteSensorId)
+    {
+        motor.getAbsoluteEncoder(SparkAbsoluteEncoder.Type.fromId(remoteSensorId));
     }
 
     /**
@@ -242,10 +248,26 @@ public class CANSparkMax4237 extends MotorController4237
         // pidController.setFF(kFF);
         // pidController.setOutputRange(kMinOutput, kMaxOutput);
     }
-
+    
+    /**
+     * Sets a motor to be a follower of another motor.
+     * Setting the power of the leader, also sets the power of the follower.
+     * @param leaderId The id of the leader motor on the can bus
+     * @param isInverted True to invert the motor so it runs opposite of the leader
+     */
     public void setupFollower(int leaderId, boolean isInverted)
     {
         motor.follow(CANSparkBase.ExternalFollower.kFollowerSpark, leaderId, isInverted);
+    }
+
+    /**
+     * Move the motor to a position using PID control.
+     * Units are rotations by default, but can be changed using the conversion factor.
+     * @param position The position to move the motor to
+     */
+    public void setControl(double position)
+    {
+        pidController.setReference(position, CANSparkMax.ControlType.kPosition);
     }
 
     /**

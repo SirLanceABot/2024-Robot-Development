@@ -58,8 +58,8 @@ public class TalonFX4237 extends MotorController4237
         motor.getConfigurator().refresh(feedbackConfigs);
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         motor.getConfigurator().apply(feedbackConfigs);
-        this.motorControllerName = motorControllerName;
         positionVoltage = new PositionVoltage(0.0);
+        this.motorControllerName = motorControllerName;
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
@@ -198,9 +198,12 @@ public class TalonFX4237 extends MotorController4237
         CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
         motor.getConfigurator().refresh(currentLimitsConfigs);
 
-        currentLimitsConfigs.withSupplyCurrentLimit(currentLimit);
-        currentLimitsConfigs.withSupplyCurrentThreshold(currentThreshold);
-        currentLimitsConfigs.withSupplyTimeThreshold(timeThreshold);
+        // currentLimitsConfigs.withSupplyCurrentLimit(currentLimit);
+        currentLimitsConfigs.SupplyCurrentLimit = currentLimit;
+        // currentLimitsConfigs.withSupplyCurrentThreshold(currentThreshold);
+        currentLimitsConfigs.SupplyCurrentThreshold = currentThreshold;
+        // currentLimitsConfigs.withSupplyTimeThreshold(timeThreshold);
+        currentLimitsConfigs.SupplyTimeThreshold = timeThreshold;
         motor.getConfigurator().apply(currentLimitsConfigs);
     }
 
@@ -277,9 +280,25 @@ public class TalonFX4237 extends MotorController4237
         }
     }
 
+    /**
+     * Sets a motor to be a follower of another motor.
+     * Setting the power of the leader, also sets the power of the follower.
+     * @param leaderId The id of the leader motor on the can bus
+     * @param isInverted True to invert the motor so it runs opposite of the leader
+     */
     public void setupFollower(int leaderId, boolean isInverted)
     {
         motor.setControl(new Follower(leaderId, isInverted));
+    }
+
+    /**
+     * Move the motor to a position using PID control.
+     * Units are rotations by default, but can be changed using the conversion factor.
+     * @param position The position to move the motor to
+     */
+    public void setControl(double position)
+    {
+        motor.setControl(positionVoltage.withPosition(position));
     }
 
     /**
@@ -290,11 +309,6 @@ public class TalonFX4237 extends MotorController4237
     public void setPosition(double position)
     {
         motor.setPosition(position);
-    }
-
-    public void setControl(double position)
-    {
-        motor.setControl(positionVoltage.withPosition(position));
     }
 
     /**

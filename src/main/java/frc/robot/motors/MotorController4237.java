@@ -45,6 +45,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     // *** ABSTRACT METHODS ***
     // These methods must be defined in any subclass that extends this class
     public abstract void setupFactoryDefaults();
+    public abstract void setupRemoteCANCoder(int remoteSensorId);
     public abstract void setupPeriodicFramePeriod(int frameNumber, int periodMs);
     public abstract void setupInverted(boolean isInverted);
     public abstract void setupBrakeMode();
@@ -61,6 +62,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setupPIDController(int slotId, double kP, double kI, double kD);
     public abstract void setupFollower(int leaderId, boolean isInverted);
 
+    public abstract void setControl(double position);
     public abstract void setPosition(double position);
     public abstract double getPosition();
     public abstract double getVelocity();
