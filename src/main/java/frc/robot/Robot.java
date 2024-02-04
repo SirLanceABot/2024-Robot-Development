@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.lang.invoke.MethodHandles;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -66,6 +67,8 @@ public class Robot extends TimedRobot
     public void robotInit()
     {
         System.out.println("Robot Init");
+
+        DataLogManager.start();
     }
 
     /**

@@ -77,8 +77,6 @@ public class RobotContainer
     private boolean useBindings             = false;
     private boolean useDriverController     = false;
     private boolean useOperatorController   = false;
-    
-    private boolean useDataLog              = false;
 
 
     public final boolean fullRobot;
@@ -110,8 +108,7 @@ public class RobotContainer
     public final OperatorButtonBindings operatorButtonBindings;
     public final OperatorController operatorController;
     
-    private DataLog log = null;
-    private SchedulerLog schedulerLog = null;
+    private CommandSchedulerLog schedulerLog = null;
 
 
     /** 
@@ -124,7 +121,7 @@ public class RobotContainer
         fullRobot               = (useFullRobot);
 
         gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                            : null;	
-        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, log, cameraArray, usePoseEstimator)  : null;
+        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, usePoseEstimator)  : null;
 
         ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                           : null;
         candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
@@ -159,8 +156,7 @@ public class RobotContainer
         operatorController      = (useFullRobot || useOperatorController)   ? new OperatorController(Constants.Controller.OPERATOR)     : null;
         operatorButtonBindings  = (useFullRobot || useBindings)             ? new OperatorButtonBindings(this)                          : null;
 
-        if(useFullRobot || useDataLog)
-            configLog();
+        configLog();
     }
 
     public void configLog()
@@ -169,10 +165,7 @@ public class RobotContainer
         boolean useDataLog = true;
         boolean useShuffleBoardLog = true;
 
-        DataLogManager.start();
-        log = DataLogManager.getLog();
-
-        schedulerLog = new SchedulerLog(useConsole, useDataLog, useShuffleBoardLog, log);
+        schedulerLog = new CommandSchedulerLog(useConsole, useDataLog, useShuffleBoardLog);
         schedulerLog.logCommandInitialize();
         schedulerLog.logCommandInterrupt();
         schedulerLog.logCommandFinish();
