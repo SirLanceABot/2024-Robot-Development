@@ -4,11 +4,12 @@ import java.lang.invoke.MethodHandles;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-public class SchedulerLog 
+public class CommandSchedulerLog 
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -20,7 +21,8 @@ public class SchedulerLog
         System.out.println("Loading: " + fullClassName);
     }
 
-    private StringLogEntry commandLogEntry = null;
+    private final DataLog log;
+    private final StringLogEntry commandLogEntry;
     private boolean useConsole = false;
     private boolean useDataLog = false;
     private boolean useShuffleBoardLog = false;
@@ -33,14 +35,14 @@ public class SchedulerLog
      * Convert recording to csv and they show nicely in Excel.
      * If using data log tool, the recording is automatic so run that tool to retrieve and convert the log.
      */ 
-    SchedulerLog(boolean useConsole, boolean useDataLog, boolean useShuffleBoardLog, DataLog log)
+    CommandSchedulerLog(boolean useConsole, boolean useDataLog, boolean useShuffleBoardLog)
     {
         this.useConsole = useConsole;
         this.useDataLog = useDataLog;
         this.useShuffleBoardLog = useShuffleBoardLog;
 
-        if(useDataLog)
-            commandLogEntry = new StringLogEntry(log, "/Commands/events", "Event");
+        log = DataLogManager.getLog();
+        commandLogEntry = new StringLogEntry(log, "/Commands/events", "Event");
     }
 
     /**
