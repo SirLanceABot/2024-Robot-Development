@@ -55,7 +55,7 @@ public class Pivot extends Subsystem4237
     
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-    private final CANcoder pivotAngle = new CANcoder(20, Constants.Pivot.MOTOR_CAN_BUS);
+    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CAN_CODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
     private PeriodicData periodicData = new PeriodicData();  
     private MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
@@ -83,7 +83,6 @@ public class Pivot extends Subsystem4237
         motor.setPosition(0.0);
         motor.setupRemoteCANCoder(20);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
-        periodicData.isActive = false;
         
         
         // Soft Limits
@@ -132,14 +131,22 @@ public class Pivot extends Subsystem4237
 
     public void humanIntake()
     {
-        motor.setControl(60.0 / 360.0);
+        motor.setControl(Constants.Pivot.DEFAULT_ANGLE / 360.0);
+    }
+
+    public void subwooferShotAngle()
+    {
+        motor.setControl(Constants.Pivot.SHOOT_FROM_SUBWOOFER_ANGLE / 360.0);
     }
 
     public void setAngle(double degrees)
     { 
         //setAngle using CANcoder
-        motor.setControl(degrees / 360.0);
-        
+        if(degrees >= 0.0 && degrees <= 90.0)
+        {
+            motor.setControl(degrees / 360.0);
+        }
+
         //setAngle using FalconFX encoder
         // if(periodicData.currentAngle > (degrees + 5))
         // {

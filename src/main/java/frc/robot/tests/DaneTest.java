@@ -4,8 +4,10 @@ import frc.robot.subsystems.Pivot;
 import java.lang.invoke.MethodHandles;
 
 import frc.robot.RobotContainer;
+import frc.robot.controls.Xbox;
 //import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DaneTest implements Test
@@ -52,29 +54,14 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-        if(joystick.getRawButton(2))
+        if(joystick.getRawButton(1))
         {
-            pivot.moveUp();
-
-        }
-        else if(joystick.getRawButton(3))
-        {
-            pivot.moveDown();
-        }
-        else if(joystick.getRawButton(1))
-        {
-            // pivot.setAngle(180.0);
             pivot.setAngle(30.0);
         }
         else if(joystick.getRawButton(4))
         {
             pivot.humanIntake();
         }
-        else
-        {
-            pivot.stop();
-        }
-
     }
     
     /**
