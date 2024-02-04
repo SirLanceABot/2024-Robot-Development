@@ -124,7 +124,7 @@ public final class Commands4237
 
     public static Command intakeFromSource()
     {
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.shuttle != null && robotContainer.indexProximity != null && robotContainer.secondShuttleProximity != null)
         {
             return
             robotContainer.candle.setYellowCommand()
@@ -137,12 +137,12 @@ public final class Commands4237
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
-                    robotContainer.index.stopCommand()),
-                    robotContainer.shuttle.stopCommand())
+                    robotContainer.index.stopCommand(),
+                    robotContainer.shuttle.stopCommand()))
             .andThen(
-                robotContainer.index.acceptNoteFromShuttleCommand())
+                robotContainer.index.acceptNoteFromShuttleCommand()
                 .alongWith(
-                    robotContainer.shuttle.moveUpwardCommand())
+                    robotContainer.shuttle.moveUpwardCommand()))
             .andThen(
                 Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
             .andThen(

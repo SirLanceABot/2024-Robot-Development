@@ -120,7 +120,7 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteFromShuttleCommand()
     {
-        return Commands.runEnd(() -> acceptNoteFromShuttle(), () -> stop(), this);
+        return Commands.runOnce(() -> acceptNoteFromShuttle(), this);
     }
 
     public Command feedNoteToFlywheelCommand(double speed)
@@ -130,7 +130,7 @@ public class Index extends Subsystem4237
 
     public Command intakeCommand()
     {
-        return Commands.runEnd(() -> intake(), () -> stop(), this);
+        return Commands.runOnce(() -> intake(), this);
     }
 
     public Command stopCommand()

@@ -110,10 +110,7 @@ public class OperatorButtonBindings
         BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null)
-        {
-            // aButtonTrigger.onTrue(shootCommand(30, () -> 30));
-        }
+        // aButtonTrigger.onTrue(shootCommand(robotContainer.pivot.getAngle(), () -> 0));
     }
 
     private void configBButton()

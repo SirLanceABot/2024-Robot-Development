@@ -132,7 +132,7 @@ public class Flywheel extends Subsystem4237
     public void stop()
     {
         periodicData.flywheelSpeed = 0.0;
-    }
+            }
 
     public Command shootCommand(double speed)
     {
@@ -151,7 +151,7 @@ public class Flywheel extends Subsystem4237
 
     public Command intakeCommand()
     {
-        return Commands.runEnd( () -> intake(), () -> stop(), this);
+        return Commands.runOnce( () -> intake(), this);
     }
 
     public Command stopCommand()
@@ -183,7 +183,17 @@ public class Flywheel extends Subsystem4237
         // {
         //     motor.set(0.0);
         // }
-        motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
+
+        // Done to fix the bang bang controller
+        if(periodicData.RPMSpeed < 0.0)
+        {
+            motor.set(periodicData.flywheelSpeed);
+        }
+        else
+        {
+            motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
+        }
+        
 
         // motor.set(periodicData.flywheelSpeed);
     }
