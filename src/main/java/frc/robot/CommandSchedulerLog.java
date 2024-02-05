@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.StringLogEntry;
@@ -21,6 +22,7 @@ public class CommandSchedulerLog
         System.out.println("Loading: " + fullClassName);
     }
 
+    private final ArrayList<String> currentlyRunningCommands = new ArrayList<String>();
     private final DataLog log;
     private final StringLogEntry commandLogEntry;
     private boolean useConsole = false;
@@ -50,18 +52,17 @@ public class CommandSchedulerLog
      */
     public void logCommandInitialize()
     {
-        CommandScheduler.getInstance()
-            .onCommandInitialize(
-                command ->
-                {
-                    if(useConsole)
-                        System.out.println("Command initialized " + command.getName());
-                    if(useDataLog)
-                        commandLogEntry.append(command.getClass() + " " + command.getName() + " initialized");  
-                    if(useShuffleBoardLog)
-                        Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal);
-                }
-            );
+        CommandScheduler.getInstance().onCommandInitialize(
+            (command) ->
+            {
+                if(useConsole)
+                    System.out.println("Command initialized " + command.getName());
+                if(useDataLog)
+                    commandLogEntry.append(command.getClass() + " " + command.getName() + " initialized");  
+                if(useShuffleBoardLog)
+                    Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal);
+            }
+        );
     }
 
     /**
@@ -69,18 +70,18 @@ public class CommandSchedulerLog
      */
     public void logCommandInterrupt()
     {
-        CommandScheduler.getInstance()
-            .onCommandInterrupt(
-                command ->
-                {
-                    if(useConsole)
-                        System.out.println("Command interrupted " + command.getName());
-                    if(useDataLog) 
-                        commandLogEntry.append(command.getClass() + " " + command.getName() + " interrupted");
-                    if(useShuffleBoardLog)
-                        Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal);
-                }
-            );
+        CommandScheduler.getInstance().onCommandInterrupt(
+            (command) ->
+            {
+                currentlyRunningCommands.remove(command.getName());
+                if(useConsole)
+                    System.out.println("Command interrupted " + command.getName());
+                if(useDataLog) 
+                    commandLogEntry.append(command.getClass() + " " + command.getName() + " interrupted");
+                if(useShuffleBoardLog)
+                    Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal);
+            }
+        );
     }
 
     /**
@@ -88,18 +89,18 @@ public class CommandSchedulerLog
      */
     public void logCommandFinish()
     {
-        CommandScheduler.getInstance()
-            .onCommandFinish(
-                command ->
-                {
-                    if(useConsole)
-                        System.out.println("Command finished " + command.getName());
-                    if(useDataLog) 
-                        commandLogEntry.append(command.getClass() + " " + command.getName() + " finished");
-                    if(useShuffleBoardLog)
-                        Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal);
-                }
-            );
+        CommandScheduler.getInstance().onCommandFinish(
+            (command) ->
+            {
+                currentlyRunningCommands.remove(command.getName());
+                if(useConsole)
+                    System.out.println("Command finished " + command.getName());
+                if(useDataLog) 
+                    commandLogEntry.append(command.getClass() + " " + command.getName() + " finished");
+                if(useShuffleBoardLog)
+                    Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal);
+            }
+        );
     }
 
     /**
@@ -107,10 +108,12 @@ public class CommandSchedulerLog
      */
     public void logCommandExecute()
     {
-        CommandScheduler.getInstance()
-            .onCommandExecute(
-                command ->
+        CommandScheduler.getInstance().onCommandExecute(
+            (command) ->
+            {
+                if(currentlyRunningCommands.indexOf(command.getClass() + "/" + command.getName()) < 0)
                 {
+                    currentlyRunningCommands.add(command.getClass() + "/" + command.getName());
                     if(useConsole)
                         System.out.println("Command executed " + command.getName());
                     if(useDataLog) 
@@ -118,6 +121,7 @@ public class CommandSchedulerLog
                     if(useShuffleBoardLog)
                         Shuffleboard.addEventMarker("Command executed", command.getName(), EventImportance.kNormal);
                 }
-            );
+            }
+        );
     }
 }
