@@ -1,7 +1,7 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.StringLogEntry;
@@ -22,7 +22,7 @@ public class CommandSchedulerLog
         System.out.println("Loading: " + fullClassName);
     }
 
-    private final ArrayList<String> currentlyRunningCommands = new ArrayList<String>();
+    private final HashMap<String, Integer> currentCommands = new HashMap<String, Integer>();
     private final DataLog log;
     private final StringLogEntry commandLogEntry;
     private boolean useConsole = false;
@@ -55,12 +55,14 @@ public class CommandSchedulerLog
         CommandScheduler.getInstance().onCommandInitialize(
             (command) ->
             {
+                String key = command.getClass().getSimpleName() + "/" + command.getName();
+
                 if(useConsole)
-                    System.out.println("Command initialized " + command.getName());
+                    System.out.println("Command initialized " + key);
                 if(useDataLog)
-                    commandLogEntry.append(command.getClass() + " " + command.getName() + " initialized");  
+                    commandLogEntry.append("Command initialized " + key);  
                 if(useShuffleBoardLog)
-                    Shuffleboard.addEventMarker("Command initialized", command.getName(), EventImportance.kNormal);
+                    Shuffleboard.addEventMarker("Command initialized", key, EventImportance.kNormal);
             }
         );
     }
@@ -73,13 +75,16 @@ public class CommandSchedulerLog
         CommandScheduler.getInstance().onCommandInterrupt(
             (command) ->
             {
-                currentlyRunningCommands.remove(command.getName());
+                String key = command.getClass().getSimpleName() + "/" + command.getName();
+
                 if(useConsole)
-                    System.out.println("Command interrupted " + command.getName());
+                    System.out.println("Command interrupted " + key);
                 if(useDataLog) 
-                    commandLogEntry.append(command.getClass() + " " + command.getName() + " interrupted");
+                    commandLogEntry.append("Command interrupted " + key);
                 if(useShuffleBoardLog)
-                    Shuffleboard.addEventMarker("Command interrupted", command.getName(), EventImportance.kNormal);
+                    Shuffleboard.addEventMarker("Command interrupted", key, EventImportance.kNormal);
+
+                currentCommands.remove(key);
             }
         );
     }
@@ -92,13 +97,16 @@ public class CommandSchedulerLog
         CommandScheduler.getInstance().onCommandFinish(
             (command) ->
             {
-                currentlyRunningCommands.remove(command.getName());
+                String key = command.getClass().getSimpleName() + "/" + command.getName();
+
                 if(useConsole)
-                    System.out.println("Command finished " + command.getName());
+                    System.out.println("Command finished " + key);
                 if(useDataLog) 
-                    commandLogEntry.append(command.getClass() + " " + command.getName() + " finished");
+                    commandLogEntry.append("Command finished " + key);
                 if(useShuffleBoardLog)
-                    Shuffleboard.addEventMarker("Command finished", command.getName(), EventImportance.kNormal);
+                    Shuffleboard.addEventMarker("Command finished", key, EventImportance.kNormal);
+
+                currentCommands.remove(key);
             }
         );
     }
@@ -111,16 +119,22 @@ public class CommandSchedulerLog
         CommandScheduler.getInstance().onCommandExecute(
             (command) ->
             {
-                if(currentlyRunningCommands.indexOf(command.getClass() + "/" + command.getName()) < 0)
+                String key = command.getClass().getSimpleName() + "/" + command.getName();
+
+                if(currentCommands.containsKey(key))
                 {
-                    currentlyRunningCommands.add(command.getClass() + "/" + command.getName());
                     if(useConsole)
-                        System.out.println("Command executed " + command.getName());
+                        System.out.println("Command executed " + key);
                     if(useDataLog) 
-                        commandLogEntry.append(command.getClass() + " " + command.getName() + " executed");
+                        commandLogEntry.append("Command executed " + key);
                     if(useShuffleBoardLog)
-                        Shuffleboard.addEventMarker("Command executed", command.getName(), EventImportance.kNormal);
+                        Shuffleboard.addEventMarker("Command executed", key, EventImportance.kNormal);
+
+                    currentCommands.put(key, 1);
                 }
+                else
+                    currentCommands.put(key, currentCommands.get(key) + 1);
+    
             }
         );
     }
