@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandList;
+import frc.robot.motors.MotorController4237;
 import frc.robot.shuffleboard.AutonomousTabData;
 
 /**
@@ -226,6 +227,9 @@ public class Robot extends TimedRobot
     public void teleopExit()
     {
         robotContainer.stopRobot();
+
+        // Log all sticky faults.
+        MotorController4237.logAllStickyFaults();
     }
 
     /**

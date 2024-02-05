@@ -43,7 +43,7 @@ public class CANSparkMax4237 extends MotorController4237
     private SparkPIDController pidController = null;
     private final String motorControllerName;
 
-    private final StringLogEntry motorLogEntry;
+    private StringLogEntry motorLogEntry;
     private final int SETUP_ATTEMPT_LIMIT = 5;
     private final boolean printAllSetupMessages = true;
     private int setupErrorCount = 0;
@@ -60,7 +60,8 @@ public class CANSparkMax4237 extends MotorController4237
         super(motorControllerName);
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + motorControllerName);
-        
+
+        this.motorControllerName = motorControllerName;
         motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
@@ -68,8 +69,6 @@ public class CANSparkMax4237 extends MotorController4237
         clearStickyFaults();
         setupFactoryDefaults();
         
-        this.motorControllerName = motorControllerName;
-
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
 
@@ -311,6 +310,26 @@ public class CANSparkMax4237 extends MotorController4237
     public void setupFollower(int leaderId, boolean isInverted)
     {
         setup(() -> motor.follow(CANSparkBase.ExternalFollower.kFollowerSpark, leaderId, isInverted), "Setup Follower");
+    }
+
+    /**
+     * Logs the sticky faults
+     */
+    public void logStickyFaults()
+    {
+        int faults = motor.getStickyFaults();
+        motorLogEntry = new StringLogEntry(log, "/motors/faults", "Faults");
+
+        if(faults > 0)
+        {
+            for(int i = 0; i < 16; i++)
+            {
+                if((faults & (1 << i)) > 0)
+                    motorLogEntry.append(motorControllerName + " : " + CANSparkBase.FaultID.fromId(i));
+            }
+        }
+        else
+            motorLogEntry.append(motorControllerName + " : No Sticky Faults");
     }
 
     /**

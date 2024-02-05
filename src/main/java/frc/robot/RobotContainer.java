@@ -161,9 +161,9 @@ public class RobotContainer
 
     public void configLog()
     {
-        boolean useConsole = true;
+        boolean useConsole = false;
         boolean useDataLog = true;
-        boolean useShuffleBoardLog = true;
+        boolean useShuffleBoardLog = false;
 
         schedulerLog = new CommandSchedulerLog(useConsole, useDataLog, useShuffleBoardLog);
         schedulerLog.logCommandInitialize();

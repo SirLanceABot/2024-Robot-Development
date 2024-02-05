@@ -1,6 +1,7 @@
 package frc.robot.motors;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.sendable.Sendable;
@@ -24,6 +25,11 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         System.out.println("Loading: " + fullClassName);
     }
 
+    // *** ABSTRACT CLASS VARAIBLES ***
+    // These varaibles are class variables (static)
+    final static DataLog log = DataLogManager.getLog();
+    private final static ArrayList<MotorController4237> allMotorControllers4237 = new ArrayList<MotorController4237>();
+
 
     // *** CLASS CONSTRUCTORS ***
     // Put all class constructors here
@@ -39,14 +45,34 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         
         // Enable the Watchdog for the motor
         setSafetyEnabled(true);
+
+        // Register this motor in order to log sticky faults at the end of the match
+        registerMotorController4237();
         
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
 
     
-    // *** ABSTRACT CLASS VARAIBLES ***
-    // These varaibles are class variables (static)
-    public final static DataLog log = DataLogManager.getLog();
+    // *** METHODS ***
+    // Put all methods methods here
+
+    /**
+     * Register the motor controller in the array list
+     */
+    private void registerMotorController4237()
+    {
+        allMotorControllers4237.add(this);
+    }
+
+    /**
+     * Static method to log sticky faults of the motor controllers in the array list.
+     * Call this method from the telopExit() method in the Robot class.
+     */
+    public static void logAllStickyFaults()
+    {
+        for(MotorController4237 motorController4237 : allMotorControllers4237)
+            motorController4237.logStickyFaults();
+    }
 
 
     // *** ABSTRACT METHODS ***
@@ -69,6 +95,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setupVelocityConversionFactor(double factor);
     public abstract void setupPIDController(int slotId, double kP, double kI, double kD);
     public abstract void setupFollower(int leaderId, boolean isInverted);
+    public abstract void logStickyFaults();
 
     public abstract void setControl(double position);
     public abstract void setPosition(double position);
