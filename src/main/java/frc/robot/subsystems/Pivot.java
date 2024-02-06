@@ -175,7 +175,7 @@ public class Pivot extends Subsystem4237
         // }
     }
 
-    public Command movePivotCommand(double angle)
+    public Command setAngleCommand(double angle)
     {
         return Commands.runOnce(() -> setAngle(angle));
     }

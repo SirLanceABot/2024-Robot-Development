@@ -1,9 +1,13 @@
 package frc.robot.controls;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -110,7 +114,17 @@ public class OperatorButtonBindings
         BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        // aButtonTrigger.onTrue(shootCommand(robotContainer.pivot.getAngle(), () -> 0));
+        Optional<Alliance> color = DriverStation.getAlliance();
+        if(color.get() == Alliance.Red)
+        {
+            aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  () -> (robotContainer.drivetrain.getAngleToRedSpeaker())));
+        }
+        else if(color.get() == Alliance.Blue)
+        {
+            aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  () -> (robotContainer.drivetrain.getAngleToBlueSpeaker())));
+        }
+
+        // aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  (color ? robotContainer.poseEstimator.getAngleToRedSpeaker() : PoseEstimator.getAngleToBlueSpeaker())));
     }
 
     private void configBButton()

@@ -95,7 +95,7 @@ public final class Commands4237
             robotContainer.candle.setYellowCommand()
             .alongWith(
                 robotContainer.intakePositioning.moveUpCommand(),
-                robotContainer.intake.pickupFrontCommand(),
+                robotContainer.intake.pickupCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteFromShuttleCommand())
             .andThen(
@@ -182,8 +182,8 @@ public final class Commands4237
             return 
             robotContainer.candle.setPurpleCommand()
             .alongWith(
-                robotContainer.pivot.movePivotCommand(pivotAngle),
-                robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
+                robotContainer.pivot.setAngleCommand(pivotAngle),
+                robotContainer.drivetrain.rotateForShootingCommand())
             .andThen(
                 robotContainer.index.feedNoteToFlywheelCommand(0.5))
             .andThen(
@@ -193,7 +193,7 @@ public final class Commands4237
                 .alongWith(
                     robotContainer.index.stopCommand()))
             .andThen(
-                robotContainer.pivot.movePivotCommand(Constants.Pivot.DEFAULT_ANGLE))
+                robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE))
             .andThen(
                 robotContainer.candle.setRedCommand())
             .withName("Shoot");

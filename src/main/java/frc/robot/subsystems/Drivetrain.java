@@ -272,6 +272,16 @@ public class Drivetrain extends Subsystem4237
     }
 
     // *** CLASS & INSTANCE METHODS ***
+
+    public double getAngleToBlueSpeaker()
+    {
+        return poseEstimator.getAngleToBlueSpeaker();
+    }
+
+    public double getAngleToRedSpeaker()
+    {
+        return poseEstimator.getAngleToRedSpeaker();
+    }
     //FIXME Is this used?
     // public void configOpenLoopRamp(double seconds)
     // {
@@ -411,6 +421,11 @@ public class Drivetrain extends Subsystem4237
         drive(0.0, 0.0, shootingAngle, false);
     }
 
+    public Command rotateForShootingCommand()
+    {
+        return Commands.runOnce(() -> rotateForShooting());
+    }
+
     public SwerveModulePosition[] getSwerveModulePositions()
     {
         return new SwerveModulePosition[] 
@@ -455,10 +470,6 @@ public class Drivetrain extends Subsystem4237
         // return new ChassisSpeeds(periodicData.xSpeed, periodicData.ySpeed, periodicData.turn);
     }
 
-    public double getAngleToBlueSpeaker()
-    {
-        return poseEstimator.getAngleToBlueSpeaker();
-    }
 
     public void driveRobotRelative(ChassisSpeeds chassisSpeeds)
     {
