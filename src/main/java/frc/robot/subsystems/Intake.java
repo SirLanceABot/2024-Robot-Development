@@ -161,17 +161,17 @@ public class Intake extends Subsystem4237
 
     public Command pickupCommand()
     {
-        return Commands.runOnce(() -> pickupFront(), this);
+        return Commands.runOnce(() -> pickupFront(), this).withName("Pickup");
     }
 
     public Command ejectCommand()
     {
-        return Commands.runOnce(() -> pickupBack(), this);
+        return Commands.runOnce(() -> pickupBack(), this).withName("Eject");
     }
 
     public Command stopCommand()
     {
-        return Commands.runOnce(() -> stop(), this);
+        return Commands.runOnce(() -> stop(), this).withName("Stop");
     }
 
     @Override

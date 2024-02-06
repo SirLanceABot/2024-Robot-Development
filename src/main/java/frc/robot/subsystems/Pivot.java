@@ -177,7 +177,7 @@ public class Pivot extends Subsystem4237
 
     public Command setAngleCommand(double angle)
     {
-        return Commands.runOnce(() -> setAngle(angle));
+        return Commands.runOnce(() -> setAngle(angle)).withName("Set Angle");
     }
 
     @Override

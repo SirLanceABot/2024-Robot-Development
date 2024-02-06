@@ -116,17 +116,17 @@ public class IntakePositioning extends Subsystem4237
 
     public Command moveUpCommand()
     {
-        return Commands.runOnce(() -> moveUp(), this);
+        return Commands.runOnce(() -> moveUp(), this).withName("Move Up");
     }
 
     public Command moveDownCommand()
     {
-        return Commands.runOnce(() -> moveDown(), this);
+        return Commands.runOnce(() -> moveDown(), this).withName("Move Down");
     }
 
     public Command floatingCommand()
     {
-        return Commands.runOnce(() -> floating(), this);
+        return Commands.runOnce(() -> floating(), this).withName("Floating");
     }
 
     @Override
