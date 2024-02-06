@@ -551,7 +551,9 @@ public class Drivetrain extends Subsystem4237
                 xSpeed.getAsDouble() * scale.getAsDouble(),
                 ySpeed.getAsDouble() * scale.getAsDouble(),
                 turn.getAsDouble(), 
-                true));
+                true)
+            )
+            .withName("driveCommand()");
     }
 
     @Override
