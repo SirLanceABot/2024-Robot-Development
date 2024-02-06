@@ -136,27 +136,27 @@ public class Flywheel extends Subsystem4237
 
     public Command shootCommand(double speed)
     {
-        return Commands.runEnd( () -> shoot(speed), () -> stop(), this);
+        return Commands.runEnd( () -> shoot(speed), () -> stop(), this).withName("Shoot");
     }
 
     public Command shootSpeakerCommand()
     {
-        return Commands.runEnd(() -> shoot(0.6), () -> stop(), this);
+        return Commands.runEnd(() -> shoot(0.6), () -> stop(), this).withName("Shoot Speaker");
     }
 
     public Command shootAmpCommand()
     {
-        return Commands.runEnd(() -> shoot(0.2),  () -> stop(), this);
+        return Commands.runEnd(() -> shoot(0.2),  () -> stop(), this).withName("Shoot Amp");
     }
 
     public Command intakeCommand()
     {
-        return Commands.runOnce( () -> intake(), this);
+        return Commands.runOnce( () -> intake(), this).withName("Intake");
     }
 
     public Command stopCommand()
     {
-        return Commands.runOnce( () -> stop(), this);
+        return Commands.runOnce( () -> stop(), this).withName("Stop");
     }
 
     public double speedConversionToRPM(double speed)

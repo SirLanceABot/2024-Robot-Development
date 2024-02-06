@@ -120,22 +120,22 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteFromShuttleCommand()
     {
-        return Commands.runOnce(() -> acceptNoteFromShuttle(), this);
+        return Commands.runOnce(() -> acceptNoteFromShuttle(), this).withName("Accept Note From Shuttle");
     }
 
     public Command feedNoteToFlywheelCommand(double speed)
     {
-        return Commands.runEnd(() -> feedNoteToFlywheel(speed), () -> stop(), this);
+        return Commands.runEnd(() -> feedNoteToFlywheel(speed), () -> stop(), this).withName("Feed Note To Flywheel");
     }
 
     public Command intakeCommand()
     {
-        return Commands.runOnce(() -> intake(), this);
+        return Commands.runOnce(() -> intake(), this).withName("Intake");
     }
 
     public Command stopCommand()
     {
-        return Commands.runOnce(() -> stop(), this);
+        return Commands.runOnce(() -> stop(), this).withName("Stop");
     }
 
     @Override

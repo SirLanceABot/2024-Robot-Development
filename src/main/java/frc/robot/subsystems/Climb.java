@@ -275,22 +275,22 @@ public class Climb extends Subsystem4237
 
     public Command extendClimbCommand(double speed)
     {
-        return Commands.runEnd( () -> extendClimb(speed), () -> stop(), this);
+        return Commands.runEnd( () -> extendClimb(speed), () -> stop(), this).withName("Extend Climb");
     }
 
     public Command retractClimbCommand(double speed)
     {
-        return Commands.runEnd( () -> retractClimb(speed), () -> stop(), this);
+        return Commands.runEnd( () -> retractClimb(speed), () -> stop(), this).withName("Retract Climb");
     }
 
     public Command moveToPositionCommand(TargetPosition targetPosition)
     {
-        return Commands.runOnce( () -> moveToChain(), this);
+        return Commands.runOnce( () -> moveToChain(), this).withName("Move To Position");
     }
 
     public Command stopClimbCommand()
     {
-        return Commands.runOnce( () -> stop(), this);
+        return Commands.runOnce( () -> stop(), this).withName("Stop Climb");
     }
 
     @Override
