@@ -58,11 +58,13 @@ public class CommandSchedulerLog
                 String key = command.getClass().getSimpleName() + "/" + command.getName();
 
                 if(useConsole)
-                    System.out.println("Command initialized : " + key);
+                    System.out.println("Command initialized : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");
                 if(useDataLog)
-                    commandLogEntry.append("Command initialized : " + key);  
+                    commandLogEntry.append("Command initialized : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");  
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command initialized", key, EventImportance.kNormal);
+
+                currentCommands.put(key, 0);
             }
         );
     }
@@ -78,9 +80,9 @@ public class CommandSchedulerLog
                 String key = command.getClass().getSimpleName() + "/" + command.getName();
 
                 if(useConsole)
-                    System.out.println("Command interrupted : " + key + " after " + currentCommands.get(key) + " runs");
+                    System.out.println("Command interrupted : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");
                 if(useDataLog) 
-                    commandLogEntry.append("Command interrupted : " + key + " after " + currentCommands.get(key) + " runs");
+                    commandLogEntry.append("Command interrupted : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command interrupted", key, EventImportance.kNormal);
 
@@ -100,9 +102,9 @@ public class CommandSchedulerLog
                 String key = command.getClass().getSimpleName() + "/" + command.getName();
 
                 if(useConsole)
-                    System.out.println("Command finished : " + key + " after " + currentCommands.get(key) + " runs");
+                    System.out.println("Command finished : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");
                 if(useDataLog) 
-                    commandLogEntry.append("Command finished : " + key + " after " + currentCommands.get(key) + " runs");
+                    commandLogEntry.append("Command finished : " + key + " after " + currentCommands.getOrDefault(key, 0) + " runs");
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command finished", key, EventImportance.kNormal);
 
@@ -121,7 +123,7 @@ public class CommandSchedulerLog
             {
                 String key = command.getClass().getSimpleName() + "/" + command.getName();
 
-                if(currentCommands.containsKey(key))
+                if(currentCommands.getOrDefault(key, 0) == 0)
                 {
                     if(useConsole)
                         System.out.println("Command executed : " + key);
