@@ -44,17 +44,13 @@ public class Pivot extends Subsystem4237
         // INPUTS
     
         private double currentPosition;
-        // private double currentAngle;
         private boolean isActive;
         private boolean isPIDSet;
 
         // OUTPUTS
 
-        private double motorSpeed;
-
     }
     
-
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CAN_CODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
     private PeriodicData periodicData = new PeriodicData();  
@@ -82,7 +78,7 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         motor.setPosition(0.0);
-        motor.setupRemoteCANCoder(20);
+        motor.setupRemoteCANCoder(Constants.Pivot.CAN_CODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         
@@ -94,26 +90,22 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        periodicData.motorSpeed = Constants.Pivot.MOTOR_SPEED;
-        motor.set(periodicData.motorSpeed);
+        motor.set(Constants.Pivot.MOTOR_SPEED);
     }
 
     public void moveDown()
     {
-        periodicData.motorSpeed = -Constants.Pivot.MOTOR_SPEED;
-        motor.set(periodicData.motorSpeed);
+        motor.set(-Constants.Pivot.MOTOR_SPEED);
     }
 
     public void stop()
     {
-        periodicData.motorSpeed = 0.0;
-        motor.set(periodicData.motorSpeed);
+        motor.set(0.0);
     }
 
     public double getAngle()
     {
-        var currentAngle = periodicData.currentPosition * 360.0;
-        return currentAngle;
+        return periodicData.currentPosition * 360.0;
     }
 
     public double getPosition()
@@ -196,54 +188,50 @@ public class Pivot extends Subsystem4237
 
         //Using CANcoder
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
-        
-        // Decides if the PID controller should be setup again
-        if(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint())
-        {
-            periodicData.isPIDSet = false;
-        }
-        else
-        {
-            periodicData.isPIDSet = true;
-        }
 
         //Changes the PID values to the values displayed on the PID widget
         myConstants.kP = PIDcontroller.getP();
         myConstants.kI = PIDcontroller.getI();
         myConstants.kD = PIDcontroller.getD();
         myConstants.setPoint = PIDcontroller.getSetpoint();
+        
+        //variable to decide if the PID should be reset
+        periodicData.isPIDSet = !(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint());
 
-        //For activating PID values using toggle switch
+        //Returns current state of the toggle switch
+        periodicData.isActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isActive);
+
+    }
+
+    @Override
+    public void writePeriodicOutputs()
+    {
+        //Displays the pivot's current angle
+        SmartDashboard.putNumber("currentAngle", getAngle());
+
+        //Displays any changed values on the PID controller widget and sets the correct values to the PID controller
+        //Go to ShuffleBoard - Sources - NetworkTables to insert widget 
+        if(periodicData.isPIDSet == false)
+        {
+            PIDcontroller.setP(myConstants.kP);
+            PIDcontroller.setI(myConstants.kI);
+            PIDcontroller.setD(myConstants.kD);
+            PIDcontroller.setSetpoint(myConstants.setPoint);
+            motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+        } 
+
+        //Toggle switch to use the PID controller widget (use toggle-button under Show as...)
+        SmartDashboard.putBoolean("Activate PID", periodicData.isActive);
+
+        //For activating setPoint using the toggle switch
         if(periodicData.isActive)
         {
-            if(periodicData.isPIDSet == false)
-                motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
             setAngle(myConstants.setPoint);
         }
         else
         {
             stop();
         }
-    }
-
-    @Override
-    public void writePeriodicOutputs()
-    {
-        //Displays any changed values on the PID controller widget
-        //Go to ShuffleBoard - Sources - NetworkTables to insert widget
-        PIDcontroller.setP(myConstants.kP);
-        PIDcontroller.setI(myConstants.kI);
-        PIDcontroller.setD(myConstants.kD);
-        PIDcontroller.setSetpoint(myConstants.setPoint);   
-
-        //Returns current state of the toggle switch
-        periodicData.isActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isActive);
-
-        //Toggle switch to use the PID controller widget (use toggle-button under Show as...)
-        SmartDashboard.putBoolean("Activate PID", periodicData.isActive);
-
-        //Displays the pivot's current angle
-        SmartDashboard.putNumber("currentAngle", getAngle());
     }
 
     @Override
