@@ -235,7 +235,7 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(pickupSecondNoteBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(12, 3)
+            .withPosition(21, 1)
             .withSize(4, 3);
     }
 
@@ -254,7 +254,7 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(scoreSecondNoteBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(12, 5)
+            .withPosition(21, 5)
             .withSize(4, 3);
     }
 

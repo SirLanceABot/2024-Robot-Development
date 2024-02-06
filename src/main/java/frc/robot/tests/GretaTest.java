@@ -15,6 +15,7 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.sensors.Proximity;
 
 public class GretaTest implements Test
 {
@@ -32,12 +33,16 @@ public class GretaTest implements Test
 //     // *** CLASS & INSTANCE VARIABLES ***
 //     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Shuttle shuttleSuzie;
-    private final Pivot pivotPriscilla;
-    private final Flywheel flyWheelFiona;
-    private final Index indexIzzy;
-    private final Intake intakeIrene;
-    private final Climb climbCindy;
+    // private final Shuttle shuttleSuzie;
+    // private final Pivot pivotPriscilla;
+    // private final Flywheel flyWheelFiona;
+    // private final Index indexIzzy;
+    // private final Intake intakeIrene;
+    // private final Climb climbCindy;
+    // private final Proximity firstShuttleProximity;
+    // private final Proximity secondShuttleProximity;
+    private final Proximity indexProximity;
+    
     private final Joystick joystick = new Joystick(0); 
     
 //     // *** CLASS CONSTRUCTOR ***
@@ -46,12 +51,15 @@ public class GretaTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        shuttleSuzie = robotContainer.shuttle;
-        pivotPriscilla = robotContainer.pivot;
-        flyWheelFiona = robotContainer.flywheel;
-        indexIzzy = robotContainer.index;
-        intakeIrene = robotContainer.intake;
-        climbCindy = robotContainer.climb;
+        // shuttleSuzie = robotContainer.shuttle;
+        // pivotPriscilla = robotContainer.pivot;
+        // flyWheelFiona = robotContainer.flywheel;
+        // indexIzzy = robotContainer.index;
+        // intakeIrene = robotContainer.intake;
+        // climbCindy = robotContainer.climb;
+        // firstShuttleProximity = robotContainer.firstShuttleProximity;
+        // secondShuttleProximity = robotContainer.secondShuttleProximity;
+        indexProximity = robotContainer.indexProximity;
     
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -70,38 +78,38 @@ public class GretaTest implements Test
     {
         if (joystick.getRawButton(1))
         {
-            shuttleSuzie.moveUpward();
-            pivotPriscilla.moveUp();
-            flyWheelFiona.shoot(0.35);
-            indexIzzy.acceptNoteFromShuttle();
-            climbCindy.holdClimb();
-            intakeIrene.ejectFront();
+            // shuttleSuzie.moveUpward();
+            // pivotPriscilla.moveUp();
+            // flyWheelFiona.shoot(0.35);
+            // indexIzzy.acceptNoteFromShuttle();
+            // climbCindy.holdClimb();
+            // intakeIrene.ejectFront();
         }
         else if (joystick.getRawButton(2))
         {
-            shuttleSuzie.moveDownward();
-            pivotPriscilla.moveDown();
-            indexIzzy.intake();
-            //climbCindy.retract();
-            intakeIrene.ejectBack();
+            // shuttleSuzie.moveDownward();
+            // pivotPriscilla.moveDown();
+            // indexIzzy.intake();
+            // //climbCindy.retract();
+            // intakeIrene.ejectBack();
         }
 
         else
         {
-            shuttleSuzie.stop();
-            pivotPriscilla.stop();
-            flyWheelFiona.stop();
-            indexIzzy.stop();
-            intakeIrene.stop();
-            climbCindy.stop();
+            // shuttleSuzie.stop();
+            // pivotPriscilla.stop();
+            // flyWheelFiona.stop();
+            // indexIzzy.stop();
+            // intakeIrene.stop();
+            // climbCindy.stop();
         }
         
         if (joystick.getRawButton(3))
         {
-            shuttleSuzie.resetEncoder();
-            //pivotPriscilla.resetEncoder();
-            flyWheelFiona.resetEncoder();
-            climbCindy.resetEncoder();
+            // shuttleSuzie.resetEncoder();
+            // pivotPriscilla.resetCANcoder();
+            // flyWheelFiona.resetEncoder();
+            // climbCindy.resetEncoder();
         }
 
         robotContainer.mainShuffleboard.sensorTab.updateEncoderData();

@@ -1,6 +1,9 @@
 package frc.robot.shuffleboard;
 
 import java.lang.invoke.MethodHandles;
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -12,10 +15,11 @@ import frc.robot.subsystems.Index;
 // import frc.robot.subsystems.IntakePositioning;
 import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
+import frc.robot.sensors.Proximity;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Intake;
+import frc.robot.sensors.Proximity;
 
 public class SensorTab
 {
@@ -38,6 +42,9 @@ public class SensorTab
     private Index index;
     private Intake intake;
     private Climb climb;
+    private Proximity firstShuttleProximity;
+    private Proximity secondShuttleProximity;
+    private Proximity indexProximity;
 
     private GenericEntry gyroBox;
     private GenericEntry fltEncoderBox;
@@ -52,6 +59,9 @@ public class SensorTab
     private GenericEntry bottomIntakeEncoderBox;
     private GenericEntry rightClimbEncoderBox;
     private GenericEntry leftClimbEncoderBox;
+    private GenericEntry firstShuttleProximityBox;
+    private GenericEntry secondShuttleProximityBox;
+    private GenericEntry indexProximityBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -66,6 +76,10 @@ public class SensorTab
         this.index = robotContainer.index;
         this.intake = robotContainer.intake;
         this.climb = robotContainer.climb;
+        this.firstShuttleProximity = robotContainer.firstShuttleProximity;
+        this.secondShuttleProximity = robotContainer.secondShuttleProximity;
+        this.indexProximity = robotContainer.indexProximity;
+        
 
         if(drivetrain != null)
         {
@@ -112,7 +126,22 @@ public class SensorTab
             leftClimbEncoderBox = createLeftClimbEncoderBox();
         }
 
-    
+        if(firstShuttleProximity != null)
+        {
+
+            firstShuttleProximityBox = createFirstShuttleProximitySensorBox();
+
+        }
+
+        if(secondShuttleProximity != null)
+        {
+            secondShuttleProximityBox = createSecondShuttleProximitySensorBox();
+        }
+
+        if(indexProximity != null)
+        {
+            indexProximityBox = createIndexProximitySensorBox();
+        }
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -234,6 +263,50 @@ public class SensorTab
         .getEntry();
     }
     
+    private GenericEntry createFirstShuttleProximitySensorBox()
+    {
+        Map<String, Object> booleanBoxProperties = new HashMap<>();
+
+        booleanBoxProperties.put("Color when detected", "Lime");
+        booleanBoxProperties.put("Color when not detected", "Red");
+
+        return sensorTab.add("Object Detected?", false)
+             .withWidget(BuiltInWidgets.kBooleanBox)
+             .withPosition(21, 8)
+             .withSize(4, 4)
+             .withProperties(booleanBoxProperties)
+             .getEntry();
+    }
+
+    private GenericEntry createSecondShuttleProximitySensorBox()
+    {
+        Map<String, Object> booleanBoxProperties = new HashMap<>();
+
+        booleanBoxProperties.put("Color when detected", "Lime");
+        booleanBoxProperties.put("Color when detected", "Red");
+
+        return sensorTab.add("Second Shuttle Detected?", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(16, 8)
+            .withSize(6,4)
+            .withProperties(booleanBoxProperties)
+            .getEntry();
+    }
+
+    private GenericEntry createIndexProximitySensorBox()
+    {
+        Map<String, Object> booleanBoxProperties = new HashMap<>();
+
+        booleanBoxProperties.put("Color when detected", "Lime");
+        booleanBoxProperties.put("Color when detected", "Red");
+        
+        return sensorTab.add("Index Detected?", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(10, 8)
+            .withSize(4,4)
+            .withProperties(booleanBoxProperties)
+            .getEntry();
+    }
 
     public void updateEncoderData()
     {
@@ -280,6 +353,43 @@ public class SensorTab
         {
             leftClimbEncoderBox.setDouble(round(climb.getLeftPosition(),3));
             rightClimbEncoderBox.setDouble(round(climb.getRightPosition(),3));
+        }
+
+        if(firstShuttleProximity != null)
+        {
+            if(firstShuttleProximity.isDetected())
+            {
+                firstShuttleProximityBox.setBoolean(true);
+            }
+            else
+            {
+                firstShuttleProximityBox.setBoolean(false);
+            }
+        }
+
+        if(secondShuttleProximity != null)
+        {
+            if(secondShuttleProximity.isDetected())
+            {
+                secondShuttleProximityBox.setBoolean(true);
+            }
+            else
+            {
+                secondShuttleProximityBox.setBoolean(false);
+            }
+        }
+
+        if(indexProximity != null)
+        {
+            if(indexProximity.isDetected())
+            {
+                indexProximityBox.setBoolean(true);
+
+            }
+            else
+            {
+                indexProximityBox.setBoolean(false);
+            }
         }
     }
 
