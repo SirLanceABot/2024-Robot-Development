@@ -176,27 +176,27 @@ public class Candle4237 extends Subsystem4237
 
     public Command setRedCommand()
     {
-        return Commands.runOnce( () -> setRed(false));
+        return Commands.runOnce( () -> setRed(false)).withName("setRed");
     }
 
     public Command setYellowCommand()
     {
-        return Commands.runOnce( () -> setYellow(false));
+        return Commands.runOnce( () -> setYellow(false)).withName("setYellow");
     }
 
     public Command setGreenCommand()
     {
-        return Commands.runOnce( () -> setGreen(false));
+        return Commands.runOnce( () -> setGreen(false)).withName("setGreen");
     }
 
     public Command setBlueCommand()
     {
-        return Commands.runOnce( () -> setBlue(false));
+        return Commands.runOnce( () -> setBlue(false)).withName("setBlue");
     }
 
     public Command setPurpleCommand()
     {
-        return Commands.runOnce( () -> setPurple(false));
+        return Commands.runOnce( () -> setPurple(false)).withName("setPurple");
     }
 
     // public void signalPurple()
