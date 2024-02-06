@@ -38,9 +38,9 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Flywheel flywheel;
-    private final Index index;
-    // private final Climb climb;
+    // private final Flywheel flywheel;
+    // private final Index index;
+    private final Climb climb;
     // private final Ultrasonic ultrasonic;
     // private final Joystick joystick = new Joystick(0);
     // private CANSparkMax motor = new CANSparkMax(0, MotorType.kBrushless);
@@ -56,9 +56,9 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        flywheel = this.robotContainer.flywheel;
-        index = this.robotContainer.index;
-        // climb = this.robotContainer.climb;
+        // flywheel = this.robotContainer.flywheel;
+        // index = this.robotContainer.index;
+        climb = this.robotContainer.climb;
         // ultrasonic = this.robotContainer.ultrasonic;
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -81,7 +81,9 @@ public class OwenTest implements Test
         configLeftTrigger();
         configRightTrigger();
         configBackButton();
-        System.out.println("Velocity: " + flywheel.getPosition());
+        configLeftBumper();
+        configRightBumper();
+        System.out.println("Velocity: " + climb.getLeftPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
         // if(joystick.getRawButton(1))
@@ -132,7 +134,7 @@ public class OwenTest implements Test
     {}
 
     
-
+    //this is the equalibrium ratio for shooter motor powers
     private void configLeftTrigger()
     {
         //Left trigger 
@@ -141,12 +143,12 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.75));
-            leftTriggerTrigger.onFalse(flywheel.stopCommand());
-            // leftTriggerTrigger.onFalse(climb.stopClimbCommand());
+            // leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.625)));
+            // leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
         }
     }
-
+    
+    //this is for 10% extra power to the flywheel from the equalibrium
     private void configRightTrigger()
     {
         //Left trigger 
@@ -155,9 +157,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0));
-            rightTriggerTrigger.onFalse(index.stopCommand());
-            // rightTriggerTrigger.onFalse(climb.stopClimbCommand());
+            // rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.725)));
+            // rightTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
         }
     }
 
@@ -167,11 +168,42 @@ public class OwenTest implements Test
         BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
+        
+            backButtonTrigger.whileTrue(climb.moveToPositionCommand(TargetPosition.kChain));
+
+        // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
+    }
+
+    private void configLeftBumper()
+    {
+        // Back Button
+        BooleanSupplier leftBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftBumper);
+        Trigger leftBumperTrigger = new Trigger(leftBumper);
+
         if(true)
         {
-            backButtonTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.75)));
-            backButtonTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
-            // backButtonTrigger.onFalse(climb.stopClimbCommand());
+            leftBumperTrigger.whileTrue(climb.retractClimbCommand(-0.4));
+            leftBumperTrigger.onFalse(climb.stopClimbCommand());
+
+        }
+
+        // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
+    }
+
+    private void configRightBumper()
+    {
+        // Back Button
+        BooleanSupplier rightBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightBumper);
+        Trigger rightBumperTrigger = new Trigger(rightBumper);
+
+        if(true)
+        {
+            
+            // rightBumperTrigger.onFalse(climb.stopClimbCommand());
+
+            rightBumperTrigger.whileTrue(climb.extendClimbCommand(0.4));
+            rightBumperTrigger.onFalse(climb.stopClimbCommand());
+
         }
 
         // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));

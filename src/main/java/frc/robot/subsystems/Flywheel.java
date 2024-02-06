@@ -185,7 +185,7 @@ public class Flywheel extends Subsystem4237
         // }
 
         // Done to fix the bang bang controller
-        if(periodicData.RPMSpeed < 0.0)
+        if(periodicData.RPMSpeed <= 0.0)
         {
             motor.set(periodicData.flywheelSpeed);
         }

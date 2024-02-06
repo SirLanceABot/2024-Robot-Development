@@ -235,10 +235,15 @@ public class Climb extends Subsystem4237
         }
         else
         {
-            if(targetPosition.value > leftLeadMotor.getPosition())
+            if((targetPosition.value - 1.0) > leftLeadMotor.getPosition())
             {
                 leftLeadMotor.set(0.05);
                 // rightFollowMotor.set(0.05);        
+            }
+            else if((targetPosition.value + 1.0) < leftLeadMotor.getPosition())
+            {
+                leftLeadMotor.set(-0.05);
+                // rightFollowMotor.set(-0.05);
             }
             else
             {
@@ -280,7 +285,7 @@ public class Climb extends Subsystem4237
 
     public Command moveToPositionCommand(TargetPosition targetPosition)
     {
-        return Commands.runEnd( () -> moveToSetPosition(targetPosition), () -> stop(), this);
+        return Commands.runOnce( () -> moveToChain(), this);
     }
 
     public Command stopClimbCommand()
