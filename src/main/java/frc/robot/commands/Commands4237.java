@@ -188,7 +188,7 @@ public final class Commands4237
 
         if(color.get() == Alliance.Red)
         {
-            distance = robotContainer.drivetrain.getDistancetoRedSpeaker();
+            distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
         }
         else
         {

@@ -283,7 +283,7 @@ public class Drivetrain extends Subsystem4237
         return poseEstimator.getAngleToRedSpeaker();
     }
 
-    public double getDistancetoRedSpeaker()
+    public double getDistanceToRedSpeaker()
     {
         return poseEstimator.getDistanceToRedSpeaker();
     }
