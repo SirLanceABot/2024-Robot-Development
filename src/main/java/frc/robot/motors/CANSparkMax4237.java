@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -40,7 +41,7 @@ public class CANSparkMax4237 extends MotorController4237
     private SparkAbsoluteEncoder sparkAbsoluteEncoder = null;
     private SparkLimitSwitch forwardLimitSwitch = null;
     private SparkLimitSwitch reverseLimitSwitch = null;
-    private SparkPIDController pidController = null;
+    private SparkPIDController sparkPIDController = null;
     private final String motorControllerName;
 
     private StringLogEntry motorLogEntry;
@@ -65,7 +66,7 @@ public class CANSparkMax4237 extends MotorController4237
         motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
-        pidController = motor.getPIDController();
+        sparkPIDController = motor.getPIDController();
         clearStickyFaults();
         setupFactoryDefaults();
         
@@ -268,7 +269,10 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupPositionConversionFactor(double factor)
     {
-        setup(() -> encoder.setPositionConversionFactor(factor), "Setup Position Conversion Factor");
+        if(sparkAbsoluteEncoder == null)
+            setup(() -> encoder.setPositionConversionFactor(factor), "Setup Position Conversion Factor");
+        else
+            setup(() -> sparkAbsoluteEncoder.setPositionConversionFactor(factor), "Setup Position Conversion Factor");
     }
 
     /**
@@ -277,7 +281,10 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setupVelocityConversionFactor(double factor)
     {
-        setup(() -> encoder.setVelocityConversionFactor(factor), "Setup Velocity Conversion Factor");
+        if(sparkAbsoluteEncoder == null)
+            setup(() -> encoder.setVelocityConversionFactor(factor), "Setup Velocity Conversion Factor");
+        else
+            setup(() -> sparkAbsoluteEncoder.setVelocityConversionFactor(factor), "Setup Velocity Conversion Factor");
     }
 
     /**
@@ -291,9 +298,9 @@ public class CANSparkMax4237 extends MotorController4237
         if(slotId >= 0 && slotId <= 3)
         {
             // set PID coefficients
-            setup(() -> pidController.setP(kP, slotId), "Setup PIDController(kP)");
-            setup(() -> pidController.setI(kI, slotId), "Setup PIDController(kI)");
-            setup(() -> pidController.setD(kD, slotId), "Setup PIDController(kD)");
+            setup(() -> sparkPIDController.setP(kP, slotId), "Setup PIDController(kP)");
+            setup(() -> sparkPIDController.setI(kI, slotId), "Setup PIDController(kI)");
+            setup(() -> sparkPIDController.setD(kD, slotId), "Setup PIDController(kD)");
         }
 
         // pidController.setIZone(kIz);
@@ -339,7 +346,7 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public void setControl(double position)
     {
-        pidController.setReference(position, CANSparkBase.ControlType.kPosition);
+        sparkPIDController.setReference(position, CANSparkBase.ControlType.kPosition);
     }
 
     /**
@@ -359,7 +366,10 @@ public class CANSparkMax4237 extends MotorController4237
      */
     public double getPosition()
     {
-        return encoder.getPosition();
+        if(sparkAbsoluteEncoder == null)
+            return encoder.getPosition();
+        else
+            return sparkAbsoluteEncoder.getPosition();
     }
 
     /**
@@ -369,7 +379,10 @@ public class CANSparkMax4237 extends MotorController4237
      */    
     public double getVelocity()
     {
-        return encoder.getVelocity();
+        if(sparkAbsoluteEncoder == null)
+            return encoder.getVelocity();
+        else
+            return sparkAbsoluteEncoder.getVelocity();
     }
 
     @Override
