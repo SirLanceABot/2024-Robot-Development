@@ -45,23 +45,17 @@ public class DaneTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {
-        pivot.resetCANcoder();
-    }
+    {}
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
     {
-        if(joystick.getRawButton(1))
-        {
-            pivot.setAngle(30.0);
-        }
-        else if(joystick.getRawButton(4))
-        {
-            pivot.humanIntake();
-        }
+        // if(joystick.getRawButton(1))
+        // {
+        //     pivot.setAngle(30.0);
+        // }
     }
     
     /**

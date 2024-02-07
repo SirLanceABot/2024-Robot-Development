@@ -7,6 +7,7 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.motors.TalonFX4237;
 import frc.robot.subsystems.Pivot;
 
 public class MatthewTest implements Test
@@ -24,8 +25,7 @@ public class MatthewTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-
-    private double kP;
+    private final TalonFX4237 talonFX = new TalonFX4237(4, "rio", "matthew'sMotor");
 
 
     // *** CLASS CONSTRUCTOR ***

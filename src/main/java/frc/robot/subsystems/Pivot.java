@@ -44,12 +44,12 @@ public class Pivot extends Subsystem4237
         // INPUTS
     
         private double currentPosition;
-        private boolean isActive;
+        private boolean isToggleSwitchActive;
         private boolean isPIDSet;
 
         // OUTPUTS
 
-    }
+   }
     
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CAN_CODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
@@ -58,7 +58,6 @@ public class Pivot extends Subsystem4237
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
     
-
 
     public Pivot()
     {
@@ -110,31 +109,30 @@ public class Pivot extends Subsystem4237
 
     public double getPosition()
     {
-        
         return periodicData.currentPosition;
     }
 
-    public void resetCANcoder()
-    {
-        pivotAngle.setPosition(0.0);
-    }
+    // public void resetCANcoder()
+    // {
+    //     pivotAngle.setPosition(0.0);
+    // }
 
-    public void setArtificialPosition(double degrees)
-    {
-        pivotAngle.setPosition(degrees);
-    }
+    // public void setArtificialPosition(double degrees)
+    // {
+    //     pivotAngle.setPosition(degrees);
+    // }
 
-    public void humanIntake()
-    {
-        motor.setControl(Constants.Pivot.DEFAULT_ANGLE / 360.0);
-    }
+    // public void humanIntake()
+    // {
+    //     motor.setControl(Constants.Pivot.DEFAULT_ANGLE / 360.0);
+    // }
 
-    public void subwooferShotAngle()
-    {
-        motor.setControl(Constants.Pivot.SHOOT_FROM_SUBWOOFER_ANGLE / 360.0);
-    }
+    // public void subwooferShotAngle()
+    // {
+    //     motor.setControl(Constants.Pivot.SHOOT_FROM_SUBWOOFER_ANGLE / 360.0);
+    // }
 
-    public void setAngle(double degrees)
+    private void setAngle(double degrees)
     { 
         //setAngle using CANcoder
         if(degrees >= 0.0 && degrees <= 90.0)
@@ -143,7 +141,8 @@ public class Pivot extends Subsystem4237
         }
         else
         {
-            PIDcontroller.setSetpoint(404.0);
+            System.out.println("error");
+            stop();
         }
 
         //setAngle using FalconFX encoder
@@ -199,7 +198,7 @@ public class Pivot extends Subsystem4237
         periodicData.isPIDSet = !(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint());
 
         //Returns current state of the toggle switch
-        periodicData.isActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isActive);
+        periodicData.isToggleSwitchActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isToggleSwitchActive);
 
     }
 
@@ -221,10 +220,10 @@ public class Pivot extends Subsystem4237
         } 
 
         //Toggle switch to use the PID controller widget (use toggle-button under Show as...)
-        SmartDashboard.putBoolean("Activate PID", periodicData.isActive);
+        SmartDashboard.putBoolean("Activate PID", periodicData.isToggleSwitchActive);
 
         //For activating setPoint using the toggle switch
-        if(periodicData.isActive)
+        if(periodicData.isToggleSwitchActive)
         {
             setAngle(myConstants.setPoint);
         }
