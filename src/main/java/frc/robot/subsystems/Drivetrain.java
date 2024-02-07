@@ -282,6 +282,16 @@ public class Drivetrain extends Subsystem4237
     {
         return poseEstimator.getAngleToRedSpeaker();
     }
+
+    public double getDistancetoRedSpeaker()
+    {
+        return poseEstimator.getDistanceToRedSpeaker();
+    }
+
+    public double getDistanceToBlueSpeaker()
+    {
+        return poseEstimator.getDistanceToBlueSpeaker();
+    }
     //FIXME Is this used?
     // public void configOpenLoopRamp(double seconds)
     // {

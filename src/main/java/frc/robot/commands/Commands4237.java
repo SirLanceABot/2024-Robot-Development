@@ -1,8 +1,14 @@
 package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 import java.util.function.DoubleSupplier;
 
+import javax.lang.model.util.ElementScanner14;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -172,7 +178,60 @@ public final class Commands4237
         {
             return Commands.none();
         }
-        
+    }
+
+    public static Command movePivotCommand()
+    {
+        double distance, angle = 0.0;
+        Optional<Alliance> color = DriverStation.getAlliance();
+
+        if(color.get() == Alliance.Red)
+        {
+            distance = robotContainer.drivetrain.getDistancetoRedSpeaker();
+        }
+        else
+        {
+            distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
+        }
+
+        distance = distance * 39.37;
+
+        if(distance >= 30 && distance < 42)
+            angle = 60.6;
+        else if(distance >= 42 && distance < 54)
+            angle = 53.1;
+        else if(distance >= 54 && distance < 66)
+            angle = 46.8;
+        else if(distance >= 66 && distance < 78)
+            angle = 41.6;
+        else if(distance >= 78 && distance < 90)
+            angle = 37.3;
+        else if(distance >= 90 && distance < 102)
+            angle = 33.7;
+        else if(distance >= 102 && distance < 114)
+            angle = 30.65;
+        else if(distance >= 114 && distance < 126)
+            angle = 28.1;
+        else if(distance >= 126 && distance < 138)
+            angle = 25.9;
+        else if(distance >= 138 && distance < 150)
+            angle = 24.0;
+        else if(distance >= 150 && distance < 162)
+            angle = 22.3;
+        else if(distance >= 162 && distance < 174)
+            angle = 20.9;
+        else if(distance >= 174 && distance < 186)
+            angle = 19.6;
+
+        if(robotContainer.drivetrain != null && robotContainer.pivot != null)
+        {
+            return
+            robotContainer.pivot.setAngleCommand(angle);
+        }
+        else
+        {
+            return Commands.none();
+        }
     }
 
     public static Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
@@ -182,7 +241,7 @@ public final class Commands4237
             return 
             robotContainer.candle.setPurpleCommand()
             .alongWith(
-                robotContainer.pivot.setAngleCommand(pivotAngle),
+                movePivotCommand(),
                 robotContainer.drivetrain.rotateForShootingCommand())
             .andThen(
                 robotContainer.index.feedNoteToFlywheelCommand(0.5))
