@@ -45,6 +45,7 @@ public class SensorTab
     private Proximity firstShuttleProximity;
     private Proximity secondShuttleProximity;
     private Proximity indexProximity;
+    private Proximity indexWheelsProximity;
 
     private GenericEntry gyroBox;
     private GenericEntry fltEncoderBox;
@@ -62,6 +63,7 @@ public class SensorTab
     private GenericEntry firstShuttleProximityBox;
     private GenericEntry secondShuttleProximityBox;
     private GenericEntry indexProximityBox;
+    private GenericEntry indexWheelsProximityBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -79,6 +81,7 @@ public class SensorTab
         this.firstShuttleProximity = robotContainer.firstShuttleProximity;
         this.secondShuttleProximity = robotContainer.secondShuttleProximity;
         this.indexProximity = robotContainer.indexProximity;
+        this.indexWheelsProximity = robotContainer.indexWheelsProximity;
         
 
         if(drivetrain != null)
@@ -143,6 +146,11 @@ public class SensorTab
             indexProximityBox = createIndexProximitySensorBox();
         }
 
+        if(indexWheelsProximity != null)
+        {
+            indexWheelsProximityBox = createIndexWheelsProximityBox();
+        }
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -195,8 +203,8 @@ public class SensorTab
     {
         return sensorTab.add("Shuttle", round(shuttle.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView)   // specifies type of widget: "kTextView"
-        .withPosition(8, 5)  // sets position of widget
-        .withSize(3, 2)    // sets size of widget
+        .withPosition(1, 1)  // sets position of widget
+        .withSize(4, 2)    // sets size of widget
         .getEntry();
     }
 
@@ -204,8 +212,8 @@ public class SensorTab
     {
         return sensorTab.add("Pivot", round(pivot.getAngle(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(8,7) // sets position of widget
-        .withSize(3,2)  // sets size of widget
+        .withPosition(1,11) // sets position of widget
+        .withSize(4,2)  // sets size of widget
         .getEntry();
     }
 
@@ -213,7 +221,7 @@ public class SensorTab
     {
         return sensorTab.add("Fly Wheel", round(flyWheel.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(8,10) // sets position of widget
+        .withPosition(13,1) // sets position of widget
         .withSize(4,2) //sets size of widget
         .getEntry();
     }
@@ -222,7 +230,7 @@ public class SensorTab
     {
         return sensorTab.add("Index", round(index.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(13,2) // sets position of widget
+        .withPosition(5,1) // sets position of widget
         .withSize(4,2) //sets size of widget
         .getEntry();
     }
@@ -231,7 +239,7 @@ public class SensorTab
     {
         return sensorTab.add("Intake Top", round(intake.getTopPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(13,5) // sets position of widget
+        .withPosition(9,1) // sets position of widget
         .withSize(4,2) //sets size of widget
         .getEntry();
     }
@@ -240,7 +248,7 @@ public class SensorTab
     {
         return sensorTab.add("Intake Bottom", round(intake.getBottomPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(13,7) // sets position of widget
+        .withPosition(9,3) // sets position of widget
         .withSize(4,2) //sets size of widget
         .getEntry();
     }
@@ -270,10 +278,10 @@ public class SensorTab
         booleanBoxProperties.put("Color when detected", "Lime");
         booleanBoxProperties.put("Color when not detected", "Red");
 
-        return sensorTab.add("Object Detected?", false)
+        return sensorTab.add("First Shuttle Detected?", false)
              .withWidget(BuiltInWidgets.kBooleanBox)
-             .withPosition(21, 8)
-             .withSize(4, 4)
+             .withPosition(1, 3)
+             .withSize(4, 3)
              .withProperties(booleanBoxProperties)
              .getEntry();
     }
@@ -287,8 +295,8 @@ public class SensorTab
 
         return sensorTab.add("Second Shuttle Detected?", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(16, 8)
-            .withSize(6,4)
+            .withPosition(1, 6)
+            .withSize(4,3)
             .withProperties(booleanBoxProperties)
             .getEntry();
     }
@@ -302,8 +310,23 @@ public class SensorTab
         
         return sensorTab.add("Index Detected?", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(10, 8)
-            .withSize(4,4)
+            .withPosition(5, 3)
+            .withSize(4,3)
+            .withProperties(booleanBoxProperties)
+            .getEntry();
+    }
+
+    private GenericEntry createIndexWheelsProximityBox()
+    {
+        Map<String, Object> booleanBoxProperties = new HashMap<>();
+
+        booleanBoxProperties.put("Color when detected", "Lime");
+        booleanBoxProperties.put("Color when detected","Red");
+
+        return sensorTab.add("Index Wheels Detected?", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(5,6)
+            .withSize(4,3)
             .withProperties(booleanBoxProperties)
             .getEntry();
     }
@@ -389,6 +412,17 @@ public class SensorTab
             else
             {
                 indexProximityBox.setBoolean(false);
+            }
+        }
+        if(indexWheelsProximity != null)
+        {
+            if(indexWheelsProximity.isDetected())
+            {
+                indexWheelsProximityBox.setBoolean(true);
+            }
+            else
+            {
+                indexWheelsProximityBox.setBoolean(false);
             }
         }
     }

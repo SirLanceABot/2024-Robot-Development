@@ -34,14 +34,15 @@ public class GretaTest implements Test
 //     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     // private final Shuttle shuttleSuzie;
-    // private final Pivot pivotPriscilla;
-    // private final Flywheel flyWheelFiona;
-    // private final Index indexIzzy;
+    private final Pivot pivotPriscilla;
+    private final Flywheel flyWheelFiona;
+    private final Index indexIzzy;
     // private final Intake intakeIrene;
     // private final Climb climbCindy;
     // private final Proximity firstShuttleProximity;
     // private final Proximity secondShuttleProximity;
-    private final Proximity indexProximity;
+    // private final Proximity indexProximity;
+    // private final Proximity indexWheelsProximity;
     
     private final Joystick joystick = new Joystick(0); 
     
@@ -52,14 +53,15 @@ public class GretaTest implements Test
 
         this.robotContainer = robotContainer;
         // shuttleSuzie = robotContainer.shuttle;
-        // pivotPriscilla = robotContainer.pivot;
-        // flyWheelFiona = robotContainer.flywheel;
-        // indexIzzy = robotContainer.index;
+        pivotPriscilla = robotContainer.pivot;
+        flyWheelFiona = robotContainer.flywheel;
+        indexIzzy = robotContainer.index;
         // intakeIrene = robotContainer.intake;
         // climbCindy = robotContainer.climb;
         // firstShuttleProximity = robotContainer.firstShuttleProximity;
         // secondShuttleProximity = robotContainer.secondShuttleProximity;
-        indexProximity = robotContainer.indexProximity;
+        // indexProximity = robotContainer.indexProximity;
+        // indexWheelsProximity = robotContainer.indexWheelsProximity;
     
 
         System.out.println("  Constructor Finished: " + fullClassName);
