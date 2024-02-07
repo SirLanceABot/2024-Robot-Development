@@ -78,8 +78,8 @@ public class Shuttle extends Subsystem4237
     private void configMotor()
     {
         motor.setupCoastMode();
-        motor.setupForwardSoftLimit(SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, true);
-        motor.setupReverseSoftLimit(-SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, true);
+        motor.setupForwardSoftLimit(SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, false);
+        motor.setupReverseSoftLimit(-SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, false);
 
         // motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
         // motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled); // kReverse is downward movement

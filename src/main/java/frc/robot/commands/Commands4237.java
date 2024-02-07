@@ -100,7 +100,7 @@ public final class Commands4237
             return
             robotContainer.candle.setYellowCommand()
             .alongWith(
-                robotContainer.intakePositioning.moveUpCommand(),
+                robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.intake.pickupCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteFromShuttleCommand())
@@ -111,7 +111,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.intake.stopCommand()
                 .alongWith(
-                    robotContainer.intakePositioning.moveDownCommand()))
+                    robotContainer.intakePositioning.moveUpCommand()))
             .andThen(
                 Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
             .andThen(
