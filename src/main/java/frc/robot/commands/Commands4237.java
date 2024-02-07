@@ -165,14 +165,15 @@ public final class Commands4237
         }
     }
 
-    public static Command getFlywheelToSpeedCommand()
+    public static Command getFlywheelToSpeedCommand(double speed)
     {
         if(robotContainer.flywheel != null && robotContainer.candle != null)
         {
             return
             robotContainer.candle.setBlueCommand()
             .alongWith(
-                robotContainer.flywheel.shootCommand(0.5));
+                robotContainer.flywheel.shootCommand(speed))
+            .withName("Get Flywheel To Speed");
         }
         else
         {
@@ -226,7 +227,8 @@ public final class Commands4237
         if(robotContainer.drivetrain != null && robotContainer.pivot != null)
         {
             return
-            robotContainer.pivot.setAngleCommand(angle);
+            robotContainer.pivot.setAngleCommand(angle)
+            .withName("Move Pivot");
         }
         else
         {
@@ -234,7 +236,7 @@ public final class Commands4237
         }
     }
 
-    public static Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
+    public static Command shootCommand(DoubleSupplier rotateAngle)
     {
         if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null && robotContainer.candle != null)
         {
@@ -256,6 +258,30 @@ public final class Commands4237
             .andThen(
                 robotContainer.candle.setRedCommand())
             .withName("Shoot");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command shootToAmpCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.flywheel != null && robotContainer.index != null)
+        {
+            return
+            getFlywheelToSpeedCommand(0.2)
+            .andThen(
+                robotContainer.pivot.setAngleCommand(60)
+                .alongWith(
+                    robotContainer.index.feedNoteToFlywheelCommand(0.2)))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.index.feedNoteToFlywheelCommand(0.0),
+                    robotContainer.pivot.setAngleCommand(45)))
+            .withName("Shoot To Amp");
+            
         }
         else
         {

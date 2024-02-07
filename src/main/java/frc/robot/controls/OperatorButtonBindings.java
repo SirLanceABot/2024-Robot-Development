@@ -117,11 +117,11 @@ public class OperatorButtonBindings
         Optional<Alliance> color = DriverStation.getAlliance();
         if(color.get() == Alliance.Red)
         {
-            aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  () -> (robotContainer.drivetrain.getAngleToRedSpeaker())));
+            aButtonTrigger.onTrue(Commands4237.shootCommand(() -> (robotContainer.drivetrain.getAngleToRedSpeaker())));
         }
         else if(color.get() == Alliance.Blue)
         {
-            aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  () -> (robotContainer.drivetrain.getAngleToBlueSpeaker())));
+            aButtonTrigger.onTrue(Commands4237.shootCommand(() -> (robotContainer.drivetrain.getAngleToBlueSpeaker())));
         }
 
         // aButtonTrigger.onTrue(shootCommand((robotContainer.pivot.getAngle()),  (color ? robotContainer.poseEstimator.getAngleToRedSpeaker() : PoseEstimator.getAngleToBlueSpeaker())));
@@ -133,9 +133,9 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null && robotContainer.ampAssist != null && robotContainer.drivetrain != null)
+        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.pivot != null)
         {
-            
+            bButtonTrigger.onTrue(Commands4237.shootToAmpCommand());
         }
     }
 
@@ -145,7 +145,7 @@ public class OperatorButtonBindings
         BooleanSupplier xButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kX);
         Trigger xButtonTrigger = new Trigger(xButton);
 
-        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand());
+        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand(0.5));
     }
 
     private void configYButton()
@@ -294,15 +294,5 @@ public class OperatorButtonBindings
     {
         // Default Commands
 
-    }
-
-     public Command shootCommand(double pivotAngle, DoubleSupplier rotateAngle)
-    {
-        return 
-        robotContainer.flywheel.shootCommand(0.5)
-        .alongWith(
-            // robotContainer.pivot.movePivotCommand(pivotAngle),
-            robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, rotateAngle, () -> 0.0))
-        .andThen(robotContainer.index.feedNoteToFlywheelCommand(0.5));
     }
 }
