@@ -125,8 +125,19 @@ public class PoseEstimator extends Subsystem4237
         deltaX = Math.abs(deltaX);
         double deltaY = redSpeakerCoords[1] - periodicData.estimatedPose.getY();
         deltaY = Math.abs(deltaY);
-        double angleRads = Math.asin(deltaY / deltaX);
-        return Math.toDegrees(angleRads);
+        double angleRads = Math.atan2(deltaY, deltaX);
+        if(periodicData.estimatedPose.getY() > redSpeakerCoords[1])
+        {
+            return 180.0 - Math.toDegrees(angleRads);
+        }
+        else if(periodicData.estimatedPose.getY() < redSpeakerCoords[1])
+        {
+            return -(180.0 - Math.toDegrees(angleRads));
+        }
+        else
+        {
+            return 0.0;
+        }
     }
 
     public double getDistanceToBlueSpeaker()

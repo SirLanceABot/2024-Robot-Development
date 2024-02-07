@@ -1062,15 +1062,16 @@ public class Drivetrain extends Subsystem4237
         PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
         return
-        Commands.runOnce( () -> 
-                {
-                    resetOdometryPose(path.getPreviewStartingHolonomicPose());
-                    resetPoseEstimator(path.getPreviewStartingHolonomicPose());
-                })
+        // Commands.runOnce( () -> 
+        //         {
+        //             resetOdometryPose(path.getPreviewStartingHolonomicPose());
+        //             resetPoseEstimator(path.getPreviewStartingHolonomicPose());
+        //         })
         
 
 
-        .andThen( new FollowPathHolonomic(
+        // .andThen( 
+            new FollowPathHolonomic(
                 path,
                 // this::getPose,
                 poseEstimator::getEstimatedPose, // Robot pose supplier
@@ -1095,7 +1096,8 @@ public class Drivetrain extends Subsystem4237
                     return false;
                 },
                 this // Reference to this subsystem to set requirements
-        ));
+        );//);][\
+        
     }
 
 
