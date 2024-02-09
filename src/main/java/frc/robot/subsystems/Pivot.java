@@ -1,5 +1,5 @@
 package frc.robot.subsystems;
-
+// final
 import java.lang.invoke.MethodHandles;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -20,45 +20,71 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+
+/**
+ * This class creates a Pivot to set the angle of the flywheel.
+ */
 public class Pivot extends Subsystem4237
 {
+    // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
+    // *** STATIC INITIALIZATION BLOCK ***
+    // This block of code is run first when the class is loaded
     static
     {
         System.out.println("Loading: " + fullClassName);
     }
 
+     // *** INNER ENUMS and INNER CLASSES ***
+    // Put all inner enums and inner classes here
+    private class PeriodicData
+    {
+        // INPUTS
+
+
+        private double currentPosition;
+        private boolean isToggleSwitchActive;
+        private boolean isPIDSet;
+        //private boolean isManualOverride;
+
+        // OUTPUTS
+        private double setSpeed = 0.0;
+   }
+
     private class MyConstants
     {
+        //for PID
         public double kP = 17.0;
         public double kI = 10.0;
         public double kD = 0.0;
         public double setPoint = 0.0;
         public int slotId = 0;
+
+        //for manually moving Pivot
+        public final double MOTOR_SPEED = 0.25;
     }
-
-    private class PeriodicData
-    {
-        // INPUTS
     
-        private double currentPosition;
-        private boolean isToggleSwitchActive;
-        private boolean isPIDSet;
-
-        // OUTPUTS
-
-   }
-    
+    // *** CLASS VARIABLES & INSTANCE VARIABLES ***
+    // Put all class variables and instance variables here
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CAN_CODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
-    private PeriodicData periodicData = new PeriodicData();  
-    private MyConstants myConstants = new MyConstants();
+    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
+    private final PeriodicData periodicData = new PeriodicData();  
+    private final MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
+    private final Trigger trigger = new Trigger(() -> periodicData.isToggleSwitchActive).onTrue(this.tunePID()); // in initialization
+
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
     
 
+     // *** CLASS CONSTRUCTORS ***
+    // Put all class constructors here
+
+    /** 
+     * Creates a new Pivot. 
+     */
     public Pivot()
     {
         super("Pivot");
@@ -70,6 +96,8 @@ public class Pivot extends Subsystem4237
         LiveWindow.enableTelemetry(this.PIDcontroller);
     }
 
+     // *** CLASS METHODS & INSTANCE METHODS ***
+    // Put all class methods and instance methods here
     private void configPivotMotor()
     {
         // Factory Defaults
@@ -77,9 +105,8 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         motor.setPosition(0.0);
-        motor.setupRemoteCANCoder(Constants.Pivot.CAN_CODER_PORT);
+        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
-        
         
         // Soft Limits
         motor.setupForwardSoftLimit(0.25, true);
@@ -89,18 +116,23 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        motor.set(Constants.Pivot.MOTOR_SPEED);
+        periodicData.setSpeed = myConstants.MOTOR_SPEED;
     }
 
     public void moveDown()
     {
-        motor.set(-Constants.Pivot.MOTOR_SPEED);
+        periodicData.setSpeed = -myConstants.MOTOR_SPEED;
     }
 
     public void stop()
     {
-        motor.set(0.0);
+        periodicData.setSpeed = 0.0;
     }
+
+     // public void switchOverride()
+     // {
+     //     periodicData.isManualOverride = !periodicData.isManualOverride;
+     // }
 
     public double getAngle()
     {
@@ -179,6 +211,24 @@ public class Pivot extends Subsystem4237
         return Commands.runOnce(() -> setAngle(angle)).withName("Set Angle");
     }
 
+    public Command tunePID()
+    {
+        return runOnce(() -> motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD)).withName("setK's")
+            .andThen(
+            runOnce(() -> SmartDashboard.putBoolean("Activate PID", false))).withName("reset switch")
+            .andThen(
+            run(() -> setAngle(myConstants.setPoint))).withName("control to " + myConstants.setPoint + "degrees")
+            .finallyDo(
+            this::stop).withName("stop tuning");
+
+        // motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
+        // SmartDashboard.putBoolean("Activate PID", false);
+        // return Commands.runEnd(() -> setAngle(myConstants.setPoint), () -> stop());
+    }
+
+    // *** OVERRIDEN METHODS ***
+    // Put all methods that are Overridden here
+
     @Override
     public void readPeriodicInputs()
     {
@@ -188,7 +238,8 @@ public class Pivot extends Subsystem4237
         //Using CANcoder
         periodicData.currentPosition = pivotAngle.getPosition().getValueAsDouble();
 
-        //Changes the PID values to the values displayed on the PID widget
+        // For Testing
+        // Changes the PID values to the values displayed on the PID widget
         myConstants.kP = PIDcontroller.getP();
         myConstants.kI = PIDcontroller.getI();
         myConstants.kD = PIDcontroller.getD();
@@ -200,6 +251,8 @@ public class Pivot extends Subsystem4237
         //Returns current state of the toggle switch
         periodicData.isToggleSwitchActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isToggleSwitchActive);
 
+        
+
     }
 
     @Override
@@ -208,6 +261,7 @@ public class Pivot extends Subsystem4237
         //Displays the pivot's current angle
         SmartDashboard.putNumber("currentAngle", getAngle());
 
+        //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller
         //Go to ShuffleBoard - Sources - NetworkTables to insert widget 
         if(periodicData.isPIDSet == false)
@@ -217,7 +271,7 @@ public class Pivot extends Subsystem4237
             PIDcontroller.setD(myConstants.kD);
             PIDcontroller.setSetpoint(myConstants.setPoint);
             motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
-        } 
+        }
 
         //Toggle switch to use the PID controller widget (use toggle-button under Show as...)
         SmartDashboard.putBoolean("Activate PID", periodicData.isToggleSwitchActive);
@@ -231,6 +285,12 @@ public class Pivot extends Subsystem4237
         {
             stop();
         }
+
+        //For competition
+        // if(periodicData.isManualOverride)
+        // {
+        //     motor.set(periodicData.setSpeed);
+        // }
     }
 
     @Override
@@ -245,4 +305,9 @@ public class Pivot extends Subsystem4237
         // This method will be called once per scheduler run during simulation
     }
 
+    @Override
+    public String toString()
+    {
+        return "";
+    }
 }

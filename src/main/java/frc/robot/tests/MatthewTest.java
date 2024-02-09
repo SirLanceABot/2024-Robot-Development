@@ -26,6 +26,7 @@ public class MatthewTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final TalonFX4237 talonFX = new TalonFX4237(4, "rio", "matthew'sMotor");
+    private final Pivot pivot;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -34,7 +35,7 @@ public class MatthewTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
     
         this.robotContainer = robotContainer;
-
+        this.pivot = robotContainer.pivot;
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -51,7 +52,7 @@ public class MatthewTest implements Test
      */
     public void periodic()
     {
-
+        pivot.tunePID();
     }
     
     /**
