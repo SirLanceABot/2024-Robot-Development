@@ -3,10 +3,10 @@ package frc.robot.commands;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
-
 import javax.lang.model.util.ElementScanner14;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +35,10 @@ public final class Commands4237
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private static RobotContainer robotContainer = null;
+    private static InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
+
+    // Initialize pivotAngleMap
+   
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -130,6 +134,7 @@ public final class Commands4237
 
     public static Command intakeFromSource()
     {
+        
         if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.shuttle != null && robotContainer.indexProximity != null && robotContainer.secondShuttleProximity != null)
         {
             return
@@ -186,6 +191,21 @@ public final class Commands4237
         double distance, angle = 0.0;
         Optional<Alliance> color = DriverStation.getAlliance();
 
+        // first value is distance from speaker in feet, second value is the pivot angle in degrees
+        map.put(3.0, 60.6);
+        map.put(4.0, 53.1);
+        map.put(5.0, 46.8);
+        map.put(6.0, 41.6);
+        map.put(7.0, 37.3);
+        map.put(8.0, 33.7);
+        map.put(9.0, 30.65);
+        map.put(10.0, 28.1);
+        map.put(11.0, 25.9);
+        map.put(12.0, 24.0);
+        map.put(13.0, 22.3);
+        map.put(14.0, 20.9);
+        map.put(15.0, 19.6);
+
         if(color.get() == Alliance.Red)
         {
             distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
@@ -195,34 +215,8 @@ public final class Commands4237
             distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
         }
 
-        distance = distance * 39.37;
-
-        if(distance >= 30 && distance < 42)
-            angle = 60.6;
-        else if(distance >= 42 && distance < 54)
-            angle = 53.1;
-        else if(distance >= 54 && distance < 66)
-            angle = 46.8;
-        else if(distance >= 66 && distance < 78)
-            angle = 41.6;
-        else if(distance >= 78 && distance < 90)
-            angle = 37.3;
-        else if(distance >= 90 && distance < 102)
-            angle = 33.7;
-        else if(distance >= 102 && distance < 114)
-            angle = 30.65;
-        else if(distance >= 114 && distance < 126)
-            angle = 28.1;
-        else if(distance >= 126 && distance < 138)
-            angle = 25.9;
-        else if(distance >= 138 && distance < 150)
-            angle = 24.0;
-        else if(distance >= 150 && distance < 162)
-            angle = 22.3;
-        else if(distance >= 162 && distance < 174)
-            angle = 20.9;
-        else if(distance >= 174 && distance < 186)
-            angle = 19.6;
+        distance = (Math.round((distance * 39.37 / 12.0)));
+        angle = map.get(distance);
 
         if(robotContainer.drivetrain != null && robotContainer.pivot != null)
         {
