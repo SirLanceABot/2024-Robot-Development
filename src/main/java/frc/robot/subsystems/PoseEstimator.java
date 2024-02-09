@@ -100,6 +100,9 @@ public class PoseEstimator extends Subsystem4237
         
     }
 
+    /**
+     * @return Angle nessecary for shooter to face the center of the blue speaker (degrees)
+     */
     public double getAngleToBlueSpeaker()
     {
         double deltaX = Math.abs(blueSpeakerCoords[0] - periodicData.estimatedPose.getX());
@@ -119,6 +122,9 @@ public class PoseEstimator extends Subsystem4237
         }
     }
 
+    /**
+     * @return Angle nessecary for shooter to face the center of the red speaker (degrees)
+     */
     public double getAngleToRedSpeaker()
     {
         double deltaX = redSpeakerCoords[0] - periodicData.estimatedPose.getX();
@@ -140,6 +146,9 @@ public class PoseEstimator extends Subsystem4237
         }
     }
 
+    /**
+     * @return Distance to blue speaker in meters
+     */
     public double getDistanceToBlueSpeaker()
     {
         Translation2d speakerTranslation = new Translation2d(blueSpeakerCoords[0], blueSpeakerCoords[1]);
@@ -147,6 +156,9 @@ public class PoseEstimator extends Subsystem4237
         return robotTranslation.getDistance(speakerTranslation);
     }
 
+    /**
+     * @return Distance to red speaker in meters
+     */
     public double getDistanceToRedSpeaker()
     {
         Translation2d speakerTranslation = new Translation2d(redSpeakerCoords[0], redSpeakerCoords[1]);
