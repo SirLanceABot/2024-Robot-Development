@@ -1,9 +1,11 @@
 package frc.robot.shuffleboard;
 
 import java.lang.invoke.MethodHandles;
+
+import frc.robot.PeriodicIO;
 import frc.robot.RobotContainer;
 
-public class MainShuffleboard 
+public class MainShuffleboard implements PeriodicIO
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -17,9 +19,9 @@ public class MainShuffleboard
 
 
     // *** CLASS & INSTANCE VARIABLES ***
-    private boolean useAutonomousTab            = true;
+    private boolean useAutonomousTab            = false;
     private boolean useCameraTab                = false;
-    private boolean useSensorTab                = true;
+    private boolean useSensorTab                = false;
     private boolean useDriverControllerTab      = false;
     private boolean useOperatorControllerTab    = false;
     
@@ -44,6 +46,8 @@ public class MainShuffleboard
         sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
+
+        registerPeriodicIO();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -82,5 +86,17 @@ public class MainShuffleboard
     {
         if(sensorTab != null)
             sensorTab.updateEncoderData();
+    }
+
+    @Override
+    public void readPeriodicInputs()
+    {
+
+    }
+
+    @Override
+    public void writePeriodicOutputs()
+    {
+
     }
 }
