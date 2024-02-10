@@ -52,7 +52,7 @@ public class Robot extends TimedRobot
     private AutonomousTabData autonomousTabData = null;
     private Command autonomousCommand = null;
     private TestMode testMode = null;
-    private PIDTunerTab pidTunerTab = null;
+    // private PIDTunerTab pidTunerTab = null;
     
 
     // *** CLASS CONSTRUCTORS ***
@@ -257,7 +257,7 @@ public class Robot extends TimedRobot
         // Create a TestMode object to test one team members code.
         testMode = new TestMode(robotContainer);
 
-        pidTunerTab = new PIDTunerTab();
+        // pidTunerTab = new PIDTunerTab();
 
         testMode.init();
     }
@@ -286,8 +286,8 @@ public class Robot extends TimedRobot
         // Set the TestMode object to null so that garbage collection will remove the object.
         testMode = null;
 
-        pidTunerTab.close();
-        pidTunerTab = null;
+        // pidTunerTab.close();
+        // pidTunerTab = null;
         
         robotContainer.stopRobot();
     }

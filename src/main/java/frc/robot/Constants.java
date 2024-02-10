@@ -170,7 +170,7 @@ public final class Constants
 
     public static class Flywheel
     {
-        public static final int MOTOR_PORT               = 10; //51
+        public static final int MOTOR_PORT               = 51;
         public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 

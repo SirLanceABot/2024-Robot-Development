@@ -158,7 +158,8 @@ public class Index extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        motor.setControl(periodicData.motorSpeed);
+        // motor.setControl(periodicData.motorSpeed);
+        motor.set(periodicData.motorSpeed); //sam added for testing
     }
 
     @Override

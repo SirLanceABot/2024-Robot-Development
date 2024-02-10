@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -47,6 +48,10 @@ public class Flywheel extends Subsystem4237
         private double currentVelocity;
         private double RPMSpeed = 0.0;
 
+        private double kP = 0.0;
+        private double kI = 0.0;
+        private double kD = 0.0;
+
         // OUTPUTS
        
         private double flywheelSpeed;
@@ -62,6 +67,9 @@ public class Flywheel extends Subsystem4237
     BangBangController controller = new BangBangController();
 
     private ResetState resetState = ResetState.kDone;
+    // private double kP = 0.0;
+    // private double kI = 0.0;
+    // private double kD = 0.0;
 
     // kS is equal to 0.013 in dutycycles(* 12 for volts)
     
@@ -87,6 +95,9 @@ public class Flywheel extends Subsystem4237
         super("Flywheel");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
+        SmartDashboard.putNumber("kP", periodicData.kP);
+        SmartDashboard.putNumber("kI", periodicData.kI);
+        SmartDashboard.putNumber("kD", periodicData.kD);
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -96,7 +107,9 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
-        motor.setupPIDController(0, 17.0, 10.0, 0.0);
+        // motor.setupPIDController(0, 17.0, 10.0, 0.0);
+        motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
+
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
 
 
@@ -171,6 +184,10 @@ public class Flywheel extends Subsystem4237
     {
         periodicData.currentVelocity = motor.getVelocity();
         periodicData.RPMSpeed = speedConversion(periodicData.flywheelSpeed);
+
+        periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+        periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+        periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
     }
 
     @Override
