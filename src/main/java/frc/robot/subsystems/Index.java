@@ -71,6 +71,7 @@ public class Index extends Subsystem4237
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        motor.setupPIDController(0, 17.0, 10.0, 0.0);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
 
     }
@@ -141,6 +142,12 @@ public class Index extends Subsystem4237
         return Commands.runOnce(() -> stop(), this).withName("Stop");
     }
 
+    //Returns speed in feet per minute
+    public double convertToSurfaceAreaSpeed(double speed)
+    {
+        return speed * 6380 * 2.5 * Math.PI;
+    }
+
     @Override
     public void readPeriodicInputs()
     {
@@ -151,7 +158,7 @@ public class Index extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        motor.set(periodicData.motorSpeed);
+        motor.setControl(periodicData.motorSpeed);
     }
 
     @Override

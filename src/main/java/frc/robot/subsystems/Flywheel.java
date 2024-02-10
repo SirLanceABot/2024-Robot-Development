@@ -96,6 +96,7 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
+        motor.setupPIDController(0, 17.0, 10.0, 0.0);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
 
 
@@ -160,16 +161,16 @@ public class Flywheel extends Subsystem4237
         return Commands.runOnce( () -> stop(), this).withName("Stop");
     }
 
-    public double speedConversionToRPM(double speed)
+    public double speedConversion(double speed)
     {
-        return speed * 6380;
+        return speed * 6380 * 4.0 * Math.PI;
     }
 
     @Override
     public void readPeriodicInputs()
     {
         periodicData.currentVelocity = motor.getVelocity();
-        periodicData.RPMSpeed = speedConversionToRPM(periodicData.flywheelSpeed);
+        periodicData.RPMSpeed = speedConversion(periodicData.flywheelSpeed);
     }
 
     @Override

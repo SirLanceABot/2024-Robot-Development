@@ -87,7 +87,7 @@ public class Intake extends Subsystem4237
         bottomMotor.setupInverted(true); // test later
         // Set Brake Mode
         topMotor.setupBrakeMode();
-        bottomMotor.setupBrakeMode();
+        bottomMotor.setupCoastMode();
 
         // topMotor.setPosition(0.0);
         // bottomMotor.setPosition(0.0);
@@ -115,8 +115,8 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = 0.1;
+        periodicData.topIntakeSpeed = 0.5;
+        periodicData.bottomIntakeSpeed = 0.-6;
     }
 
     public void ejectFront()

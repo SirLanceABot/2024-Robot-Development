@@ -17,7 +17,9 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.Climb.TargetPosition;
 // import frc.robot.commands.ExtendClimb;
 import frc.robot.controls.Xbox;
@@ -39,9 +41,11 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Flywheel flywheel;
+    // private final Flywheel flywheel;
     private final Index index;
-    private final Pivot pivot;
+    // private final Pivot pivot;
+    private final Intake intake;
+    private final Shuttle shuttle;
     // private final Climb climb;
     // private final Ultrasonic ultrasonic;
     private final Joystick joystick = new Joystick(0);
@@ -58,9 +62,11 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        flywheel = this.robotContainer.flywheel;
+        // flywheel = this.robotContainer.flywheel;
         index = this.robotContainer.index;
-        pivot = this.robotContainer.pivot;
+        // pivot = this.robotContainer.pivot;
+        intake = this.robotContainer.intake;
+        shuttle = this.robotContainer.shuttle;
         // climb = this.robotContainer.climb;
         // ultrasonic = this.robotContainer.ultrasonic;
 
@@ -83,7 +89,7 @@ public class OwenTest implements Test
         // motor.follow(motor1);
         configLeftTrigger();
         configRightTrigger();
-        // configBackButton();
+        configBackButton();
         // configLeftBumper();
         // configRightBumper();
         // System.out.println("Velocity: " + climb.getLeftPosition());
@@ -149,22 +155,30 @@ public class OwenTest implements Test
 
         if(true)
         {
-            leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.4).alongWith(flywheel.shootCommand(0.4)));
-            leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
+            // leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.15));
+            // leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
+
+            leftTriggerTrigger.whileTrue(shuttle.moveUpwardCommand());
+            leftTriggerTrigger.onFalse(shuttle.stopCommand());
         }
     }
     
+    // 1.77 to 1 ratio
     //this is for 10% extra power to the flywheel from the equalibrium
     private void configRightTrigger()
     {
         //Left trigger 
+
+    
         BooleanSupplier rightTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightTrigger);
         Trigger rightTriggerTrigger = new Trigger(rightTrigger);
 
         if(true)
         {
-            // rightTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.725)));
+            // rightTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
             // rightTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
+            rightTriggerTrigger.whileTrue(intake.pickupCommand());
+            rightTriggerTrigger.onFalse(intake.stopCommand());
         }
     }
 
@@ -175,7 +189,8 @@ public class OwenTest implements Test
         Trigger backButtonTrigger = new Trigger(backButton);
 
         
-            // backButtonTrigger.whileTrue(climb.moveToPositionCommand(TargetPosition.kChain));
+            backButtonTrigger.whileTrue(intake.pickupCommand().alongWith(shuttle.moveUpwardCommand()));
+            backButtonTrigger.onFalse(intake.stopCommand().alongWith(shuttle.stopCommand()));
 
         // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
     }
