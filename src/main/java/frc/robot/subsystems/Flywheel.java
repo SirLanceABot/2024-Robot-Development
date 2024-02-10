@@ -76,7 +76,7 @@ public class Flywheel extends Subsystem4237
     // private final double kIntakeMaxOutput = 0.0;
     // private final double kIntakeMinOutput = 0.0;
 
-
+    private final double ROLLER_RADIUS = 4237.0;
 
 
     /** 
@@ -96,6 +96,7 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
+        // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 3.28); // converts rpm to ft/s
 
 
         // motor.config_kP(0, kP);
@@ -169,7 +170,6 @@ public class Flywheel extends Subsystem4237
     {
         periodicData.currentVelocity = motor.getVelocity();
         periodicData.RPMSpeed = speedConversionToRPM(periodicData.flywheelSpeed);
-
     }
 
     @Override

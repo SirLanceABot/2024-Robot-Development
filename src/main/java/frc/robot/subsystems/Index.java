@@ -49,6 +49,7 @@ public class Index extends Subsystem4237
     public static final double CURRENT_LIMIT                       = 10.0;
     public static final double CURRENT_THRESHOLD                   = 10.0;
     public static final double TIME_THRESHOLD                      = 10.0;
+    public static final double ROLLER_RADIUS = 4237.0;
 
     /** 
      * Creates a new Index. 
@@ -70,6 +71,8 @@ public class Index extends Subsystem4237
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 3.28); // converts rpm to ft/s
+
     }
 
     public void resetEncoder()
