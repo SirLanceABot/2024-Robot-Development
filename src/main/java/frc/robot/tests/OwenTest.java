@@ -41,11 +41,11 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    // private final Flywheel flywheel;
-    private final Index index;
+    private final Flywheel flywheel;
+    // private final Index index;
     // private final Pivot pivot;
-    private final Intake intake;
-    private final Shuttle shuttle;
+    // private final Intake intake;
+    // private final Shuttle shuttle;
     // private final Climb climb;
     // private final Ultrasonic ultrasonic;
     private final Joystick joystick = new Joystick(0);
@@ -62,11 +62,11 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        // flywheel = this.robotContainer.flywheel;
-        index = this.robotContainer.index;
+        flywheel = this.robotContainer.flywheel;
+        // index = this.robotContainer.index;
         // pivot = this.robotContainer.pivot;
-        intake = this.robotContainer.intake;
-        shuttle = this.robotContainer.shuttle;
+        // intake = this.robotContainer.intake;
+        // shuttle = this.robotContainer.shuttle;
         // climb = this.robotContainer.climb;
         // ultrasonic = this.robotContainer.ultrasonic;
 
@@ -79,6 +79,11 @@ public class OwenTest implements Test
     public void init()
     {
         // climb.setLeftAndRightPosiiton(TargetPosition.kChain);
+        configRightTrigger();
+        configLeftTrigger();
+        configBackButton();
+        configLeftBumper();
+        configRightBumper();
     }
 
     /**
@@ -87,11 +92,6 @@ public class OwenTest implements Test
     public void periodic()
     {
         // motor.follow(motor1);
-        configLeftTrigger();
-        configRightTrigger();
-        configBackButton();
-        // configLeftBumper();
-        // configRightBumper();
         // System.out.println("Velocity: " + climb.getLeftPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
@@ -158,8 +158,8 @@ public class OwenTest implements Test
             // leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.15));
             // leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
 
-            leftTriggerTrigger.whileTrue(shuttle.moveUpwardCommand());
-            leftTriggerTrigger.onFalse(shuttle.stopCommand());
+            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
+            leftTriggerTrigger.onFalse(flywheel.stopCommand());
         }
     }
     
@@ -175,10 +175,10 @@ public class OwenTest implements Test
 
         if(true)
         {
-            // rightTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
-            // rightTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
-            rightTriggerTrigger.whileTrue(intake.pickupCommand());
-            rightTriggerTrigger.onFalse(intake.stopCommand());
+            rightTriggerTrigger.onTrue(flywheel.shootCommand(0.2));
+            rightTriggerTrigger.onFalse(flywheel.stopCommand());
+            // rightTriggerTrigger.onTrue(intake.pickupCommand());
+            // rightTriggerTrigger.onFalse(intake.stopCommand());
         }
     }
 
@@ -189,8 +189,8 @@ public class OwenTest implements Test
         Trigger backButtonTrigger = new Trigger(backButton);
 
         
-            backButtonTrigger.whileTrue(intake.pickupCommand().alongWith(shuttle.moveUpwardCommand()));
-            backButtonTrigger.onFalse(intake.stopCommand().alongWith(shuttle.stopCommand()));
+            // backButtonTrigger.onTrue(intake.pickupCommand().alongWith(shuttle.moveUpwardCommand()));
+            // backButtonTrigger.onFalse(intake.stopCommand().alongWith(shuttle.stopCommand()));
 
         // backButtonTrigger.onTrue(shootCommand(0.5, () -> 0.0));
     }
