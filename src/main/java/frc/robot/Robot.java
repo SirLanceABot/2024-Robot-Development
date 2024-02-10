@@ -255,6 +255,10 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
+        if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
+        {
+            robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
+        }
         testMode.periodic();
     }
 
