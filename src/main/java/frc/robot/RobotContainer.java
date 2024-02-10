@@ -5,11 +5,15 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Candle4237;
@@ -157,6 +161,7 @@ public class RobotContainer
         operatorButtonBindings  = (useFullRobot || useBindings)             ? new OperatorButtonBindings(this)                          : null;
 
         configLog();
+        registerNamedCommands();
     }
 
     public void configLog()
@@ -192,6 +197,13 @@ public class RobotContainer
         {
             drivetrain.stopMotors();
         }
+    }
+
+    public void registerNamedCommands()
+    {
+        NamedCommands.registerCommand("intake", Commands.print("IntakeCommand"));
+        NamedCommands.registerCommand("transfer", Commands.print("TransferCommand"));
+        NamedCommands.registerCommand("shoot", Commands.print("ShootCommand"));
     }
 }
 

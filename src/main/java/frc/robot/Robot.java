@@ -5,6 +5,12 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Path;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -165,6 +171,8 @@ public class Robot extends TimedRobot
         // robotContainer.drivetrain.followPathCommand("Test")
         //     .withName("Follow Path Command")
         //     .schedule();
+        
+        // new PathPlannerAuto("Example Auto").schedule();
 
         if(autonomousCommand != null)
         {
