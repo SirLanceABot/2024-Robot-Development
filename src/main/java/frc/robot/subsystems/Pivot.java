@@ -51,7 +51,7 @@ public class Pivot extends Subsystem4237
 
 
         private double currentRotationalPosition;
-        private boolean isToggleSwitchActive;
+        private boolean isToggleSwitchActive = false;
         private boolean isPIDSet;
         //private boolean isManualOverride;
 
@@ -62,8 +62,8 @@ public class Pivot extends Subsystem4237
     private class MyConstants
     {
         //for PID
-        public double kP = 17.0;
-        public double kI = 10.0;
+        public double kP = 140.0;
+        public double kI = 0.0;
         public double kD = 0.0;
         public double setPoint = 0.0;
         public int slotId = 0;
@@ -73,8 +73,8 @@ public class Pivot extends Subsystem4237
         public final double MOTOR_SPEED_UP = 0.07;
 
         //soft limits
-        public final double FORWARD_SOFT_LIMIT = 0.22; //0.33
-        public final double REVERSE_SOFT_LIMIT = 0.00;
+        public final double FORWARD_SOFT_LIMIT = 0.152; //0.33
+        public final double REVERSE_SOFT_LIMIT = 0.055;
     }
     
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
@@ -119,8 +119,8 @@ public class Pivot extends Subsystem4237
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, false);
-        motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, false);
+        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
+        motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
 
     }
 
@@ -189,7 +189,7 @@ public class Pivot extends Subsystem4237
     private void setAngle(double degrees)
     { 
         //setAngle using CANcoder
-        if(degrees >= 0.0 && degrees <= 90.0)
+        if(degrees >= 7.0 && degrees <= 67.0)
         {
             motor.setControl(degrees / 360.0);
         }
@@ -264,10 +264,10 @@ public class Pivot extends Subsystem4237
         myConstants.setPoint = PIDcontroller.getSetpoint();
         
         //variable to decide if the PID should be reset
-        periodicData.isPIDSet = !(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint());
+        //periodicData.isPIDSet = !(myConstants.kP != PIDcontroller.getP() || myConstants.kI != PIDcontroller.getI() || myConstants.kD != PIDcontroller.getD() || myConstants.setPoint != PIDcontroller.getSetpoint());
 
         //Returns current state of the toggle switch
-        periodicData.isToggleSwitchActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isToggleSwitchActive);
+        //periodicData.isToggleSwitchActive = SmartDashboard.getBoolean("Activate PID", !periodicData.isToggleSwitchActive);
 
         
 
@@ -282,27 +282,27 @@ public class Pivot extends Subsystem4237
         //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller
         //Go to ShuffleBoard - Sources - NetworkTables to insert widget 
-        if(periodicData.isPIDSet == false)
-        {
+        // if(periodicData.isPIDSet == false)
+        // {
             PIDcontroller.setP(myConstants.kP);
             PIDcontroller.setI(myConstants.kI);
             PIDcontroller.setD(myConstants.kD);
             PIDcontroller.setSetpoint(myConstants.setPoint);
             motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
-        }
+        // }
 
         // Toggle switch to use the PID controller widget (use toggle-button under Show as...)
-        SmartDashboard.putBoolean("Activate PID", periodicData.isToggleSwitchActive);
+        //SmartDashboard.putBoolean("Activate PID", periodicData.isToggleSwitchActive);
 
         //For activating setPoint using the toggle switch
-        if(periodicData.isToggleSwitchActive)
-        {
+        // if(periodicData.isToggleSwitchActive)
+        // {
             setAngle(myConstants.setPoint);
-        }
-        else
-        {
-            stopMotor();
-        }
+        // }
+        // else
+        // {
+        //     stopMotor();
+        // }
 
         //For competition
         // if(periodicData.isManualOverride)
