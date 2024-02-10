@@ -6,6 +6,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.motors.TalonFX4237;
 import frc.robot.subsystems.Pivot;
@@ -52,9 +53,12 @@ public class MatthewTest implements Test
      */
     public void periodic()
     {
-        pivot.tunePID();
+        if(!configPIDTrigger())
+        {
+            SmartDashboard.putBoolean("Activate PID", false);
+        }
     }
-    
+
     /**
      * This method runs one time after the periodic() method.
      */
@@ -66,5 +70,12 @@ public class MatthewTest implements Test
     // *** METHODS ***
     // Put any additional methods here.
 
+    public boolean configPIDTrigger()
+    {
+        Trigger pidTrigger = new Trigger(() -> SmartDashboard.getBoolean("Activate PID", false));
+        pidTrigger.onTrue(pivot.tunePID());
+        return SmartDashboard.getBoolean("Activate PID", false);
+        
+    }
         
 }
