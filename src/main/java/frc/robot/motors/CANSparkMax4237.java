@@ -13,7 +13,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -81,17 +80,18 @@ public class CANSparkMax4237 extends MotorController4237
     {
         REVLibError errorCode = REVLibError.kOk;
         int attemptCount = 0;
+        String logMessage = "";
         
         do
         {
             errorCode = func.apply();
-            // errorCode = motor.getLastError();
-            if(errorCode != REVLibError.kOk || printAllSetupMessages)
-            {
-                // System.out.println(motorControllerName + " : " + message + " " + errorCode);
-                DriverStation.reportWarning(motorControllerName + " : " + message + " " + errorCode, true);
-                motorLogEntry.append(motorControllerName + " : " + message + " " + errorCode);
-            }
+            logMessage = motorControllerName + " : " + message + " " + errorCode;
+
+            if(errorCode == REVLibError.kOk)
+                System.out.println(">> >> " + logMessage);
+            else
+                DriverStation.reportWarning(logMessage, false);
+            motorLogEntry.append(logMessage);
             attemptCount++;
         }
         while(errorCode != REVLibError.kOk && attemptCount < SETUP_ATTEMPT_LIMIT);
@@ -303,9 +303,28 @@ public class CANSparkMax4237 extends MotorController4237
             setup(() -> sparkPIDController.setD(kD, slotId), "Setup PIDController(kD)");
         }
 
+        if(!isPIDControlled)
+        {
+            registerPIDMotorController4237();
+            isPIDControlled = true;
+        }
+
         // pidController.setIZone(kIz);
         // pidController.setFF(kFF);
         // pidController.setOutputRange(kMinOutput, kMaxOutput);
+    }
+
+    public double[] getPID(int slotId)
+    {
+        double[] pid = {0.0, 0.0, 0.0};
+
+        if(slotId >= 0 && slotId <= 3)
+        {
+            pid[0] = sparkPIDController.getP(slotId);
+            pid[1] = sparkPIDController.getI(slotId);
+            pid[2] = sparkPIDController.getD(slotId);
+        }
+        return pid;
     }
     
     /**

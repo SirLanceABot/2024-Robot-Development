@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
+
 /**
  * This abstract class defines the abstract methods that all motor controllers have.
  * Every motor controller will automatically have the Watchdog enabled.
@@ -25,10 +26,15 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         System.out.println("Loading: " + fullClassName);
     }
 
-    // *** ABSTRACT CLASS VARAIBLES ***
-    // These varaibles are class variables (static)
+
+    // *** CLASS and INSTANCE VARAIBLES ***
+    // These varaibles are class and instance variables
     final static DataLog log = DataLogManager.getLog();
     private final static ArrayList<MotorController4237> allMotorControllers4237 = new ArrayList<MotorController4237>();
+    final static ArrayList<MotorController4237> pidMotorControllers4237 = new ArrayList<MotorController4237>();
+    boolean isPIDControlled = false;
+
+    private PIDTunerTab pidTunerTab = null;
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -64,6 +70,16 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
         allMotorControllers4237.add(this);
     }
 
+    void registerPIDMotorController4237()
+    {
+        pidMotorControllers4237.add(this);
+
+        // if(pidMotorControllers4237.size() == 1)
+        // {
+        //     pidTunerTab = new PIDTunerTab();
+        // }
+    }
+
     /**
      * Static method to log sticky faults of the motor controllers in the array list.
      * Call this method from the telopExit() method in the Robot class.
@@ -95,6 +111,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setupVelocityConversionFactor(double factor);
     public abstract void setupPIDController(int slotId, double kP, double kI, double kD);
     public abstract void setupFollower(int leaderId, boolean isInverted);
+    public abstract double[] getPID(int slotId);
     public abstract void logStickyFaults();
 
     public abstract void setControl(double position);

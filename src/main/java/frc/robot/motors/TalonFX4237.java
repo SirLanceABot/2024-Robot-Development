@@ -8,6 +8,9 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.configs.Slot2Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -90,16 +93,18 @@ public class TalonFX4237 extends MotorController4237
     {
         StatusCode errorCode = StatusCode.OK;
         int attemptCount = 0;
+        String logMessage = "";
         
         do
         {
             errorCode = func.apply();
-            if(errorCode != StatusCode.OK || printAllSetupMessages)
-            {
-                // System.out.println(motorControllerName + " : " + message + " " + errorCode);
-                DriverStation.reportWarning(motorControllerName + " : " + message + " " + errorCode, true);
-                motorLogEntry.append(motorControllerName + " : " + message + " " + errorCode);
-            }
+            logMessage = motorControllerName + " : " + message + " " + errorCode;
+
+            if(errorCode == StatusCode.OK)
+                System.out.println(">> >> " + logMessage);
+            else
+                DriverStation.reportWarning(logMessage, true);
+            motorLogEntry.append(logMessage);
             attemptCount++;
         }
         while(errorCode != StatusCode.OK && attemptCount < SETUP_ATTEMPT_LIMIT);
@@ -329,6 +334,38 @@ public class TalonFX4237 extends MotorController4237
             slotConfigs.kD = kD;
             setup(() -> motor.getConfigurator().apply(slotConfigs), "Setup PID Controller"); 
         }
+
+        if(!isPIDControlled)
+        {
+            registerPIDMotorController4237();
+            isPIDControlled = true;
+        }
+    }
+
+    public double[] getPID(int slotId)
+    {
+        double[] pid = {0.0, 0.0, 0.0};
+        if(slotId >= 0 && slotId <= 2)
+        {
+            SlotConfigs slotConfigs = new SlotConfigs();
+            switch(slotId)
+            {
+                case 0:
+                    motor.getConfigurator().refresh(Slot0Configs.from(slotConfigs));
+                    break;
+                case 1:
+                    motor.getConfigurator().refresh(Slot1Configs.from(slotConfigs));
+                    break;
+                case 2:
+                    motor.getConfigurator().refresh(Slot2Configs.from(slotConfigs));
+                    break;
+            }     
+                
+            pid[0] = slotConfigs.kP;
+            pid[1] = slotConfigs.kI;
+            pid[2] = slotConfigs.kD;
+        }
+        return pid;
     }
 
     /**
