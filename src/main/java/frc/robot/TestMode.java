@@ -15,12 +15,12 @@ import frc.robot.tests.Test;
 // *** IMPORT statements ***
 // Uncomment one of these statements
 
-// import frc.robot.tests.ExampleTest;
+import frc.robot.tests.ExampleTest;
 // import frc.robot.tests.BradyTest;
-import frc.robot.tests.DaneTest;
+// import frc.robot.tests.DaneTest;
 // import frc.robot.tests.GretaTest;
 // import frc.robot.tests.LoganTest;
-import frc.robot.tests.MatthewTest;
+// import frc.robot.tests.MatthewTest;
 // import frc.robot.tests.NiyatiTest;
 // import frc.robot.tests.OwenTest;
 // import frc.robot.tests.RobbieFTest;
@@ -52,9 +52,9 @@ public class TestMode
         // *** INITIALIZATION statements ***
         // Uncomment one of these statements
 
-        // myTest = new ExampleTest(robotContainer);
+        myTest = new ExampleTest(robotContainer);
         // myTest = new BradyTest(robotContainer);
-        myTest = new DaneTest(robotContainer);
+        // myTest = new DaneTest(robotContainer);
         // myTest = new GretaTest(robotContainer);
         // myTest = new LoganTest(robotContainer);
         // myTest = new MatthewTest(robotContainer);

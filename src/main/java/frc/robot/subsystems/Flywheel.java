@@ -48,9 +48,9 @@ public class Flywheel extends Subsystem4237
         private double currentVelocity;
         private double RPMSpeed = 0.0;
 
-        private double kP = 0.0;
-        private double kI = 0.0;
-        private double kD = 0.0;
+        private double kP = SmartDashboard.getNumber("kP", 0.0);
+        private double kI = SmartDashboard.getNumber("kI", 0.0);
+        private double kD = SmartDashboard.getNumber("kD", 0.0);
 
         // OUTPUTS
        
@@ -98,6 +98,8 @@ public class Flywheel extends Subsystem4237
         SmartDashboard.putNumber("kP", periodicData.kP);
         SmartDashboard.putNumber("kI", periodicData.kI);
         SmartDashboard.putNumber("kD", periodicData.kD);
+
+        SmartDashboard.putNumber("Velocity", 0.0);
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -107,9 +109,8 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
-        // motor.setupPIDController(0, 17.0, 10.0, 0.0);
-        motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
-
+        motor.setupPIDController(0, 0.17, 0.0, 0.02);
+        // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
 
 
@@ -202,16 +203,18 @@ public class Flywheel extends Subsystem4237
         //     motor.set(0.0);
         // }
 
-        // Done to fix the bang bang controller
-        if(periodicData.RPMSpeed <= 0.0)
-        {
-            motor.set(periodicData.flywheelSpeed);
-        }
-        else
-        {
-            motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
-        }
-        
+        // // Done to fix the bang bang controller
+        // if(periodicData.RPMSpeed <= 0.0)
+        // {
+        //     motor.set(periodicData.flywheelSpeed);
+        // }
+        // else
+        // {
+        //     motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
+        // }
+
+        motor.setControlVelocity(periodicData.flywheelSpeed);
+        SmartDashboard.putNumber("Velocity", periodicData.currentVelocity);
 
         // motor.set(periodicData.flywheelSpeed);
     }

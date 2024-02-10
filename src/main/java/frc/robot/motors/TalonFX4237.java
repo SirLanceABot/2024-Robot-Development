@@ -17,6 +17,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
@@ -51,6 +52,7 @@ public class TalonFX4237 extends MotorController4237
 
     private final TalonFX motor;
     private final PositionVoltage positionVoltage;
+    private final VelocityVoltage velocityVoltage;
     private final String motorControllerName;
     
     private StringLogEntry motorLogEntry;
@@ -79,6 +81,7 @@ public class TalonFX4237 extends MotorController4237
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         motor.getConfigurator().apply(feedbackConfigs);
         positionVoltage = new PositionVoltage(0.0);
+        velocityVoltage = new VelocityVoltage(0);
         clearStickyFaults();
         setupFactoryDefaults();
 
@@ -510,7 +513,7 @@ public class TalonFX4237 extends MotorController4237
      */
     public void setControlVelocity(double velocity)
     {
-        motor.setControl(positionVoltage.withVelocity(velocity));
+        motor.setControl(velocityVoltage.withVelocity(velocity));
     }
 
     /**

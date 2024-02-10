@@ -93,12 +93,12 @@ public class SamTest implements Test
             // flywheel.intake();
             // index.intake();
             // shuttle.moveDownward();
-            flywheel.shoot(0.3);
+            flywheel.shoot(80);
             // index.setVelocity(1);
         }
         else
         {
-            flywheel.stop();
+            // flywheel.stop();
             // index.stop();
             // shuttle.stop();
             // pivot.stopMotor();
@@ -108,17 +108,17 @@ public class SamTest implements Test
             index.setVelocity(1);
         }
         // else if(joystick.getRawButton(4))    //Y
-        // {
-        // //     flywheel.shoot(0.1);
-        // //     index.setVelocity(0.1);
-        // //     shuttle.moveUpward();
-        // }
+        // // {
+        // // //     flywheel.shoot(0.1);
+        // // //     index.setVelocity(0.1);
+        // // //     shuttle.moveUpward();
+        // // }
         else
         {
-            // flywheel.stop();
+        //     // flywheel.stop();
             index.stop();
-            // shuttle.stop();
-            // pivot.stopMotor();
+        //     // shuttle.stop();
+        //     // pivot.stopMotor();
         }
     }
     
