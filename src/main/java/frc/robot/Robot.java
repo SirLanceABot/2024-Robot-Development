@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandList;
 import frc.robot.motors.MotorController4237;
+import frc.robot.motors.PIDTunerTab;
 import frc.robot.shuffleboard.AutonomousTabData;
 
 /**
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot
     private AutonomousTabData autonomousTabData = null;
     private Command autonomousCommand = null;
     private TestMode testMode = null;
+    private PIDTunerTab pidTunerTab = null;
     
 
     // *** CLASS CONSTRUCTORS ***
@@ -246,6 +248,8 @@ public class Robot extends TimedRobot
         // Create a TestMode object to test one team members code.
         testMode = new TestMode(robotContainer);
 
+        pidTunerTab = new PIDTunerTab();
+
         testMode.init();
     }
 
@@ -272,6 +276,9 @@ public class Robot extends TimedRobot
 
         // Set the TestMode object to null so that garbage collection will remove the object.
         testMode = null;
+
+        pidTunerTab.close();
+        pidTunerTab = null;
         
         robotContainer.stopRobot();
     }

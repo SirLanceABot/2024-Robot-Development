@@ -7,6 +7,7 @@ import java.util.function.BooleanSupplier;
 // import com.ctre.phoenix6.configs.AudioConfigs;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -17,6 +18,7 @@ import frc.robot.controls.Xbox;
 // import frc.robot.motors.TalonFX4237;
 import frc.robot.motors.CANSparkMax4237;
 import frc.robot.motors.MotorController4237;
+import frc.robot.motors.TalonFX4237;
 
 /**
  * Test class for JWood
@@ -45,8 +47,8 @@ public class JWoodTest implements Test
     // private final TalonFX4237 mc;
     private final Joystick joystick;
     // private TalonFX talon;
-    private CANSparkMax4237 motor1 = new CANSparkMax4237(3, "rio", "motor1");
-    private CANSparkMax4237 motor2 = new CANSparkMax4237(5, "rio", "motor2");
+    private TalonFX4237 motor1 = new TalonFX4237(1, "rio", "motor1");
+    private TalonFX4237 motor2;// = new TalonFX4237(12, "rio", "motor2");
 
     private boolean isInverted = false;
     private boolean isBrake = true;
@@ -65,9 +67,11 @@ public class JWoodTest implements Test
 
         this.robotContainer = robotContainer;
         // mc = new TalonFX4237(1, Constants.ROBORIO, "JWoodTest Motor");
+
+        // LiveWindow.setEnabled(true);
         joystick = new Joystick(0);
         configMotor(motor1);
-        configMotor(motor2);
+        // configMotor(motor2);
 
         // configStartButton();
 
@@ -123,8 +127,10 @@ public class JWoodTest implements Test
     public void configMotor(MotorController4237 mc)
     {
         mc.setupFactoryDefaults();
-        mc.setupBrakeMode();
-        mc.setupInverted(isInverted);
+        mc.setupCoastMode();
+        mc.setupPIDController(0, 2.5, 0, 0);
+        // mc.setupBrakeMode();
+        // mc.setupInverted(isInverted);
         // mc.setupForwardSoftLimit(50, true);
         // mc.setupReverseSoftLimit(0, true);
     }
@@ -167,19 +173,19 @@ public class JWoodTest implements Test
         if(joystick.getRawButton(1))
         {
             motor1.set(0.1);
-            motor2.set(0.1);
+            // motor2.set(0.1);
             // System.out.println(mc.getPosition());
         }
         else if(joystick.getRawButton(2))
         {
             motor1.set(-0.1);
-            motor2.set(-0.1);
+            // motor2.set(-0.1);
             // System.out.println(mc.getPosition());
         }
         else
         {
             motor1.set(0.0);
-            motor2.set(0.0);
+            // motor2.set(0.0);
         }
 
         // if(joystick.getRawButtonPressed(3))
