@@ -81,55 +81,55 @@ public class OwenTest implements Test
     public void periodic()
     {
         // motor.follow(motor1);
-        // configLeftTrigger();
-        // configRightTrigger();
+        configLeftTrigger();
+        configRightTrigger();
         // configBackButton();
         // configLeftBumper();
         // configRightBumper();
         // System.out.println("Velocity: " + climb.getLeftPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
-        if(joystick.getRawButton(1))
-        {
-            System.out.println("Chain Position");
-            pivot.moveDown();
-            // System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.shoot(0.7);
-            // index.feedNoteToFlywheel(0.9);
-            // climb.moveToChain();
-        }
-        else if(joystick.getRawButton(2))
-        {
-            System.out.println("Robot Position");
-            // System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.intake();
-            // index.feedNoteToFlywheel(0.1);
-            // climb.moveToInnerRobot();
-        }
-        else if(joystick.getRawButton(3))
-        {
-            System.out.println("Raise Climb");
-            // System.out.println("Encoder Position" + climb.getLeftPosition());
-            // index.reverse();
-            // climb.extend();
-        }
-        else if(joystick.getRawButton(4))
-        {
-            System.out.println("Lower Climb");
-            pivot.moveUp();
-            // System.out.println("Encoder Position" + climb.getLeftPosition());
-            // index.reverse();
-            // climb.retract();
-        }
-        else 
-        {
-            System.out.println("Off");
-            // System.out.println("Encoder Position" + climb.getLeftPosition());
-            // flywheel.stop();
-            // index.stop();
-            // climb.off();
-            pivot.stop();
-        }
+        // if(joystick.getRawButton(1))
+        // {
+        //     System.out.println("Chain Position");
+        //     pivot.moveDown();
+        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.shoot(0.7);
+        //     // index.feedNoteToFlywheel(0.9);
+        //     // climb.moveToChain();
+        // }
+        // else if(joystick.getRawButton(2))
+        // {
+        //     System.out.println("Robot Position");
+        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.intake();
+        //     // index.feedNoteToFlywheel(0.1);
+        //     // climb.moveToInnerRobot();
+        // }
+        // // else if(joystick.getRawButton(3))
+        // {
+        //     // System.out.println("Raise Climb");
+        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // index.reverse();
+        //     // climb.extend();
+        // }
+        // // else if(joystick.getRawButton(4))
+        // {
+        //     // System.out.println("Lower Climb");
+        //     // pivot.moveUp();
+        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // index.reverse();
+        //     // climb.retract();
+        // }
+        // else 
+        // {
+        //     // System.out.println("Off");
+        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+        //     // flywheel.stop();
+        //     // index.stop();
+        //     // climb.off();
+        //     // pivot.stop();
+        // }
 
     }
     
@@ -149,8 +149,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            // leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(1.0).alongWith(flywheel.shootCommand(0.625)));
-            // leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
+            leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.4).alongWith(flywheel.shootCommand(0.4)));
+            leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
         }
     }
     
