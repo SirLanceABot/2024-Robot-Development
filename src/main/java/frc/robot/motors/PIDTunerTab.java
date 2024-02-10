@@ -3,13 +3,11 @@ package frc.robot.motors;
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -32,11 +30,21 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
         kOn, kStillOn, kOff, kStillOff
     }
 
+    private enum PIDControlType
+    {
+        kNone, kPosition, kVelocity;
+    }
+
     private final class PeriodicData
     {
         // INPUTS
-        private MotorController4237 currentMotor = null;
-        private int currentSlot = 0;
+        private MotorController4237 motor = null;
+        private MotorController4237 prevMotor = null;
+        private PIDControlType pidControlType = PIDControlType.kNone;
+        private int pidSlotID = 0;
+        private int prevPIDSlotId = 0;
+        private double setpoint = 0.0;
+
         private SwitchState switchState = SwitchState.kOff;
 
         // OUTPUTS
@@ -48,7 +56,8 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     private ShuffleboardTab pidTunerTab = Shuffleboard.getTab("PIDTuner");
 
     private SendableChooser<MotorController4237> motorBox = new SendableChooser<>();
-    private SendableChooser<Integer> pidSlotBox = new SendableChooser<>();
+    private SendableChooser<PIDControlType> pidControlTypeBox = new SendableChooser<>();
+    private SendableChooser<Integer> pidSlotIDBox = new SendableChooser<>();
     // private SendableChooser<PIDController> pidControllerBox0 = new SendableChooser<>();
     // private GenericEntry pidControllerBox;
     // private SendableChooser<Boolean> setPIDBox = new SendableChooser<>();
@@ -60,7 +69,7 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     
     private GenericEntry setPIDBox;
     private GenericEntry valueBox;
-    private PIDController pidController = new PIDController(0, 0, 0);
+    // private PIDController pidController = new PIDController(0, 0, 0);
 
     
     private PeriodicData periodicData = new PeriodicData();
@@ -85,6 +94,7 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     private void createObjects()
     {
         createMotorBox();
+        createControlTypeBox();
         createPIDSlotBox();
         // createPIDControllerBox();
         // pidControllerBox = createPIDControllerBox();
@@ -129,22 +139,44 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     * <b>PID Slot</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
+    private void createControlTypeBox()
+    {
+        //create and name the Box
+        SendableRegistry.add(pidControlTypeBox, "Control Type");
+        SendableRegistry.setName(pidControlTypeBox, "Control Type");
+        
+        //add options to the Box
+        pidControlTypeBox.setDefaultOption("None", PIDControlType.kNone);
+        pidControlTypeBox.addOption("Position", PIDControlType.kPosition);
+        pidControlTypeBox.addOption("Velocity", PIDControlType.kVelocity);
+
+        //put the widget on the shuffleboard
+        pidTunerTab.add(pidControlTypeBox)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(1, 5)
+            .withSize(4, 2);
+    }
+
+    /**
+    * <b>PID Slot</b> Box
+    * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
+    */
     private void createPIDSlotBox()
     {
         //create and name the Box
-        SendableRegistry.add(pidSlotBox, "PID Slot");
-        SendableRegistry.setName(pidSlotBox, "PID Slot");
+        SendableRegistry.add(pidSlotIDBox, "PID Slot");
+        SendableRegistry.setName(pidSlotIDBox, "PID Slot");
         
         //add options to the Box
-        pidSlotBox.setDefaultOption("0", 0);
-        pidSlotBox.addOption("1", 1);
-        pidSlotBox.addOption("2", 2);
-        pidSlotBox.addOption("2", 2);
+        pidSlotIDBox.setDefaultOption("0", 0);
+        pidSlotIDBox.addOption("1", 1);
+        pidSlotIDBox.addOption("2", 2);
+        pidSlotIDBox.addOption("2", 2);
 
         //put the widget on the shuffleboard
-        pidTunerTab.add(pidSlotBox)
+        pidTunerTab.add(pidSlotIDBox)
             .withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withPosition(1, 5)
+            .withPosition(1, 9)
             .withSize(4, 2);
     }
 
@@ -152,27 +184,13 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     * <b>PID Controller</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    // private void createPIDControllerBox()
-    // {
-    //     //create and name the Box
-    //     SendableRegistry.add(pidControllerBox0, "PID Controller");
-    //     SendableRegistry.setName(pidControllerBox0, "PID Controller");
-
-    //     //put the widget on the shuffleboard
-    //     pidTunerTab.add(pidControllerBox0)
-    //         .withWidget(BuiltInWidgets.kPIDController)
-    //         .withPosition(6, 1)
-    //         .withSize(4, 6);
-    // }
-
-    // private GenericEntry createPIDControllerBox()
-    // {
-    //     return pidTunerTab.add("PID Controller", "0, 0, 0, 0")
-    //         .withWidget(BuiltInWidgets.kPIDController)
-    //         .withPosition(6, 1)
-    //         .withSize(4, 6)
-    //         .getEntry("PIDController");
-    // }
+    private void createPIDControllerBox()
+    {
+        pidTunerLayout = pidTunerTab.getLayout("PID Tuner", BuiltInLayouts.kList)
+            .withPosition(6, 1)
+            .withSize(6, 6)
+            .withProperties(Map.of("Label position", "LEFT"));
+    }
 
     private GenericEntry createKpBox()
     {
@@ -202,40 +220,16 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
             .getEntry();
     } 
 
-    private void createPIDControllerBox()
-    {
-        pidTunerLayout = pidTunerTab.getLayout("PID Tuner", BuiltInLayouts.kList)
-                            .withPosition(6, 1)
-                            .withSize(4, 6)
-                            .withProperties(Map.of("Label position", "LEFT"));
-
-        
-
-    }
 
     /**
      * <b>Set PID</b> Box
      * <p>Create an entry in the Network Table and add the Button to the Shuffleboard Tab
      */
-    // private void createSetPIDBox()
-    // {
-    //     SendableRegistry.add(setPIDBox, "Set PID");
-    //     SendableRegistry.setName(setPIDBox, "Set PID");
-
-    //     setPIDBox.setDefaultOption("No", false);
-    //     setPIDBox.addOption("Yes", true);
-
-    //     pidTunerTab.add(setPIDBox)
-    //         .withWidget(BuiltInWidgets.kComboBoxChooser)
-    //         .withPosition(11, 1)
-    //         .withSize(4, 2);
-    // }
-
     private GenericEntry createSetPIDBox()
     {
         return pidTunerTab.add("Set PID", false)
             .withWidget(BuiltInWidgets.kToggleSwitch)
-            .withPosition(11, 1)
+            .withPosition(13, 1)
             .withSize(4, 2)
             .getEntry();
     }
@@ -244,7 +238,7 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     {
         return pidTunerTab.add("Value", 0.0)
             .withWidget(BuiltInWidgets.kTextView)
-            .withPosition(11, 5)
+            .withPosition(13, 5)
             .withSize(4, 2)
             .getEntry();
     }
@@ -297,14 +291,20 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
         if(periodicData.switchState == SwitchState.kOff || periodicData.switchState == SwitchState.kStillOff)
         {
             // Get the current motor and slot
-            periodicData.currentMotor = motorBox.getSelected();
-            periodicData.currentSlot = pidSlotBox.getSelected();
+            periodicData.motor = motorBox.getSelected();
+            periodicData.pidControlType = pidControlTypeBox.getSelected();
+            periodicData.pidSlotID = pidSlotIDBox.getSelected();
         }
         else  // if the the switch is on
         {
             // Get the current value
-            if(periodicData.currentMotor != null)
-                periodicData.value = motorBox.getSelected().getPosition();
+            if(periodicData.motor != null)
+            {
+                if(periodicData.pidControlType == PIDControlType.kPosition)
+                    periodicData.value = motorBox.getSelected().getPosition();
+                else
+                    periodicData.value = motorBox.getSelected().getVelocity();
+            }
 
             // System.out.println("Selected = " + motorBox.getSelected() + " " + pidSlotBox.getSelected());
         }
@@ -313,27 +313,25 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
     @Override
     public void writePeriodicOutputs()
     {
-        if(periodicData.currentMotor != null)
+        if(periodicData.motor != null && periodicData.pidControlType != PIDControlType.kNone)
         {
-            double setpoint = setpointBox.getDouble(0.0);
             switch(periodicData.switchState)
             {
                 case kOn:
-                    // double kP = pidControllerBox0.getSelected().getP();
-                    // double kI = pidControllerBox.getSelected().getI();
-                    // double kD = pidControllerBox.getSelected().getD();
-
                     double kP = kpBox.getDouble(0.0);
                     double kI = kiBox.getDouble(0.0);
                     double kD = kdBox.getDouble(0.0);
+                    periodicData.setpoint = setpointBox.getDouble(0.0);
 
-                    motorBox.getSelected().setupPIDController(periodicData.currentSlot, kP, kI, kD);
-                    motorBox.getSelected().setControl(setpoint);
+                    motorBox.getSelected().setupPIDController(periodicData.pidSlotID, kP, kI, kD);
                     valueBox.setDouble(round(periodicData.value, 3));
                     break;
 
                 case kStillOn:
-                    motorBox.getSelected().setControl(setpoint);
+                    if(periodicData.pidControlType == PIDControlType.kPosition)
+                        motorBox.getSelected().setControl(periodicData.setpoint);
+                    else
+                        motorBox.getSelected().setControlVelocity(periodicData.setpoint);
                     valueBox.setDouble(round(periodicData.value, 3));
                     break;
                 
@@ -342,28 +340,22 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
                     break;
 
                 case kStillOff:
-                    // if(periodicData.currentMotor != previousMotor || periodicData.currentSlot != previousSlot)
-                    // {
-                    //     double[] pid = periodicData.currentMotor.getPID(periodicData.currentSlot);
-
-                    //     pidControllerBox.getSelected().setPID(pid[0], pid[1], pid[2]);
-                    //     pidControllerBox.getSelected().setSetpoint(0.0);
-                    //     valueBox.setDouble(round(periodicData.currentMotor.getPosition(), 3));
-
-                    //     previousMotor = periodicData.currentMotor;
-                    //     previousSlot = periodicData.currentSlot;
-                    // }
+                    if(periodicData.motor != periodicData.prevMotor || periodicData.pidSlotID != periodicData.prevPIDSlotId)
+                        valueBox.setDouble(round(periodicData.value, 3));
                     break;
             }
         }
+
+        periodicData.prevMotor = periodicData.motor;
+        periodicData.prevPIDSlotId = periodicData.pidSlotID;
     }
 
     @Override
     public void close()
     {
         motorBox.close();
-        pidSlotBox.close();
-        // pidControllerBox.close();
+        pidControlTypeBox.close();
+        pidSlotIDBox.close();
         kpBox.close();
         kiBox.close();
         kdBox.close();

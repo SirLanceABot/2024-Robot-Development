@@ -369,6 +369,16 @@ public class CANSparkMax4237 extends MotorController4237
     }
 
     /**
+     * Spin the motor to a velocity using PID control.
+     * Units are rotations by default, but can be changed using the conversion factor.
+     * @param velocity The velocity to spin the motor at
+     */
+    public void setControlVelocity(double velocity)
+    {
+        sparkPIDController.setReference(velocity, CANSparkBase.ControlType.kVelocity);
+    }
+
+    /**
      * Set the position of the encoder.
      * Units are rotations by default, but can be changed using the conversion factor.
      * @param position The position of the encoder

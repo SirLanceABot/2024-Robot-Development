@@ -34,8 +34,6 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     final static ArrayList<MotorController4237> pidMotorControllers4237 = new ArrayList<MotorController4237>();
     boolean isPIDControlled = false;
 
-    private PIDTunerTab pidTunerTab = null;
-
 
     // *** CLASS CONSTRUCTORS ***
     // Put all class constructors here
@@ -73,11 +71,6 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     void registerPIDMotorController4237()
     {
         pidMotorControllers4237.add(this);
-
-        // if(pidMotorControllers4237.size() == 1)
-        // {
-        //     pidTunerTab = new PIDTunerTab();
-        // }
     }
 
     /**
@@ -115,6 +108,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void logStickyFaults();
 
     public abstract void setControl(double position);
+    public abstract void setControlVelocity(double velocity);
     public abstract void setPosition(double position);
     public abstract double getPosition();
     public abstract double getVelocity();
