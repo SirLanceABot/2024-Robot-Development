@@ -14,10 +14,12 @@ import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class CANSparkMax4237 extends MotorController4237
+public class CANSparkMax4237 extends MotorController4237 implements Sendable
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -45,7 +47,6 @@ public class CANSparkMax4237 extends MotorController4237
 
     private StringLogEntry motorLogEntry;
     private final int SETUP_ATTEMPT_LIMIT = 5;
-    private final boolean printAllSetupMessages = true;
     private int setupErrorCount = 0;
 
     /**
@@ -68,6 +69,7 @@ public class CANSparkMax4237 extends MotorController4237
         sparkPIDController = motor.getPIDController();
         clearStickyFaults();
         setupFactoryDefaults();
+        // SendableRegistry.addLW(this, motorControllerName, deviceId);
         
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
@@ -301,12 +303,6 @@ public class CANSparkMax4237 extends MotorController4237
             setup(() -> sparkPIDController.setP(kP, slotId), "Setup PIDController(kP)");
             setup(() -> sparkPIDController.setI(kI, slotId), "Setup PIDController(kI)");
             setup(() -> sparkPIDController.setD(kD, slotId), "Setup PIDController(kD)");
-        }
-
-        if(!isPIDControlled)
-        {
-            registerPIDMotorController4237();
-            isPIDControlled = true;
         }
 
         // pidController.setIZone(kIz);

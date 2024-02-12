@@ -19,6 +19,7 @@ import frc.robot.controls.Xbox;
 import frc.robot.motors.CANSparkMax4237;
 import frc.robot.motors.MotorController4237;
 import frc.robot.motors.TalonFX4237;
+import frc.robot.subsystems.ExampleSubsystem;
 
 /**
  * Test class for JWood
@@ -44,14 +45,15 @@ public class JWoodTest implements Test
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final RobotContainer robotContainer;
+    private final ExampleSubsystem exampleSubsystem;
     // private final TalonFX4237 mc;
     private final Joystick joystick;
     // private TalonFX talon;
-    private TalonFX4237 motor1 = new TalonFX4237(1, "rio", "motor1");
-    private TalonFX4237 motor2;// = new TalonFX4237(12, "rio", "motor2");
+    // private TalonFX4237 motor1 = new TalonFX4237(4, "rio", "motor4");
+    // private TalonFX4237 motor2 = new TalonFX4237(12, "rio", "motor12");
 
-    private boolean isInverted = false;
-    private boolean isBrake = true;
+    // private boolean isInverted = false;
+    // private boolean isBrake = true;
 
 
     // *** CLASS CONSTRUCTORS ***
@@ -66,14 +68,11 @@ public class JWoodTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        // mc = new TalonFX4237(1, Constants.ROBORIO, "JWoodTest Motor");
+        this.exampleSubsystem = robotContainer.exampleSubsystem;
 
-        // LiveWindow.setEnabled(true);
         joystick = new Joystick(0);
-        configMotor(motor1);
+        // configMotor(motor1);
         // configMotor(motor2);
-
-        // configStartButton();
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -82,53 +81,11 @@ public class JWoodTest implements Test
     // *** CLASS METHODS & INSTANCE METHODS ***
     // Put all class methods and instance methods here
 
-    // private void configStartButton()
-    // {
-    //     // Start Button
-    //     BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
-    //     Trigger startButtonTrigger = new Trigger(startButton);
-
-    //     startButtonTrigger.onTrue(intakeFromFloor());
-    // }
-
-    // public Command intakeFromFloor()
-    // {
-    //     if(robotContainer.intakePositioning != null &&
-    //         robotContainer.intake != null &&
-    //         robotContainer.shuttle != null &&
-    //         robotContainer.index != null &&
-    //         robotContainer.secondShuttleProximity != null &&
-    //         robotContainer.indexProximity != null)
-    //     {
-    //         return
-    //         robotContainer.intakePositioning.moveUpCommand()
-    //         .alongWith(
-    //             robotContainer.intake.pickupFrontCommand(),
-    //             robotContainer.shuttle.moveUpwardCommand(),
-    //             robotContainer.index.acceptNoteCommand())
-    //         .andThen(
-    //             Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
-    //         .andThen(
-    //             robotContainer.intake.stopCommand()
-    //             .alongWith(
-    //                 robotContainer.intakePositioning.moveDownCommand()))
-    //         .andThen(
-    //             Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
-    //         .andThen(
-    //             robotContainer.shuttle.stopCommand()
-    //             .alongWith(
-    //                 robotContainer.index.stopCommand()))
-    //         .withName("Intake From Floor");
-    //     }
-    //     else
-    //         return Commands.none();
-    // }
-
     public void configMotor(MotorController4237 mc)
     {
         mc.setupFactoryDefaults();
         mc.setupCoastMode();
-        mc.setupPIDController(0, 2.5, 0, 0);
+        // mc.setupPIDController(0, 2.5, 0, 0);
         // mc.setupBrakeMode();
         // mc.setupInverted(isInverted);
         // mc.setupForwardSoftLimit(50, true);
@@ -172,20 +129,21 @@ public class JWoodTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            motor1.set(0.1);
+            // motor1.set(0.1);
             // motor2.set(0.1);
-            // System.out.println(mc.getPosition());
+            exampleSubsystem.set(0.1);
         }
         else if(joystick.getRawButton(2))
         {
-            motor1.set(-0.1);
+            // motor1.set(-0.1);
             // motor2.set(-0.1);
-            // System.out.println(mc.getPosition());
+            exampleSubsystem.set(-0.1);
         }
         else
         {
-            motor1.set(0.0);
+            // motor1.set(0.0);
             // motor2.set(0.0);
+            exampleSubsystem.stop();
         }
 
         // if(joystick.getRawButtonPressed(3))

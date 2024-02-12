@@ -123,10 +123,10 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
         //add options to the Box
         motorBox.setDefaultOption("None", null);
 
-        for(MotorController4237 pmc : MotorController4237.pidMotorControllers4237)
-        {
-            motorBox.addOption(pmc.getDescription(), pmc);
-        }
+        // for(MotorController4237 pmc : MotorController4237.pidMotorControllers4237)
+        // {
+        //     motorBox.addOption(pmc.getDescription(), pmc);
+        // }
 
         //put the widget on the shuffleboard
         pidTunerTab.add(motorBox)

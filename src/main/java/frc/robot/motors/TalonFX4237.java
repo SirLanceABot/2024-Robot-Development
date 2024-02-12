@@ -28,11 +28,13 @@ import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 import com.ctre.phoenix6.spns.SpnValue;
 
 import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
-public class TalonFX4237 extends MotorController4237
+public class TalonFX4237 extends MotorController4237 implements Sendable
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -57,7 +59,6 @@ public class TalonFX4237 extends MotorController4237
     
     private StringLogEntry motorLogEntry;
     private final int SETUP_ATTEMPT_LIMIT = 5;
-    private final boolean printAllSetupMessages = true;
     private int setupErrorCount = 0;
 
     /**
@@ -84,6 +85,12 @@ public class TalonFX4237 extends MotorController4237
         velocityVoltage = new VelocityVoltage(0);
         clearStickyFaults();
         setupFactoryDefaults();
+
+        // SendableRegistry.remove(motor);
+        // SendableRegistry.disableLiveWindow(motor);
+        SendableRegistry.addLW(this, motorControllerName, deviceId);
+        
+        // SendableRegistry.addChild(this, motor);
 
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
@@ -336,12 +343,6 @@ public class TalonFX4237 extends MotorController4237
             slotConfigs.kI = kI;
             slotConfigs.kD = kD;
             setup(() -> motor.getConfigurator().apply(slotConfigs), "Setup PID Controller"); 
-        }
-
-        if(!isPIDControlled)
-        {
-            registerPIDMotorController4237();
-            isPIDControlled = true;
         }
     }
 
@@ -601,7 +602,7 @@ public class TalonFX4237 extends MotorController4237
     @Override
     public void initSendable(SendableBuilder builder) 
     {
-        builder.setSmartDashboardType("MotorController");
+        builder.setSmartDashboardType("Motor Controller");
         builder.setActuator(true);
         builder.setSafeState(this::stopMotor);
         builder.addDoubleProperty("Value", this::get, this::set);

@@ -8,9 +8,7 @@ import java.lang.invoke.MethodHandles;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -19,6 +17,7 @@ import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -75,6 +74,7 @@ public class RobotContainer
     private boolean useAllProximity         = false;
     private boolean useCompressor           = false;
     private boolean usePneumaticHub         = false;
+    private boolean useExampleSubsystem     = false;
 
     private boolean useMainShuffleboard     = false;
 
@@ -104,7 +104,8 @@ public class RobotContainer
     public final Proximity secondShuttleProximity;
     public final Proximity indexProximity;
     public final Proximity indexWheelsProximity;
-    
+    public final ExampleSubsystem exampleSubsystem;
+
     public final MainShuffleboard mainShuffleboard;
 
     public final DriverButtonBindings driverButtonBindings;
@@ -125,7 +126,7 @@ public class RobotContainer
         fullRobot               = (useFullRobot);
 
         gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                            : null;	
-        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, usePoseEstimator)  : null;
+        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, usePoseEstimator)       : null;
 
         ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                           : null;
         candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
@@ -137,16 +138,18 @@ public class RobotContainer
         pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
         shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
         
-        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                       : null;
-        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                       : null;
-        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                     : null;
-        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                      : null;
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                               : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                               : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                             : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                              : null;
         firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
         secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
         indexWheelsProximity    = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
         compressor              = (useFullRobot || useCompressor)           ? new Compressor(PneumaticsModuleType.REVPH)                : null;
-        pneumaticHub            = (useFullRobot || usePneumaticHub)         ? new PneumaticHub(1)                                : null;
+        pneumaticHub            = (useFullRobot || usePneumaticHub)         ? new PneumaticHub(1)                                       : null;
+
+        exampleSubsystem        = (useExampleSubsystem)                     ? new ExampleSubsystem()                                    : null;
 
         // DO NOT MOVE THIS STATEMENT
         // This statement must be after the subsystems have been instantiated
