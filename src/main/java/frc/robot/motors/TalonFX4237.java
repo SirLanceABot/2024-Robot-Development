@@ -34,7 +34,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
-public class TalonFX4237 extends MotorController4237 implements Sendable
+public class TalonFX4237 extends MotorController4237 //implements Sendable
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -593,12 +593,12 @@ public class TalonFX4237 extends MotorController4237 implements Sendable
         motor.disable();
     }
     
-    @Override
-    public void initSendable(SendableBuilder builder) 
-    {
-        builder.setSmartDashboardType("Motor Controller");
-        builder.setActuator(true);
-        builder.setSafeState(this::stopMotor);
-        builder.addDoubleProperty("Value", this::get, this::set);
-    }
+    // @Override
+    // public void initSendable(SendableBuilder builder) 
+    // {
+    //     builder.setSmartDashboardType("Motor Controller");
+    //     builder.setActuator(true);
+    //     builder.setSafeState(this::stopMotor);
+    //     builder.addDoubleProperty("Value", this::get, this::set);
+    // }
 }

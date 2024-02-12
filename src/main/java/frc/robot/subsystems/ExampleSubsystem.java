@@ -54,8 +54,8 @@ public class ExampleSubsystem extends Subsystem4237
         configMotors();
 
         SendableRegistry.addLW(this, "Example Subsystem", "MY Subsystem");
-        addChild("Motor 1", motor1);
-        addChild("Motor 2", motor2);
+        // addChild("Motor 1", motor1);
+        // addChild("Motor 2", motor2);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
