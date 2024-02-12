@@ -11,6 +11,7 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Proximity;
 import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shuttle;
 
 public class SamTest implements Test
@@ -31,10 +32,11 @@ public class SamTest implements Test
     // private final Proximity prox1;
     // private final Proximity prox2;
     // private final Candle4237 candle;
-    private final Shuttle shuttle;
-    private final Index index;
-    private final Pivot pivot;
-    private final Flywheel flywheel;
+    // private final Shuttle shuttle;
+    // private final Index index;
+    // private final Pivot pivot;
+    // private final Flywheel flywheel;
+    private final Intake intake;
     private final Joystick joystick;
 
     // *** CLASS CONSTRUCTOR ***
@@ -47,10 +49,11 @@ public class SamTest implements Test
         // prox2 = new Proximity(9);
         // candle = new Candle4237();
         joystick = new Joystick(0);
-        this.shuttle = robotContainer.shuttle;
-        this.index = robotContainer.index;
-        this.pivot = robotContainer.pivot;
-        this.flywheel = robotContainer.flywheel;
+        // this.shuttle = robotContainer.shuttle;
+        // this.index = robotContainer.index;
+        // this.pivot = robotContainer.pivot;
+        // this.flywheel = robotContainer.flywheel;
+        this.intake = robotContainer.intake;
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -93,33 +96,40 @@ public class SamTest implements Test
             // flywheel.intake();
             // index.intake();
             // shuttle.moveDownward();
-            flywheel.shoot(80);
+            // flywheel.shoot(80);
             // index.setVelocity(1);
+            intake.pickupFront();
         }
-        else
+        else if(joystick.getRawButton(2))   //B
         {
             // flywheel.stop();
             // index.stop();
             // shuttle.stop();
             // pivot.stopMotor();
+            intake.pickupBack();
         }
-        if(joystick.getRawButton(2))   //B
-        {
-            index.setVelocity(1);
-        }
-        // else if(joystick.getRawButton(4))    //Y
-        // // {
-        // // //     flywheel.shoot(0.1);
-        // // //     index.setVelocity(0.1);
-        // // //     shuttle.moveUpward();
-        // // }
         else
         {
-        //     // flywheel.stop();
-            index.stop();
-        //     // shuttle.stop();
-        //     // pivot.stopMotor();
+            intake.stop();
         }
+        // if(joystick.getRawButton(2))   //B
+        // {
+        //     // index.setVelocity(1);
+        //     intake.pickupFront();
+        // }
+        // // else if(joystick.getRawButton(4))    //Y
+        // // // {
+        // // // //     flywheel.shoot(0.1);
+        // // // //     index.setVelocity(0.1);
+        // // // //     shuttle.moveUpward();
+        // // // }
+        // else
+        // {
+        // //     // flywheel.stop();
+        //     index.stop();
+        // //     // shuttle.stop();
+        // //     // pivot.stopMotor();
+        // }
     }
     
     /**
@@ -128,10 +138,11 @@ public class SamTest implements Test
     public void exit()
     {
         // candle.stop();
-        flywheel.stop();
-        index.stop();
-        shuttle.stop();
+        // flywheel.stop();
+        // index.stop();
+        // shuttle.stop();
         // pivot.stopMotor();
+        intake.stop();
     }
 
     // *** METHODS ***

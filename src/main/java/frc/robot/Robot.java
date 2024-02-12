@@ -77,7 +77,7 @@ public class Robot extends TimedRobot
 
         DataLogManager.start();
 
-        enableLiveWindowInTest(true);
+        // enableLiveWindowInTest(true);
     }
 
     /**

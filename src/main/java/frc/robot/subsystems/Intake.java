@@ -117,8 +117,8 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = 0.6;
-        periodicData.bottomIntakeSpeed = 0.6;
+        periodicData.topIntakeSpeed = 0.8;
+        periodicData.bottomIntakeSpeed = 0.8;
     }
 
     public void ejectFront()
@@ -129,8 +129,8 @@ public class Intake extends Subsystem4237
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = 0.1;
-        periodicData.bottomIntakeSpeed = -0.1;
+        periodicData.topIntakeSpeed = 0.8;
+        periodicData.bottomIntakeSpeed = -0.8;
     }
 
     public void ejectBack()
