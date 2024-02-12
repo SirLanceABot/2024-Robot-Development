@@ -134,8 +134,8 @@ public class Climb extends Subsystem4237
         rightFollowMotor.setupFactoryDefaults();
         leftLeadMotor.setupInverted(false);
         rightFollowMotor.setupInverted(false);
-        leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        // leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        // rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
         leftLeadMotor.setPosition(0.0);
         rightFollowMotor.setPosition(0.0);
         rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
@@ -250,6 +250,7 @@ public class Climb extends Subsystem4237
                 leftLeadMotor.set(0.0);
                 // rightFollowMotor.set(0.0); 
             }
+            // leftLeadMotor.setControlPosition(targetPosition.value);
         }
     }
 

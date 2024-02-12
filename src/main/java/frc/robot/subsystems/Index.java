@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -44,12 +45,21 @@ public class Index extends Subsystem4237
         // private DoubleLogEntry positiDoubleLogEntry;
     }
 
-    private PeriodicData periodicData = new PeriodicData();
-    private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
     public static final double CURRENT_LIMIT                       = 10.0;
     public static final double CURRENT_THRESHOLD                   = 10.0;
     public static final double TIME_THRESHOLD                      = 10.0;
     public static final double ROLLER_RADIUS                       = 1.125; // inches
+
+    public double kP = 10.0;
+    public double kI = 0.0;
+    public double kD = 0.0;
+    public int slotID = 0;
+    public double setPoint = 0.0;
+
+    private PeriodicData periodicData = new PeriodicData();
+    private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
+    private PIDController PIDcontroller = new PIDController(kP, kI, kD);
+    
 
     /** 
      * Creates a new Index. 
@@ -70,9 +80,9 @@ public class Index extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
-        motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
         motor.setupPIDController(0, 17.0, 10.0, 0.0);
-        // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
+        motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
 
     }
 
@@ -143,23 +153,29 @@ public class Index extends Subsystem4237
     }
 
     //Returns speed in feet per minute
-    public double convertToSurfaceAreaSpeed(double speed)
-    {
-        return speed * 6380 * 2.5 * Math.PI;
-    }
+    // public double convertToSurfaceAreaSpeed(double speed)
+    // {
+    //     return speed * 6380 * 2.5 * Math.PI;
+    // }
 
     @Override
     public void readPeriodicInputs()
     {
         periodicData.currentPosition = motor.getPosition();
         periodicData.currentVelocity = motor.getVelocity();
+
+        kP = PIDcontroller.getP();
+        kI = PIDcontroller.getI();
+        kD = PIDcontroller.getD();
+        setPoint = PIDcontroller.getSetpoint();
+
     }
 
     @Override
     public void writePeriodicOutputs()
     {
         // motor.setControl(periodicData.motorSpeed);
-        motor.set(periodicData.motorSpeed); //sam added for testing
+        motor.setControlVelocity(periodicData.motorSpeed);
     }
 
     @Override
