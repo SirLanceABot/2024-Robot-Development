@@ -13,6 +13,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
@@ -36,6 +38,7 @@ public class PoseEstimator extends Subsystem4237
     private final Camera[] cameraArray;
 
     private final SwerveDrivePoseEstimator poseEstimator;
+    private final Field2d field = new Field2d();
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
@@ -82,6 +85,8 @@ public class PoseEstimator extends Subsystem4237
         {
             poseEstimator = null;
         }
+
+        SmartDashboard.putData("Field",field);
 
         System.out.println(fullClassName + " : Constructor Finished");
     }
@@ -212,6 +217,7 @@ public class PoseEstimator extends Subsystem4237
             };
             ASTable.getEntry("poseEstimator").setDoubleArray(pose);
 
+            field.setRobotPose(getEstimatedPose());
         }
     }
 

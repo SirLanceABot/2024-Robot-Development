@@ -4,6 +4,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Box;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -38,7 +40,7 @@ public class SensorTab
     private Drivetrain drivetrain;
     private Shuttle shuttle;
     private Pivot pivot;
-    private Flywheel flyWheel;
+    private Flywheel flywheel;
     private Index index;
     private Intake intake;
     private Climb climb;
@@ -54,7 +56,7 @@ public class SensorTab
     private GenericEntry brtEncoderBox;
     private GenericEntry shuttleEncoderBox;
     private GenericEntry pivotEncoderBox;
-    private GenericEntry flyWheelEncoderBox;
+    private GenericEntry flywheelEncoderBox;
     private GenericEntry indexEncoderBox;
     private GenericEntry topIntakeEncoderBox;
     private GenericEntry bottomIntakeEncoderBox;
@@ -64,6 +66,8 @@ public class SensorTab
     private GenericEntry secondShuttleProximityBox;
     private GenericEntry indexProximityBox;
     private GenericEntry indexWheelsProximityBox;
+    private GenericEntry flyWheelVelocityBox;
+    private GenericEntry indexVelocityBox;
 
     // *** CLASS CONSTRUCTOR ***
     SensorTab(RobotContainer robotContainer)
@@ -74,14 +78,14 @@ public class SensorTab
         this.gyro = robotContainer.gyro;
         this.shuttle = robotContainer.shuttle;
         this.pivot = robotContainer.pivot;
-        this.flyWheel = robotContainer.flywheel;
+        this.flywheel = robotContainer.flywheel;
         this.index = robotContainer.index;
         this.intake = robotContainer.intake;
         this.climb = robotContainer.climb;
         this.firstShuttleProximity = robotContainer.firstShuttleProximity;
         this.secondShuttleProximity = robotContainer.secondShuttleProximity;
         this.indexProximity = robotContainer.indexProximity;
-        this.indexWheelsProximity = robotContainer.indexWheelsProximity;
+        this.indexWheelsProximity = robotContainer.indexWheelsProximity; 
         
 
         if(drivetrain != null)
@@ -107,14 +111,18 @@ public class SensorTab
             pivotEncoderBox = createPivotEncoderBox();
         }
 
-        if(flyWheel != null)
+        if(flywheel != null)
         {
-            flyWheelEncoderBox = createFlyWheelEncoderBox();
+            flywheelEncoderBox = createFlywheelEncoderBox();
+            flyWheelVelocityBox = createFlywheelVelocityBox();
+
+            
         }
 
         if(index != null)
         {
             indexEncoderBox = createIndexEncoderBox();
+            indexVelocityBox = createIndexVelocityBox();
         }
 
         if(intake != null)
@@ -217,9 +225,9 @@ public class SensorTab
         .getEntry();
     }
 
-    private GenericEntry createFlyWheelEncoderBox()
+    private GenericEntry createFlywheelEncoderBox()
     {
-        return sensorTab.add("Fly Wheel", round(flyWheel.getPosition(),3))
+        return sensorTab.add("Fly Wheel", round(flywheel.getPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
         .withPosition(13,1) // sets position of widget
         .withSize(4,2) //sets size of widget
@@ -253,7 +261,7 @@ public class SensorTab
         .getEntry();
     }
 
-     private GenericEntry createRightClimbEncoderBox()
+    private GenericEntry createRightClimbEncoderBox()
     {
         return sensorTab.add("Right Climb", round(climb.getRightPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
@@ -262,7 +270,7 @@ public class SensorTab
         .getEntry();
     }
 
-     private GenericEntry createLeftClimbEncoderBox()
+    private GenericEntry createLeftClimbEncoderBox()
     {
         return sensorTab.add("Left Climb", round(climb.getLeftPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
@@ -331,6 +339,24 @@ public class SensorTab
             .getEntry();
     }
 
+    private GenericEntry createFlywheelVelocityBox()
+    {
+        return sensorTab.add("Flywheel Velocity", round(flywheel.getVelocity(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(13,4) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
+    private GenericEntry createIndexVelocityBox()
+    {
+        return sensorTab.add("Index Velocity", round(index.getVelocity(),3))
+        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
+        .withPosition(5,9) // sets position of widget
+        .withSize(4,2) //sets size of widget
+        .getEntry();
+    }
+
     public void updateEncoderData()
     {
         if(drivetrain != null)
@@ -356,9 +382,9 @@ public class SensorTab
             pivotEncoderBox.setDouble(round(pivot.getAngle(), 3));
         }
 
-        if(flyWheel != null)
+        if(flywheel != null)
         {
-            flyWheelEncoderBox.setDouble(round(flyWheel.getPosition(),3));
+            flywheelEncoderBox.setDouble(round(flywheel.getPosition(),3));
         }
 
         if(index != null)
