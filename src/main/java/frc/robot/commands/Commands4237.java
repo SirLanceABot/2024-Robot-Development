@@ -35,7 +35,6 @@ public final class Commands4237
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private static RobotContainer robotContainer = null;
-    private static InterpolatingDoubleTreeMap map = new InterpolatingDoubleTreeMap();
 
     // Initialize pivotAngleMap
    
@@ -191,21 +190,6 @@ public final class Commands4237
         double distance, angle = 0.0;
         Optional<Alliance> color = DriverStation.getAlliance();
 
-        // first value is distance from speaker in feet, second value is the pivot angle in degrees
-        map.put(3.0, 60.6);
-        map.put(4.0, 53.1);
-        map.put(5.0, 46.8);
-        map.put(6.0, 41.6);
-        map.put(7.0, 37.3);
-        map.put(8.0, 33.7);
-        map.put(9.0, 30.65);
-        map.put(10.0, 28.1);
-        map.put(11.0, 25.9);
-        map.put(12.0, 24.0);
-        map.put(13.0, 22.3);
-        map.put(14.0, 20.9);
-        map.put(15.0, 19.6);
-
         if(color.get() == Alliance.Red)
         {
             distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
@@ -215,8 +199,9 @@ public final class Commands4237
             distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
         }
 
-        distance = (Math.round((distance * 39.37 / 12.0)));
-        angle = map.get(distance);
+        // distance = (Math.round((distance * 39.37 / 12.0)));
+        distance = distance * 3.28; // meters to feet
+        angle = robotContainer.pivot.calculateAngleFromDistance(distance);
 
         if(robotContainer.drivetrain != null && robotContainer.pivot != null)
         {

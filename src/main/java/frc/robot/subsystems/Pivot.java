@@ -13,7 +13,7 @@ import frc.robot.motors.TalonFX4237;
 import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.AnalogEncoder;
@@ -84,6 +84,8 @@ public class Pivot extends Subsystem4237
     private final PeriodicData periodicData = new PeriodicData();  
     private final MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
+    private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
+
 
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
     
@@ -133,6 +135,25 @@ public class Pivot extends Subsystem4237
         canCoderConfig.MagnetSensor.MagnetOffset = -0.668213; //BW 2/9/2024
         pivotAngle.getConfigurator().apply(canCoderConfig);
         motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0);
+    }
+
+    private void configShotMap()
+    {
+        // first value is distance from speaker in feet, second value is the pivot angle in degrees
+        shotMap.put(3.0, 60.6);
+        shotMap.put(4.0, 53.1);
+        shotMap.put(5.0, 46.8);
+        shotMap.put(6.0, 41.6);
+        shotMap.put(7.0, 37.3);
+        shotMap.put(8.0, 33.7);
+        shotMap.put(9.0, 30.65);
+        shotMap.put(10.0, 28.1);
+        shotMap.put(11.0, 25.9);
+        shotMap.put(12.0, 24.0);
+        shotMap.put(13.0, 22.3);
+        shotMap.put(14.0, 20.9);
+        shotMap.put(15.0, 19.6);
+
     }
 
     public void moveUp()
@@ -226,6 +247,16 @@ public class Pivot extends Subsystem4237
         // {
         //     stop();
         // }
+    }
+
+    /**
+     * 
+     * @param distance (ft)
+     * @return angle pivot should move to
+     */
+    public double calculateAngleFromDistance(double distance)
+    {
+        return shotMap.get(distance);
     }
 
     public Command setAngleCommand(double angle)
