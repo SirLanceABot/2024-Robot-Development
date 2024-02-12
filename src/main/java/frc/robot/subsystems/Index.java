@@ -8,6 +8,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -39,6 +40,10 @@ public class Index extends Subsystem4237
         private double currentPosition;
         private double currentVelocity;
 
+        private double kP = SmartDashboard.getNumber("kP", 0.0);
+        private double kI = SmartDashboard.getNumber("kI", 0.0);
+        private double kD = SmartDashboard.getNumber("kD", 0.0);
+
         // OUTPUTS
         private double motorSpeed;
         private double encoderPosition;
@@ -50,15 +55,9 @@ public class Index extends Subsystem4237
     public static final double TIME_THRESHOLD                      = 10.0;
     public static final double ROLLER_RADIUS                       = 1.125; // inches
 
-    public double kP = 10.0;
-    public double kI = 0.0;
-    public double kD = 0.0;
-    public int slotID = 0;
-    public double setPoint = 0.0;
-
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
-    private PIDController PIDcontroller = new PIDController(kP, kI, kD);
+    private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
     
 
     /** 
@@ -69,6 +68,11 @@ public class Index extends Subsystem4237
         super("Index");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
+        SmartDashboard.putNumber("kP", periodicData.kP);
+        SmartDashboard.putNumber("kI", periodicData.kI);
+        SmartDashboard.putNumber("kD", periodicData.kD);
+
+        SmartDashboard.putNumber("Velocity", 0.0);
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -81,7 +85,7 @@ public class Index extends Subsystem4237
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        motor.setupPIDController(0, 17.0, 10.0, 0.0);
+        motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
 
     }
@@ -164,10 +168,9 @@ public class Index extends Subsystem4237
         periodicData.currentPosition = motor.getPosition();
         periodicData.currentVelocity = motor.getVelocity();
 
-        kP = PIDcontroller.getP();
-        kI = PIDcontroller.getI();
-        kD = PIDcontroller.getD();
-        setPoint = PIDcontroller.getSetpoint();
+        periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+        periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+        periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
 
     }
 
@@ -175,6 +178,12 @@ public class Index extends Subsystem4237
     public void writePeriodicOutputs()
     {
         // motor.setControl(periodicData.motorSpeed);
+        SmartDashboard.putNumber("currentVelocity", getVelocity());
+        PIDcontroller.setP(periodicData.kP);
+        PIDcontroller.setI(periodicData.kI);
+        PIDcontroller.setD(periodicData.kD);
+        // PIDcontroller.setSetpoint(setPoint);
+            
         motor.setControlVelocity(periodicData.motorSpeed);
     }
 
