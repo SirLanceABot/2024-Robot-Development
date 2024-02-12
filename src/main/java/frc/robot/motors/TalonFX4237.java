@@ -86,12 +86,6 @@ public class TalonFX4237 extends MotorController4237 implements Sendable
         clearStickyFaults();
         setupFactoryDefaults();
 
-        // SendableRegistry.remove(motor);
-        // SendableRegistry.disableLiveWindow(motor);
-        SendableRegistry.addLW(this, motorControllerName, deviceId);
-        
-        // SendableRegistry.addChild(this, motor);
-
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
 

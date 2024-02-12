@@ -69,7 +69,6 @@ public class CANSparkMax4237 extends MotorController4237 implements Sendable
         sparkPIDController = motor.getPIDController();
         clearStickyFaults();
         setupFactoryDefaults();
-        // SendableRegistry.addLW(this, motorControllerName, deviceId);
         
         System.out.println("  Constructor Finished: " + fullClassName + " >> " + motorControllerName);
     }
