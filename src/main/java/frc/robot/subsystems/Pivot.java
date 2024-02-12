@@ -191,7 +191,7 @@ public class Pivot extends Subsystem4237
         //setAngle using CANcoder
         if(degrees >= 7.0 && degrees <= 67.0)
         {
-            motor.setControl(degrees / 360.0);
+            motor.setControlPosition(degrees / 360.0);
         }
         else
         {

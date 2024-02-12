@@ -359,7 +359,7 @@ public class CANSparkMax4237 extends MotorController4237 implements Sendable
      * Units are rotations by default, but can be changed using the conversion factor.
      * @param position The position to move the motor to
      */
-    public void setControl(double position)
+    public void setControlPosition(double position)
     {
         sparkPIDController.setReference(position, CANSparkBase.ControlType.kPosition);
     }

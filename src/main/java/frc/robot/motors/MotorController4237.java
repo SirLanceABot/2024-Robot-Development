@@ -102,7 +102,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract double[] getPID(int slotId);
     public abstract void logStickyFaults();
 
-    public abstract void setControl(double position);
+    public abstract void setControlPosition(double position);
     public abstract void setControlVelocity(double velocity);
     public abstract void setPosition(double position);
     public abstract double getPosition();

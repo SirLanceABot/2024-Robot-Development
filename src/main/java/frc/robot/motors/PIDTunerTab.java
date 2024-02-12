@@ -329,7 +329,7 @@ public class PIDTunerTab implements PeriodicIO, AutoCloseable
 
                 case kStillOn:
                     if(periodicData.pidControlType == PIDControlType.kPosition)
-                        motorBox.getSelected().setControl(periodicData.setpoint);
+                        motorBox.getSelected().setControlPosition(periodicData.setpoint);
                     else
                         motorBox.getSelected().setControlVelocity(periodicData.setpoint);
                     valueBox.setDouble(round(periodicData.value, 3));
