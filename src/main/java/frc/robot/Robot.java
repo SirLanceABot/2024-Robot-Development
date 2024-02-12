@@ -63,7 +63,6 @@ public class Robot extends TimedRobot
     Robot()
     {}
 
-        
     // *** OVERRIDEN METHODS ***
     // Put all methods that are Overridden here
 
@@ -101,6 +100,13 @@ public class Robot extends TimedRobot
         // Update all of the periodic outputs.
         PeriodicIO.writeAllPeriodicOutputs();
     }
+
+    /**
+     * This method runs one time after the driver station connects.
+     */
+    @Override
+    public void driverStationConnected()
+    {}
 
     /**
      * This method runs one time when the robot enters disabled mode.
