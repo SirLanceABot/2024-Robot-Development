@@ -88,8 +88,12 @@ public class Intake extends Subsystem4237
         // Set Brake Mode
         topMotor.setupBrakeMode();
         bottomMotor.setupCoastMode();
-        topMotor.setupPIDController(0, 17.0, 10.0, 0.0);
-        bottomMotor.setupPIDController(0, 17.0, 10.0, 0.0);
+        topMotor.setupPIDController(0, 17.0, 0.0, 0.0);
+        bottomMotor.setupPIDController(0, 17.0, 0.0, 0.0);
+
+        topMotor.setupVelocityConversionFactor(getBottomPosition());
+
+        topMotor.setupCurrentLimit(30.0, 35.0, 0.5);
 
         // topMotor.setPosition(0.0);
         // bottomMotor.setPosition(0.0);
@@ -117,26 +121,26 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = 0.5;
-        periodicData.bottomIntakeSpeed = 0.5;
+        periodicData.topIntakeSpeed = 0.8;
+        periodicData.bottomIntakeSpeed = 0.8;
     }
 
     public void ejectFront()
     {
-        periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = -0.1;
+        periodicData.topIntakeSpeed = -0.8;
+        periodicData.bottomIntakeSpeed = -0.8;
     }
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = 0.5;
-        periodicData.bottomIntakeSpeed = -0.5;
+        periodicData.topIntakeSpeed = 0.8;
+        periodicData.bottomIntakeSpeed = -0.8;
     }
 
     public void ejectBack()
     {
-        periodicData.topIntakeSpeed = -0.1;
-        periodicData.bottomIntakeSpeed = 0.1;
+        periodicData.topIntakeSpeed = -0.8;
+        periodicData.bottomIntakeSpeed = 0.8;
     }
 
     public void stop()
@@ -188,8 +192,11 @@ public class Intake extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        topMotor.set(periodicData.topIntakeSpeed);
-        bottomMotor.set(periodicData.bottomIntakeSpeed);
+        // topMotor.set(periodicData.topIntakeSpeed);
+        // bottomMotor.set(periodicData.bottomIntakeSpeed);
+
+        topMotor.setControlVelocity(periodicData.topIntakeSpeed);
+        bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
     }
 
     @Override
