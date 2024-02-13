@@ -59,6 +59,11 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
+    private final double GEAR_RATIO = 1.0 / 25.0;
+    private final double WHEEL_DIAMETER_FEET = 2.25 / 12.0;
+    private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
+    private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * WHEEL_DIAMETER_FEET;
+
     private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
     private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
     private RelativeEncoder topEncoder;
@@ -88,10 +93,10 @@ public class Intake extends Subsystem4237
         // Set Brake Mode
         topMotor.setupBrakeMode();
         bottomMotor.setupCoastMode();
-        topMotor.setupPIDController(0, 17.0, 0.0, 0.0);
-        bottomMotor.setupPIDController(0, 17.0, 0.0, 0.0);
+        topMotor.setupPIDController(0, 5.0, 0.0, 0.0);
+        // bottomMotor.setupPIDController(0, 17.0, 0.0, 0.0);
 
-        topMotor.setupVelocityConversionFactor(getBottomPosition());
+        topMotor.setupVelocityConversionFactor(RPM_TO_FPS);
 
         topMotor.setupCurrentLimit(30.0, 35.0, 0.5);
 
@@ -193,10 +198,10 @@ public class Intake extends Subsystem4237
     public void writePeriodicOutputs()
     {
         // topMotor.set(periodicData.topIntakeSpeed);
-        // bottomMotor.set(periodicData.bottomIntakeSpeed);
+        bottomMotor.set(periodicData.bottomIntakeSpeed);
 
-        topMotor.setControlVelocity(periodicData.topIntakeSpeed);
-        bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
+        topMotor.setControlVelocity(2.0);
+        // bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
     }
 
     @Override
