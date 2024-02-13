@@ -22,12 +22,14 @@ public class MainShuffleboard implements PeriodicIO
     private boolean useAutonomousTab            = false;
     private boolean useCameraTab                = false;
     private boolean useSensorTab                = false;
+    private boolean useDriverTab                = false;
     private boolean useDriverControllerTab      = false;
     private boolean useOperatorControllerTab    = false;
     
     public final AutonomousTab autonomousTab;
     public final CameraTab cameraTab;
     public final SensorTab sensorTab;
+    public final DriverTab driverTab;
     public final DriverControllerTab driverControllerTab;
     public final OperatorControllerTab operatorControllerTab;
     
@@ -44,6 +46,7 @@ public class MainShuffleboard implements PeriodicIO
         autonomousTab           = (useFullRobot || useAutonomousTab)    ? new AutonomousTab()                                           : null;
         cameraTab               = (useFullRobot || useCameraTab)        ? new CameraTab()                                               : null;
         sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;
+        driverTab               = (useFullRobot || useDriverTab)        ? new DriverTab()                                               : null;
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
 
@@ -87,6 +90,18 @@ public class MainShuffleboard implements PeriodicIO
         if(sensorTab != null)
             sensorTab.updateEncoderData();
     }
+
+    //-------------------------------------------------------------------//
+    // DRIVER TAB
+    // public void setDriver()
+    // {
+    //     if(driverTab != null)
+    //         driverTab.updateEncoderData();
+    // }
+
+    // Driver Tab
+
+
 
     @Override
     public void readPeriodicInputs()
