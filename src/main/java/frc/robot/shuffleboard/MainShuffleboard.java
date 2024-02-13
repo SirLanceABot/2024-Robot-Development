@@ -29,7 +29,7 @@ public class MainShuffleboard implements PeriodicIO
     public final AutonomousTab autonomousTab;
     public final CameraTab cameraTab;
     public final SensorTab sensorTab;
-    public final DriverTab driverTab;
+    // public final DriverTab driverTab;
     public final DriverControllerTab driverControllerTab;
     public final OperatorControllerTab operatorControllerTab;
     
@@ -46,7 +46,7 @@ public class MainShuffleboard implements PeriodicIO
         autonomousTab           = (useFullRobot || useAutonomousTab)    ? new AutonomousTab()                                           : null;
         cameraTab               = (useFullRobot || useCameraTab)        ? new CameraTab()                                               : null;
         sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;
-        driverTab               = (useFullRobot || useDriverTab)        ? new DriverTab()                                               : null;
+        // driverTab               = (useFullRobot || useDriverTab)        ? new DriverTab()                                               : null;
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
 
