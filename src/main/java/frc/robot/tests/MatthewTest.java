@@ -75,7 +75,6 @@ public class MatthewTest implements Test
         Trigger pidTrigger = new Trigger(() -> SmartDashboard.getBoolean("Activate PID", false));
         pidTrigger.onTrue(pivot.tunePID());
         return SmartDashboard.getBoolean("Activate PID", false);
-        
     }
         
 }

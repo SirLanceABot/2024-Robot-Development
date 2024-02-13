@@ -62,7 +62,7 @@ public class RobotContainer
     private boolean useIndex                = false;
     private boolean useIntake               = false;
     private boolean useIntakePositioning    = false;
-    private boolean usePivot                = false;
+    private boolean usePivot                = true;
     private boolean usePoseEstimator        = false;
     private boolean useShuttle              = false;
 
