@@ -55,6 +55,7 @@ public class Index extends Subsystem4237
     public static final double TIME_THRESHOLD                      = 10.0;
     public static final double ROLLER_RADIUS                       = 1.125; // inches
 
+    // Gear ratio is 2.0 / 3.0
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
     private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
