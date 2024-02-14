@@ -2,6 +2,7 @@ package frc.robot.tests;
 
 import java.lang.invoke.MethodHandles;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.RobotContainer;
 import frc.robot.sensors.Camera;
@@ -27,13 +28,14 @@ public class BradyTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Candle4237 candle;
-    private final Joystick bradysController;
+    // private final Candle4237 candle;
+    // private final Joystick bradysController;
     // private final Proximity proximity;
     // private final Drivetrain drivetrain;
     // private final Gyro4237 gyro;
     // private final Camera[] cameraArray;
     // private final PoseEstimator poseEstimator;
+    private final DigitalInput digitalInput;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -45,9 +47,10 @@ public class BradyTest implements Test
         // this.drivetrain = robotContainer.drivetrain;
         // this.gyro = robotContainer.gyro;
         // this.cameraArray = robotContainer.cameraArray;
-        candle = new Candle4237();
-        bradysController = new Joystick(0);
+        // candle = new Candle4237();
+        // bradysController = new Joystick(0);
         // proximity = new Proximity(9);
+        digitalInput = new DigitalInput(9);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -57,7 +60,7 @@ public class BradyTest implements Test
      */
     public void init()
     {
-
+    
     }
 
     /**
@@ -65,26 +68,26 @@ public class BradyTest implements Test
      */
     public void periodic()
     {
-        if(bradysController.getRawButton(1)) //A
-        {
-            candle.setGreen(false);
-        }
-        else if(bradysController.getRawButton(2)) //B
-        {
-            candle.setRedAndBlue();
-        }
-        else if(bradysController.getRawButton(3)) //X
-        {
-            candle.setBlue(false);
-        }
-        else if(bradysController.getRawButton(4)) //Y
-        {
-            candle.setYellow(false);
-        }
-        else if(bradysController.getRawButton(6)) //RB
-        {
-            candle.setPurple(false);
-        }
+        // if(bradysController.getRawButton(1)) //A
+        // {
+        //     candle.setGreen(false);
+        // }
+        // else if(bradysController.getRawButton(2)) //B
+        // {
+        //     candle.setRedAndBlue();
+        // }
+        // else if(bradysController.getRawButton(3)) //X
+        // {
+        //     candle.setBlue(false);
+        // }
+        // else if(bradysController.getRawButton(4)) //Y
+        // {
+        //     candle.setYellow(false);
+        // }
+        // else if(bradysController.getRawButton(6)) //RB
+        // {
+        //     candle.setPurple(false);
+        // }
 
         // if(proximity.getIsDetected())
         // {
@@ -105,6 +108,9 @@ public class BradyTest implements Test
         // }
 
         // System.out.println(drivetrain.getAngleToBlueSpeaker());
+
+            System.out.println(digitalInput.get());
+
     }
     
     /**
@@ -112,7 +118,7 @@ public class BradyTest implements Test
      */
     public void exit()
     {
-        candle.stop();
+        // candle.stop();
     }
 
     // *** METHODS ***
