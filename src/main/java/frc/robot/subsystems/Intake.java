@@ -73,7 +73,7 @@ public class Intake extends Subsystem4237
 
     private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
     private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
-    // private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
+    private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
     private RelativeEncoder topEncoder;
     private RelativeEncoder bottomEncoder;
     private boolean tunePID = true;
@@ -88,9 +88,13 @@ public class Intake extends Subsystem4237
 
         configCANSparkMax();
 
-        // SmartDashboard.putNumber("kP", periodicData.kP);
-        // SmartDashboard.putNumber("kI", periodicData.kI);
-        // SmartDashboard.putNumber("kD", periodicData.kD);
+        if(tunePID)
+        {
+            SmartDashboard.putNumber("currentVelocity", getTopVelocity());
+            SmartDashboard.putNumber("kP", periodicData.kP);
+            SmartDashboard.putNumber("kI", periodicData.kI);
+            SmartDashboard.putNumber("kD", periodicData.kD);
+        }
 
         // SmartDashboard.putNumber("Velocity", 0.0);
         
@@ -208,9 +212,12 @@ public class Intake extends Subsystem4237
         periodicData.topIntakeVelocity = topMotor.getVelocity();
         periodicData.bottomIntakeVelocity = bottomMotor.getVelocity();
 
-        // periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-        // periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-        // periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        if(tunePID)
+        {
+            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        }
     }
 
     @Override
@@ -219,14 +226,12 @@ public class Intake extends Subsystem4237
         topMotor.setVoltage(periodicData.topIntakeSpeed);
         bottomMotor.setVoltage(periodicData.bottomIntakeSpeed);
 
-        // SmartDashboard.putNumber("currentVelocity", getTopVelocity());
-        // SmartDashboard.putNumber("kP", periodicData.kP);
-        // SmartDashboard.putNumber("kI", periodicData.kI);
-        // SmartDashboard.putNumber("kD", periodicData.kD);
-
-        // PIDcontroller.setP(periodicData.kP);
-        // PIDcontroller.setI(periodicData.kI);
-        // PIDcontroller.setD(periodicData.kD);
+        if(tunePID)
+        {
+            PIDcontroller.setP(periodicData.kP);
+            PIDcontroller.setI(periodicData.kI);
+            PIDcontroller.setD(periodicData.kD);
+        }
 
         // topMotor.setControlVelocity(2.0);
         // bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
