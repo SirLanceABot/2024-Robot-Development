@@ -50,10 +50,15 @@ public class Index extends Subsystem4237
         // private DoubleLogEntry positiDoubleLogEntry;
     }
 
-    public static final double CURRENT_LIMIT                       = 10.0;
-    public static final double CURRENT_THRESHOLD                   = 10.0;
-    public static final double TIME_THRESHOLD                      = 10.0;
-    public static final double ROLLER_RADIUS                       = 1.125; // inches
+    private final double CURRENT_LIMIT                       = 30.0;
+    private final double CURRENT_THRESHOLD                   = 35.0;
+    private final double TIME_THRESHOLD                      = 0.5;
+
+    private final double ROLLER_DIAMETER_FEET = 2.5 / 12.0; // inches
+    private final double GEAR_RATIO = 2.0 / 3.0;
+    private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
+    private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
+
 
     // Gear ratio is 2.0 / 3.0
     private PeriodicData periodicData = new PeriodicData();
@@ -85,9 +90,10 @@ public class Index extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
-        // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
         motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
-        motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
+        // motor.setupVelocityConversionFactor(Math.PI * ROLLER_DIAMETER_FEET * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
+        motor.setupVelocityConversionFactor(RPM_TO_FPS);
 
     }
 

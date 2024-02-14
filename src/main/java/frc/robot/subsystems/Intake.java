@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -55,6 +57,11 @@ public class Intake extends Subsystem4237
         private double topIntakeSpeed = 0.0;
         private double bottomIntakeSpeed = 0.0;
 
+
+        private double kP = SmartDashboard.getNumber("kP", 0.0);
+        private double kI = SmartDashboard.getNumber("kI", 0.0);
+        private double kD = SmartDashboard.getNumber("kD", 0.0);
+
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -66,8 +73,10 @@ public class Intake extends Subsystem4237
 
     private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
     private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
+    // private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
     private RelativeEncoder topEncoder;
     private RelativeEncoder bottomEncoder;
+    private boolean tunePID = true;
 
     /** 
      * Creates a new Intake. 
@@ -78,6 +87,12 @@ public class Intake extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configCANSparkMax();
+
+        // SmartDashboard.putNumber("kP", periodicData.kP);
+        // SmartDashboard.putNumber("kI", periodicData.kI);
+        // SmartDashboard.putNumber("kD", periodicData.kD);
+
+        // SmartDashboard.putNumber("Velocity", 0.0);
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -90,10 +105,10 @@ public class Intake extends Subsystem4237
         // Do Not Invert Motor Direction
         topMotor.setupInverted(false); // test later
         bottomMotor.setupInverted(true); // test later
-        // Set Brake Mode
-        topMotor.setupBrakeMode();
+        // Set Coast Mode
+        topMotor.setupCoastMode();
         bottomMotor.setupCoastMode();
-        topMotor.setupPIDController(0, 5.0, 0.0, 0.0);
+        topMotor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // bottomMotor.setupPIDController(0, 17.0, 0.0, 0.0);
 
         topMotor.setupVelocityConversionFactor(RPM_TO_FPS);
@@ -126,26 +141,26 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = 0.8;
-        periodicData.bottomIntakeSpeed = 0.8;
+        periodicData.topIntakeSpeed = 10.8;
+        periodicData.bottomIntakeSpeed = 10.8;
     }
 
     public void ejectFront()
     {
-        periodicData.topIntakeSpeed = -0.8;
-        periodicData.bottomIntakeSpeed = -0.8;
+        periodicData.topIntakeSpeed = -10.8;
+        periodicData.bottomIntakeSpeed = -10.8;
     }
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = 0.8;
-        periodicData.bottomIntakeSpeed = -0.8;
+        periodicData.topIntakeSpeed = 10.8;
+        periodicData.bottomIntakeSpeed = -10.8;
     }
 
     public void ejectBack()
     {
-        periodicData.topIntakeSpeed = -0.8;
-        periodicData.bottomIntakeSpeed = 0.8;
+        periodicData.topIntakeSpeed = -10.8;
+        periodicData.bottomIntakeSpeed = 10.8;
     }
 
     public void stop()
@@ -192,15 +207,28 @@ public class Intake extends Subsystem4237
         periodicData.bottomIntakePosition = bottomMotor.getPosition();
         periodicData.topIntakeVelocity = topMotor.getVelocity();
         periodicData.bottomIntakeVelocity = bottomMotor.getVelocity();
+
+        // periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+        // periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+        // periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
     }
 
     @Override
     public void writePeriodicOutputs()
     {
-        // topMotor.set(periodicData.topIntakeSpeed);
-        bottomMotor.set(periodicData.bottomIntakeSpeed);
+        topMotor.setVoltage(periodicData.topIntakeSpeed);
+        bottomMotor.setVoltage(periodicData.bottomIntakeSpeed);
 
-        topMotor.setControlVelocity(2.0);
+        // SmartDashboard.putNumber("currentVelocity", getTopVelocity());
+        // SmartDashboard.putNumber("kP", periodicData.kP);
+        // SmartDashboard.putNumber("kI", periodicData.kI);
+        // SmartDashboard.putNumber("kD", periodicData.kD);
+
+        // PIDcontroller.setP(periodicData.kP);
+        // PIDcontroller.setI(periodicData.kI);
+        // PIDcontroller.setD(periodicData.kD);
+
+        // topMotor.setControlVelocity(2.0);
         // bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
     }
 
