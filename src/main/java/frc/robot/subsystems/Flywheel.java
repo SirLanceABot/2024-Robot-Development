@@ -69,6 +69,12 @@ public class Flywheel extends Subsystem4237
 
     private ResetState resetState = ResetState.kDone;
 
+    private final double ROLLER_DIAMETER_FEET = 4.0 / 12.0; // feet
+    private final double GEAR_RATIO = 2.0 / 3.0;
+    private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
+    private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
+    private boolean tunePID = true;
+
     private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
 
     // kS is equal to 0.013 in dutycycles(* 12 for volts)
@@ -95,11 +101,15 @@ public class Flywheel extends Subsystem4237
         super("Flywheel");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
-        SmartDashboard.putNumber("kP", periodicData.kP);
-        SmartDashboard.putNumber("kI", periodicData.kI);
-        SmartDashboard.putNumber("kD", periodicData.kD);
+        if(tunePID)
+        {
+            SmartDashboard.putNumber("kP", periodicData.kP);
+            SmartDashboard.putNumber("kI", periodicData.kI);
+            SmartDashboard.putNumber("kD", periodicData.kD);
 
-        SmartDashboard.putNumber("Velocity", 0.0);
+            SmartDashboard.putNumber("Velocity", 0.0);
+        }
+        
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -111,7 +121,9 @@ public class Flywheel extends Subsystem4237
         motor.setupCoastMode();
         motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
-        motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
+        // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
+        motor.setupVelocityConversionFactor(RPM_TO_FPS);
+        motor.setupCurrentLimit(30, 35, 0.5);
 
 
         // motor.config_kP(0, kP);
@@ -186,9 +198,13 @@ public class Flywheel extends Subsystem4237
         periodicData.currentVelocity = motor.getVelocity();
         // periodicData.RPMSpeed = speedConversion(periodicData.flywheelSpeed);
 
-        periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-        periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-        periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        if(tunePID)
+        {
+            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        }
+        
     }
 
     @Override
@@ -217,9 +233,14 @@ public class Flywheel extends Subsystem4237
 
         motor.setControlVelocity(periodicData.flywheelSpeed);
         SmartDashboard.putNumber("Velocity", periodicData.currentVelocity);
-        PIDcontroller.setP(periodicData.kP);
-        PIDcontroller.setI(periodicData.kI);
-        PIDcontroller.setD(periodicData.kD);
+
+        if(tunePID)
+        {
+            PIDcontroller.setP(periodicData.kP);
+            PIDcontroller.setI(periodicData.kI);
+            PIDcontroller.setD(periodicData.kD);
+        }
+        
 
         // motor.set(periodicData.flywheelSpeed);
     }

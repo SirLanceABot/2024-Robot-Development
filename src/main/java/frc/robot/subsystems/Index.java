@@ -54,7 +54,7 @@ public class Index extends Subsystem4237
     private final double CURRENT_THRESHOLD                   = 35.0;
     private final double TIME_THRESHOLD                      = 0.5;
 
-    private final double ROLLER_DIAMETER_FEET = 2.5 / 12.0; // inches
+    private final double ROLLER_DIAMETER_FEET = 2.5 / 12.0; // feet
     private final double GEAR_RATIO = 2.0 / 3.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
     private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
@@ -64,6 +64,7 @@ public class Index extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
     private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
+    private boolean tunePID = true;
     
 
     /** 
@@ -74,11 +75,15 @@ public class Index extends Subsystem4237
         super("Index");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
-        SmartDashboard.putNumber("kP", periodicData.kP);
-        SmartDashboard.putNumber("kI", periodicData.kI);
-        SmartDashboard.putNumber("kD", periodicData.kD);
+        if(tunePID)
+        {
+            SmartDashboard.putNumber("kP", periodicData.kP);
+            SmartDashboard.putNumber("kI", periodicData.kI);
+            SmartDashboard.putNumber("kD", periodicData.kD);
 
-        SmartDashboard.putNumber("Velocity", 0.0);
+            SmartDashboard.putNumber("Velocity", 0.0);
+        }
+        
 
         
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -175,9 +180,13 @@ public class Index extends Subsystem4237
         periodicData.currentPosition = motor.getPosition();
         periodicData.currentVelocity = motor.getVelocity();
 
-        periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-        periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-        periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        if(tunePID)
+        {
+            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        }
+        
 
     }
 
@@ -186,9 +195,13 @@ public class Index extends Subsystem4237
     {
         // motor.setControl(periodicData.motorSpeed);
         SmartDashboard.putNumber("currentVelocity", getVelocity());
-        PIDcontroller.setP(periodicData.kP);
-        PIDcontroller.setI(periodicData.kI);
-        PIDcontroller.setD(periodicData.kD);
+        if(tunePID)
+        {
+            PIDcontroller.setP(periodicData.kP);
+            PIDcontroller.setI(periodicData.kI);
+            PIDcontroller.setD(periodicData.kD);
+        }
+        
         // PIDcontroller.setSetpoint(setPoint);
             
         motor.setControlVelocity(periodicData.motorSpeed);
