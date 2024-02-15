@@ -106,7 +106,8 @@ public final class Commands4237
                 robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.intake.pickupCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand())
+                robotContainer.index.acceptNoteFromShuttleCommand(),
+                robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE))
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
@@ -141,7 +142,8 @@ public final class Commands4237
             .alongWith(
                 robotContainer.flywheel.intakeCommand(),
                 robotContainer.index.intakeCommand(),
-                robotContainer.shuttle.moveDownwardCommand())
+                robotContainer.shuttle.moveDownwardCommand(),
+                robotContainer.pivot.setAngleCommand(Constants.Pivot.INTAKE_FROM_SOURCE_ANGLE))
             .andThen(
                 Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
             .andThen(
@@ -158,7 +160,8 @@ public final class Commands4237
             .andThen(
                 robotContainer.index.stopCommand()
                 .alongWith(
-                    robotContainer.shuttle. stopCommand()))
+                    robotContainer.shuttle. stopCommand(),
+                    robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE)))
             .andThen(
                 robotContainer.candle.setGreenCommand())   
             .withName("Intake From Source");
@@ -185,7 +188,7 @@ public final class Commands4237
         }
     }
 
-    public static Command movePivotCommand()
+    public static Command shootToSpeakerAngleCommand()
     {
         double distance, angle = 0.0;
         Optional<Alliance> color = DriverStation.getAlliance();
@@ -222,7 +225,7 @@ public final class Commands4237
             return 
             robotContainer.candle.setPurpleCommand()
             .alongWith(
-                movePivotCommand(),
+                shootToSpeakerAngleCommand(),
                 robotContainer.drivetrain.rotateForShootingCommand())
             .andThen(
                 robotContainer.index.feedNoteToFlywheelCommand(0.5))
@@ -251,16 +254,15 @@ public final class Commands4237
             return
             getFlywheelToSpeedCommand(0.2)
             .andThen(
-                robotContainer.pivot.setAngleCommand(60)
+                robotContainer.pivot.setAngleCommand(Constants.Pivot.SHOOT_TO_AMP_ANGLE)
                 .alongWith(
                     robotContainer.index.feedNoteToFlywheelCommand(0.2)))
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
                     robotContainer.index.feedNoteToFlywheelCommand(0.0),
-                    robotContainer.pivot.setAngleCommand(45)))
+                    robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE)))
             .withName("Shoot To Amp");
-            
         }
         else
         {

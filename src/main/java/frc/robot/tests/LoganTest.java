@@ -80,14 +80,15 @@ public class LoganTest implements Test
      */
     public void periodic()
     {
-        System.out.println("Pressure: " + robotContainer.intakePositioning.getPressure());
+        // System.out.println("Pressure: " + robotContainer.intakePositioning.getPressure());
         //MOTORS
-        // if(joystick.getRawButton(1)) // A button
-        // {
+        if(joystick.getRawButton(1)) // A button
+        {
+            
         //     // configAButton();
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
-        // }
+        }
         // else if(joystick.getRawButton(2))
         // {
         //     intakePositioning.moveDown();

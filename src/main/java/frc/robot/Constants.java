@@ -188,8 +188,9 @@ public final class Constants
         public static final int CANCODER_PORT                      = 20;
         public static final String CANCODER_CAN_BUS                = ROBORIO;
 
-        public static final double DEFAULT_ANGLE = 50.0;
-        public static final double SHOOT_FROM_SUBWOOFER_ANGLE = 63.36;
+        public static final double DEFAULT_ANGLE = 30.0; // Angle to drive around at
+        public static final double INTAKE_FROM_SOURCE_ANGLE = 50.0; //TODO check value
+        public static final double SHOOT_TO_AMP_ANGLE = 80.0;       //TODO check value
     }
 
     public static class Shuttle
