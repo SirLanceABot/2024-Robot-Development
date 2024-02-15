@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 
@@ -105,9 +106,11 @@ public class Pivot extends Subsystem4237
 
         configPivotMotor();
         configCANcoder();
-        System.out.println("  Constructor Finished: " + fullClassName);
+        configShotMap();
         LiveWindow.setEnabled(true);
         LiveWindow.enableTelemetry(this.PIDcontroller);
+        
+        System.out.println(" Construction Finished: " + fullClassName);
     }
 
     // *** CLASS METHODS & INSTANCE METHODS ***
@@ -128,6 +131,8 @@ public class Pivot extends Subsystem4237
         motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
         motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
 
+        //Sets the default command for pivot
+        setDefaultCommand(setAngleCommand(Constants.Pivot.DEFAULT_ANGLE));
     }
 
     private void configCANcoder()
@@ -252,6 +257,13 @@ public class Pivot extends Subsystem4237
                 Commands.runOnce(() -> setAngle(PIDcontroller.getSetpoint()))).withName("control to " + PIDcontroller.getSetpoint() + " degrees")
             .finallyDo(
                 this.motor::stopMotor).withName("stop tuning");
+    }
+
+    //Setting the default command
+    public void initDefaultCommand() 
+    {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(setAngleCommand(30.0));
     }
 
     // *** OVERRIDEN METHODS ***
