@@ -178,7 +178,7 @@ public class Robot extends TimedRobot
         //     .withName("Follow Path Command")
         //     .schedule();
         
-        // new PathPlannerAuto("Example Auto").schedule();
+        // new PathPlannerAuto("3 Piece Auto").schedule();
 
         if(autonomousCommand != null)
         {
