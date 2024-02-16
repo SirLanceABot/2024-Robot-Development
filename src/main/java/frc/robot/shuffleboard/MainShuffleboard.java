@@ -44,7 +44,7 @@ public class MainShuffleboard implements PeriodicIO
 
         autonomousTab           = (useFullRobot || useAutonomousTab)    ? new AutonomousTab()                                           : null;
         cameraTab               = (useFullRobot || useCameraTab)        ? new CameraTab()                                               : null;
-        sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;                                             : null;
+        sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;                                           
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
 

@@ -8,8 +8,17 @@ import java.lang.invoke.MethodHandles;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Candle;
 import frc.robot.sensors.Gyro4237;
+import frc.robot.subsystems.AmpAssist;
+import frc.robot.subsystems.Candle4237;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Shuttle;
 import frc.robot.shuffleboard.AutonomousTabData;
 
 
@@ -34,6 +43,15 @@ public class AutoCommandList extends SequentialCommandGroup
     private AutonomousTabData autonomousTabData;
     private final Drivetrain drivetrain;
     private final Gyro4237 gyro;
+    private final Intake intake;
+    private final Climb climb;
+    private final AmpAssist ampAssist;
+    private final Flywheel flywheel;
+    private final Index index;
+    private final Pivot pivot;
+    private final Candle4237 candle;
+    private final Shuttle shuttle;
+
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
 
     
@@ -45,7 +63,18 @@ public class AutoCommandList extends SequentialCommandGroup
         // this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
         this.gyro = robotContainer.gyro;
         this.drivetrain = robotContainer.drivetrain;
-        this.autonomousTabData = autonomousTabData;
+        this.intake = robotContainer.intake;
+        this.climb = robotContainer.climb;
+        this.ampAssist = robotContainer.ampAssist;
+        this.flywheel = robotContainer.flywheel;
+        this.index = robotContainer.index;
+        this.pivot = robotContainer.pivot;
+        this.candle = robotContainer.candle;
+        this.shuttle = robotContainer.shuttle;
+
+
+        // this.autonomousTabData = autonomousTabData;
+
 
         build();
 
