@@ -42,7 +42,7 @@ public class OwenTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Flywheel flywheel;
-    // private final Index index;
+    private final Index index;
     // private final Pivot pivot;
     // private final Intake intake;
     // private final Shuttle shuttle;
@@ -63,7 +63,7 @@ public class OwenTest implements Test
 
         this.robotContainer = robotContainer;
         flywheel = this.robotContainer.flywheel;
-        // index = this.robotContainer.index;
+        index = this.robotContainer.index;
         // pivot = this.robotContainer.pivot;
         // intake = this.robotContainer.intake;
         // shuttle = this.robotContainer.shuttle;
@@ -79,11 +79,12 @@ public class OwenTest implements Test
     public void init()
     {
         // climb.setLeftAndRightPosiiton(TargetPosition.kChain);
-        configRightTrigger();
-        configLeftTrigger();
-        configBackButton();
-        configLeftBumper();
-        configRightBumper();
+        
+        // configRightTrigger();
+        // configLeftTrigger();
+        // configBackButton();
+        // configLeftBumper();
+        // configRightBumper();
     }
 
     /**
@@ -91,19 +92,46 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
+        
         // motor.follow(motor1);
         // System.out.println("Velocity: " + climb.getLeftPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
         // System.out.println("distance = " + ultrasonic.getDistance());
-        // if(joystick.getRawButton(1))
-        // {
+        if(joystick.getRawButton(1))
+        {
         //     System.out.println("Chain Position");
         //     pivot.moveDown();
         //     // System.out.println("Encoder Position" + climb.getLeftPosition());
-        //     // flywheel.shoot(0.7);
+            flywheel.shoot(0.8);
+            // index.feedNoteToFlywheel(0.7);
         //     // index.feedNoteToFlywheel(0.9);
         //     // climb.moveToChain();
-        // }
+        }
+        else
+        {
+            flywheel.stop();
+        }
+
+        if(joystick.getRawButton(2))
+        {
+            index.feedNoteToFlywheel(0.8 / 1.2);
+        }
+        else
+        {
+            // flywheel.stop();
+            index.stop();
+        }
+
+        if(joystick.getRawButton(3))
+        {
+            index.feedNoteToFlywheel(0.8);
+            flywheel.shoot(0.7);
+        }
+        else
+        {
+            // flywheel.stop();
+            // index.stop();
+        }
         // else if(joystick.getRawButton(2))
         // {
         //     System.out.println("Robot Position");
@@ -158,8 +186,8 @@ public class OwenTest implements Test
             // leftTriggerTrigger.whileTrue(index.feedNoteToFlywheelCommand(0.15));
             // leftTriggerTrigger.onFalse(index.stopCommand().alongWith(flywheel.stopCommand()));
 
-            leftTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
-            leftTriggerTrigger.onFalse(flywheel.stopCommand());
+            // leftTriggerTrigger.whileTrue(index.feedNoteToFl
+            
         }
     }
     
@@ -175,7 +203,7 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.onTrue(flywheel.shootCommand(0.2));
+            rightTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
             rightTriggerTrigger.onFalse(flywheel.stopCommand());
             // rightTriggerTrigger.onTrue(intake.pickupCommand());
             // rightTriggerTrigger.onFalse(intake.stopCommand());
