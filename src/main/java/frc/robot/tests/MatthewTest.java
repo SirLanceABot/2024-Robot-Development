@@ -6,7 +6,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.motors.TalonFX4237;
 import frc.robot.subsystems.Pivot;
@@ -26,7 +28,7 @@ public class MatthewTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final TalonFX4237 talonFX = new TalonFX4237(4, "rio", "matthew'sMotor");
+    // private final TalonFX4237 talonFX = new TalonFX4237(4, "rio", "matthew'sMotor");
     private final Pivot pivot;
 
 
@@ -37,6 +39,8 @@ public class MatthewTest implements Test
     
         this.robotContainer = robotContainer;
         this.pivot = robotContainer.pivot;
+        
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -53,10 +57,10 @@ public class MatthewTest implements Test
      */
     public void periodic()
     {
-        if(!configPIDTrigger())
-        {
-            SmartDashboard.putBoolean("Activate PID", false);
-        }
+        // if(!configPIDTrigger())
+        // {
+        //     SmartDashboard.putBoolean("Activate PID", false);
+        // }
     }
 
     /**

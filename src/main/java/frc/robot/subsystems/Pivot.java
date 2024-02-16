@@ -17,7 +17,6 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,6 +43,7 @@ public class Pivot extends Subsystem4237
         System.out.println("Loading: " + fullClassName);
     }
 
+    
      // *** INNER ENUMS and INNER CLASSES ***
     // Put all inner enums and inner classes here
     private class PeriodicData
@@ -67,6 +67,7 @@ public class Pivot extends Subsystem4237
         private double setPoint = 0.0;
         private int slotId = 0;
 
+        //Used to get the correct currentPosition
         private final double currentRotationalPositionOffset = 0.011667;
         // private final double motorPositionConversionFactor = 0.002778;
 
@@ -85,7 +86,7 @@ public class Pivot extends Subsystem4237
     // Put all class variables and instance variables here
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.MOTOR_CAN_BUS); 
-    private final PeriodicData periodicData = new PeriodicData();  
+    private final PeriodicData periodicData = new PeriodicData();
     private final MyConstants myConstants = new MyConstants();
     private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
     private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
@@ -107,9 +108,10 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configCANcoder();
         configShotMap();
-        LiveWindow.setEnabled(true);
-        LiveWindow.enableTelemetry(this.PIDcontroller);
-        
+        //TODO test this
+        CommandScheduler.getInstance().setDefaultCommand(this, setAngleCommand(30.0));
+
+       
         System.out.println(" Construction Finished: " + fullClassName);
     }
 
@@ -122,7 +124,6 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(false);
         motor.setupBrakeMode();
         // motor.setupPositionConversionFactor(myConstants.motorPositionConversionFactor);
-        // pivotAngle.setPosition(0.0);
         motor.setPosition(0.0);
         motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
@@ -130,9 +131,6 @@ public class Pivot extends Subsystem4237
         // Soft Limits
         motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
         motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
-
-        //Sets the default command for pivot
-        setDefaultCommand(setAngleCommand(Constants.Pivot.DEFAULT_ANGLE));
     }
 
     private void configCANcoder()
@@ -143,6 +141,7 @@ public class Pivot extends Subsystem4237
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         canCoderConfig.MagnetSensor.MagnetOffset = -0.668213; //BW 2/9/2024
         pivotAngle.getConfigurator().apply(canCoderConfig);
+        // pivotAngle.setPosition(0.0);
         motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0);
     }
 
@@ -245,6 +244,7 @@ public class Pivot extends Subsystem4237
 
     public Command setAngleCommand(double angle)
     {
+        toString();
         return Commands.runOnce(() -> setAngle(angle)).withName("Set Angle");
     }
 
@@ -259,13 +259,6 @@ public class Pivot extends Subsystem4237
                 this.motor::stopMotor).withName("stop tuning");
     }
 
-    //Setting the default command
-    public void initDefaultCommand() 
-    {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(setAngleCommand(30.0));
-    }
-
     // *** OVERRIDEN METHODS ***
     // Put all methods that are Overridden here
 
@@ -273,7 +266,7 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder - Extra value is for offset
-        periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + myConstants.currentRotationalPositionOffset;
+        // periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + myConstants.currentRotationalPositionOffset;
 
         // For Testing
         // Changes the PID values to the values displayed on the PID widget
@@ -344,6 +337,6 @@ public class Pivot extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Angle entered is out of range";
+        return "current angle = " + getAngle();
     }
 }
