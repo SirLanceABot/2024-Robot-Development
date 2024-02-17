@@ -182,7 +182,7 @@ public final class Constants
 
     public static class Pivot
     {
-        public static final int MOTOR_PORT                          = 21; //Will be changed to 53
+        public static final int MOTOR_PORT                          = 53; //Will be changed to 53
         public static final String MOTOR_CAN_BUS                    = ROBORIO;
 
         public static final int CANCODER_PORT                      = 20;
