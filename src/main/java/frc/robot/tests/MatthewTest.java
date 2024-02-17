@@ -48,19 +48,17 @@ public class MatthewTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {
-
-    }
+    {}
 
     /**
      * This method runs periodically (every 20ms).
      */
     public void periodic()
     {
-        // if(!configPIDTrigger())
-        // {
-        //     SmartDashboard.putBoolean("Activate PID", false);
-        // }
+        if(!configPIDTrigger())
+        {
+            SmartDashboard.putBoolean("Activate PID", false);
+        }
     }
 
     /**

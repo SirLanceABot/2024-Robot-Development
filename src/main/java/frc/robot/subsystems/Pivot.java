@@ -50,11 +50,10 @@ public class Pivot extends Subsystem4237
     {
         // INPUTS
         private double currentRotationalPosition;
-        private boolean isToggleSwitchActive;
-        private boolean isPIDSet;
+        // private boolean isToggleSwitchActive;
+        // private boolean isPIDSet;
 
         // OUTPUTS
-        private double setSpeed = 0.0;
         private boolean isBadAngle;
    }
 
@@ -64,7 +63,7 @@ public class Pivot extends Subsystem4237
         private double kP = 140.0;
         private double kI = 0.0;
         private double kD = 0.0;
-        private double setPoint = 0.0;
+        // private double setPoint = 0.0;
         private int slotId = 0;
 
         //Used to get the correct currentPosition
@@ -108,9 +107,7 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configCANcoder();
         configShotMap();
-        //TODO test this
-        CommandScheduler.getInstance().setDefaultCommand(this, setAngleCommand(30.0));
-
+        setAngleDefaultCommand();
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -145,6 +142,11 @@ public class Pivot extends Subsystem4237
         motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0);
     }
 
+    public void setAngleDefaultCommand()
+    {
+        this.setDefaultCommand(this.setAngleCommand(30.0));
+    }
+
     private void configShotMap()
     {
         // first value is distance from speaker in feet, second value is the pivot angle in degrees
@@ -166,17 +168,18 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        periodicData.setSpeed = myConstants.MOTOR_SPEED_UP;
+        motor.set(myConstants.MOTOR_SPEED_UP);
     }
 
     public void moveDown()
     {
-        periodicData.setSpeed = -myConstants.MOTOR_SPEED_DOWN;
+        motor.set(-myConstants.MOTOR_SPEED_DOWN);
     }
 
     public void stopMotor()
     {
-        periodicData.setSpeed = 0.0;
+        motor.set(0.0);
+
     }
 
     public double getAngle()
@@ -244,8 +247,7 @@ public class Pivot extends Subsystem4237
 
     public Command setAngleCommand(double angle)
     {
-        toString();
-        return Commands.runOnce(() -> setAngle(angle)).withName("Set Angle");
+        return Commands.runOnce(() -> setAngle(angle), this).withName("Set Angle");
     }
 
     public Command tunePID()
@@ -265,8 +267,8 @@ public class Pivot extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        //Using CANcoder - Extra value is for offset
-        // periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + myConstants.currentRotationalPositionOffset;
+        //Using CANcoder
+        periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + myConstants.currentRotationalPositionOffset;
 
         // For Testing
         // Changes the PID values to the values displayed on the PID widget
@@ -289,7 +291,7 @@ public class Pivot extends Subsystem4237
         if(periodicData.isBadAngle)
         {
             stopMotor();
-            toString();
+            System.out.println("Angle is out of Range");
             periodicData.isBadAngle = false;
         }
 
@@ -337,6 +339,6 @@ public class Pivot extends Subsystem4237
     @Override
     public String toString()
     {
-        return "current angle = " + getAngle();
+        return "current pivot angle = " + getAngle();
     }
 }
