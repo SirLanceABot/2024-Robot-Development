@@ -53,14 +53,14 @@ public class AutoCommandList extends SequentialCommandGroup
     private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
-    private String string = "";
+    private String pathPlannerString = "";
     
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        // this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
+        this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
         this.gyro = robotContainer.gyro;
         this.drivetrain = robotContainer.drivetrain;
         this.intake = robotContainer.intake;
@@ -94,11 +94,13 @@ public class AutoCommandList extends SequentialCommandGroup
         // if(drivetrain != null)
         //     add(new StopDrive(drivetrain));
 
-        string += autonomousTabData.startingLocation;
-        string += autonomousTabData.scorePreload;
-        string += autonomousTabData.shootDelay;
-        string += autonomousTabData.driveDelay;
-        string += autonomousTabData.scoreMoreNotes;
+        pathPlannerString += autonomousTabData.startingLocation;
+        //pathPlannerString += autonomousTabData.scorePreload;
+        pathPlannerString += autonomousTabData.shootDelay;
+        pathPlannerString += autonomousTabData.driveDelay;
+        pathPlannerString += autonomousTabData.scoreMoreNotes;
+        System.out.println(pathPlannerString);
+        
     }
 
 
