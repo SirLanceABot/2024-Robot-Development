@@ -40,7 +40,7 @@ public class Camera extends Sensor4237
         private NetworkTableEntry botpose_wpired;
 
         // Our class variables named with our convention (yes camelcase)
-        private double tagSize;
+        private double targetSize;
         private boolean isTargetFound;
         private double[] botPoseWPIBlue;
         private double[] botPoseWPIRed;
@@ -81,9 +81,13 @@ public class Camera extends Sensor4237
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + camName);
     }
 
-    public double getTagSize()
+    /**
+     * 
+     * @return size of target as percentage of total FOV it takes up
+     */
+    public double getTargetSize()
     {
-        return periodicData.tagSize;
+        return periodicData.targetSize;
     }
 
     /** @return false if no target is found, true if target is found */
@@ -214,7 +218,7 @@ public class Camera extends Sensor4237
     @Override
     public void readPeriodicInputs() 
     {
-        periodicData.tagSize = periodicData.ta.getDouble(0.0);
+        periodicData.targetSize = periodicData.ta.getDouble(0.0);
         periodicData.isTargetFound = periodicData.tv.getDouble(0.0) == 1.0;
         periodicData.botPoseWPIBlue = periodicData.botpose_wpiblue.getDoubleArray(new double[7]);
         periodicData.botPoseWPIRed = periodicData.botpose_wpired.getDoubleArray(new double[7]);
