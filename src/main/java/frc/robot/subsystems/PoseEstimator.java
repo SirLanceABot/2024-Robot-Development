@@ -48,8 +48,8 @@ public class PoseEstimator extends Subsystem4237
     private double[] blueSpeakerCoords = {0.0, 5.55};
     private double[] redSpeakerCoords = {16.54, 5.55};
 
-    private Matrix<N3, N1> visionStdDevs;
-    private Matrix<N3, N1> stateStdDevs;
+    // private Matrix<N3, N1> visionStdDevs;
+    // private Matrix<N3, N1> stateStdDevs;
 
     private class PeriodicData
     {
@@ -78,7 +78,7 @@ public class PoseEstimator extends Subsystem4237
         this.drivetrain = drivetrain;
         this.cameraArray = cameraArray;
 
-        configStdDevs();
+        // configStdDevs();
 
         if(drivetrain != null && gyro != null)
         {
@@ -86,9 +86,15 @@ public class PoseEstimator extends Subsystem4237
                 drivetrain.getKinematics(),
                 gyro.getRotation2d(),
                 drivetrain.getSwerveModulePositions(),
-                drivetrain.getPose(),
-                stateStdDevs,
-                visionStdDevs);
+                drivetrain.getPose());
+
+            // poseEstimator = new SwerveDrivePoseEstimator(
+            //     drivetrain.getKinematics(),
+            //     gyro.getRotation2d(),
+            //     drivetrain.getSwerveModulePositions(),
+            //     drivetrain.getPose(),
+            //     stateStdDevs,
+            //     visionStdDevs);
         }
         else
         {
@@ -100,16 +106,16 @@ public class PoseEstimator extends Subsystem4237
         System.out.println(fullClassName + " : Constructor Finished");
     }
 
-    public void configStdDevs()
-    {
-        stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
-        stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
-        stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
+    // public void configStdDevs()
+    // {
+    //     stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
+    //     stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
+    //     stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
 
-        visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
-        visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
-        visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
-    }
+    //     visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
+    //     visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
+    //     visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
+    // }
     
     /** @return the estimated pose (Pose2d)*/
     public Pose2d getEstimatedPose() 

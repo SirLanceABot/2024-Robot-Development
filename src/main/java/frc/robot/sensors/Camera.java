@@ -45,7 +45,7 @@ public class Camera extends Sensor4237
         private double[] botPoseWPIBlue;
         private double[] botPoseWPIRed;
 
-        private Matrix<N3, N1> measurementStdDevs;
+        // private Matrix<N3, N1> measurementStdDevs;
     }
 
     public static final int TRANSLATION_X_METERS_INDEX = 0;
@@ -190,26 +190,26 @@ public class Camera extends Sensor4237
             
     }
 
-    public Matrix<N3, N1> setMeasurementStdDevs()
-    {
-        // defaults
-        double x = 0.9;
-        double y = 0.9;
-        double heading = 0.9;
+    // public Matrix<N3, N1> setMeasurementStdDevs()
+    // {
+    //     // defaults
+    //     double x = 0.9;
+    //     double y = 0.9;
+    //     double heading = 0.9;
 
-        // code to scale std dev based on distance (or size) of tag
+    //     // code to scale std dev based on distance (or size) of tag
 
-        periodicData.measurementStdDevs.set(0, 0, x);
-        periodicData.measurementStdDevs.set(1, 0, y);
-        periodicData.measurementStdDevs.set(2, 0, heading);
+    //     periodicData.measurementStdDevs.set(0, 0, x);
+    //     periodicData.measurementStdDevs.set(1, 0, y);
+    //     periodicData.measurementStdDevs.set(2, 0, heading);
 
-        return periodicData.measurementStdDevs;
-    }
+    //     return periodicData.measurementStdDevs;
+    // }
 
-    public Matrix<N3, N1> getMeasurementStdDevs()
-    {
-        return periodicData.measurementStdDevs;
-    }
+    // public Matrix<N3, N1> getMeasurementStdDevs()
+    // {
+    //     return periodicData.measurementStdDevs;
+    // }
 
     @Override
     public void readPeriodicInputs() 
@@ -218,7 +218,7 @@ public class Camera extends Sensor4237
         periodicData.isTargetFound = periodicData.tv.getDouble(0.0) == 1.0;
         periodicData.botPoseWPIBlue = periodicData.botpose_wpiblue.getDoubleArray(new double[7]);
         periodicData.botPoseWPIRed = periodicData.botpose_wpired.getDoubleArray(new double[7]);
-        periodicData.measurementStdDevs = setMeasurementStdDevs();
+        // periodicData.measurementStdDevs = setMeasurementStdDevs();
     }
 
     @Override
