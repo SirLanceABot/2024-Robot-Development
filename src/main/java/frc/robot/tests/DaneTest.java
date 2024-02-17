@@ -3,6 +3,8 @@ package frc.robot.tests;
 import frc.robot.subsystems.Pivot;
 import java.lang.invoke.MethodHandles;
 
+import javax.lang.model.util.ElementScanner14;
+
 import frc.robot.RobotContainer;
 import frc.robot.controls.Xbox;
 //import edu.wpi.first.wpilibj.AnalogEncoder;
@@ -52,10 +54,18 @@ public class DaneTest implements Test
      */
     public void periodic()
     {
-        // if(joystick.getRawButton(1))
-        // {
-        //     pivot.setAngle(30.0);
-        // }
+        if(joystick.getRawButton(1))
+        {
+            pivot.moveUp();
+        }
+        else if(joystick.getRawButton(2))
+        {
+            pivot.moveDown();
+        }
+        else
+        {
+            pivot.stopMotor();
+        }
     }
     
     /**

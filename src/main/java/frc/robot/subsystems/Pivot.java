@@ -60,25 +60,24 @@ public class Pivot extends Subsystem4237
     private class MyConstants
     {
         //for PID
-        private double kP = 140.0;
+        private double kP = 10.0; //was 140
         private double kI = 0.0;
         private double kD = 0.0;
         // private double setPoint = 0.0;
         private int slotId = 0;
 
-        //Used to get the correct currentPosition
+        //Used to get the correct position
         private final double currentRotationalPositionOffset = 0.011667;
-        // private final double motorPositionConversionFactor = 0.002778;
+        private final double motorPositionConversionFactor = 0.0027778;
 
         //limits
-        private final double FORWARD_SOFT_LIMIT = 0.2473;
-        private final double REVERSE_SOFT_LIMIT = 0.0;
+        private final double FORWARD_SOFT_LIMIT = 59.0 / 360.0;
+        private final double REVERSE_SOFT_LIMIT = 23.0 / 360.0;
         private final double MAX_PIVOT_ANGLE = 77.0;
         private final double MINIMUM_PIVOT_ANGLE = 12.0; 
 
         //for manually moving Pivot
-        private final double MOTOR_SPEED_DOWN = 0.07;
-        private final double MOTOR_SPEED_UP = 0.07;
+        private final double MOTOR_SPEED = 0.1;
     }
     
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
@@ -107,7 +106,7 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configCANcoder();
         configShotMap();
-        setAngleDefaultCommand();
+        // setAngleDefaultCommand();
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -118,9 +117,9 @@ public class Pivot extends Subsystem4237
     {
         // Factory Defaults
         motor.setupFactoryDefaults();
-        motor.setupInverted(false);
+        motor.setupInverted(true);
         motor.setupBrakeMode();
-        // motor.setupPositionConversionFactor(myConstants.motorPositionConversionFactor);
+        motor.setupPositionConversionFactor(myConstants.motorPositionConversionFactor);
         motor.setPosition(0.0);
         motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
@@ -136,15 +135,15 @@ public class Pivot extends Subsystem4237
         pivotAngle.getConfigurator().refresh(canCoderConfig);
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canCoderConfig.MagnetSensor.MagnetOffset = -0.668213; //BW 2/9/2024
+        canCoderConfig.MagnetSensor.MagnetOffset = -0.61134467; //BW 2/9/2024
         pivotAngle.getConfigurator().apply(canCoderConfig);
-        // pivotAngle.setPosition(0.0);
-        motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0);
+        //TODO test this out but with getAngle()
+        motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0 * 360.0);
     }
 
     public void setAngleDefaultCommand()
     {
-        this.setDefaultCommand(this.setAngleCommand(30.0));
+        // this.setDefaultCommand(this.setAngleCommand(30.0));
     }
 
     private void configShotMap()
@@ -168,18 +167,17 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        motor.set(myConstants.MOTOR_SPEED_UP);
+        motor.set(myConstants.MOTOR_SPEED);
     }
 
     public void moveDown()
     {
-        motor.set(-myConstants.MOTOR_SPEED_DOWN);
+        motor.set(-myConstants.MOTOR_SPEED);
     }
 
     public void stopMotor()
     {
         motor.set(0.0);
-
     }
 
     public double getAngle()
@@ -199,7 +197,7 @@ public class Pivot extends Subsystem4237
         //setAngle using CANcoder
         if(degrees >= myConstants.MINIMUM_PIVOT_ANGLE && degrees <= myConstants.MAX_PIVOT_ANGLE)
         {
-            motor.setControlPosition(degrees / 360.0);
+            motor.setControlPosition(degrees);
         }
         else
         {
@@ -207,31 +205,31 @@ public class Pivot extends Subsystem4237
         }
 
         //setAngle using FalconFX encoder
-        // if(periodicData.currentAngle > (degrees + 5))
+        // if(getAngle() > (degrees + 2))
         // {
         //     moveDown();
         // }
-        // else if(periodicData.currentAngle < (degrees - 5))
+        // else if(getAngle() < (degrees - 2))
         // {
         //     moveUp();
         // }
         // else
         // {
-        //     stop();
+        //     stopMotor();
         // }
 
         //setAngle using rotary encoder
-        // if(periodicData.currentAngle > (degrees + 2))
+        // if(getAngle() > (degrees + 1))
         // {
-        //     moveDown(speed);
+        //     moveDown();
         // }
-        // else if(periodicData.currentAngle < (degrees - 2))
+        // else if(getAngle() < (degrees - 1))
         // {
-        //     moveUp(speed);
+        //     moveUp();
         // } 
         // else
         // {
-        //     stop();
+        //     stopMotor();
         // }
     }
 
@@ -268,7 +266,9 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + myConstants.currentRotationalPositionOffset;
+        periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+
+        //All included in tunePID() command
 
         // For Testing
         // Changes the PID values to the values displayed on the PID widget
@@ -294,6 +294,8 @@ public class Pivot extends Subsystem4237
             System.out.println("Angle is out of Range");
             periodicData.isBadAngle = false;
         }
+
+        //All included in tunePID() command
 
         //Displays the pivot's current angle
         //SmartDashboard.putNumber("currentAngle", getAngle());
