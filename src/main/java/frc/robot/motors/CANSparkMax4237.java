@@ -290,9 +290,9 @@ public class CANSparkMax4237 extends MotorController4237 //implements Sendable
 
     /**
      * Set the PID controls for the motor.
-     * @param kP The Proportional constant
-     * @param kI The Integral constant
-     * @param kD The Derivative constant
+     * @param kP The Proportional gain constant
+     * @param kI The Integral gain constant
+     * @param kD The Derivative gain constant
      */
     public void setupPIDController(int slotId, double kP, double kI, double kD)
     {

@@ -340,6 +340,32 @@ public class TalonFX4237 extends MotorController4237 //implements Sendable
         }
     }
 
+    /**
+     * Set the PID controls for the motor.
+     * @param kP The Proportional gain constant
+     * @param kI The Integral gain constant
+     * @param kD The Derivative gain constant
+     * @param kS The Static voltage constant
+     * @param kV The Velocity gain constant
+     */
+    public void setupPIDController(int slotId, double kP, double kI, double kD, double kS, double kV)
+    {
+        if(slotId >= 0 && slotId <= 2)
+        {
+            SlotConfigs slotConfigs = new SlotConfigs();
+            motor.getConfigurator().refresh(slotConfigs);
+            slotConfigs.SlotNumber = slotId;
+            slotConfigs.kP = kP;
+            slotConfigs.kI = kI;
+            slotConfigs.kD = kD;
+            slotConfigs.kS = kS;
+            slotConfigs.kV = kV;
+            setup(() -> motor.getConfigurator().apply(slotConfigs), "Setup PID Controller"); 
+        }
+    }
+
+
+
     public double[] getPID(int slotId)
     {
         double[] pid = {0.0, 0.0, 0.0};
