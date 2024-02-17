@@ -226,7 +226,7 @@ public final class Commands4237
             robotContainer.candle.setPurpleCommand()
             .alongWith(
                 shootToSpeakerAngleCommand(),
-                robotContainer.drivetrain.rotateForShootingCommand())
+                robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
             .andThen(
                 robotContainer.index.feedNoteToFlywheelCommand(0.5))
             .andThen(
