@@ -18,7 +18,22 @@ public class AutonomousTabData
 
     public static enum StartingLocation
     {
-        kLeft, kMiddle, kRight;
+        kLeft("Left"),
+        kMiddle("Middle"),
+        kRight("Right");
+
+        private final String name;
+
+        private StartingLocation(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     }
 
     // public static enum ContainingPreload
@@ -33,17 +48,61 @@ public class AutonomousTabData
 
     public static enum ScorePreload
     {
-        kYes, kNo;
+        kYes("Yes"), 
+        kNo("No");
+
+        private final String name;
+
+        private ScorePreload(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     }
 
     public static enum ShootDelay
     {
-        k0, k3, k5;
+        k0("ShootDelay0"), 
+        k3("ShootDelay3"), 
+        k5("ShootDelay5");
+
+        private final String name;
+
+        private ShootDelay(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     }
 
     public static enum DriveDelay
     {
-        k0, k3, k5;
+        k0("DriveDelay0"), 
+        k3("DriveDelay3"), 
+        k5("DriveDelay5");
+
+        private final String name;
+
+        private DriveDelay(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     } 
 
     // public static enum PickupSecondNote
@@ -51,9 +110,25 @@ public class AutonomousTabData
     //     kYes, kNo;
     // }
 
-    public static enum ScoreNotes
+    public static enum ScoreMoreNotes
     {
-        k0, k1, k2, k3;
+        k0("ScoreMoreNotes0"), 
+        k1("ScoreMoreNotes1"), 
+        k2("ScoreMoreNotes"), 
+        k3("ScoreMoreNotes");
+
+        private final String name;
+
+        private ScoreMoreNotes(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
     }
 
     //-------------------------------------------------------------------//
@@ -66,7 +141,7 @@ public class AutonomousTabData
     public ShootDelay shootDelay = ShootDelay.k0;
     public DriveDelay driveDelay = DriveDelay.k0;
     // public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
-    public ScoreNotes scoreSecondNote = ScoreNotes.k0;
+    public ScoreMoreNotes scoreMoreNotes = ScoreMoreNotes.k0;
   
 
     // Default constructor
@@ -83,7 +158,7 @@ public class AutonomousTabData
         shootDelay = atd.shootDelay;
         driveDelay = atd.driveDelay;
         // pickupSecondNote = atd.pickupSecondNote;
-        scoreSecondNote = atd.scoreSecondNote;
+        scoreMoreNotes = atd.scoreMoreNotes;
 
     }
 
@@ -99,7 +174,7 @@ public class AutonomousTabData
         str += "Shoot Delay                 : " + shootDelay + "\n";   
         str += "Drive Delay                 : " + driveDelay + "\n";  
         // str += "Pickup Second Note          : " + pickupSecondNote + "\n";
-        str += "Score Second Note           : " + scoreSecondNote + "\n";
+        str += "Score Second Note           : " + scoreMoreNotes + "\n";
 
         return str;
     }

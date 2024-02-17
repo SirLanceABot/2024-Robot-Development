@@ -45,7 +45,7 @@ public class AutonomousTab
     private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.ScoreNotes> scoreNotesBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ScoreMoreNotes> scoreNotesBox = new SendableChooser<>();
     
 
     private GenericEntry successfulDownload;
@@ -70,7 +70,7 @@ public class AutonomousTab
         createShootDelayBox();
         createDriveDelayBox();
         // createPickupNotesBox();
-        createScoreNotesBox();
+        createScoreMoreNotesBox();
     
         
         createSendDataButton();
@@ -240,17 +240,17 @@ public class AutonomousTab
     // }
 
 
-    private void createScoreNotesBox()
+    private void createScoreMoreNotesBox()
     {
         //create and name the Box
         SendableRegistry.add(scoreNotesBox, "Score How Many Notes?");
         SendableRegistry.setName(scoreNotesBox, "Score How Many Notes?");
         
         //add options to  Box
-        scoreNotesBox.addOption("0", AutonomousTabData.ScoreNotes.k0);
-        scoreNotesBox.setDefaultOption("1", AutonomousTabData.ScoreNotes.k1);
-        scoreNotesBox.addOption("2",AutonomousTabData.ScoreNotes.k2);
-        scoreNotesBox.addOption("3", AutonomousTabData.ScoreNotes.k3);
+        scoreNotesBox.addOption("0", AutonomousTabData.ScoreMoreNotes.k0);
+        scoreNotesBox.setDefaultOption("1", AutonomousTabData.ScoreMoreNotes.k1);
+        scoreNotesBox.addOption("2",AutonomousTabData.ScoreMoreNotes.k2);
+        scoreNotesBox.addOption("3", AutonomousTabData.ScoreMoreNotes.k3);
         
 
         //put the widget on the shuffleboard
@@ -319,7 +319,7 @@ public class AutonomousTab
         autonomousTabData.driveDelay = driveDelayBox.getSelected();
         autonomousTabData.shootDelay = shootDelayBox.getSelected();
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
-        autonomousTabData.scoreSecondNote = scoreNotesBox.getSelected();
+        autonomousTabData.scoreMoreNotes = scoreNotesBox.getSelected();
         
     }
 
@@ -393,10 +393,10 @@ public class AutonomousTab
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 );
         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
         boolean isScoreSecondNote = 
-        (scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k0 ||
-         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k1 ||
-         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k2 ||
-         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k3);
+        (scoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k0 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k1 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k2 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k3);
 
 
         // if(!isContainingPreload && isScorePreload) :)

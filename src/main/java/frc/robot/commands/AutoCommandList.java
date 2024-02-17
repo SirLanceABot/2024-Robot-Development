@@ -53,7 +53,7 @@ public class AutoCommandList extends SequentialCommandGroup
     private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
-
+    private String string = "";
     
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
@@ -91,8 +91,14 @@ public class AutoCommandList extends SequentialCommandGroup
      */
     private void build()
     {
-        if(drivetrain != null)
-            add(new StopDrive(drivetrain));
+        // if(drivetrain != null)
+        //     add(new StopDrive(drivetrain));
+
+        string += autonomousTabData.startingLocation;
+        string += autonomousTabData.scorePreload;
+        string += autonomousTabData.shootDelay;
+        string += autonomousTabData.driveDelay;
+        string += autonomousTabData.scoreMoreNotes;
     }
 
 
@@ -111,4 +117,6 @@ public class AutoCommandList extends SequentialCommandGroup
     {
         return commandString;
     }
+
+
 }
