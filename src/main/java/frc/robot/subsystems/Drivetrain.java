@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -10,6 +12,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -24,8 +27,10 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -109,6 +114,12 @@ public class Drivetrain extends Subsystem4237
 
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
 
+    private double kP = 0.1;
+    private double kI = 0.0;
+    private double kD = 0.0;
+    private PIDController pidController = new PIDController(kP, kI, kD);
+    private double targetYaw;
+    private boolean isAlligned = false;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -428,20 +439,71 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters();
     }
 
-    public void rotateForShooting()
+    // public void rotateToSpeaker()
+    // {
+    //     Optional<Alliance> alliance = DriverStation.getAlliance();
+    //     if(alliance.get() == Alliance.Blue)
+    //     {
+    //         targetYaw = getAngleToBlueSpeaker();
+    //         // targetYaw = 180.0;
+
+    //     }
+    //     else if(alliance.get() == Alliance.Red)
+    //     {
+    //         targetYaw = getAngleToRedSpeaker();
+    //         // targetYaw = 0.0;
+    //     }
+
+    //     // System.out.printf("%-13s%-4.2f%n","Target Yaw", targetYaw);
+    //     SmartDashboard.putNumber("Target Yaw", targetYaw);
+    //     double rotatePower = pidController.calculate(gyro.getYaw(), targetYaw);
+
+    //     drive(0.0, 0.0, rotatePower, false);
+    // }
+
+    public BooleanSupplier isAlligned(double targetYaw)
     {
-        // if(teamColor == TeamColor.kRed)
-            // shootingAngle = poseEstimator.getAngleToRedSpeaker();
+        if(gyro.getYaw() >= targetYaw - 1.0 && gyro.getYaw() <= targetYaw + 1.0)
+        {
+            isAlligned = true;
+        }
+        else
+        {
+            isAlligned = false;
+        }
 
-        // if(teamColor == TeamColor.kBlue)
-            // shootingAngle = poseEstimator.getAngleToBlueSpeaker();
-
-        drive(0.0, 0.0, shootingAngle, false);
+        return () -> isAlligned;
     }
 
-    public Command rotateForShootingCommand()
+    public void rotateToBlueSpeaker()
     {
-        return Commands.runOnce(() -> rotateForShooting());
+        targetYaw = getAngleToBlueSpeaker();
+        double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
+        drive(0.0, 0.0, rotationSpeed, false);
+    }
+
+    public void rotateToRedSpeaker()
+    {
+        targetYaw = getAngleToRedSpeaker();
+        double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
+        drive(0.0, 0.0, rotationSpeed, false);
+    }
+
+    // public Command rotateForShootingCommand()
+    // {
+    //     return Commands.runOnce(() -> rotateToSpeaker());
+    // }
+
+    public Command rotateToBlueSpeakerCommand()
+    {
+        return Commands.run(() -> rotateToBlueSpeaker())
+                       .until(isAlligned(targetYaw));
+    }
+
+    public Command rotateToRedSpeakerCommand()
+    {
+        return Commands.run(() -> rotateToRedSpeaker())
+                       .until(isAlligned(targetYaw));
     }
 
     public SwerveModulePosition[] getSwerveModulePositions()
@@ -511,6 +573,10 @@ public class Drivetrain extends Subsystem4237
         // System.out.println(periodicData.swerveModuleStates);
     }
 
+    public void setPID(double p, double i, double d)
+    {
+        pidController.setPID(p, i, d);
+    }
 
     public void resetEncoders()
     {

@@ -5,11 +5,14 @@ import java.lang.invoke.MethodHandles;
 import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Pivot;
+import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
 import frc.robot.subsystems.Candle4237;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shuttle;
@@ -36,8 +39,10 @@ public class SamTest implements Test
     // private final Index index;
     // private final Pivot pivot;
     // private final Flywheel flywheel;
-    private final Intake intake;
+    // private final Intake intake;
     private final Joystick joystick;
+    private final Drivetrain drivetrain;
+    private final Gyro4237 gyro;
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -53,7 +58,13 @@ public class SamTest implements Test
         // this.index = robotContainer.index;
         // this.pivot = robotContainer.pivot;
         // this.flywheel = robotContainer.flywheel;
-        this.intake = robotContainer.intake;
+        // this.intake = robotContainer.intake;
+        this.drivetrain = robotContainer.drivetrain;
+        this.gyro = robotContainer.gyro;
+
+        // SmartDashboard.putNumber("kP", 0.0);
+        // SmartDashboard.putNumber("kI", 0.0);
+        // SmartDashboard.putNumber("kD", 0.0);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -62,7 +73,13 @@ public class SamTest implements Test
      * This method runs one time before the periodic() method.
      */
     public void init()
-    {}
+    {
+        // p = SmartDashboard.getNumber("kP", 0.0);
+        // i = SmartDashboard.getNumber("kI", 0.0);
+        // d = SmartDashboard.getNumber("kD", 0.0);
+        // drivetrain.setPID(p, i, d);
+        // System.out.println("P: " + p + " I: " + i + " D: " + d);
+    }
 
     /**
      * This method runs periodically (every 20ms).
@@ -98,20 +115,23 @@ public class SamTest implements Test
             // shuttle.moveDownward();
             // flywheel.shoot(80);
             // index.setVelocity(1);
-            intake.pickupFront();
+            // intake.pickupFront();
+            // drivetrain.rotateToSpeaker();
         }
-        else if(joystick.getRawButton(2))   //B
-        {
-            // flywheel.stop();
-            // index.stop();
-            // shuttle.stop();
-            // pivot.stopMotor();
-            intake.pickupBack();
-        }
-        else
-        {
-            intake.stop();
-        }
+
+        SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
+        // else if(joystick.getRawButton(2))   //B
+        // {
+        //     // flywheel.stop();
+        //     // index.stop();
+        //     // shuttle.stop();
+        //     // pivot.stopMotor();
+        //     intake.pickupBack();
+        // }
+        // else
+        // {
+        //     intake.stop();
+        // }
         // if(joystick.getRawButton(2))   //B
         // {
         //     // index.setVelocity(1);
@@ -142,7 +162,7 @@ public class SamTest implements Test
         // index.stop();
         // shuttle.stop();
         // pivot.stopMotor();
-        intake.stop();
+        // intake.stop();
     }
 
     // *** METHODS ***
