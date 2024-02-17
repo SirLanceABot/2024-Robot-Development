@@ -21,15 +21,15 @@ public class AutonomousTabData
         kLeft, kMiddle, kRight;
     }
 
-    public static enum ContainingPreload
-    {
-        kYes, kNo;
-    }
+    // public static enum ContainingPreload
+    // {
+    //     kYes, kNo;
+    // }
 
-    public static enum DriveOutOfStartZone
-    {
-        kYes, kNo;
-    }
+    // public static enum DriveOutOfStartZone
+    // {
+    //     kYes, kNo;
+    // }
 
     public static enum ScorePreload
     {
@@ -38,35 +38,35 @@ public class AutonomousTabData
 
     public static enum ShootDelay
     {
-        k0, k1, k2, k3, k4, k5;
+        k0, k3, k5;
     }
 
     public static enum DriveDelay
     {
-        k0, k1, k2, k3, k4, k5;
-    }
+        k0, k3, k5;
+    } 
 
-    public static enum PickupSecondNote
-    {
-        kYes, kNo;
-    }
+    // public static enum PickupSecondNote
+    // {
+    //     kYes, kNo;
+    // }
 
-    public static enum ScoreSecondNote
+    public static enum ScoreNotes
     {
-        kYes, kNo;
+        k0, k1, k2, k3;
     }
 
     //-------------------------------------------------------------------//
 
     // IMPORTANT: Any variables added here must be initialized in the copy constructor below
     public StartingLocation startingLocation = StartingLocation.kMiddle;
-    public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
-    public ContainingPreload containingPreload = ContainingPreload.kYes;
+    // public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
+    // public ContainingPreload containingPreload = ContainingPreload.kYes;
     public ScorePreload scorePreload = ScorePreload.kYes;
     public ShootDelay shootDelay = ShootDelay.k0;
     public DriveDelay driveDelay = DriveDelay.k0;
-    public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
-    public ScoreSecondNote scoreSecondNote = ScoreSecondNote.kYes;
+    // public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
+    public ScoreNotes scoreSecondNote = ScoreNotes.k0;
   
 
     // Default constructor
@@ -77,12 +77,12 @@ public class AutonomousTabData
     public AutonomousTabData(AutonomousTabData atd)
     {
         startingLocation = atd.startingLocation;
-        driveOutOfStartZone = atd.driveOutOfStartZone;
-        containingPreload = atd.containingPreload;
+        // driveOutOfStartZone = atd.driveOutOfStartZone;
+        // containingPreload = atd.containingPreload;
         scorePreload = atd.scorePreload;
         shootDelay = atd.shootDelay;
         driveDelay = atd.driveDelay;
-        pickupSecondNote = atd.pickupSecondNote;
+        // pickupSecondNote = atd.pickupSecondNote;
         scoreSecondNote = atd.scoreSecondNote;
 
     }
@@ -93,12 +93,12 @@ public class AutonomousTabData
 
         str += "\n*****  AUTONOMOUS SELECTION  *****\n";
         str += "Starting Location           : " + startingLocation   + "\n";
-        str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
-        str += "Containing Preload          : " + containingPreload + "\n";
+        // str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
+        // str += "Containing Preload          : " + containingPreload + "\n";
         str += "Score Preload               : " + scorePreload  + "\n";  
         str += "Shoot Delay                 : " + shootDelay + "\n";   
         str += "Drive Delay                 : " + driveDelay + "\n";  
-        str += "Pickup Second Note          : " + pickupSecondNote + "\n";
+        // str += "Pickup Second Note          : " + pickupSecondNote + "\n";
         str += "Score Second Note           : " + scoreSecondNote + "\n";
 
         return str;

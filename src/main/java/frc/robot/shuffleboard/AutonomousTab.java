@@ -39,13 +39,13 @@ public class AutonomousTab
   
     // Create the Box objects
     private SendableChooser<AutonomousTabData.StartingLocation> startingLocationBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
+    // private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
+    // private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.ScoreSecondNote> scoreNotesBox = new SendableChooser<>();
+    // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ScoreNotes> scoreNotesBox = new SendableChooser<>();
     
 
     private GenericEntry successfulDownload;
@@ -65,11 +65,11 @@ public class AutonomousTab
 
         createStartingLocationBox();
         createScorePreloadBox();
-        createContainingPreloadBox();
-        createDriveOutOfStartZoneBox();
+        // createContainingPreloadBox();
+        // createDriveOutOfStartZoneBox();
         createShootDelayBox();
         createDriveDelayBox();
-        createPickupNotesBox();
+        // createPickupNotesBox();
         createScoreNotesBox();
     
         
@@ -103,51 +103,51 @@ public class AutonomousTab
         autonomousTab.add(startingLocationBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(1, 1)
-            .withSize(5, 2);
+            .withSize(5, 3);
     }
 
     /**
     * <b>Drive Out of Start Zone box</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createDriveOutOfStartZoneBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
-        SendableRegistry.setName(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
+    // private void createDriveOutOfStartZoneBox()
+    // {
+    //     //create and name the Box
+    //     SendableRegistry.add(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
+    //     SendableRegistry.setName(driveOutOfStartZoneBox, "Drive Out Of Start Zone?");
         
-        //add options to  Box
-        driveOutOfStartZoneBox.addOption("No", AutonomousTabData.DriveOutOfStartZone.kNo);
-        driveOutOfStartZoneBox.setDefaultOption("Yes", AutonomousTabData.DriveOutOfStartZone.kYes);
+    //     //add options to  Box
+    //     driveOutOfStartZoneBox.addOption("No", AutonomousTabData.DriveOutOfStartZone.kNo);
+    //     driveOutOfStartZoneBox.setDefaultOption("Yes", AutonomousTabData.DriveOutOfStartZone.kYes);
         
 
-        //put the widget on the shuffleboard
-        autonomousTab.add(driveOutOfStartZoneBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(6, 1)
-            .withSize(4, 3);
-    }
+    //     //put the widget on the shuffleboard
+    //     autonomousTab.add(driveOutOfStartZoneBox)
+    //         .withWidget(BuiltInWidgets.kSplitButtonChooser)
+    //         .withPosition(6, 1)
+    //         .withSize(4, 3);
+    // }
 
     /**
     * <b>Containing Preload</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createContainingPreloadBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(containingPreloadBox, "Containing Preload?");
-        SendableRegistry.setName(containingPreloadBox, "Containing Preload?");
+    // private void createContainingPreloadBox()
+    // {
+    //     //create and name the Box
+    //     SendableRegistry.add(containingPreloadBox, "Containing Preload?");
+    //     SendableRegistry.setName(containingPreloadBox, "Containing Preload?");
 
-        //add options to Box
-        containingPreloadBox.addOption("No", AutonomousTabData.ContainingPreload.kNo);
-        containingPreloadBox.setDefaultOption("Yes", AutonomousTabData.ContainingPreload.kYes);
+    //     //add options to Box
+    //     containingPreloadBox.addOption("No", AutonomousTabData.ContainingPreload.kNo);
+    //     containingPreloadBox.setDefaultOption("Yes", AutonomousTabData.ContainingPreload.kYes);
         
-        //put the widget on the shuffleboard
-        autonomousTab.add(containingPreloadBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(1,5)
-            .withSize(4, 3);
-    }
+    //     //put the widget on the shuffleboard
+    //     autonomousTab.add(containingPreloadBox)
+    //         .withWidget(BuiltInWidgets.kSplitButtonChooser)
+    //         .withPosition(1,5)
+    //         .withSize(4, 3);
+    // }
 
     /**
     * <b>Score Preload</b> Box
@@ -167,8 +167,8 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(scorePreloadBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(5, 5)
-            .withSize(4, 3);
+            .withPosition(1, 5)
+            .withSize(5, 3);
     }
 
     /**
@@ -183,17 +183,17 @@ public class AutonomousTab
         
         //add options to  Box
         shootDelayBox.setDefaultOption("Zero", AutonomousTabData.ShootDelay.k0);
-        shootDelayBox.addOption("One", AutonomousTabData.ShootDelay.k1);
-        shootDelayBox.addOption("Two", AutonomousTabData.ShootDelay.k2);
+        // shootDelayBox.addOption("One", AutonomousTabData.ShootDelay.k1);
+        // shootDelayBox.addOption("Two", AutonomousTabData.ShootDelay.k2);
         shootDelayBox.addOption("Three", AutonomousTabData.ShootDelay.k3);
-        shootDelayBox.addOption("Four", AutonomousTabData.ShootDelay.k4);
+        // shootDelayBox.addOption("Four", AutonomousTabData.ShootDelay.k4);
         shootDelayBox.addOption("Five", AutonomousTabData.ShootDelay.k5);
 
         //put the widget on the shuffleboard
         autonomousTab.add(shootDelayBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(10, 5)
-            .withSize(10, 2);
+            .withPosition(11, 1)
+            .withSize(5, 3);
     }
 
     /**
@@ -208,54 +208,56 @@ public class AutonomousTab
         
         //add options to  Box
         driveDelayBox.setDefaultOption("Zero", AutonomousTabData.DriveDelay.k0);
-        driveDelayBox.addOption("One", AutonomousTabData.DriveDelay.k1);
-        driveDelayBox.addOption("Two", AutonomousTabData.DriveDelay.k2);
+        // driveDelayBox.addOption("One", AutonomousTabData.DriveDelay.k1);
+        // driveDelayBox.addOption("Two", AutonomousTabData.DriveDelay.k2);
         driveDelayBox.addOption("Three", AutonomousTabData.DriveDelay.k3);
-        driveDelayBox.addOption("Four", AutonomousTabData.DriveDelay.k4);
+        // driveDelayBox.addOption("Four", AutonomousTabData.DriveDelay.k4);
         driveDelayBox.addOption("Five", AutonomousTabData.DriveDelay.k5);
 
         //put the widget on the shuffleboard
         autonomousTab.add(driveDelayBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(10, 1)
-            .withSize(10, 2);
+            .withPosition(6, 1)
+            .withSize(5, 3);
     }
 
-    private void createPickupNotesBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(pickupNotesBox, "Pickup Second Note?");
-        SendableRegistry.setName(pickupNotesBox, "Pickup Second Note?");
+    // private void createPickupNotesBox()
+    // {
+    //     //create and name the Box
+    //     SendableRegistry.add(pickupNotesBox, "Pickup Second Note?");
+    //     SendableRegistry.setName(pickupNotesBox, "Pickup Second Note?");
         
-        //add options to  Box
-        pickupNotesBox.addOption("No", AutonomousTabData.PickupSecondNote.kNo);
-        pickupNotesBox.setDefaultOption("Yes", AutonomousTabData.PickupSecondNote.kYes);
+    //     //add options to  Box
+    //     pickupNotesBox.addOption("No", AutonomousTabData.PickupSecondNote.kNo);
+    //     pickupNotesBox.setDefaultOption("Yes", AutonomousTabData.PickupSecondNote.kYes);
         
 
-        //put the widget on the shuffleboard
-        autonomousTab.add(pickupNotesBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(21, 1)
-            .withSize(4, 3);
-    }
+    //     //put the widget on the shuffleboard
+    //     autonomousTab.add(pickupNotesBox)
+    //         .withWidget(BuiltInWidgets.kSplitButtonChooser)
+    //         .withPosition(21, 1)
+    //         .withSize(4, 3);
+    // }
 
 
     private void createScoreNotesBox()
     {
         //create and name the Box
-        SendableRegistry.add(scoreNotesBox, "Score Second Note?");
-        SendableRegistry.setName(scoreNotesBox, "Score Second Note?");
+        SendableRegistry.add(scoreNotesBox, "Score How Many Notes?");
+        SendableRegistry.setName(scoreNotesBox, "Score How Many Notes?");
         
         //add options to  Box
-        scoreNotesBox.addOption("No", AutonomousTabData.ScoreSecondNote.kNo);
-        scoreNotesBox.setDefaultOption("Yes", AutonomousTabData.ScoreSecondNote.kYes);
+        scoreNotesBox.addOption("0", AutonomousTabData.ScoreNotes.k0);
+        scoreNotesBox.setDefaultOption("1", AutonomousTabData.ScoreNotes.k1);
+        scoreNotesBox.addOption("2",AutonomousTabData.ScoreNotes.k2);
+        scoreNotesBox.addOption("3", AutonomousTabData.ScoreNotes.k3);
         
 
         //put the widget on the shuffleboard
         autonomousTab.add(scoreNotesBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(21, 5)
-            .withSize(4, 3);
+            .withPosition(6, 5)
+            .withSize(5, 3);
     }
 
     /**
@@ -272,7 +274,7 @@ public class AutonomousTab
 
         autonomousTab.add(sendDataButton)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(20, 8)
+            .withPosition(19, 5)
             .withSize(4, 4);
     }
 
@@ -289,7 +291,7 @@ public class AutonomousTab
         
         return autonomousTab.add("Successful Download?", false)
              .withWidget(BuiltInWidgets.kBooleanBox)
-             .withPosition(24, 8)
+             .withPosition(19, 1)
              .withSize(4, 4)
              .withProperties(booleanBoxProperties)
              .getEntry();
@@ -303,20 +305,20 @@ public class AutonomousTab
     {
          return autonomousTab.add("Error Messages", "No Errors")
              .withWidget(BuiltInWidgets.kTextView)
-             .withPosition(0, 10)
-             .withSize(20, 2)
+             .withPosition(1, 10)
+             .withSize(22, 3)
              .getEntry();
     }
 
     private void updateAutonomousTabData()
     {
         autonomousTabData.startingLocation = startingLocationBox.getSelected();
-        autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
-        autonomousTabData.containingPreload = containingPreloadBox.getSelected();
+        // autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
+        // autonomousTabData.containingPreload = containingPreloadBox.getSelected();
         autonomousTabData.scorePreload = scorePreloadBox.getSelected();
         autonomousTabData.driveDelay = driveDelayBox.getSelected();
         autonomousTabData.shootDelay = shootDelayBox.getSelected();
-        autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
+        // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
         autonomousTabData.scoreSecondNote = scoreNotesBox.getSelected();
         
     }
@@ -380,34 +382,38 @@ public class AutonomousTab
         String msg = "";
         boolean isValid = true;
         
-        boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
+        // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
         boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
         boolean isShootDelay = 
         (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
-         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
-         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 ||
-         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
+        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
          shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 );
-        boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
-        boolean isScoreSecondNote = (scoreNotesBox.getSelected() == AutonomousTabData.ScoreSecondNote.kYes);
+        // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
+        boolean isScoreSecondNote = 
+        (scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k0 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k1 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k2 ||
+         scoreNotesBox.getSelected() == AutonomousTabData.ScoreNotes.k3);
 
 
-        if(!isContainingPreload && isScorePreload)
-        {
-            isValid = false;
+        // if(!isContainingPreload && isScorePreload) :)
+        // {
+        //     isValid = false;
             
-            msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
+        //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
 
-        }
+        // }
 
-        if(!isPickupSecondNote && isScoreSecondNote)
-        {
-            isValid = false;
+        // if(!isPickupSecondNote && isScoreSecondNote)
+        // {
+        //     isValid = false;
             
-            msg += "[ Not Possible ] - Cannot Score Second Note without Picking It up \n";
+        //     msg += "[ Not Possible ] - Cannot Score Second Note without Picking It up \n";
 
-        }
+        // }
         // Do NOT remove any of the remaining code
         // Check if the selections are valid
         if(!isValid)

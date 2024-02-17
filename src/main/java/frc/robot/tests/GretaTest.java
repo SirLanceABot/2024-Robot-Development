@@ -34,9 +34,9 @@ public class GretaTest implements Test
 //     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     // private final Shuttle shuttleSuzie;
-    private final Pivot pivotPriscilla;
-    private final Flywheel flyWheelFiona;
-    private final Index indexIzzy;
+    // private final Pivot pivotPriscilla;
+    // private final Flywheel flyWheelFiona;
+    // private final Index indexIzzy;
     // private final Intake intakeIrene;
     // private final Climb climbCindy;
     // private final Proximity firstShuttleProximity;
@@ -53,9 +53,9 @@ public class GretaTest implements Test
 
         this.robotContainer = robotContainer;
         // shuttleSuzie = robotContainer.shuttle;
-        pivotPriscilla = robotContainer.pivot;
-        flyWheelFiona = robotContainer.flywheel;
-        indexIzzy = robotContainer.index;
+        // pivotPriscilla = robotContainer.pivot;
+        // flyWheelFiona = robotContainer.flywheel;
+        // indexIzzy = robotContainer.index;
         // intakeIrene = robotContainer.intake;
         // climbCindy = robotContainer.climb;
         // firstShuttleProximity = robotContainer.firstShuttleProximity;
@@ -71,14 +71,18 @@ public class GretaTest implements Test
 //      * This method runs one time before the periodic() method.
 //      */
     public void init()
-    {}
+    {
+        String string = "Hello";
+        System.out.println(string);
+        System.out.println(string + " World");
+    }
 
 //     /**
 //      * This method runs periodically (every 20ms).
 //      */
     public void periodic()
     {
-        if (joystick.getRawButton(1))
+        // if (joystick.getRawButton(1))
         {
             // shuttleSuzie.moveUpward();
             // pivotPriscilla.moveUp();
@@ -87,7 +91,7 @@ public class GretaTest implements Test
             // climbCindy.holdClimb();
             // intakeIrene.ejectFront();
         }
-        else if (joystick.getRawButton(2))
+        // else if (joystick.getRawButton(2))
         {
             // shuttleSuzie.moveDownward();
             // pivotPriscilla.moveDown();
@@ -96,7 +100,7 @@ public class GretaTest implements Test
             // intakeIrene.ejectBack();
         }
 
-        else
+        // else
         {
             // shuttleSuzie.stop();
             // pivotPriscilla.stop();
@@ -106,7 +110,7 @@ public class GretaTest implements Test
             // climbCindy.stop();
         }
         
-        if (joystick.getRawButton(3))
+        // if (joystick.getRawButton(3))
         {
             // shuttleSuzie.resetEncoder();
             // pivotPriscilla.resetCANcoder();
@@ -114,7 +118,7 @@ public class GretaTest implements Test
             // climbCindy.resetEncoder();
         }
 
-        robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
+        // robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
     }
     
 //     /**
