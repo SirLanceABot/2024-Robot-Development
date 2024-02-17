@@ -10,7 +10,9 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkMaxLimitSwitch;
 
 import frc.robot.Constants;
@@ -77,6 +79,7 @@ public class Climb extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private final CANSparkMax4237 leftLeadMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
     private final CANSparkMax4237 rightFollowMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
+    private boolean isReverseLimitSwitchPressed;
     private TargetPosition targetPosition = TargetPosition.kOverride;
     private OverrideMode overrideMode = OverrideMode.kNotMoving;
     // private RelativeEncoder leftMotorEncoder;
@@ -142,6 +145,8 @@ public class Climb extends Subsystem4237
 
         leftLeadMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
         leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
+        leftLeadMotor.setupForwardHardLimitSwitch(true, true);
+        leftLeadMotor.setupReverseHardLimitSwitch(true, true);
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
         
         // rightFollowMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
@@ -344,12 +349,12 @@ public class Climb extends Subsystem4237
         // moveToSetPosition(targetPosition);
         leftLeadMotor.set(periodicData.motorSpeed);
 
-        if (reset)
-        {
-            leftLeadMotor.setPosition(0.0);
-            rightFollowMotor.setPosition(0.0);
-            reset = false;
-        }
+        // if (isReverseLimitSwitchPressed())
+        // {
+        //     leftLeadMotor.setPosition(0.0);
+        //     rightFollowMotor.setPosition(0.0);
+        //     reset = false;
+        // }
 
 
         

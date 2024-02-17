@@ -334,6 +334,22 @@ public class CANSparkMax4237 extends MotorController4237 //implements Sendable
     }
 
     /**
+     * @return true if limit switch is pressed
+     */
+    public boolean isForwardLimitSwitchPressed()
+    {
+        return forwardLimitSwitch.isPressed();
+    }
+
+    /**
+     * @return true if limit switch is pressed
+     */
+    public boolean isReverseLimitSwitchPressed()
+    {
+        return reverseLimitSwitch.isPressed();
+    }
+
+    /**
      * Logs the sticky faults
      */
     public void logStickyFaults()
