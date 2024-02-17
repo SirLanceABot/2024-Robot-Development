@@ -49,12 +49,13 @@ public class Pivot extends Subsystem4237
     private class PeriodicData
     {
         // INPUTS
-        private double currentRotationalPosition;
+        private double canCoderRotationalPosition;
+        private double motorEncoderRotationalPosition;
         // private boolean isToggleSwitchActive;
         // private boolean isPIDSet;
 
         // OUTPUTS
-        private boolean isBadAngle;
+        private boolean isBadAngle = false;
    }
 
     private class MyConstants
@@ -104,6 +105,10 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configShotMap();
         // setAngleDefaultCommand();
+
+        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+        periodicData.motorEncoderRotationalPosition = motor.getPosition();
+        motor.setPosition(periodicData.canCoderRotationalPosition * 360.0);
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -128,7 +133,7 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(true);
         motor.setupBrakeMode();
         motor.setupPositionConversionFactor(1.0 / 360.0);
-        motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 200.0);
+        
         motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
@@ -139,7 +144,6 @@ public class Pivot extends Subsystem4237
         //Hard Limits
         motor.setupForwardHardLimitSwitch(true, true);
         motor.setupReverseHardLimitSwitch(true, true);
-        
     }
 
     public void setAngleDefaultCommand()
@@ -190,7 +194,12 @@ public class Pivot extends Subsystem4237
     public double getCANCoderPosition()
     {
         //returns the position of the CANcoder in rotations
-        return periodicData.currentRotationalPosition;
+        return periodicData.canCoderRotationalPosition;
+    }
+
+    private double getMotorEncoderPosition()
+    {
+        return periodicData.motorEncoderRotationalPosition;
     }
     
     private void setAngle(double degrees)
@@ -267,7 +276,8 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.currentRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+        periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
         //All included in tunePID() command
 
@@ -300,7 +310,7 @@ public class Pivot extends Subsystem4237
 
         //Displays the pivot's current angle
         SmartDashboard.putNumber("currentAngle", getCANCoderAngle());
-        SmartDashboard.putNumber("motor.getPosition = ", motor.getPosition());
+        SmartDashboard.putNumber("motor.getPosition = ", getMotorEncoderPosition());
 
         //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller
