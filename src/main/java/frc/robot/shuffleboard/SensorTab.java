@@ -218,7 +218,7 @@ public class SensorTab
 
     private GenericEntry createPivotEncoderBox()
     {
-        return sensorTab.add("Pivot", round(pivot.getAngle(),3))
+        return sensorTab.add("Pivot", round(pivot.getCANCoderAngle(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
         .withPosition(1,11) // sets position of widget
         .withSize(4,2)  // sets size of widget
@@ -379,7 +379,7 @@ public class SensorTab
 
         if(pivot != null)
         {
-            pivotEncoderBox.setDouble(round(pivot.getAngle(), 3));
+            pivotEncoderBox.setDouble(round(pivot.getCANCoderAngle(), 3));
         }
 
         if(flywheel != null)
