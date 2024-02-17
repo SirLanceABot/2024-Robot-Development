@@ -70,8 +70,8 @@ public class Climb extends Subsystem4237
         // OUTPUTS
         private DoubleLogEntry positionEntry;
         private DoubleLogEntry velocityEntry;
-        private double leftMotorSpeed = 0.0;
-        private double rightMotorSpeed = 0.0;
+        private double motorSpeed = 0.0;
+        // private double rightMotorSpeed = 0.0;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -82,7 +82,7 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    private final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 40.0;
+    private final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 200.0;
     private final double LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0.0;
     private final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 40.0;
     private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
@@ -128,10 +128,10 @@ public class Climb extends Subsystem4237
 
     private void configMotors()
     {
-        leftLeadMotor.setupBrakeMode();
-        rightFollowMotor.setupBrakeMode();
         leftLeadMotor.setupFactoryDefaults();
         rightFollowMotor.setupFactoryDefaults();
+        leftLeadMotor.setupBrakeMode();
+        rightFollowMotor.setupBrakeMode();
         leftLeadMotor.setupInverted(false);
         rightFollowMotor.setupInverted(false);
         // leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
@@ -168,7 +168,7 @@ public class Climb extends Subsystem4237
         
         targetPosition = TargetPosition.kOverride;
         overrideMode = OverrideMode.kMoving;
-        periodicData.leftMotorSpeed = speed;
+        periodicData.motorSpeed = speed;
     }
 
     // public void extendRight(double speed)
@@ -182,7 +182,7 @@ public class Climb extends Subsystem4237
     {
         targetPosition = TargetPosition.kOverride;
         overrideMode = OverrideMode.kMoving;
-        periodicData.leftMotorSpeed = speed;
+        periodicData.motorSpeed = -Math.abs(speed);
     }
 
     // public void retractRight(double speed)
@@ -206,14 +206,14 @@ public class Climb extends Subsystem4237
 
     public void holdClimb()
     {
-        periodicData.leftMotorSpeed = 0.05;
-        periodicData.rightMotorSpeed = 0.05;
+        periodicData.motorSpeed = 0.05;
+        // periodicData.rightMotorSpeed = 0.05;
     }
 
     public void stop()
     {
-        periodicData.leftMotorSpeed = 0.0;
-        periodicData.rightMotorSpeed = 0.0;
+        periodicData.motorSpeed = 0.0;
+        // periodicData.rightMotorSpeed = 0.0;
     }
 
     public void moveToChain()
@@ -230,7 +230,7 @@ public class Climb extends Subsystem4237
     {
         if(targetPosition == TargetPosition.kOverride)
         {
-            leftLeadMotor.set(periodicData.leftMotorSpeed);
+            leftLeadMotor.set(periodicData.motorSpeed);
             // rightFollowMotor.set(periodicData.leftMotorSpeed);
         }
         else
@@ -341,7 +341,8 @@ public class Climb extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        moveToSetPosition(targetPosition);
+        // moveToSetPosition(targetPosition);
+        leftLeadMotor.set(periodicData.motorSpeed);
 
         if (reset)
         {
@@ -349,6 +350,8 @@ public class Climb extends Subsystem4237
             rightFollowMotor.setPosition(0.0);
             reset = false;
         }
+
+
         
 
         // switch(resetState)

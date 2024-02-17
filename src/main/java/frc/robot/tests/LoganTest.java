@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Climb;
 import frc.robot.controls.Xbox;
 
 public class LoganTest implements Test
@@ -47,6 +48,7 @@ public class LoganTest implements Test
     private IntakePositioning intakePositioning;
     private Shuttle shuttle;
     private Index index;
+    private Climb climb;
     private Direction direction;
     private Proximity secondShuttleProximity;
     private Proximity indexProximity;
@@ -63,6 +65,7 @@ public class LoganTest implements Test
         intakePositioning = robotContainer.intakePositioning;
         shuttle = robotContainer.shuttle;
         index = robotContainer.index;
+        climb = robotContainer.climb;
         secondShuttleProximity = robotContainer.secondShuttleProximity;
         indexProximity = robotContainer.indexProximity;
 
@@ -84,10 +87,22 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            
+            climb.extendClimb(0.4);
         //     // configAButton();
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
+        }
+        else if(joystick.getRawButton(2))
+        {
+            climb.retractClimb(0.4);
+        }
+        else
+        {
+            climb.stop();
+        }
+        if(joystick.getRawButton(3)) // X
+        {
+            climb.resetEncoder();
         }
         // else if(joystick.getRawButton(2))
         // {

@@ -213,8 +213,8 @@ public final class Constants
 
     public static class Climb
     {
-        public static final int LEFT_MOTOR_PORT          = 0;
-        public static final int RIGHT_MOTOR_PORT         = 1;
+        public static final int LEFT_MOTOR_PORT          = 13;
+        public static final int RIGHT_MOTOR_PORT         = 14;
         public static final String LEFT_MOTOR_CAN_BUS    = ROBORIO;
         public static final String RIGHT_MOTOR_CAN_BUS   = ROBORIO;
     }
