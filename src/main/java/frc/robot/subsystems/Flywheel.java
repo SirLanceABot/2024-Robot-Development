@@ -49,9 +49,9 @@ public class Flywheel extends Subsystem4237
         private double currentVelocity;
         private double RPMSpeed = 0.0;
 
-        private double kP = SmartDashboard.getNumber("kP", 0.0);
-        private double kI = SmartDashboard.getNumber("kI", 0.0);
-        private double kD = SmartDashboard.getNumber("kD", 0.0);
+        // private double kP = SmartDashboard.getNumber("kP", 0.1);
+        // private double kI = SmartDashboard.getNumber("kI", 0.0);
+        // private double kD = SmartDashboard.getNumber("kD", 0.0);
 
         // OUTPUTS
        
@@ -72,17 +72,20 @@ public class Flywheel extends Subsystem4237
     private final double ROLLER_DIAMETER_FEET = 4.0 / 12.0; // feet
     private final double GEAR_RATIO = 2.0 / 3.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
-    private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
-    private boolean tunePID = true;
+    private final double RPM_TO_FPS = 1.0; //GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
+    private boolean tunePID = false;
 
-    private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
+    private final double kP = 0.3;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+    private final double kS = 0.1;
+    private final double kV = 0.1;
+
+    private PIDController PIDcontroller = new PIDController(kP, kI, kD);
 
     // kS is equal to 0.013 in dutycycles(* 12 for volts)
     
 
-    // private final double kP = 0.0;
-    // private final double kI = 0.0;
-    // private final double kD = 0.0;
     // private final double kIz = 0.0;
     // private final double kFF = 0.0;
     // private final double kShootMaxOutput = 0.0;
@@ -101,14 +104,14 @@ public class Flywheel extends Subsystem4237
         super("Flywheel");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
-        if(tunePID)
-        {
-            SmartDashboard.putNumber("kP", periodicData.kP);
-            SmartDashboard.putNumber("kI", periodicData.kI);
-            SmartDashboard.putNumber("kD", periodicData.kD);
+        // if(tunePID)
+        // {
+        //     SmartDashboard.putNumber("kP", periodicData.kP);
+        //     SmartDashboard.putNumber("kI", periodicData.kI);
+        //     SmartDashboard.putNumber("kD", periodicData.kD);
 
-            SmartDashboard.putNumber("Velocity", 0.0);
-        }
+        //     SmartDashboard.putNumber("Velocity", 0.0);
+        // }
         
         
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -119,10 +122,10 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
-        motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
+        motor.setupPIDController(0, kP, kI, kD);
         // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
-        motor.setupVelocityConversionFactor(RPM_TO_FPS);
+        motor.setupVelocityConversionFactor(1.0);
         motor.setupCurrentLimit(30, 35, 0.5);
 
 
@@ -149,6 +152,7 @@ public class Flywheel extends Subsystem4237
     public void shoot(double speed)
     {
         periodicData.flywheelSpeed = speed;
+        System.out.println("Shooting");
     }
 
 
@@ -198,12 +202,12 @@ public class Flywheel extends Subsystem4237
         periodicData.currentVelocity = motor.getVelocity();
         // periodicData.RPMSpeed = speedConversion(periodicData.flywheelSpeed);
 
-        if(tunePID)
-        {
-            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
-        }
+        // if(tunePID)
+        // {
+        //     periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+        //     periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+        //     periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        // }
         
     }
 
@@ -234,12 +238,12 @@ public class Flywheel extends Subsystem4237
         motor.setControlVelocity(periodicData.flywheelSpeed);
         SmartDashboard.putNumber("Velocity", periodicData.currentVelocity);
 
-        if(tunePID)
-        {
-            PIDcontroller.setP(periodicData.kP);
-            PIDcontroller.setI(periodicData.kI);
-            PIDcontroller.setD(periodicData.kD);
-        }
+        // if(tunePID)
+        // {
+        //     PIDcontroller.setP(periodicData.kP);
+        //     PIDcontroller.setI(periodicData.kI);
+        //     PIDcontroller.setD(periodicData.kD);
+        // }
         
 
         // motor.set(periodicData.flywheelSpeed);
