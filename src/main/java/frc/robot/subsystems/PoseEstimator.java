@@ -3,12 +3,15 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -45,6 +48,9 @@ public class PoseEstimator extends Subsystem4237
     private double[] blueSpeakerCoords = {0.0, 5.55};
     private double[] redSpeakerCoords = {16.54, 5.55};
 
+    private Matrix<N3, N1> visionStdDevs;
+    private Matrix<N3, N1> stateStdDevs;
+
     private class PeriodicData
     {
         // INPUTS
@@ -72,14 +78,17 @@ public class PoseEstimator extends Subsystem4237
         this.drivetrain = drivetrain;
         this.cameraArray = cameraArray;
 
+        configStdDevs();
+
         if(drivetrain != null && gyro != null)
         {
             poseEstimator = new SwerveDrivePoseEstimator(
                 drivetrain.getKinematics(),
                 gyro.getRotation2d(),
                 drivetrain.getSwerveModulePositions(),
-                // new Pose2d());
-                drivetrain.getPose());
+                drivetrain.getPose(),
+                stateStdDevs,
+                visionStdDevs);
         }
         else
         {
@@ -89,6 +98,17 @@ public class PoseEstimator extends Subsystem4237
         SmartDashboard.putData("Field",field);
 
         System.out.println(fullClassName + " : Constructor Finished");
+    }
+
+    public void configStdDevs()
+    {
+        stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
+        stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
+        stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
+
+        visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
+        visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
+        visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
     }
     
     /** @return the estimated pose (Pose2d)*/
@@ -198,6 +218,11 @@ public class PoseEstimator extends Subsystem4237
                 poseEstimator.addVisionMeasurement(
                     camera.getBotPoseBlue().toPose2d(), 
                     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
+                
+                // poseEstimator.addVisionMeasurement(
+                //     camera.getBotPoseBlue().toPose2d(), 
+                //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                //     camera.getMeasurementStdDevs());
             }
         }
     }
