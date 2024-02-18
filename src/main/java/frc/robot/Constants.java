@@ -149,8 +149,8 @@ public final class Constants
 
     public static class Intake
     {
-        public static final int TOP_MOTOR_PORT           = 3;
-        public static final int BOTTOM_MOTOR_PORT        = 5;
+        public static final int TOP_MOTOR_PORT           = 15;
+        public static final int BOTTOM_MOTOR_PORT        = 16;
         public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
         public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
     }
@@ -171,22 +171,22 @@ public final class Constants
     public static class Flywheel
     {
         public static final int MOTOR_PORT               = 51;
-        public static final String MOTOR_CAN_BUS         = ROBORIO;
+        public static final String MOTOR_CAN_BUS         = CANIVORE;
     }
 
     public static class Index
     {
         public static final int MOTOR_PORT               = 52;
-        public static final String MOTOR_CAN_BUS         = ROBORIO;
+        public static final String MOTOR_CAN_BUS         = CANIVORE;
     }
 
     public static class Pivot
     {
         public static final int MOTOR_PORT                          = 53; //Will be changed to 53
-        public static final String MOTOR_CAN_BUS                    = ROBORIO;
+        public static final String MOTOR_CAN_BUS                    = CANIVORE;
 
         public static final int CANCODER_PORT                      = 20;
-        public static final String CANCODER_CAN_BUS                = ROBORIO;
+        public static final String CANCODER_CAN_BUS                = CANIVORE;
 
         public static final double DEFAULT_ANGLE = 30.0; // Angle to drive around at
         public static final double INTAKE_FROM_SOURCE_ANGLE = 50.0; //TODO check value
@@ -195,7 +195,7 @@ public final class Constants
 
     public static class Shuttle
     {
-        public static final int MOTOR_PORT               = 7;
+        public static final int MOTOR_PORT               = 17;
         public static final String MOTOR_CAN_BUS         = ROBORIO;
     }
 
@@ -325,10 +325,10 @@ public final class Constants
 
             if(robotName4237.equals("2024 Robot"))
             {
-                frontLeftEncoderOffset  = 0.0;
-                frontRightEncoderOffset = 0.0;
-                backLeftEncoderOffset   = 0.0;
-                backRightEncoderOffset  = 0.0;
+                frontLeftEncoderOffset  = 0.269531;
+                frontRightEncoderOffset = -0.142822;
+                backLeftEncoderOffset   = 0.022461;
+                backRightEncoderOffset  = 0.043213;
             }
             else if(robotName4237.equals("2023 Robot"))
             {

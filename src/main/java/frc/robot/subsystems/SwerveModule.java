@@ -82,20 +82,22 @@ class SwerveModule extends RobotDriveBase
 
         // driveMotor = new TalonFX(smd.driveMotorChannel, Constants.Drivetrain.CAN_BUS);
         // driveMotor = new CANSparkMax(smd.driveMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
-        if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
-            driveMotor = new CANSparkMax4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");
+        if(Constants.ROBOT_NAME_4237.equals("2023 Robot"))
+            driveMotor = new TalonFX4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");
         else
-            driveMotor = new TalonFX4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");;
-        // driveMotorEncoder = driveMotor.getEncoder();
+            driveMotor = new CANSparkMax4237(smd.driveMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Drive Motor");
+
+                    // driveMotorEncoder = driveMotor.getEncoder();
         driveMotorInverted = smd.driveMotorInverted;
         turnEncoder = new CANcoder(smd.turnEncoderChannel, Constants.Drivetrain.CANCODER_CAN_BUS);  
         turnEncoderOffset = smd.turnEncoderOffset;
         // turnMotor = new TalonFX(smd.turnMotorChannel, Constants.Drivetrain.CAN_BUS);
         // turnMotor = new CANSparkMax(smd.turnMotorChannel, CANSparkLowLevel.MotorType.kBrushless);
-        if(Constants.ROBOT_NAME_4237.equals("2022 Robot"))
-            turnMotor = new CANSparkMax4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");
+        if(Constants.ROBOT_NAME_4237.equals("2023 Robot"))
+            turnMotor = new TalonFX4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");
         else
-            turnMotor = new TalonFX4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");;
+            turnMotor = new CANSparkMax4237(smd.turnMotorChannel, Constants.Drivetrain.MOTOR_CAN_BUS, smd.moduleName + "Turn Motor");
+
         // turnMotorEncoder = turnMotor.getEncoder();
 
         configDriveMotor();
