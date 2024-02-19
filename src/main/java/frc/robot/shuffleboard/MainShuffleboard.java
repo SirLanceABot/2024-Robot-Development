@@ -86,7 +86,7 @@ public class MainShuffleboard implements PeriodicIO
     public void setSensors()
     {
         if(sensorTab != null)
-            sensorTab.updateEncoderData();
+            sensorTab.updateSensorData();
     }
 
     //-------------------------------------------------------------------//
