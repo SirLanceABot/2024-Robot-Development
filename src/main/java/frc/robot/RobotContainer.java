@@ -5,10 +5,13 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -31,7 +34,9 @@ import frc.robot.controls.OperatorController;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
+import frc.robot.shuffleboard.AutonomousTabData;
 import frc.robot.shuffleboard.MainShuffleboard;
+import frc.robot.shuffleboard.AutonomousTabData.StartingLocation;
 
 
 /**
@@ -186,11 +191,43 @@ public class RobotContainer
         pneumaticHub.enableCompressorAnalog(60.0, 90.0);
     }
 
-    public void resetRobot()
+    public void resetRobot(AutonomousTabData.StartingLocation startingLocation)
     {
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+
         if(gyro != null)
         {
-            gyro.reset();
+            if(alliance.get() == Alliance.Blue)
+            {
+                switch(startingLocation)
+                {
+                    case kLeft:
+                        gyro.setYaw(gyro.BLUE_LEFT_STARTING_YAW);
+                        break;
+                    case kMiddle:
+                        gyro.setYaw(gyro.BLUE_MIDDLE_STARTING_YAW);
+                        break;
+                    case kRight:
+                        gyro.setYaw(gyro.BLUE_RIGHT_STARTING_YAW);
+                        break;
+                }
+
+            }
+            else if(alliance.get() == Alliance.Red)
+            {
+                switch(startingLocation)
+                {
+                    case kLeft:
+                        gyro.setYaw(gyro.RED_LEFT_STARTING_YAW);
+                        break;
+                    case kMiddle:
+                        gyro.setYaw(gyro.RED_MIDDLE_STARTING_YAW);
+                        break;
+                    case kRight:
+                        gyro.setYaw(gyro.RED_RIGHT_STARTING_YAW);
+                        break;
+                }
+            }
         }
     }
 

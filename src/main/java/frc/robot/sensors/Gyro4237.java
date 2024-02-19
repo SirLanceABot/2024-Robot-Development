@@ -43,6 +43,13 @@ public class Gyro4237 extends Sensor4237
 
     public static final double RESET_GYRO_DELAY = 0.1;
 
+    public final double BLUE_LEFT_STARTING_YAW = 4237;
+    public final double BLUE_MIDDLE_STARTING_YAW = 0.0;
+    public final double BLUE_RIGHT_STARTING_YAW = 4237;
+    public final double RED_LEFT_STARTING_YAW = 4237;
+    public final double RED_MIDDLE_STARTING_YAW = 180.0;
+    public final double RED_RIGHT_STARTING_YAW = 4237;
+
     // private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
     private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_PORT, Constants.Gyro.PIGEON_CAN_BUS);
     private ResetState resetState = ResetState.kDone;
@@ -106,13 +113,25 @@ public class Gyro4237 extends Sensor4237
         // gyro.configMountPose(Constants.Gyro.FORWARD_AXIS, Constants.Gyro.UP_AXIS); //forward axis and up axis
         gyro.reset();
         Timer.delay(0.5);
-        gyro.setYaw(0.0);  // 2022 robot started with front facing away from the driver station, 2023 will not
-        Timer.delay(0.5);
+        // gyro.setYaw(0.0);  // 2022 robot started with front facing away from the driver station, 2023 will not
+        // Timer.delay(0.5);
     }
 
+    /**
+     * Goes through reset process to eventually get yaw to zero degrees
+     */
     public void reset()
     {
         resetState = ResetState.kStart;
+    }
+
+    /**
+     * Wrapper for Pigeon2 setYaw() method
+     * @param newValue Value to set to. Units are in deg.
+     */
+    public void setYaw(double newValue)
+    {
+        gyro.setYaw(newValue);
     }
 
     public double getRoll()
@@ -163,7 +182,7 @@ public class Gyro4237 extends Sensor4237
                 gyro.reset();
                 timer.reset();
                 timer.start();
-                gyro.setYaw(180.0);
+                gyro.setYaw(0.0);
                 resetState = ResetState.kTry;
                 break;
             case kTry:

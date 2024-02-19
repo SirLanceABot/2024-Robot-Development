@@ -102,7 +102,7 @@ public class LoganTest implements Test
         }
         if(joystick.getRawButton(3)) // X
         {
-            climb.resetEncoder();
+            // climb.resetEncoder();
         }
         // else if(joystick.getRawButton(2))
         // {
