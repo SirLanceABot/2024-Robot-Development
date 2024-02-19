@@ -47,16 +47,6 @@ public class Climb extends Subsystem4237
         }
     }
 
-    public enum ResetState
-    {
-        kStart, kTry, kDone;
-    }
-
-    private enum LimitSwitchState
-    {
-        kPressed, kStillPressed, kReleased, kStillReleased;
-    }
-
     private enum OverrideMode
     {
         kNotMoving, kMoving;
@@ -79,7 +69,6 @@ public class Climb extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();
     private final CANSparkMax4237 leftLeadMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
     private final CANSparkMax4237 rightFollowMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
-    private boolean isReverseLimitSwitchPressed;
     private TargetPosition targetPosition = TargetPosition.kOverride;
     private OverrideMode overrideMode = OverrideMode.kNotMoving;
     // private RelativeEncoder leftMotorEncoder;
@@ -106,15 +95,8 @@ public class Climb extends Subsystem4237
     private final double kMinOutput = -0.7;
     private final double kRobotMaxOutput = 0.7;
     private final double kRobotMinOutput = -0.7;
-    private boolean reset = false;
 
-    private LimitSwitchState reverseLSState = LimitSwitchState.kStillReleased;
-    private TargetPosition position = TargetPosition.kOverride;
-    private ResetState resetState = ResetState.kDone;
-
-
-    
-    
+    private final double encoderResetTolerance = 3;
 
     /** 
      * Creates a new Climb. 
@@ -150,11 +132,6 @@ public class Climb extends Subsystem4237
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
         
         // rightFollowMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
-    }
-
-    public void resetEncoder()
-    {
-        reset = true;
     }
 
     public double getLeftPosition()
@@ -309,38 +286,6 @@ public class Climb extends Subsystem4237
         // getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
-
-        // if(periodicData.currentLeftPosition == periodicData.currentRightPosition)
-        // {
-        //     boolean isReverseLimitSwitchPressed = reverseLimitSwitch.isPressed();
-
-        //     switch(reverseLSState)
-        //     {
-        //         case kStillReleased:
-        //             if(isReverseLimitSwitchPressed)
-        //             {
-        //                 resetState = ResetState.kStart;
-        //                 reverseLSState = LimitSwitchState.kPressed;
-        //             }
-        //             break;
-        //         case kPressed:
-        //             if(isReverseLimitSwitchPressed)
-        //                 reverseLSState = LimitSwitchState.kStillPressed;
-        //             else
-        //                 reverseLSState = LimitSwitchState.kReleased;
-        //             break;
-        //         case kStillPressed:
-        //             if(!isReverseLimitSwitchPressed)
-        //                 reverseLSState = LimitSwitchState.kReleased;
-        //             break;
-        //         case kReleased:
-        //             if(!isReverseLimitSwitchPressed)
-        //                 reverseLSState = LimitSwitchState.kStillReleased;
-        //             else
-        //                 reverseLSState = LimitSwitchState.kPressed;
-        //             break;
-        //     }
-        // }
     }
 
     @Override
@@ -349,29 +294,15 @@ public class Climb extends Subsystem4237
         // moveToSetPosition(targetPosition);
         leftLeadMotor.set(periodicData.motorSpeed);
 
-        // if (isReverseLimitSwitchPressed())
-        // {
-        //     leftLeadMotor.setPosition(0.0);
-        //     rightFollowMotor.setPosition(0.0);
-        //     reset = false;
-        // }
+        if(leftLeadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentLeftPosition) > encoderResetTolerance)
+        {
+            leftLeadMotor.setPosition(0.0);
+        }
 
-
-        
-
-        // switch(resetState)
-        // {
-        //     case kDone:
-        //         if(position == Position.kOverride)
-        //         {
-        //             leftMotor.set(periodicData.motorSpeed);
-        //             rightMotor.set(periodicData.motorSpeed);
-        //         }
-        //         else if(position == Position.kRobot)
-        //         {
-        //             // pidController.
-        //         }
-        // }
+        if(leftLeadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentRightPosition) > encoderResetTolerance)
+        {
+            rightFollowMotor.setPosition(0.0);
+        }
     }
 
     @Override
