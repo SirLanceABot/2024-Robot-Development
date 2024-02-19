@@ -41,9 +41,9 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final Flywheel flywheel;
-    private final Index index;
-    // private final Pivot pivot;
+    // private final Flywheel flywheel;
+    // private final Index index;
+    private final Pivot pivot;
     // private final Intake intake;
     // private final Shuttle shuttle;
     // private final Climb climb;
@@ -62,9 +62,9 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        flywheel = this.robotContainer.flywheel;
-        index = this.robotContainer.index;
-        // pivot = this.robotContainer.pivot;
+        // flywheel = this.robotContainer.flywheel;
+        // index = this.robotContainer.index;
+        pivot = this.robotContainer.pivot;
         // intake = this.robotContainer.intake;
         // shuttle = this.robotContainer.shuttle;
         // climb = this.robotContainer.climb;
@@ -96,42 +96,59 @@ public class OwenTest implements Test
         // motor.follow(motor1);
         // System.out.println("Velocity: " + climb.getLeftPosition());
         // System.out.println("Left Position: " + climb.getLeftPosition() + "   Right Position: " + climb.getRightPosition());
-        // System.out.println("distance = " + ultrasonic.getDistance());
-        if(joystick.getRawButton(1))
-        {
-        //     System.out.println("Chain Position");
-        //     pivot.moveDown();
-        //     // System.out.println("Encoder Position" + climb.getLeftPosition());
-            flywheel.shoot(0.8);
-            // index.feedNoteToFlywheel(0.7);
-        //     // index.feedNoteToFlywheel(0.9);
-        //     // climb.moveToChain();
-        }
-        else
-        {
-            flywheel.stop();
-        }
+        // // System.out.println("distance = " + ultrasonic.getDistance());
+        // if(joystick.getRawButton(1))
+        // {
+        // //     System.out.println("Chain Position");
+        // //     pivot.moveDown();
+        // //     // System.out.println("Encoder Position" + climb.getLeftPosition());
+            // flywheel.shoot(0.7);
+        //     // index.feedNoteToFlywheel(0.7);
+        // //     // index.feedNoteToFlywheel(0.9);
+        // //     // climb.moveToChain();
+        // }
+        // else
+        // {
+        //     flywheel.stop();
+        // }
 
-        if(joystick.getRawButton(2))
-        {
-            index.feedNoteToFlywheel(0.8 / 1.2);
-        }
-        else
-        {
-            // flywheel.stop();
-            index.stop();
-        }
+        // if(joystick.getRawButton(2))
+        // {
+        //     index.feedNoteToFlywheel(0.7);
+        //     intake.pickupBack();
+        //     shuttle.moveUpward();
+        // }
+        // else
+        // {
+        // //     // flywheel.stop();
+        //     index.stop();
+        //     intake.stop();
+        //     shuttle.stop();
+        // }
 
         if(joystick.getRawButton(3))
         {
-            index.feedNoteToFlywheel(0.8);
-            flywheel.shoot(0.7);
+            pivot.moveUp();
+        }
+        else if((joystick.getRawButton(4)))
+        {
+            pivot.moveDown();
         }
         else
         {
-            // flywheel.stop();
-            // index.stop();
+            pivot.stop();
         }
+
+        // if(joystick.getRawButton(4))
+        // {
+            
+        // }
+        // else
+        // {
+            
+        // }
+
+
         // else if(joystick.getRawButton(2))
         // {
         //     System.out.println("Robot Position");
@@ -203,8 +220,8 @@ public class OwenTest implements Test
 
         if(true)
         {
-            rightTriggerTrigger.whileTrue(flywheel.shootCommand(0.2));
-            rightTriggerTrigger.onFalse(flywheel.stopCommand());
+            // rightTriggerTrigger.whileTrue(flywheel.shootCommand(
+                
             // rightTriggerTrigger.onTrue(intake.pickupCommand());
             // rightTriggerTrigger.onFalse(intake.stopCommand());
         }

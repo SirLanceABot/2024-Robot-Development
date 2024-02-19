@@ -75,7 +75,7 @@ public class Pivot extends Subsystem4237
         private final double MINIMUM_PIVOT_ANGLE = 23.0; 
 
         //for manually moving Pivot
-        private final double MOTOR_SPEED = 0.1;
+        private final double MOTOR_SPEED = 0.05;
     }
     
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
@@ -138,7 +138,7 @@ public class Pivot extends Subsystem4237
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
+        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, false);
         motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
 
         //Hard Limits
@@ -180,7 +180,7 @@ public class Pivot extends Subsystem4237
         motor.set(-myConstants.MOTOR_SPEED);
     }
 
-    public void stopMotor()
+    public void stop()
     {
         motor.set(0.0);
     }
@@ -301,7 +301,7 @@ public class Pivot extends Subsystem4237
         //Stops the pivot if the angle for setAngle is out of range
         if(periodicData.isBadAngle)
         {
-            stopMotor();
+            stop();
             System.out.println("Angle is out of Range");
             periodicData.isBadAngle = false;
         }
