@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8205391499750978,
-      "y": 6.563541857807322
+      "x": 0.85,
+      "y": 6.7
     },
-    "rotation": -120.55203644597289
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left to SP1"
+            "pathName": "Amp to SP1"
           }
         },
         {
