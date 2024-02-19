@@ -40,9 +40,10 @@ public class SamTest implements Test
     // private final Pivot pivot;
     // private final Flywheel flywheel;
     // private final Intake intake;
-    private final Joystick joystick;
-    private final Drivetrain drivetrain;
-    private final Gyro4237 gyro;
+    // private final Joystick joystick;
+    // private final Drivetrain drivetrain;
+    // private final Gyro4237 gyro;
+    private final Boolean isBlueAlliance;
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -53,14 +54,15 @@ public class SamTest implements Test
         // prox1 = new Proximity(8);
         // prox2 = new Proximity(9);
         // candle = new Candle4237();
-        joystick = new Joystick(0);
+        // joystick = new Joystick(0);
         // this.shuttle = robotContainer.shuttle;
         // this.index = robotContainer.index;
         // this.pivot = robotContainer.pivot;
         // this.flywheel = robotContainer.flywheel;
         // this.intake = robotContainer.intake;
-        this.drivetrain = robotContainer.drivetrain;
-        this.gyro = robotContainer.gyro;
+        // this.drivetrain = robotContainer.drivetrain;
+        // this.gyro = robotContainer.gyro;
+        this.isBlueAlliance = robotContainer.isBlueAlliance;
 
         // SmartDashboard.putNumber("kP", 0.0);
         // SmartDashboard.putNumber("kI", 0.0);
@@ -108,7 +110,7 @@ public class SamTest implements Test
         // }
 
 
-        if(joystick.getRawButton(1))    //A
+        // if(joystick.getRawButton(1))    //A
         {
             // flywheel.intake();
             // index.intake();
@@ -119,7 +121,8 @@ public class SamTest implements Test
             // drivetrain.rotateToSpeaker();
         }
 
-        SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
+        System.out.println(robotContainer.isBlueAlliance);
+        // SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
         // else if(joystick.getRawButton(2))   //B
         // {
         //     // flywheel.stop();

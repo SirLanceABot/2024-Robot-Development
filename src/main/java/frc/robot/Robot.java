@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
+import java.sql.Driver;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -75,7 +76,7 @@ public class Robot extends TimedRobot
         System.out.println("Robot Init");
 
         DataLogManager.start();
-
+        addPeriodic(() -> robotContainer.setAlliance(DriverStation.getAlliance()), 1);
         // enableLiveWindowInTest(true);
     }
 

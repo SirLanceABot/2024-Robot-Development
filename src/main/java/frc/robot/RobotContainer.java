@@ -120,6 +120,8 @@ public class RobotContainer
     
     private CommandSchedulerLog schedulerLog = null;
 
+    public boolean isBlueAlliance;
+
 
     /** 
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -191,13 +193,16 @@ public class RobotContainer
         pneumaticHub.enableCompressorAnalog(60.0, 90.0);
     }
 
+    public void setAlliance(Optional<Alliance> alliance)
+    {
+        isBlueAlliance = (alliance.get() == Alliance.Blue);
+    }
+
     public void resetRobot(AutonomousTabData.StartingLocation startingLocation)
     {
-        Optional<Alliance> alliance = DriverStation.getAlliance();
-
         if(gyro != null)
         {
-            if(alliance.get() == Alliance.Blue)
+            if(isBlueAlliance)
             {
                 switch(startingLocation)
                 {
@@ -213,7 +218,7 @@ public class RobotContainer
                 }
 
             }
-            else if(alliance.get() == Alliance.Red)
+            else
             {
                 switch(startingLocation)
                 {
