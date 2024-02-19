@@ -181,8 +181,8 @@ public class AutonomousTab
     private void createShootDelayBox()
     {
         //create and name the Box
-        SendableRegistry.add(shootDelayBox, "Shoot Delay");
-        SendableRegistry.setName(shootDelayBox, "Shoot Delay");
+        SendableRegistry.add(shootDelayBox, "Shoot Delay (Sec)");
+        SendableRegistry.setName(shootDelayBox, "Shoot Delay (Sec)");
         
         //add options to  Box
         shootDelayBox.setDefaultOption("Zero", AutonomousTabData.ShootDelay.k0);
@@ -206,8 +206,8 @@ public class AutonomousTab
     private void createDriveDelayBox()
     {
         //create and name the Box
-        SendableRegistry.add(driveDelayBox, "Drive Delay");
-        SendableRegistry.setName(driveDelayBox, "Drive Delay");
+        SendableRegistry.add(driveDelayBox, "Drive Delay (Sec)");
+        SendableRegistry.setName(driveDelayBox, "Drive Delay (Sec)");
         
         //add options to  Box
         driveDelayBox.setDefaultOption("Zero", AutonomousTabData.DriveDelay.k0);
@@ -326,7 +326,7 @@ public class AutonomousTab
          return autonomousTab.add("Error Messages", "No Errors")
              .withWidget(BuiltInWidgets.kTextView)
              .withPosition(1, 10)
-             .withSize(22, 3)
+             .withSize(25, 3)
              .getEntry();
     }
 
@@ -340,6 +340,7 @@ public class AutonomousTab
         autonomousTabData.shootDelay = shootDelayBox.getSelected();
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
         autonomousTabData.scoreMoreNotes = scoreMoreNotesBox.getSelected();
+        autonomousTabData.sitPretty = sitPrettyBox.getSelected();
         
     }
 
@@ -405,10 +406,10 @@ public class AutonomousTab
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
         // boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
         boolean isShootDelay = 
-        //shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
+        (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-        ( shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
+         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
@@ -418,13 +419,28 @@ public class AutonomousTab
          scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k2 ||
          scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k3);
         boolean isDriveDelay = 
-        // (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
+         (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-         (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
+         driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
-    
+        boolean isStartingLocation =
+        (startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kLeft ||
+        startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kMiddle ||
+        startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kRight);
+
+        boolean isSitPretty =
+        (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
+        
+        boolean isOverDelay = 
+        (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 && 
+        driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
+
+        boolean isScoreManyMoreNotes = 
+        (scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k3 || 
+        scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k2 );
+
 
 
 
@@ -452,6 +468,24 @@ public class AutonomousTab
         //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
 
         // }
+
+
+        if(isScoreManyMoreNotes && isOverDelay) 
+        {
+            isValid = false;
+            
+            msg += "[Not Possible] - Cannot score 2+ extra Notes with double 3 second delays \n";
+
+        }
+
+        if(isSitPretty && (isStartingLocation || isDriveDelay || isShootDelay || isScoreMoreNotes))
+        {
+            isValid = false;
+
+            msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
+        }
+
+        
 
         // Do NOT remove any of the remaining code
         // Check if the selections are valid

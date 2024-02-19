@@ -231,7 +231,7 @@ public class Robot extends TimedRobot
         {
             if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
             {
-                robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
+                robotContainer.mainShuffleboard.sensorTab.updateSensorData();
             }
         }
     }
@@ -275,7 +275,7 @@ public class Robot extends TimedRobot
     {
         if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
         {
-            robotContainer.mainShuffleboard.sensorTab.updateEncoderData();
+            robotContainer.mainShuffleboard.sensorTab.updateSensorData();
         }
         testMode.periodic();
     }

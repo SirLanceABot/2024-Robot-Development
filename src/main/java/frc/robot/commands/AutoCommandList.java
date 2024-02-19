@@ -99,6 +99,7 @@ public class AutoCommandList extends SequentialCommandGroup
         pathPlannerString += autonomousTabData.shootDelay;
         pathPlannerString += autonomousTabData.driveDelay;
         pathPlannerString += autonomousTabData.scoreMoreNotes;
+        pathPlannerString += autonomousTabData.sitPretty;
         System.out.println(pathPlannerString);
         
     }

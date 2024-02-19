@@ -357,7 +357,7 @@ public class SensorTab
         .getEntry();
     }
 
-    public void updateEncoderData()
+    public void updateSensorData()
     {
         if(drivetrain != null)
         {
