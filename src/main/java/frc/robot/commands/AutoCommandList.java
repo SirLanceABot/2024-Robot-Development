@@ -94,11 +94,11 @@ public class AutoCommandList extends SequentialCommandGroup
         // if(drivetrain != null)
         //     add(new StopDrive(drivetrain));
 
-        pathPlannerString += autonomousTabData.startingLocation;
+        pathPlannerString += autonomousTabData.startingSide;
         //pathPlannerString += autonomousTabData.scorePreload;
         pathPlannerString += autonomousTabData.shootDelay;
         pathPlannerString += autonomousTabData.driveDelay;
-        pathPlannerString += autonomousTabData.scoreMoreNotes;
+        pathPlannerString += autonomousTabData.scoreExtraNotes;
         pathPlannerString += autonomousTabData.sitPretty;
         System.out.println(pathPlannerString);
         

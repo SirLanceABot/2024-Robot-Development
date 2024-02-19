@@ -16,15 +16,15 @@ public class AutonomousTabData
 
     //-------------------------------------------------------------------//
 
-    public static enum StartingLocation
+    public static enum StartingSide
     {
-        kLeft("Starting Location: Left -- "),
-        kMiddle("Starting Location: Middle -- "),
-        kRight("Starting Location: Right -- ");
+        kAmp("StartingSide_Amp -- "),
+        kSub("StartingSide_Sub -- "),
+        kSource("StartingSide_Source -- ");
 
         private final String name;
 
-        private StartingLocation(String name)
+        private StartingSide(String name)
         {
             this.name = name;
         }
@@ -67,8 +67,8 @@ public class AutonomousTabData
 
     public static enum ShootDelay
     {
-        k0("Shoot Delay: 0 Sec -- "), 
-        k3("Shoot Delay: 3 Secs -- "); 
+        k0("ShootDelay_0 -- "), 
+        k3("ShootDelay_3 -- "); 
 
 
         private final String name;
@@ -87,8 +87,8 @@ public class AutonomousTabData
 
     public static enum DriveDelay
     {
-        k0("Drive Delay: 0 Sec -- "), 
-        k3("Drive Delay: 3 Sec -- ");
+        k0("DriveDelay_0 -- "), 
+        k3("DriveDelay_3 -- ");
 
         private final String name;
 
@@ -109,16 +109,16 @@ public class AutonomousTabData
     //     kYes, kNo;
     // }
 
-    public static enum ScoreMoreNotes
+    public static enum ScoreExtraNotes
     {
-        k0("ScoreMoreNotes: 0 -- "), 
-        k1("ScoreMoreNotes: 1 -- "), 
-        k2("ScoreMoreNotes: 2 -- "), 
-        k3("ScoreMoreNotes: 3 -- ");
+        k0("ExtraNotes_0 "), 
+        k1("ExtraNotes_1 "), 
+        k2("ExtraNotes_2 "), 
+        k3("ExtraNotes_3 ");
 
         private final String name;
 
-        private ScoreMoreNotes(String name)
+        private ScoreExtraNotes(String name)
         {
             this.name = name;
         }
@@ -154,14 +154,14 @@ public class AutonomousTabData
     //-------------------------------------------------------------------//
 
     // IMPORTANT: Any variables added here must be initialized in the copy constructor below
-    public StartingLocation startingLocation = StartingLocation.kMiddle;
+    public StartingSide startingSide = StartingSide.kSub;
     // public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
     // public ContainingPreload containingPreload = ContainingPreload.kYes;
     // public ScorePreload scorePreload = ScorePreload.kYes;
     public ShootDelay shootDelay = ShootDelay.k0;
     public DriveDelay driveDelay = DriveDelay.k0;
     // public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
-    public ScoreMoreNotes scoreMoreNotes = ScoreMoreNotes.k0;
+    public ScoreExtraNotes scoreExtraNotes = ScoreExtraNotes.k0;
     public SitPretty sitPretty = SitPretty.kNo;
   
 
@@ -172,14 +172,14 @@ public class AutonomousTabData
     // Copy Constructor
     public AutonomousTabData(AutonomousTabData atd)
     {
-        startingLocation = atd.startingLocation;
+        startingSide = atd.startingSide;
         // driveOutOfStartZone = atd.driveOutOfStartZone;
         // containingPreload = atd.containingPreload;
         // scorePreload = atd.scorePreload;
         shootDelay = atd.shootDelay;
         driveDelay = atd.driveDelay;
         // pickupSecondNote = atd.pickupSecondNote;
-        scoreMoreNotes = atd.scoreMoreNotes;
+        scoreExtraNotes = atd.scoreExtraNotes;
         sitPretty = atd.sitPretty;
 
     }
@@ -191,14 +191,14 @@ public class AutonomousTabData
         str += "\n*****  AUTONOMOUS SELECTION  *****\n";
 
 
-        str += "Starting Location              : " + startingLocation   + "\n";
+        str += "Starting Side             : " + startingSide   + "\n";
         // str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
         // str += "Containing Preload          : " + containingPreload + "\n";
         // str += "Score Preload               : " + scorePreload  + "\n";  
         str += "Shoot Delay                    : " + shootDelay + "\n";   
         str += "Drive Delay                    : " + driveDelay + "\n";  
         // str += "Pickup Second Note          : " + pickupSecondNote + "\n";
-        str += "Score More Notes               : " + scoreMoreNotes + "\n";
+        str += "Score Extra Notes               : " + scoreExtraNotes + "\n";
 //FIXME IF STATEMENT
         str += "Sit Pretty                     : " + sitPretty + "\n";
 

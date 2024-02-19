@@ -38,14 +38,14 @@ public class AutonomousTab
     private final AutonomousTabData autonomousTabData = new AutonomousTabData();
   
     // Create the Box objects
-    private SendableChooser<AutonomousTabData.StartingLocation> startingLocationBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.StartingSide> startingSideBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
     //private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.ScoreMoreNotes> scoreMoreNotesBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.ScoreExtraNotes> scoreExtraNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
 
     
@@ -65,7 +65,7 @@ public class AutonomousTab
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        createStartingLocationBox();
+        createStartingSideBox();
         // createScorePreloadBox();
         // createContainingPreloadBox();
         // createDriveOutOfStartZoneBox();
@@ -91,19 +91,19 @@ public class AutonomousTab
     * <b>Starting Location</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createStartingLocationBox()
+    private void createStartingSideBox()
     {
         //create and name the Box
-        SendableRegistry.add(startingLocationBox, "Starting Location");
-        SendableRegistry.setName(startingLocationBox, "Starting Location");
+        SendableRegistry.add(startingSideBox, "Starting Side");
+        SendableRegistry.setName(startingSideBox, "Starting Side");
         
         //add options to  Box
-        startingLocationBox.setDefaultOption("Left", AutonomousTabData.StartingLocation.kLeft);
-        startingLocationBox.addOption("Middle", AutonomousTabData.StartingLocation.kMiddle);
-        startingLocationBox.addOption("Right", AutonomousTabData.StartingLocation.kRight);
+        startingSideBox.setDefaultOption("Amp", AutonomousTabData.StartingSide.kAmp);
+        startingSideBox.addOption("Sub", AutonomousTabData.StartingSide.kSub);
+        startingSideBox.addOption("Source", AutonomousTabData.StartingSide.kSource);
 
         //put the widget on the shuffleboard
-        autonomousTab.add(startingLocationBox)
+        autonomousTab.add(startingSideBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(1, 1)
             .withSize(5, 3);
@@ -246,18 +246,18 @@ public class AutonomousTab
     private void createScoreMoreNotesBox()
     {
         //create and name the Box
-        SendableRegistry.add(scoreMoreNotesBox, "Score How Many Extra Notes?");
-        SendableRegistry.setName(scoreMoreNotesBox, "Score How Many Extra Notes?");
+        SendableRegistry.add(scoreExtraNotesBox, "Score How Many Extra Notes?");
+        SendableRegistry.setName(scoreExtraNotesBox, "Score How Many Extra Notes?");
         
         //add options to  Box
-        scoreMoreNotesBox.addOption("0", AutonomousTabData.ScoreMoreNotes.k0);
-        scoreMoreNotesBox.setDefaultOption("1", AutonomousTabData.ScoreMoreNotes.k1);
-        scoreMoreNotesBox.addOption("2",AutonomousTabData.ScoreMoreNotes.k2);
-        scoreMoreNotesBox.addOption("3", AutonomousTabData.ScoreMoreNotes.k3);
+        scoreExtraNotesBox.addOption("0", AutonomousTabData.ScoreExtraNotes.k0);
+        scoreExtraNotesBox.setDefaultOption("1", AutonomousTabData.ScoreExtraNotes.k1);
+        scoreExtraNotesBox.addOption("2", AutonomousTabData.ScoreExtraNotes.k2);
+        scoreExtraNotesBox.addOption("3", AutonomousTabData.ScoreExtraNotes.k3);
         
 
         //put the widget on the shuffleboard
-        autonomousTab.add(scoreMoreNotesBox)
+        autonomousTab.add(scoreExtraNotesBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(1, 5)
             .withSize(5, 3);
@@ -332,14 +332,14 @@ public class AutonomousTab
 
     private void updateAutonomousTabData()
     {
-        autonomousTabData.startingLocation = startingLocationBox.getSelected();
+        autonomousTabData.startingSide = startingSideBox.getSelected();
         // autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
         // autonomousTabData.containingPreload = containingPreloadBox.getSelected();
         //autonomousTabData.scorePreload = scorePreloadBox.getSelected();
         autonomousTabData.driveDelay = driveDelayBox.getSelected();
         autonomousTabData.shootDelay = shootDelayBox.getSelected();
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
-        autonomousTabData.scoreMoreNotes = scoreMoreNotesBox.getSelected();
+        autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
         autonomousTabData.sitPretty = sitPrettyBox.getSelected();
         
     }
@@ -414,10 +414,10 @@ public class AutonomousTab
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
         boolean isScoreMoreNotes = 
-        (scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k0 ||
-         scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k1 ||
-         scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k2 ||
-         scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k3);
+        (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
+         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
+         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
+         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3);
         boolean isDriveDelay = 
          (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
@@ -426,9 +426,9 @@ public class AutonomousTab
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         boolean isStartingLocation =
-        (startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kLeft ||
-        startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kMiddle ||
-        startingLocationBox.getSelected() == AutonomousTabData.StartingLocation.kRight);
+        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp ||
+        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSub ||
+        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource);
 
         boolean isSitPretty =
         (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
@@ -438,8 +438,8 @@ public class AutonomousTab
         driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
 
         boolean isScoreManyMoreNotes = 
-        (scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k3 || 
-        scoreMoreNotesBox.getSelected() == AutonomousTabData.ScoreMoreNotes.k2 );
+        (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
+        scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
 
 
 

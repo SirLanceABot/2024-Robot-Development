@@ -196,7 +196,7 @@ public class RobotContainer
         isBlueAlliance = (alliance.get() == Alliance.Blue);
     }
 
-    public void resetRobot(AutonomousTabData.StartingLocation startingLocation)
+    public void resetRobot(AutonomousTabData.StartingSide startingLocation)
     {
         if(gyro != null)
         {
@@ -204,13 +204,13 @@ public class RobotContainer
             {
                 switch(startingLocation)
                 {
-                    case kLeft:
+                    case kAmp:
                         gyro.setYaw(gyro.BLUE_AMP_STARTING_YAW);
                         break;
-                    case kMiddle:
+                    case kSub:
                         gyro.setYaw(gyro.BLUE_SUB_STARTING_YAW);
                         break;
-                    case kRight:
+                    case kSource:
                         gyro.setYaw(gyro.BLUE_SOURCE_STARTING_YAW);
                         break;
                 }
@@ -220,13 +220,13 @@ public class RobotContainer
             {
                 switch(startingLocation)
                 {
-                    case kLeft:
+                    case kAmp:
                         gyro.setYaw(gyro.RED_AMP_STARTING_YAW);
                         break;
-                    case kMiddle:
+                    case kSub:
                         gyro.setYaw(gyro.RED_SUB_STARTING_YAW);
                         break;
-                    case kRight:
+                    case kSource:
                         gyro.setYaw(gyro.RED_SOURCE_STARTING_YAW);
                         break;
                 }

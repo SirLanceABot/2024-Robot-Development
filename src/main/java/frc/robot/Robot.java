@@ -141,7 +141,7 @@ public class Robot extends TimedRobot
                 autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
 
                 // Reset the gyro, encoders, and any other sensors
-                robotContainer.resetRobot(autonomousTabData.startingLocation);
+                robotContainer.resetRobot(autonomousTabData.startingSide);
             }
         }
     }
