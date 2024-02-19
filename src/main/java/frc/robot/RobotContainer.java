@@ -205,13 +205,13 @@ public class RobotContainer
                 switch(startingLocation)
                 {
                     case kLeft:
-                        gyro.setYaw(gyro.BLUE_LEFT_STARTING_YAW);
+                        gyro.setYaw(gyro.BLUE_AMP_STARTING_YAW);
                         break;
                     case kMiddle:
-                        gyro.setYaw(gyro.BLUE_MIDDLE_STARTING_YAW);
+                        gyro.setYaw(gyro.BLUE_SUB_STARTING_YAW);
                         break;
                     case kRight:
-                        gyro.setYaw(gyro.BLUE_RIGHT_STARTING_YAW);
+                        gyro.setYaw(gyro.BLUE_SOURCE_STARTING_YAW);
                         break;
                 }
 
@@ -221,13 +221,13 @@ public class RobotContainer
                 switch(startingLocation)
                 {
                     case kLeft:
-                        gyro.setYaw(gyro.RED_LEFT_STARTING_YAW);
+                        gyro.setYaw(gyro.RED_AMP_STARTING_YAW);
                         break;
                     case kMiddle:
-                        gyro.setYaw(gyro.RED_MIDDLE_STARTING_YAW);
+                        gyro.setYaw(gyro.RED_SUB_STARTING_YAW);
                         break;
                     case kRight:
-                        gyro.setYaw(gyro.RED_RIGHT_STARTING_YAW);
+                        gyro.setYaw(gyro.RED_SOURCE_STARTING_YAW);
                         break;
                 }
             }
