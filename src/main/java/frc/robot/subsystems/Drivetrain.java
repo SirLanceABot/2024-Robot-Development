@@ -439,28 +439,6 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters();
     }
 
-    // public void rotateToSpeaker()
-    // {
-    //     Optional<Alliance> alliance = DriverStation.getAlliance();
-    //     if(alliance.get() == Alliance.Blue)
-    //     {
-    //         targetYaw = getAngleToBlueSpeaker();
-    //         // targetYaw = 180.0;
-
-    //     }
-    //     else if(alliance.get() == Alliance.Red)
-    //     {
-    //         targetYaw = getAngleToRedSpeaker();
-    //         // targetYaw = 0.0;
-    //     }
-
-    //     // System.out.printf("%-13s%-4.2f%n","Target Yaw", targetYaw);
-    //     SmartDashboard.putNumber("Target Yaw", targetYaw);
-    //     double rotatePower = pidController.calculate(gyro.getYaw(), targetYaw);
-
-    //     drive(0.0, 0.0, rotatePower, false);
-    // }
-
     public BooleanSupplier isAlligned(double targetYaw)
     {
         if(gyro.getYaw() >= targetYaw - 1.0 && gyro.getYaw() <= targetYaw + 1.0)
@@ -488,11 +466,6 @@ public class Drivetrain extends Subsystem4237
         double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
         drive(0.0, 0.0, rotationSpeed, false);
     }
-
-    // public Command rotateForShootingCommand()
-    // {
-    //     return Commands.runOnce(() -> rotateToSpeaker());
-    // }
 
     public Command rotateToBlueSpeakerCommand()
     {

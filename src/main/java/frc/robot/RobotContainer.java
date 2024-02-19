@@ -10,7 +10,6 @@ import java.util.Optional;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -36,7 +35,6 @@ import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
 import frc.robot.shuffleboard.AutonomousTabData;
 import frc.robot.shuffleboard.MainShuffleboard;
-import frc.robot.shuffleboard.AutonomousTabData.StartingLocation;
 
 
 /**

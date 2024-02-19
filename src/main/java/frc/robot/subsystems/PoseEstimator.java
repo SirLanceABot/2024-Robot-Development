@@ -14,8 +14,6 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
@@ -56,7 +54,6 @@ public class PoseEstimator extends Subsystem4237
         // INPUTS
         private Rotation2d gyroRotation;
         private SwerveModulePosition[] swerveModulePositions;
-        // private Optional<Alliance> alliance;
 
         // OUTPUTS
         private Pose2d estimatedPose;
@@ -213,8 +210,6 @@ public class PoseEstimator extends Subsystem4237
             // update pose estimator with drivetrain encoders (odometry part)
             periodicData.estimatedPose = poseEstimator.update(periodicData.gyroRotation, periodicData.swerveModulePositions);
         }
-
-        // periodicData.alliance = DriverStation.getAlliance();
 
         for(Camera camera : cameraArray)
         {

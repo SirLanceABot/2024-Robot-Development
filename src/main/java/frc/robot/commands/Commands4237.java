@@ -1,14 +1,11 @@
 package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import javax.lang.model.util.ElementScanner14;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -191,15 +188,13 @@ public final class Commands4237
     public static Command shootToSpeakerAngleCommand()
     {
         double distance, angle = 0.0;
-        Optional<Alliance> color = DriverStation.getAlliance();
-
-        if(color.get() == Alliance.Red)
+        if(robotContainer.isBlueAlliance)
         {
-            distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
+            distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
         }
         else
         {
-            distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
+            distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
         }
 
         // distance = (Math.round((distance * 39.37 / 12.0)));

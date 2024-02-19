@@ -144,25 +144,6 @@ public class Camera extends Sensor4237
         return toPose3d(periodicData.botPoseWPIRed);
     }
 
-    /** @return the robot pose on the field (double[]) red driverstration origin*/
-    /** @param allianceColor the allaince color */
-    public Pose3d getBotPose(DriverStation.Alliance allianceColor)
-    {
-        if(allianceColor == DriverStation.Alliance.Red)
-        {
-            return toPose3d(periodicData.botPoseWPIRed);
-        }
-        else if(allianceColor == DriverStation.Alliance.Blue)
-        {
-            return toPose3d(periodicData.botPoseWPIBlue);
-        }
-        else
-        {
-            return null;
-        }
-            
-    }
-
     /** @return the total latency from WPIBlue botpose measurements (double)*/
     public double getTotalLatencyBlue()
     {
@@ -173,25 +154,6 @@ public class Camera extends Sensor4237
     public double getTotalLatencyRed()
     {
         return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
-    }
-
-    /** @return the total latency from botpose measurements (double)*/
-    /** @param allianceColor the allaince color */
-    public double getTotalLatency(DriverStation.Alliance allianceColor)
-    {
-        if(allianceColor == DriverStation.Alliance.Red)
-        {
-            return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
-        }
-        else if(allianceColor == DriverStation.Alliance.Blue)
-        {
-            return periodicData.botPoseWPIBlue[TOTAL_LATENCY_INDEX];
-        }
-        else
-        {
-            return 0.0;
-        }
-            
     }
 
     // public Matrix<N3, N1> setMeasurementStdDevs()
