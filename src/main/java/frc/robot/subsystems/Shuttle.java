@@ -1,16 +1,8 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkLimitSwitch;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-
-import com.revrobotics.RelativeEncoder; 
 import frc.robot.Constants;
 import frc.robot.motors.CANSparkMax4237;
 
@@ -37,14 +29,19 @@ public class Shuttle extends Subsystem4237
     // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
     
     private final double GEAR_RATIO = 3.0 / 20.0; // Roller spins three times, the motor spins 20 times
-    private final double ROLLER_CIRCUMFRENCE_INCHES = Math.PI * 2.25; 
+    private final double ROLLER_CIRCUMFERENCE_INCHES = Math.PI * 2.25; 
     private final double SHUTTLE_SOFT_LIMIT = 3.00;
+    private final double END_OF_MATCH_VOLTAGE = 11.5;
+    private final double PERCENT_VOLTAGE = 0.8;
+    private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
+
 
     private class PeriodicData
     {
  
         private double motorSpeed = 0.0;
         private double position = 0.0;
+        private double motorVoltage = 0.0;
 
         // OUTPUTS
 
@@ -65,7 +62,6 @@ public class Shuttle extends Subsystem4237
         System.out.println("  Constructor Started: " + fullClassName);
 
         motor.setupFactoryDefaults();
-
         
         configMotor();
 
@@ -78,8 +74,8 @@ public class Shuttle extends Subsystem4237
     private void configMotor()
     {
         motor.setupCoastMode();
-        motor.setupForwardSoftLimit(SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, false);
-        motor.setupReverseSoftLimit(-SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFRENCE_INCHES, false);
+        motor.setupForwardSoftLimit(SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFERENCE_INCHES, false);
+        motor.setupReverseSoftLimit(-SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFERENCE_INCHES, false);
 
         // motor.enableSoftLimit(SoftLimitDirection.kForward, true); // kForward is upward movement
         // motor.enableSoftLimit(SoftLimitDirection.kReverse, isEnabled); // kReverse is downward movement
@@ -87,11 +83,12 @@ public class Shuttle extends Subsystem4237
         //motor.enableSoftLimit(SoftLimitDirection.kForward, true);
         
         // creates a limit switch for the shuttle motor
-        motor.setupForwardHardLimitSwitch(true, true);
-        motor.setupReverseHardLimitSwitch(true, true);
+        motor.setupForwardHardLimitSwitch(false, true);
+        motor.setupReverseHardLimitSwitch(false, true);
 
-        motor.setupPositionConversionFactor(ROLLER_CIRCUMFRENCE_INCHES * GEAR_RATIO);
+        motor.setupPositionConversionFactor(ROLLER_CIRCUMFERENCE_INCHES * GEAR_RATIO);
     }
+
 
     public double getPosition()
     {
@@ -103,7 +100,8 @@ public class Shuttle extends Subsystem4237
      */
     public void stop()
     {
-        periodicData.motorSpeed = 0.0;
+        //periodicData.motorSpeed = 0.0;
+        periodicData.motorVoltage = 0.0;
     }
 
     /** 
@@ -111,7 +109,8 @@ public class Shuttle extends Subsystem4237
      */
     public void moveUpward()
     {
-        periodicData.motorSpeed = 0.1;
+        //periodicData.motorSpeed = 0.1;
+        periodicData.motorVoltage = VOLTAGE;
     }
 
     
@@ -120,7 +119,8 @@ public class Shuttle extends Subsystem4237
      */
     public void moveDownward()
     {
-        periodicData.motorSpeed = -0.1;
+        //periodicData.motorSpeed = -0.1;
+        periodicData.motorVoltage = -VOLTAGE;
     }
 
     /**
@@ -155,15 +155,15 @@ public class Shuttle extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        motor.set(periodicData.motorSpeed);
+        //motor.set(periodicData.motorSpeed);
+        motor.setVoltage(periodicData.motorVoltage);
         
         if (reset)
         {
             motor.setPosition(0.0);
+            reset = false;
         }
-        
-        reset = false;
-        
+         
     }
 
     @Override
