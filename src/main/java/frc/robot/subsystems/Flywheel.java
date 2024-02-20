@@ -72,14 +72,16 @@ public class Flywheel extends Subsystem4237
     private final double ROLLER_DIAMETER_FEET = 4.0 / 12.0; // feet
     private final double GEAR_RATIO = 2.0 / 3.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
-    private final double RPM_TO_FPS = 1.0; //GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
+    private final double RPM_TO_FPS = 1.0; //GEAR_RATIO * Math.PI * ROLLER_DIAMETER_FEET;
     private boolean tunePID = false;
 
-    private final double kP = 0.3;
+
+    // -10 ft/s for intaking
+    private final double kP = 0.25;
     private final double kI = 0.0;
     private final double kD = 0.0;
-    private final double kS = 0.1;
-    private final double kV = 0.1;
+    private final double kS = 0.15;
+    private final double kV = 0.07;
 
     private PIDController PIDcontroller = new PIDController(kP, kI, kD);
 
@@ -125,7 +127,7 @@ public class Flywheel extends Subsystem4237
         motor.setupPIDController(0, kP, kI, kD, kS, kV);
         // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
-        motor.setupVelocityConversionFactor(1.0);
+        motor.setupVelocityConversionFactor(1.0); // 0.69813111
         motor.setupCurrentLimit(30, 35, 0.5);
 
 

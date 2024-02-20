@@ -40,9 +40,7 @@ public class Index extends Subsystem4237
         private double currentPosition;
         private double currentVelocity;
 
-        private double kP = SmartDashboard.getNumber("kP", 0.0);
-        private double kI = SmartDashboard.getNumber("kI", 0.0);
-        private double kD = SmartDashboard.getNumber("kD", 0.0);
+        
 
         // OUTPUTS
         private double motorSpeed;
@@ -54,16 +52,22 @@ public class Index extends Subsystem4237
     private final double CURRENT_THRESHOLD                   = 35.0;
     private final double TIME_THRESHOLD                      = 0.5;
 
-    private final double ROLLER_DIAMETER_FEET = 2.5 / 12.0; // feet
+    private final double ROLLER_DIAMETER_FEET = 2.02 / 12.0; // feet
     private final double GEAR_RATIO = 2.0 / 3.0;
-    private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
-    private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * ROLLER_DIAMETER_FEET;
+    // private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
+    private final double RPS_TO_FPS = GEAR_RATIO * Math.PI * ROLLER_DIAMETER_FEET; // .69813111
+
+    private final double kP = 0.25;
+    private final double kI = 0.0;
+    private final double kD = 0.0;
+    private final double kS = 0.13;
+    private final double kV = 0.07;
 
 
     // Gear ratio is 2.0 / 3.0
     private PeriodicData periodicData = new PeriodicData();
     private final TalonFX4237 motor = new TalonFX4237(Constants.Index.MOTOR_PORT, Constants.Index.MOTOR_CAN_BUS, "indexMotor");
-    private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
+    // private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
     private boolean tunePID = true;
     
 
@@ -77,11 +81,11 @@ public class Index extends Subsystem4237
         configTalonFX();
         if(tunePID)
         {
-            SmartDashboard.putNumber("kP", periodicData.kP);
-            SmartDashboard.putNumber("kI", periodicData.kI);
-            SmartDashboard.putNumber("kD", periodicData.kD);
+            // SmartDashboard.putNumber("kP", periodicData.kP);
+            // SmartDashboard.putNumber("kI", periodicData.kI);
+            // SmartDashboard.putNumber("kD", periodicData.kD);
 
-            SmartDashboard.putNumber("Velocity", 0.0);
+            // SmartDashboard.putNumber("Velocity", 0.0);
         }
         
 
@@ -96,9 +100,9 @@ public class Index extends Subsystem4237
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
+        // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(Math.PI * ROLLER_DIAMETER_FEET * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
-        motor.setupVelocityConversionFactor(RPM_TO_FPS);
+        motor.setupVelocityConversionFactor(RPS_TO_FPS);
 
     }
 
@@ -182,9 +186,9 @@ public class Index extends Subsystem4237
 
         if(tunePID)
         {
-            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+            // periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+            // periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+            // periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
         }
         
 
@@ -197,9 +201,9 @@ public class Index extends Subsystem4237
         SmartDashboard.putNumber("currentVelocity", getVelocity());
         if(tunePID)
         {
-            PIDcontroller.setP(periodicData.kP);
-            PIDcontroller.setI(periodicData.kI);
-            PIDcontroller.setD(periodicData.kD);
+            // PIDcontroller.setP(periodicData.kP);
+            // PIDcontroller.setI(periodicData.kI);
+            // PIDcontroller.setD(periodicData.kD);
         }
         
         // PIDcontroller.setSetpoint(setPoint);
