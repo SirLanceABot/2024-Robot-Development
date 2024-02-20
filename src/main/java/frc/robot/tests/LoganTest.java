@@ -87,14 +87,14 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            climb.extendClimb(0.4);
+            climb.extend(0.4);
         //     // configAButton();
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
         }
         else if(joystick.getRawButton(2))
         {
-            climb.retractClimb(0.4);
+            climb.retract(0.4);
         }
         else
         {

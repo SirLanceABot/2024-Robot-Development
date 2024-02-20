@@ -134,12 +134,12 @@ public class SamTest implements Test
             // drivetrain.rotateToBlueSpeaker();
                 // System.out.println(drivetrain.isAlligned(drivetrain.getAngleToBlueSpeaker()).getAsBoolean());
             // }
-            climb.extendClimb(0.1);
+            climb.extend(0.1);
             // climb.moveToSetPosition(TargetPosition.kChain);
         }
         else if(joystick.getRawButton(2))   //B
         {
-            climb.retractClimb(0.1);
+            climb.retract(0.1);
             // climb.moveToSetPosition(TargetPosition.kRobot);
         }
         else
