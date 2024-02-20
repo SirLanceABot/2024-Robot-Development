@@ -342,11 +342,9 @@ public class TalonFX4237 extends MotorController4237 //implements Sendable
 
     /**
      * Set the PID controls for the motor.
-     * @param kP The Proportional gain constant
-     * @param kI The Integral gain constant
-     * @param kD The Derivative gain constant
-     * @param kS The Static voltage constant
-     * @param kV The Velocity gain constant
+     * @param kP The Proportional constant
+     * @param kI The Integral constant
+     * @param kD The Derivative constant
      */
     public void setupPIDController(int slotId, double kP, double kI, double kD, double kS, double kV)
     {
@@ -363,8 +361,6 @@ public class TalonFX4237 extends MotorController4237 //implements Sendable
             setup(() -> motor.getConfigurator().apply(slotConfigs), "Setup PID Controller"); 
         }
     }
-
-
 
     public double[] getPID(int slotId)
     {
@@ -559,12 +555,21 @@ public class TalonFX4237 extends MotorController4237 //implements Sendable
 
     /**
      * Get the velocity of the encoder.
-     * Units are RPMs by default, but can be changed using the conversion factor.
+     * Units are RPS by default, but can be changed using the conversion factor.
      * @return The velocity of the encoder
      */    
     public double getVelocity()
     {
-        return motor.getVelocity().getValueAsDouble() * 60.0;
+        return motor.getVelocity().getValueAsDouble();
+    }
+
+    /**
+     * Get the applied motor voltage (in volts).
+     * @return The voltage
+     */    
+    public double getMotorVoltage()
+    {
+        return motor.getMotorVoltage().getValueAsDouble();
     }
 
     @Override

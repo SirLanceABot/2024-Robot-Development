@@ -107,6 +107,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract void setPosition(double position);
     public abstract double getPosition();
     public abstract double getVelocity();
+    public abstract double getMotorVoltage();
 
 
     // @Override

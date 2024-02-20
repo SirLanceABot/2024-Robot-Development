@@ -425,6 +425,15 @@ public class CANSparkMax4237 extends MotorController4237 //implements Sendable
             return sparkAbsoluteEncoder.getVelocity();
     }
 
+    /**
+     * Get the applied motor voltage (in volts).
+     * @return The voltage
+     */    
+    public double getMotorVoltage()
+    {
+        return motor.getBusVoltage();
+    }
+
     @Override
     public void stopMotor()
     {
