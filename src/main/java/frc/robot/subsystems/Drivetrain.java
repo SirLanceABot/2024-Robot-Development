@@ -449,7 +449,6 @@ public class Drivetrain extends Subsystem4237
         {
             isAlligned = false;
         }
-
         return () -> isAlligned;
     }
 
@@ -467,17 +466,7 @@ public class Drivetrain extends Subsystem4237
         drive(0.0, 0.0, rotationSpeed, false);
     }
 
-    public Command rotateToBlueSpeakerCommand()
-    {
-        return Commands.run(() -> rotateToBlueSpeaker())
-                       .until(isAlligned(targetYaw));
-    }
-
-    public Command rotateToRedSpeakerCommand()
-    {
-        return Commands.run(() -> rotateToRedSpeaker())
-                       .until(isAlligned(targetYaw));
-    }
+    
 
     public SwerveModulePosition[] getSwerveModulePositions()
     {
@@ -599,6 +588,20 @@ public class Drivetrain extends Subsystem4237
     {
         adaptiveXRateLimiter.reset(0.0);
         adaptiveYRateLimiter.reset(0.0);
+    }
+
+    public Command rotateToBlueSpeakerCommand()
+    {
+        return Commands.run(() -> rotateToBlueSpeaker())
+                       .until(isAlligned(targetYaw))
+                       .withName("rotateToBlueSpeakerCommand");
+    }
+
+    public Command rotateToRedSpeakerCommand()
+    {
+        return Commands.run(() -> rotateToRedSpeaker())
+                       .until(isAlligned(targetYaw))
+                       .withName("rotateToRedSpeakerCommand");
     }
 
     public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale)

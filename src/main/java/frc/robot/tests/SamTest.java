@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandles;
 
 import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
 
+import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
@@ -40,10 +41,10 @@ public class SamTest implements Test
     // private final Pivot pivot;
     // private final Flywheel flywheel;
     // private final Intake intake;
-    // private final Joystick joystick;
-    // private final Drivetrain drivetrain;
+    private final Joystick joystick;
+    private final Drivetrain drivetrain;
     // private final Gyro4237 gyro;
-    private final Boolean isBlueAlliance;
+    // private final Boolean isBlueAlliance;
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -54,15 +55,15 @@ public class SamTest implements Test
         // prox1 = new Proximity(8);
         // prox2 = new Proximity(9);
         // candle = new Candle4237();
-        // joystick = new Joystick(0);
+        joystick = new Joystick(0);
         // this.shuttle = robotContainer.shuttle;
         // this.index = robotContainer.index;
         // this.pivot = robotContainer.pivot;
         // this.flywheel = robotContainer.flywheel;
         // this.intake = robotContainer.intake;
-        // this.drivetrain = robotContainer.drivetrain;
+        this.drivetrain = robotContainer.drivetrain;
         // this.gyro = robotContainer.gyro;
-        this.isBlueAlliance = robotContainer.isBlueAlliance;
+        // this.isBlueAlliance = robotContainer.isBlueAlliance;
 
         // SmartDashboard.putNumber("kP", 0.0);
         // SmartDashboard.putNumber("kI", 0.0);
@@ -110,7 +111,7 @@ public class SamTest implements Test
         // }
 
 
-        // if(joystick.getRawButton(1))    //A
+        if(joystick.getRawButton(1))    //A
         {
             // flywheel.intake();
             // index.intake();
@@ -118,19 +119,26 @@ public class SamTest implements Test
             // flywheel.shoot(80);
             // index.setVelocity(1);
             // intake.pickupFront();
-            // drivetrain.rotateToSpeaker();
+            // while(!drivetrain.isAlligned(drivetrain.getAngleToBlueSpeaker()).getAsBoolean())
+            // {
+            
+            drivetrain.rotateToBlueSpeaker();
+                // System.out.println(drivetrain.isAlligned(drivetrain.getAngleToBlueSpeaker()).getAsBoolean());
+            // }
+            
         }
 
-        System.out.println(robotContainer.isBlueAlliance);
+        // System.out.println(robotContainer.isBlueAlliance);
         // SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
-        // else if(joystick.getRawButton(2))   //B
-        // {
+        else if(joystick.getRawButton(2))   //B
+        {
         //     // flywheel.stop();
         //     // index.stop();
         //     // shuttle.stop();
         //     // pivot.stopMotor();
         //     intake.pickupBack();
-        // }
+            System.out.println(drivetrain.getAngleToBlueSpeaker());
+        }
         // else
         // {
         //     intake.stop();
