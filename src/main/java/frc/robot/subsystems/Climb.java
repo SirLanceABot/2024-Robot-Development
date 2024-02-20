@@ -79,8 +79,8 @@ public class Climb extends Subsystem4237
     private final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 40.0;
     private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
-    private static final double CHAIN_ENCODER_POSITION              = 30.0;
-    private static final double ROBOT_ENCODER_POSITION        = 5.0;
+    private static final double CHAIN_ENCODER_POSITION       = 190.0;
+    private static final double ROBOT_ENCODER_POSITION       = 5.0;
 
     private final double CURRENT_LIMIT                       = 10.0;
     private final double CURRENT_THRESHOLD                   = 10.0;
@@ -126,7 +126,7 @@ public class Climb extends Subsystem4237
         rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
 
         leftLeadMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
-        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
+        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, false);
         leftLeadMotor.setupForwardHardLimitSwitch(true, true);
         leftLeadMotor.setupReverseHardLimitSwitch(true, true);
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
@@ -208,7 +208,7 @@ public class Climb extends Subsystem4237
         targetPosition = TargetPosition.kRobot;
     }
 
-    private void moveToSetPosition(TargetPosition targetPosition)
+    public void moveToSetPosition(TargetPosition targetPosition)
     {
         if(targetPosition == TargetPosition.kOverride)
         {
@@ -219,12 +219,12 @@ public class Climb extends Subsystem4237
         {
             if((targetPosition.value - 1.0) > leftLeadMotor.getPosition())
             {
-                leftLeadMotor.set(0.05);
-                // rightFollowMotor.set(0.05);        
+                leftLeadMotor.set(0.1); //0.3
+                // rightFollowMotor.set(0.05);
             }
             else if((targetPosition.value + 1.0) < leftLeadMotor.getPosition())
             {
-                leftLeadMotor.set(-0.05);
+                leftLeadMotor.set(-0.1); //-0.3
                 // rightFollowMotor.set(-0.05);
             }
             else
