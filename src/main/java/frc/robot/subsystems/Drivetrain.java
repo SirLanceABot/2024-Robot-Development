@@ -592,14 +592,14 @@ public class Drivetrain extends Subsystem4237
 
     public Command rotateToBlueSpeakerCommand()
     {
-        return Commands.run(() -> rotateToBlueSpeaker())
+        return this.run(() -> rotateToBlueSpeaker())
                        .until(isAlligned(targetYaw))
                        .withName("rotateToBlueSpeakerCommand");
     }
 
     public Command rotateToRedSpeakerCommand()
     {
-        return Commands.run(() -> rotateToRedSpeaker())
+        return this.run(() -> rotateToRedSpeaker())
                        .until(isAlligned(targetYaw))
                        .withName("rotateToRedSpeakerCommand");
     }
@@ -1108,47 +1108,47 @@ public class Drivetrain extends Subsystem4237
     //     return (Math.abs(angleToTurn) < angleThreshold);
     // }
 
-    public Command followPathCommand(String pathName) {
-        PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+    // public Command followPathCommand(String pathName) {
+    //     PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
-        return
-        // Commands.runOnce( () -> 
-        //         {
-        //             resetOdometryPose(path.getPreviewStartingHolonomicPose());
-        //             resetPoseEstimator(path.getPreviewStartingHolonomicPose());
-        //         })
+    //     return
+    //     // Commands.runOnce( () -> 
+    //     //         {
+    //     //             resetOdometryPose(path.getPreviewStartingHolonomicPose());
+    //     //             resetPoseEstimator(path.getPreviewStartingHolonomicPose());
+    //     //         })
         
 
 
-        // .andThen( 
-            new FollowPathHolonomic(
-                path,
-                // this::getPose,
-                poseEstimator::getEstimatedPose, // Robot pose supplier
-                this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                        Constants.DrivetrainConstants.MAX_DRIVE_SPEED, // Max module speed, in m/s
-                        0.417, // Drive base radius in meters. Distance from robot center to furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API for the options here
-                ),
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    //     // .andThen( 
+    //         new FollowPathHolonomic(
+    //             path,
+    //             // this::getPose,
+    //             poseEstimator::getEstimatedPose, // Robot pose supplier
+    //             this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //             this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+    //                     new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+    //                     Constants.DrivetrainConstants.MAX_DRIVE_SPEED, // Max module speed, in m/s
+    //                     0.417, // Drive base radius in meters. Distance from robot center to furthest module.
+    //                     new ReplanningConfig() // Default path replanning config. See the API for the options here
+    //             ),
+    //             () -> {
+    //                 // Boolean supplier that controls when the path will be mirrored for the red alliance
+    //                 // This will flip the path being followed to the red side of the field.
+    //                 // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                this // Reference to this subsystem to set requirements
-        );//);][\
+    //                 var alliance = DriverStation.getAlliance();
+    //                 if (alliance.isPresent()) {
+    //                     return alliance.get() == DriverStation.Alliance.Red;
+    //                 }
+    //                 return false;
+    //             },
+    //             this // Reference to this subsystem to set requirements
+    //     );//);][\
         
-    }
+    // }
 
 
 }
