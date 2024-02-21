@@ -114,12 +114,13 @@ public class Drivetrain extends Subsystem4237
 
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
 
-    private double kP = 0.1;
+    private double kP = 0.09;
     private double kI = 0.0;
     private double kD = 0.0;
     private PIDController pidController = new PIDController(kP, kI, kD);
     private double targetYaw;
-    private boolean isAlligned = false;
+    private boolean isAligned = false;
+    private final double ALIGNMENT_TOLERANCE = 0.1;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -439,23 +440,36 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters();
     }
 
-    public BooleanSupplier isAlligned(double targetYaw)
+    public BooleanSupplier isAligned()
     {
-        if(gyro.getYaw() >= targetYaw - 1.0 && gyro.getYaw() <= targetYaw + 1.0)
+        return () -> 
         {
-            isAlligned = true;
-        }
-        else
-        {
-            isAlligned = false;
-        }
-        return () -> isAlligned;
+            double targetYaw = getAngleToBlueSpeaker();
+            isAligned = false;
+            if(gyro.getYaw() > targetYaw - ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + ALIGNMENT_TOLERANCE)
+            {
+                isAligned = true;
+            }
+            else
+            {
+                isAligned = false;
+            }
+            // System.out.println("targetYaw " + targetYaw);
+    
+            return isAligned;
+        };
     }
 
     public void rotateToBlueSpeaker()
     {
         targetYaw = getAngleToBlueSpeaker();
+        // System.out.println("targetYaw in rotate method " + targetYaw);
         double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
+        // System.out.println(rotationSpeed);
+        // if(rotationSpeed > 2)
+        // {
+        //     rotationSpeed = 2;
+        // }
         drive(0.0, 0.0, rotationSpeed, false);
     }
 
@@ -465,8 +479,6 @@ public class Drivetrain extends Subsystem4237
         double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
         drive(0.0, 0.0, rotationSpeed, false);
     }
-
-    
 
     public SwerveModulePosition[] getSwerveModulePositions()
     {
@@ -535,11 +547,6 @@ public class Drivetrain extends Subsystem4237
         // System.out.println(periodicData.swerveModuleStates);
     }
 
-    public void setPID(double p, double i, double d)
-    {
-        pidController.setPID(p, i, d);
-    }
-
     public void resetEncoders()
     {
         resetEncoders = true;
@@ -593,14 +600,14 @@ public class Drivetrain extends Subsystem4237
     public Command rotateToBlueSpeakerCommand()
     {
         return this.run(() -> rotateToBlueSpeaker())
-                       .until(isAlligned(targetYaw))
+                       .until(isAligned())
                        .withName("rotateToBlueSpeakerCommand");
     }
 
     public Command rotateToRedSpeakerCommand()
     {
         return this.run(() -> rotateToRedSpeaker())
-                       .until(isAlligned(targetYaw))
+                       .until(isAligned())
                        .withName("rotateToRedSpeakerCommand");
     }
 
@@ -627,7 +634,6 @@ public class Drivetrain extends Subsystem4237
             periodicData.backLeftPosition = backLeft.getPosition();
             periodicData.backRightPosition = backRight.getPosition();
         // }
-
     }
 
     @Override
