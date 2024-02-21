@@ -109,7 +109,7 @@ public class Shuttle extends Subsystem4237
      */
     public void moveUpward()
     {
-        //periodicData.motorSpeed = 0.1;
+        //periodicData.motorSpeed = 0.9;
         periodicData.motorVoltage = VOLTAGE;
     }
 

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Commands4237;
 import frc.robot.subsystems.Climb;
 import frc.robot.controls.Xbox;
 
@@ -87,23 +88,23 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            climb.extend(0.4);
+            Commands4237.intakeFromFloor().schedule();
         //     // configAButton();
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
         }
-        else if(joystick.getRawButton(2))
-        {
-            climb.retract(0.4);
-        }
-        else
-        {
-            climb.stop();
-        }
-        if(joystick.getRawButton(3)) // X
-        {
-            // climb.resetEncoder();
-        }
+        // else if(joystick.getRawButton(2))
+        // {
+        //     climb.retract(0.4);
+        // }
+        // else
+        // {
+        //     climb.stop();
+        // }
+        // if(joystick.getRawButton(3)) // X
+        // {
+        //     // climb.resetEncoder();
+        // }
         // else if(joystick.getRawButton(2))
         // {
         //     intakePositioning.moveDown();

@@ -122,7 +122,7 @@ public class Climb extends Subsystem4237
         rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
 
         leftLeadMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
-        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, false);
+        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
         leftLeadMotor.setupForwardHardLimitSwitch(true, true);
         leftLeadMotor.setupReverseHardLimitSwitch(true, true);
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);

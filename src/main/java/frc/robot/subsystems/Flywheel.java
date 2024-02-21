@@ -70,20 +70,21 @@ public class Flywheel extends Subsystem4237
     private ResetState resetState = ResetState.kDone;
 
     private final double ROLLER_DIAMETER_FEET = 4.0 / 12.0; // feet
-    private final double GEAR_RATIO = 2.0 / 3.0;
-    private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
-    private final double RPM_TO_FPS = 1.0; //GEAR_RATIO * Math.PI * ROLLER_DIAMETER_FEET;
-    private boolean tunePID = false;
+    private final double GEAR_RATIO = 3.0 / 2.0;
+    // private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
+    // Will need to be changed to look better possibly
+    private final double RPS_TO_FPS = GEAR_RATIO * ( 1.0 / Math.PI) * (1.0 / ROLLER_DIAMETER_FEET); // 1.432
+    // private boolean tunePID = false;
 
 
     // -10 ft/s for intaking
-    private final double kP = 0.25;
+    private final double kP = 0.45;
     private final double kI = 0.0;
-    private final double kD = 0.0;
-    private final double kS = 0.15;
-    private final double kV = 0.07;
+    private final double kD = 0.001;
+    private final double kS = 0.13;
+    private final double kV = 0.15;
 
-    private PIDController PIDcontroller = new PIDController(kP, kI, kD);
+    // private PIDController PIDcontroller = new PIDController(kP, kI, kD);
 
     // kS is equal to 0.013 in dutycycles(* 12 for volts)
     
@@ -95,7 +96,7 @@ public class Flywheel extends Subsystem4237
     // private final double kIntakeMaxOutput = 0.0;
     // private final double kIntakeMinOutput = 0.0;
 
-    private final double ROLLER_RADIUS = 2.0;   //inches
+    // private final double ROLLER_RADIUS = 2.0;   //inches
 
 
     /** 
@@ -127,8 +128,8 @@ public class Flywheel extends Subsystem4237
         motor.setupPIDController(0, kP, kI, kD, kS, kV);
         // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s
-        motor.setupVelocityConversionFactor(1.0); // 0.69813111
-        motor.setupCurrentLimit(30, 35, 0.5);
+        motor.setupVelocityConversionFactor(RPS_TO_FPS); // 0.69813111
+        // motor.setupCurrentLimit(30, 35, 0.5);
 
 
         // motor.config_kP(0, kP);

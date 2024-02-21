@@ -190,7 +190,7 @@ public final class Constants
 
         public static final double DEFAULT_ANGLE = 30.0; // Angle to drive around at
         public static final double INTAKE_FROM_SOURCE_ANGLE = 50.0; //TODO check value
-        public static final double SHOOT_TO_AMP_ANGLE = 80.0;       //TODO check value
+        public static final double SHOOT_TO_AMP_ANGLE = 59.5;       //correct value
     }
 
     public static class Shuttle

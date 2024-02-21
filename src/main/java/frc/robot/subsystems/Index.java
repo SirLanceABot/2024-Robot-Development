@@ -53,15 +53,15 @@ public class Index extends Subsystem4237
     private final double TIME_THRESHOLD                      = 0.5;
 
     private final double ROLLER_DIAMETER_FEET = 2.02 / 12.0; // feet
-    private final double GEAR_RATIO = 2.0 / 3.0;
+    private final double GEAR_RATIO = 3.0 / 2.0;
     // private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
-    private final double RPS_TO_FPS = GEAR_RATIO * Math.PI * ROLLER_DIAMETER_FEET; // .69813111
+    private final double RPS_TO_FPS = GEAR_RATIO * (1.0 / Math.PI) * ( 1.0 / ROLLER_DIAMETER_FEET); // 2.865
 
-    private final double kP = 0.25;
+    private final double kP = 0.3;
     private final double kI = 0.0;
     private final double kD = 0.0;
     private final double kS = 0.13;
-    private final double kV = 0.07;
+    private final double kV = 0.01;
 
 
     // Gear ratio is 2.0 / 3.0
@@ -99,8 +99,8 @@ public class Index extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
-        motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
+        // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        motor.setupPIDController(0, kP, kI, kD, kS, kD);
         // motor.setupVelocityConversionFactor(Math.PI * ROLLER_DIAMETER_FEET * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
         motor.setupVelocityConversionFactor(RPS_TO_FPS);
 
@@ -133,7 +133,7 @@ public class Index extends Subsystem4237
 
     public void acceptNoteFromShuttle()
     {
-        periodicData.motorSpeed = 0.1;
+        periodicData.motorSpeed = 10;
     }
 
     public void feedNoteToFlywheel(double speed)
@@ -184,12 +184,12 @@ public class Index extends Subsystem4237
         periodicData.currentPosition = motor.getPosition();
         periodicData.currentVelocity = motor.getVelocity();
 
-        if(tunePID)
-        {
+        // if(tunePID)
+        // {
             // periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
             // periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
             // periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
-        }
+        // }
         
 
     }
@@ -199,12 +199,12 @@ public class Index extends Subsystem4237
     {
         // motor.setControl(periodicData.motorSpeed);
         SmartDashboard.putNumber("currentVelocity", getVelocity());
-        if(tunePID)
-        {
+        // if(tunePID)
+        // {
             // PIDcontroller.setP(periodicData.kP);
             // PIDcontroller.setI(periodicData.kI);
             // PIDcontroller.setD(periodicData.kD);
-        }
+        // }
         
         // PIDcontroller.setSetpoint(setPoint);
             
