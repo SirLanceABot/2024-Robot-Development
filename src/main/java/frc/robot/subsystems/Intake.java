@@ -2,12 +2,8 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -58,9 +54,9 @@ public class Intake extends Subsystem4237
         private double bottomIntakeSpeed = 0.0;
 
 
-        private double kP = SmartDashboard.getNumber("kP", 0.0);
-        private double kI = SmartDashboard.getNumber("kI", 0.0);
-        private double kD = SmartDashboard.getNumber("kD", 0.0);
+        // private double kP = SmartDashboard.getNumber("kP", 0.0);
+        // private double kI = SmartDashboard.getNumber("kI", 0.0);
+        // private double kD = SmartDashboard.getNumber("kD", 0.0);
 
     }
 
@@ -70,13 +66,16 @@ public class Intake extends Subsystem4237
     private final double WHEEL_DIAMETER_FEET = 2.25 / 12.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
     private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * WHEEL_DIAMETER_FEET;
+    private final double END_OF_MATCH_VOLTAGE = 11.5;
+    private final double PERCENT_VOLTAGE = 0.9;
+    private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
 
     private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
     private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
-    private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
-    private RelativeEncoder topEncoder;
-    private RelativeEncoder bottomEncoder;
-    private boolean tunePID = true;
+    // private PIDController PIDcontroller = new PIDController(periodicData.kP, periodicData.kI, periodicData.kD);
+    // private RelativeEncoder topEncoder;
+    // private RelativeEncoder bottomEncoder;
+    // private boolean tunePID = true;
 
     /** 
      * Creates a new Intake. 
@@ -88,13 +87,13 @@ public class Intake extends Subsystem4237
 
         configCANSparkMax();
 
-        if(tunePID)
-        {
-            SmartDashboard.putNumber("currentVelocity", getTopVelocity());
-            SmartDashboard.putNumber("kP", periodicData.kP);
-            SmartDashboard.putNumber("kI", periodicData.kI);
-            SmartDashboard.putNumber("kD", periodicData.kD);
-        }
+        // if(tunePID)
+        // {
+        //     SmartDashboard.putNumber("currentVelocity", getTopVelocity());
+        //     SmartDashboard.putNumber("kP", periodicData.kP);
+        //     SmartDashboard.putNumber("kI", periodicData.kI);
+        //     SmartDashboard.putNumber("kD", periodicData.kD);
+        // }
 
         // SmartDashboard.putNumber("Velocity", 0.0);
         
@@ -112,7 +111,7 @@ public class Intake extends Subsystem4237
         // Set Coast Mode
         topMotor.setupCoastMode();
         bottomMotor.setupCoastMode();
-        topMotor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
+        // topMotor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // bottomMotor.setupPIDController(0, 17.0, 0.0, 0.0);
 
         topMotor.setupVelocityConversionFactor(RPM_TO_FPS);
@@ -145,26 +144,26 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = 10.8;
-        periodicData.bottomIntakeSpeed = 10.8;
+        periodicData.topIntakeSpeed = VOLTAGE;
+        periodicData.bottomIntakeSpeed = VOLTAGE;
     }
 
     public void ejectFront()
     {
-        periodicData.topIntakeSpeed = -10.8;
-        periodicData.bottomIntakeSpeed = -10.8;
+        periodicData.topIntakeSpeed = -VOLTAGE;
+        periodicData.bottomIntakeSpeed = -VOLTAGE;
     }
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = 10.8;
-        periodicData.bottomIntakeSpeed = -10.8;
+        periodicData.topIntakeSpeed = VOLTAGE;
+        periodicData.bottomIntakeSpeed = -VOLTAGE;
     }
 
     public void ejectBack()
     {
-        periodicData.topIntakeSpeed = -10.8;
-        periodicData.bottomIntakeSpeed = 10.8;
+        periodicData.topIntakeSpeed = -VOLTAGE;
+        periodicData.bottomIntakeSpeed = VOLTAGE;
     }
 
     public void stop()
@@ -212,12 +211,12 @@ public class Intake extends Subsystem4237
         periodicData.topIntakeVelocity = topMotor.getVelocity();
         periodicData.bottomIntakeVelocity = bottomMotor.getVelocity();
 
-        if(tunePID)
-        {
-            periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
-            periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
-            periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
-        }
+        // if(tunePID)
+        // {
+        //     periodicData.kP = SmartDashboard.getNumber("kP", 0.0);
+        //     periodicData.kI = SmartDashboard.getNumber("kI", 0.0);
+        //     periodicData.kD = SmartDashboard.getNumber("kD", 0.0);
+        // }
     }
 
     @Override
@@ -226,12 +225,12 @@ public class Intake extends Subsystem4237
         topMotor.setVoltage(periodicData.topIntakeSpeed);
         bottomMotor.setVoltage(periodicData.bottomIntakeSpeed);
 
-        if(tunePID)
-        {
-            PIDcontroller.setP(periodicData.kP);
-            PIDcontroller.setI(periodicData.kI);
-            PIDcontroller.setD(periodicData.kD);
-        }
+        // if(tunePID)
+        // {
+        //     PIDcontroller.setP(periodicData.kP);
+        //     PIDcontroller.setI(periodicData.kI);
+        //     PIDcontroller.setD(periodicData.kD);
+        // }
 
         // topMotor.setControlVelocity(2.0);
         // bottomMotor.setControlVelocity(periodicData.bottomIntakeSpeed);
