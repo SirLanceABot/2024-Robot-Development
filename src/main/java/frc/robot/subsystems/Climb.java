@@ -74,7 +74,7 @@ public class Climb extends Subsystem4237
     // private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
     private static final double CHAIN_ENCODER_POSITION       = 190.0;
-    private static final double ROBOT_ENCODER_POSITION       = 5.0;
+    private static final double ROBOT_ENCODER_POSITION       = 30.0;//5.0;
 
     private final double DEFAULT_SPEED = 0.3;
 
@@ -251,14 +251,38 @@ public class Climb extends Subsystem4237
     //     return Commands.startEnd( () -> retractRight(speed), () -> stop(), this);
     // }
 
+    /**
+     * Command to extend climb at a desired speed
+     * @parm Desired speed
+     */
     public Command extendCommand(double speed)
     {
         return Commands.runEnd( () -> extend(speed), () -> stop(), this).withName("Extend Climb");
     }
 
+    /**
+     * Command to retract climb at a desired speed
+     * @parm Desired speed
+     */
     public Command retractCommand(double speed)
     {
         return Commands.runEnd( () -> retract(speed), () -> stop(), this).withName("Retract Climb");
+    }
+
+    /**
+     * Command to extend climb at the default speed
+     */
+    public Command extendCommand()
+    {
+        return Commands.runEnd( () -> extend(DEFAULT_SPEED), () -> stop(), this).withName("Extend Climb");
+    }
+
+    /**
+     * Command to retract climb at the default speed
+     */
+    public Command retractCommand()
+    {
+        return Commands.runEnd( () -> retract(DEFAULT_SPEED), () -> stop(), this).withName("Retract Climb");
     }
 
     public Command moveToPositionCommand(TargetPosition targetPosition)

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShootingPosition;
 import frc.robot.subsystems.AmpAssist.AmpAssistPosition;
+import frc.robot.subsystems.Climb.TargetPosition;
 import frc.robot.commands.Commands4237;
 import frc.robot.commands.ShootFromPosition;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -98,6 +99,8 @@ public class OperatorButtonBindings
             configDpadUp();
             configDpadLeft();
             configDpadRight();
+            configLeftTriggerAndDpadDown();
+            configLeftTriggerAndDpadUp();
             configRumble();
             configDefaultCommands();
         }
@@ -242,9 +245,11 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadDownTrigger.whileTrue(robotContainer.climb.retractCommand(-0.2));
+            // dPadDownTrigger.whileTrue(robotContainer.climb.retractCommand(-0.2));
+            dPadDownTrigger.onTrue(robotContainer.climb.moveToPositionCommand(TargetPosition.kRobot));
         }
     }
+
     private void configDpadUp()
     {
         // Dpad down button
@@ -253,7 +258,9 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            dPadUpTrigger.whileTrue(robotContainer.climb.extendCommand(0.2));
+            // dPadUpTrigger.whileTrue(robotContainer.climb.extendCommand(0.2));
+            dPadUpTrigger.onTrue(robotContainer.climb.moveToPositionCommand(TargetPosition.kChain));
+
         }
     }
 
@@ -278,6 +285,44 @@ public class OperatorButtonBindings
         if(robotContainer.ampAssist != null)
         {
             dPadRightTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kOut));
+        }
+    }
+
+    private void configLeftTriggerAndDpadDown()
+    {
+        //Left trigger
+        BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
+        Trigger leftTriggerTrigger = new Trigger(leftTrigger);
+
+        // Dpad down button
+        BooleanSupplier dPadDown = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kDown);
+        Trigger dPadDownTrigger = new Trigger(dPadDown);
+
+        // Left trigger and Dpad down button combination
+        Trigger leftTriggerAndDpadDownTrigger = leftTriggerTrigger.and(dPadDownTrigger);
+
+        if(robotContainer.climb != null)
+        {
+            leftTriggerAndDpadDownTrigger.whileTrue(robotContainer.climb.retractCommand());
+        }
+    }
+
+    private void configLeftTriggerAndDpadUp()
+    {
+        //Left trigger
+        BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
+        Trigger leftTriggerTrigger = new Trigger(leftTrigger);
+
+        // Dpad up button
+        BooleanSupplier dPadUp = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kUp);
+        Trigger dPadUpTrigger = new Trigger(dPadUp);
+
+        // Left trigger and Dpad up button combination
+        Trigger leftTriggerAndDpadUpTrigger = leftTriggerTrigger.and(dPadUpTrigger);
+
+        if(robotContainer.climb != null)
+        {
+            leftTriggerAndDpadUpTrigger.whileTrue(robotContainer.climb.extendCommand());
         }
     }
 
