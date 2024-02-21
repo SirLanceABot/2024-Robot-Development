@@ -66,11 +66,10 @@ public class Pivot extends Subsystem4237
         private double kD = 0.0;
         // private double setPoint = 0.0;
         private int slotId = 0;
-        // private final double motorPositionConversionFactor = 0.0027778;
 
         //limits
-        private final double FORWARD_SOFT_LIMIT = 59.0;//(59.0 / 360.0);// * 200.0;
-        private final double REVERSE_SOFT_LIMIT = 23.0;//(23.0 / 360.0);// * 200.0;
+        private final double FORWARD_SOFT_LIMIT = (59.0 / 360.0); // (59.0  * 200.0);
+        private final double REVERSE_SOFT_LIMIT = (23.0 / 360.0); //(23.0 * 200.0);
         private final double MAX_PIVOT_ANGLE = 59.0;
         private final double MINIMUM_PIVOT_ANGLE = 23.0; 
 
@@ -81,7 +80,7 @@ public class Pivot extends Subsystem4237
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.MOTOR_CAN_BUS);
+    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
     private final PeriodicData periodicData = new PeriodicData();
     private final MyConstants myConstants = new MyConstants();
     // private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
@@ -108,7 +107,7 @@ public class Pivot extends Subsystem4237
 
         periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
-        motor.setPosition(periodicData.canCoderRotationalPosition * 360.0);
+        motor.setPosition(periodicData.canCoderRotationalPosition * 200);
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -132,13 +131,13 @@ public class Pivot extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupBrakeMode();
-        motor.setupPositionConversionFactor(1.0 / 360.0);
+        // motor.setupPositionConversionFactor(1.0 / 360.0);
         
-        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, false);
+        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
+        motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
         motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
 
         //Hard Limits
@@ -277,7 +276,7 @@ public class Pivot extends Subsystem4237
     {
         //Using CANcoder
         periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
-        periodicData.motorEncoderRotationalPosition = motor.getPosition();
+        periodicData.motorEncoderRotationalPosition = periodicData.canCoderRotationalPosition * 200;
 
         //All included in tunePID() command
 
@@ -309,8 +308,9 @@ public class Pivot extends Subsystem4237
         //All included in tunePID() command
 
         //Displays the pivot's current angle
-        SmartDashboard.putNumber("currentAngle", getCANCoderAngle());
-        SmartDashboard.putNumber("motor.getPosition = ", getMotorEncoderPosition());
+        SmartDashboard.putNumber("pivotAngle.currentAngle", getCANCoderAngle());
+        SmartDashboard.putNumber("pivotAngle.currentPosition", getCANCoderPosition());
+        SmartDashboard.putNumber("motor.getPosition = ", periodicData.motorEncoderRotationalPosition);
 
         //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller
