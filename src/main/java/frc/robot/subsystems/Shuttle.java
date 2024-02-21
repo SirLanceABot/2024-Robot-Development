@@ -28,8 +28,8 @@ public class Shuttle extends Subsystem4237
     private final CANSparkMax4237 motor = new CANSparkMax4237(Constants.Shuttle.MOTOR_PORT, Constants.Shuttle.MOTOR_CAN_BUS, "Shuttle Motor");
     // private final CANSparkMax shuttleMotor = new CANSparkMax(Constants.Shuttle.SHUTTLE_MOTOR_PORT, MotorType.kBrushless);
     
-    private final double GEAR_RATIO = 3.0 / 20.0; // Roller spins three times, the motor spins 20 times
-    private final double ROLLER_CIRCUMFERENCE_INCHES = Math.PI * 2.25; 
+    private final double GEAR_RATIO = 1; // Roller spins three times, the motor spins 20 times
+    private final double ROLLER_CIRCUMFERENCE_INCHES = 2.316194; 
     private final double SHUTTLE_SOFT_LIMIT = 3.00;
     private final double END_OF_MATCH_VOLTAGE = 11.5;
     private final double PERCENT_VOLTAGE = 0.8;
