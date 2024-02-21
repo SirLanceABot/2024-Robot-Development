@@ -19,7 +19,7 @@ public class MainShuffleboard implements PeriodicIO
 
 
     // *** CLASS & INSTANCE VARIABLES ***
-    private boolean useAutonomousTab            = true;
+    private boolean useAutonomousTab            = false;
     private boolean useCameraTab                = false;
     private boolean useSensorTab                = false;
     private boolean useDriverControllerTab      = false;
