@@ -42,8 +42,8 @@ public class AutonomousTab
     // private SendableChooser<AutonomousTabData.ContainingPreload> containingPreloadBox = new SendableChooser<>();
     //private SendableChooser<AutonomousTabData.ScorePreload> scorePreloadBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.DriveOutOfStartZone> driveOutOfStartZoneBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
+    // private SendableChooser<AutonomousTabData.ShootDelay> shootDelayBox = new SendableChooser<>();
+    // private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScoreExtraNotes> scoreExtraNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
@@ -69,8 +69,8 @@ public class AutonomousTab
         // createScorePreloadBox();
         // createContainingPreloadBox();
         // createDriveOutOfStartZoneBox();
-        createShootDelayBox();
-        createDriveDelayBox();
+        // createShootDelayBox();
+        // createDriveDelayBox();
         // createPickupNotesBox();
         createScoreMoreNotesBox();
         createSitPrettyBox();
@@ -178,51 +178,51 @@ public class AutonomousTab
     * <b>Shoot Delay</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createShootDelayBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(shootDelayBox, "Shoot Delay (Sec)");
-        SendableRegistry.setName(shootDelayBox, "Shoot Delay (Sec)");
+    // private void createShootDelayBox()
+    // {
+    //     //create and name the Box
+    //     SendableRegistry.add(shootDelayBox, "Shoot Delay (Sec)");
+    //     SendableRegistry.setName(shootDelayBox, "Shoot Delay (Sec)");
         
-        //add options to  Box
-        shootDelayBox.setDefaultOption("Zero", AutonomousTabData.ShootDelay.k0);
-        // shootDelayBox.addOption("One", AutonomousTabData.ShootDelay.k1);
-        // shootDelayBox.addOption("Two", AutonomousTabData.ShootDelay.k2);
-        shootDelayBox.addOption("Three", AutonomousTabData.ShootDelay.k3);
-        // shootDelayBox.addOption("Four", AutonomousTabData.ShootDelay.k4);
-        // shootDelayBox.addOption("Five", AutonomousTabData.ShootDelay.k5);
+    //     //add options to  Box
+    //     shootDelayBox.setDefaultOption("Zero", AutonomousTabData.ShootDelay.k0);
+    //     // shootDelayBox.addOption("One", AutonomousTabData.ShootDelay.k1);
+    //     // shootDelayBox.addOption("Two", AutonomousTabData.ShootDelay.k2);
+    //     shootDelayBox.addOption("Three", AutonomousTabData.ShootDelay.k3);
+    //     // shootDelayBox.addOption("Four", AutonomousTabData.ShootDelay.k4);
+    //     // shootDelayBox.addOption("Five", AutonomousTabData.ShootDelay.k5);
 
-        //put the widget on the shuffleboard
-        autonomousTab.add(shootDelayBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(11, 1)
-            .withSize(5, 3);
-    }
+    //     //put the widget on the shuffleboard
+    //     autonomousTab.add(shootDelayBox)
+    //         .withWidget(BuiltInWidgets.kSplitButtonChooser)
+    //         .withPosition(11, 1)
+    //         .withSize(5, 3);
+    // }
 
     /**
     * <b>Drive Delay</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
     */
-    private void createDriveDelayBox()
-    {
-        //create and name the Box
-        SendableRegistry.add(driveDelayBox, "Drive Delay (Sec)");
-        SendableRegistry.setName(driveDelayBox, "Drive Delay (Sec)");
+    // private void createDriveDelayBox()
+    // {
+    //     //create and name the Box
+    //     SendableRegistry.add(driveDelayBox, "Drive Delay (Sec)");
+    //     SendableRegistry.setName(driveDelayBox, "Drive Delay (Sec)");
         
-        //add options to  Box
-        driveDelayBox.setDefaultOption("Zero", AutonomousTabData.DriveDelay.k0);
-        // driveDelayBox.addOption("One", AutonomousTabData.DriveDelay.k1);
-        // driveDelayBox.addOption("Two", AutonomousTabData.DriveDelay.k2);
-        driveDelayBox.addOption("Three", AutonomousTabData.DriveDelay.k3);
-        // driveDelayBox.addOption("Four", AutonomousTabData.DriveDelay.k4);
-        // driveDelayBox.addOption("Five", AutonomousTabData.DriveDelay.k5);
+    //     //add options to  Box
+    //     driveDelayBox.setDefaultOption("Zero", AutonomousTabData.DriveDelay.k0);
+    //     // driveDelayBox.addOption("One", AutonomousTabData.DriveDelay.k1);
+    //     // driveDelayBox.addOption("Two", AutonomousTabData.DriveDelay.k2);
+    //     driveDelayBox.addOption("Three", AutonomousTabData.DriveDelay.k3);
+    //     // driveDelayBox.addOption("Four", AutonomousTabData.DriveDelay.k4);
+    //     // driveDelayBox.addOption("Five", AutonomousTabData.DriveDelay.k5);
 
-        //put the widget on the shuffleboard
-        autonomousTab.add(driveDelayBox)
-            .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(6, 1)
-            .withSize(5, 3);
-    }
+    //     //put the widget on the shuffleboard
+    //     autonomousTab.add(driveDelayBox)
+    //         .withWidget(BuiltInWidgets.kSplitButtonChooser)
+    //         .withPosition(6, 1)
+    //         .withSize(5, 3);
+    // }
 
     // private void createPickupNotesBox()
     // {
@@ -259,7 +259,7 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(scoreExtraNotesBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(1, 5)
+            .withPosition(6, 1)
             .withSize(5, 3);
     }
 
@@ -276,7 +276,7 @@ public class AutonomousTab
         //put the widget on the shuffleboard
         autonomousTab.add(sitPrettyBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
-            .withPosition(6, 5)
+            .withPosition(11, 1)
             .withSize(5, 3);
     }
 
@@ -336,8 +336,8 @@ public class AutonomousTab
         // autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
         // autonomousTabData.containingPreload = containingPreloadBox.getSelected();
         //autonomousTabData.scorePreload = scorePreloadBox.getSelected();
-        autonomousTabData.driveDelay = driveDelayBox.getSelected();
-        autonomousTabData.shootDelay = shootDelayBox.getSelected();
+        // autonomousTabData.driveDelay = driveDelayBox.getSelected();
+        // autonomousTabData.shootDelay = shootDelayBox.getSelected();
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
         autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
         autonomousTabData.sitPretty = sitPrettyBox.getSelected();
@@ -405,11 +405,11 @@ public class AutonomousTab
         
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
         // boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
-        boolean isShootDelay = 
-        (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-         shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
+        // boolean isShootDelay = 
+        // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
+        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
@@ -418,11 +418,11 @@ public class AutonomousTab
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3);
-        boolean isDriveDelay = 
-         (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-         driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
+        // boolean isDriveDelay = 
+        //  (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
+        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+        //  driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         boolean isStartingLocation =
@@ -433,9 +433,9 @@ public class AutonomousTab
         boolean isSitPretty =
         (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
         
-        boolean isOverDelay = 
-        (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 && 
-        driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
+        // boolean isOverDelay = 
+        // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 && 
+        // driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
 
         boolean isScoreManyMoreNotes = 
         (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
@@ -470,15 +470,15 @@ public class AutonomousTab
         // }
 
 
-        if(isScoreManyMoreNotes && isOverDelay) 
-        {
-            isValid = false;
+        // if(isScoreManyMoreNotes && isOverDelay) 
+        // {
+        //     isValid = false;
             
-            msg += "[Not Possible] - Cannot score 2+ extra Notes with double 3 second delays \n";
+        //     msg += "[Not Possible] - Cannot score 2+ extra Notes with double 3 second delays \n";
 
-        }
+        // }
 
-        if(isSitPretty && (isStartingLocation || isDriveDelay || isShootDelay || isScoreMoreNotes))
+        if(isSitPretty && (isStartingLocation || isScoreMoreNotes))
         {
             isValid = false;
 

@@ -79,7 +79,7 @@ public class RobotContainer
     private boolean usePneumaticHub         = false;
     private boolean useExampleSubsystem     = false;
 
-    private boolean useMainShuffleboard     = false;
+    private boolean useMainShuffleboard     = true;
 
     private boolean useBindings             = false;
     private boolean useDriverController     = false;

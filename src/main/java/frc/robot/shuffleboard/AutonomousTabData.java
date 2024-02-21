@@ -65,44 +65,44 @@ public class AutonomousTabData
     //     }
     // }
 
-    public static enum ShootDelay
-    {
-        k0("ShootDelay_0 -- "), 
-        k3("ShootDelay_3 -- "); 
+    // public static enum ShootDelay
+    // {
+    //     k0("ShootDelay_0 -- "), 
+    //     k3("ShootDelay_3 -- "); 
 
 
-        private final String name;
+    //     private final String name;
 
-        private ShootDelay(String name)
-        {
-            this.name = name;
-        }
+    //     private ShootDelay(String name)
+    //     {
+    //         this.name = name;
+    //     }
 
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-    }
+    //     @Override
+    //     public String toString()
+    //     {
+    //         return name;
+    //     }
+    // }
 
-    public static enum DriveDelay
-    {
-        k0("DriveDelay_0 -- "), 
-        k3("DriveDelay_3 -- ");
+    // public static enum DriveDelay
+    // {
+    //     k0("DriveDelay_0 -- "), 
+    //     k3("DriveDelay_3 -- ");
 
-        private final String name;
+    //     private final String name;
 
-        private DriveDelay(String name)
-        {
-            this.name = name;
-        }
+    //     private DriveDelay(String name)
+    //     {
+    //         this.name = name;
+    //     }
 
-        @Override
-        public String toString()
-        {
-            return name;
-        }
-    } 
+    //     @Override
+    //     public String toString()
+    //     {
+    //         return name;
+    //     }
+    // } 
 
     // public static enum PickupSecondNote
     // {
@@ -158,8 +158,8 @@ public class AutonomousTabData
     // public DriveOutOfStartZone driveOutOfStartZone = DriveOutOfStartZone.kYes;
     // public ContainingPreload containingPreload = ContainingPreload.kYes;
     // public ScorePreload scorePreload = ScorePreload.kYes;
-    public ShootDelay shootDelay = ShootDelay.k0;
-    public DriveDelay driveDelay = DriveDelay.k0;
+    // public ShootDelay shootDelay = ShootDelay.k0;
+    // public DriveDelay driveDelay = DriveDelay.k0;
     // public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
     public ScoreExtraNotes scoreExtraNotes = ScoreExtraNotes.k0;
     public SitPretty sitPretty = SitPretty.kNo;
@@ -176,8 +176,8 @@ public class AutonomousTabData
         // driveOutOfStartZone = atd.driveOutOfStartZone;
         // containingPreload = atd.containingPreload;
         // scorePreload = atd.scorePreload;
-        shootDelay = atd.shootDelay;
-        driveDelay = atd.driveDelay;
+        // shootDelay = atd.shootDelay;
+        // driveDelay = atd.driveDelay;
         // pickupSecondNote = atd.pickupSecondNote;
         scoreExtraNotes = atd.scoreExtraNotes;
         sitPretty = atd.sitPretty;
@@ -195,8 +195,8 @@ public class AutonomousTabData
         // str += "Drive Out Of Start Zone     : " + driveOutOfStartZone  + "\n";
         // str += "Containing Preload          : " + containingPreload + "\n";
         // str += "Score Preload               : " + scorePreload  + "\n";  
-        str += "Shoot Delay                    : " + shootDelay + "\n";   
-        str += "Drive Delay                    : " + driveDelay + "\n";  
+        // str += "Shoot Delay                    : " + shootDelay + "\n";   
+        // str += "Drive Delay                    : " + driveDelay + "\n";  
         // str += "Pickup Second Note          : " + pickupSecondNote + "\n";
         str += "Score Extra Notes               : " + scoreExtraNotes + "\n";
 //FIXME IF STATEMENT
