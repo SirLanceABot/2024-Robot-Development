@@ -6,6 +6,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Commands4237;
 
 
 // ------------------------------------------------------------------------------------------
@@ -107,8 +108,11 @@ public class DriverButtonBindings
         BooleanSupplier aButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        if(robotContainer.drivetrain != null)
-        {}
+        // Shooting after flywheel up to speed
+        if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.flywheel != null)
+        {
+            aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
+        }
     }
 
     private void configBButton()
@@ -117,8 +121,11 @@ public class DriverButtonBindings
         BooleanSupplier bButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
+        // Picking up from the front
         if(true)
-        {}
+        {
+            bButtonTrigger.onTrue(Commands4237.intakeFromFloor());
+        }
     }
 
     private void configXButton()
@@ -127,8 +134,11 @@ public class DriverButtonBindings
         BooleanSupplier xButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kX);
         Trigger xButtonTrigger = new Trigger(xButton);
 
+        // Picking up from the back
         if(true)
-        {}
+        {
+            xButtonTrigger.onTrue(Commands4237.intakeFromFloor());
+        }
     }
 
     private void configYButton()
