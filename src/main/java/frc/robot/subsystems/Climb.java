@@ -76,11 +76,12 @@ public class Climb extends Subsystem4237
     private static final double CHAIN_ENCODER_POSITION       = 190.0;
     private static final double ROBOT_ENCODER_POSITION       = 30.0;//5.0;
 
-    private final double DEFAULT_SPEED = 0.3;
+    private final double DEFAULT_SPEED = 0.5;
+    private final double HOLDING_SPEED = 0.2;
 
-    private final double CURRENT_LIMIT                       = 10.0;
-    private final double CURRENT_THRESHOLD                   = 10.0;
-    private final double TIME_THRESHOLD                      = 10.0;
+    private final double CURRENT_LIMIT                       = 30.0;
+    private final double CURRENT_THRESHOLD                   = 35.0;
+    private final double TIME_THRESHOLD                      = 0.25;
 
     // private final double kP = 0.00003;
     // private final double kI = 0.0; // 0.0001
@@ -115,8 +116,8 @@ public class Climb extends Subsystem4237
         rightFollowMotor.setupBrakeMode();
         leftLeadMotor.setupInverted(false);
         rightFollowMotor.setupInverted(false);
-        // leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        // rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
         leftLeadMotor.setPosition(0.0);
         rightFollowMotor.setPosition(0.0);
         rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
@@ -288,7 +289,7 @@ public class Climb extends Subsystem4237
      */
     public Command extendCommand()
     {
-        return Commands.runEnd( () -> extend(DEFAULT_SPEED), () -> stop(), this).withName("Extend Climb");
+        return Commands.runEnd( () -> extend(), () -> stop(), this).withName("Extend Climb");
     }
 
     /**
@@ -296,7 +297,7 @@ public class Climb extends Subsystem4237
      */
     public Command retractCommand()
     {
-        return Commands.runEnd( () -> retract(DEFAULT_SPEED), () -> stop(), this).withName("Retract Climb");
+        return Commands.runEnd( () -> retract(), () -> stop(), this).withName("Retract Climb");
     }
 
     public Command moveToPositionCommand(TargetPosition targetPosition)
