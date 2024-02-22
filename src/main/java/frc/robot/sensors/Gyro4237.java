@@ -41,7 +41,7 @@ public class Gyro4237 extends Sensor4237
         // Outputs
     }
 
-    public static final double RESET_GYRO_DELAY = 0.1;
+    public static final double RESET_DELAY = 0.1;
 
     public final double BLUE_AMP_STARTING_YAW = 60.0;
     public final double BLUE_SUB_STARTING_YAW = 0.0;
@@ -186,7 +186,7 @@ public class Gyro4237 extends Sensor4237
                 resetState = ResetState.kTry;
                 break;
             case kTry:
-                if(timer.hasElapsed(RESET_GYRO_DELAY))
+                if(timer.hasElapsed(RESET_DELAY))
                     resetState = ResetState.kDone;
                 break;
             case kDone:

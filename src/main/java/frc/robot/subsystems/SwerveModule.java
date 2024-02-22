@@ -178,7 +178,7 @@ class SwerveModule extends RobotDriveBase
         // driveMotor.configVoltageCompSaturation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
         // driveMotor.enableVoltageCompensation(true);
         // driveMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
-        driveMotor.setupVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        driveMotor.setupVoltageCompensation(Constants.MAX_BATTERY_VOLTAGE);
         
         // Set the conversion factors
         // driveMotorEncoder.setPositionConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS);
@@ -268,7 +268,7 @@ class SwerveModule extends RobotDriveBase
         // turnMotor.configVoltageCompSaturation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
         // turnMotor.enableVoltageCompensation(true);
         // turnMotor.enableVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
-        turnMotor.setupVoltageCompensation(Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE);
+        turnMotor.setupVoltageCompensation(Constants.MAX_BATTERY_VOLTAGE);
 
         // TODO Set the conversion factors
         // turnMotorEncoder.setPositionConversionFactor(?);
@@ -477,7 +477,7 @@ class SwerveModule extends RobotDriveBase
      */
     public static double normalizeVoltage(double outputVolts)
     {
-        return MathUtil.clamp(outputVolts / Constants.DrivetrainConstants.MAX_BATTERY_VOLTAGE, -1.0, 1.0); //RobotController.getBatteryVoltage();
+        return MathUtil.clamp(outputVolts / Constants.MAX_BATTERY_VOLTAGE, -1.0, 1.0); //RobotController.getBatteryVoltage();
     }
 
     public void resetEncoders()

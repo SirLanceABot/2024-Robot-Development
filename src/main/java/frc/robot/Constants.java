@@ -28,7 +28,10 @@ public final class Constants
     
     // These are the names of the CAN bus set on the roboRIO and CANivore
     public static final String CANIVORE = "CANivore";
-    public static final String ROBORIO = "rio";
+    public static final String ROBORIO  = "rio";
+
+    public static final double MAX_BATTERY_VOLTAGE          = 12.0;
+    public static final double END_OF_MATCH_BATTERY_VOLTAGE = 11.5; // This is the estimated voltage at the end of each match, used in subsystems with setVoltage()
 
     // Set the name of the robot
     private static final String comment = RobotController.getComments();
@@ -74,15 +77,10 @@ public final class Constants
         else if(comment.contains("2023 Robot"))
         {
             robotName4237 = "2023 Robot";
-            // Constants.DRIVETRAIN_WHEELBASE_METERS =  27.44 * DrivetrainConstants.INCHES_TO_METERS; // 23.5 Front to back
-            // Constants.DRIVETRAIN_TRACKWIDTH_METERS = 19.50 * DrivetrainConstants.INCHES_TO_METERS; // 23.5 // Side to side
-            
         }
         else if (comment.contains("2022 Robot"))
         { 
             robotName4237 = "2022 Robot";
-            // Constants.DRIVETRAIN_WHEELBASE_METERS =  23.5 * DrivetrainConstants.INCHES_TO_METERS; // Front to back
-            // Constants.DRIVETRAIN_TRACKWIDTH_METERS = 23.5 * DrivetrainConstants.INCHES_TO_METERS; // Side to side
         }
         else 
         {
@@ -91,15 +89,43 @@ public final class Constants
 
         System.out.println("Robot:" + robotName4237);
         // end get roboRIO comment
-
     }
 
     public static final String ROBOT_NAME_4237 = robotName4237;
 
+    public static class AmpAssist
+    {
+        public static final int SOLENOID_PORT       = 0;
+        public static final int OUT_POSITION        = 0;
+        public static final int IN_POSITION         = 1;
+
+        // public static final String MOTOR_CAN_BUS    = ROBORIO;
+        // public static final int OUT_SOFT_LIMIT      = 4237;
+        // public static final int IN_SOFT_LIMIT       = 0;
+    }
+
+    public static class Candle
+    {
+        public static final int PORT            = 1;
+        public static final String CAN_BUS      = ROBORIO;
+    }
+
+    public static class Climb
+    {
+        public static final int LEFT_MOTOR_PORT          = 13;
+        public static final int RIGHT_MOTOR_PORT         = 14;
+        public static final String LEFT_MOTOR_CAN_BUS    = ROBORIO;
+        public static final String RIGHT_MOTOR_CAN_BUS   = ROBORIO;
+    }
+
+    public static class Controller
+    {
+        public static final int DRIVER = 0;
+        public static final int OPERATOR = 1;
+    }
 
     public static class Drivetrain
     {
-
         // The CAN bus to use depends on the robot
         private static String cancoderCanBus = "";
         private static String motorCanBus = "";
@@ -143,112 +169,8 @@ public final class Constants
         public static final int BACK_RIGHT_ENCODER_PORT     = 2; 
         public static final int BACK_RIGHT_TURN_PORT        = 3;
 
-        public static final String CANCODER_CAN_BUS = cancoderCanBus;
-        public static final String MOTOR_CAN_BUS = motorCanBus;
-    }
-
-    public static class Intake
-    {
-        public static final int TOP_MOTOR_PORT           = 15;
-        public static final int BOTTOM_MOTOR_PORT        = 16;
-        public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
-        public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
-    }
-
-    public static class AmpAssist
-    {
-        public static final int SOLENOID_PORT               = 0;
-        // public static final String MOTOR_CAN_BUS         = ROBORIO;
-
-        // public static final int OUT_SOFT_LIMIT           = 4237;
-        // public static final int IN_SOFT_LIMIT            = 0;
-
-                
-        public static final int OUT_POSITION             = 0;
-        public static final int IN_POSITION              = 1;
-    }
-
-    public static class Flywheel
-    {
-        public static final int MOTOR_PORT               = 51;
-        public static final String MOTOR_CAN_BUS         = CANIVORE;
-    }
-
-    public static class Index
-    {
-        public static final int MOTOR_PORT               = 52;
-        public static final String MOTOR_CAN_BUS         = CANIVORE;
-    }
-
-    public static class Pivot
-    {
-        public static final int MOTOR_PORT                          = 53; //Will be changed to 53
-        public static final String MOTOR_CAN_BUS                    = CANIVORE;
-
-        public static final int CANCODER_PORT                      = 20;
-        public static final String CANCODER_CAN_BUS                = CANIVORE;
-
-        public static final double DEFAULT_ANGLE = 30.0; // Angle to drive around at
-        public static final double INTAKE_FROM_SOURCE_ANGLE = 50.0; //TODO check value
-        public static final double SHOOT_TO_AMP_ANGLE = 59.5;       //correct value
-    }
-
-    public static class Shuttle
-    {
-        public static final int MOTOR_PORT               = 17;
-        public static final String MOTOR_CAN_BUS         = ROBORIO;
-    }
-
-    public static class IntakePositioning
-    {
-        public static final int PCM_PORT                   = 1;
-        public static final int EXTEND_ACTIVE_PORT         = 0;
-        public static final int EXTEND_FLOAT_PORT          = 1;
-        public static final int RETRACT_ACTIVE_PORT        = 2;
-        public static final int RETRACT_FLOAT_PORT         = 3;
-
-        public static final int INTAKE_DOWN_SENSOR         = 0;
-        public static final int INTAKE_UP_SENSOR           = 1;
-    }
-
-    public static class Climb
-    {
-        public static final int LEFT_MOTOR_PORT          = 13;
-        public static final int RIGHT_MOTOR_PORT         = 14;
-        public static final String LEFT_MOTOR_CAN_BUS    = ROBORIO;
-        public static final String RIGHT_MOTOR_CAN_BUS   = ROBORIO;
-    }
-
-    public static class PowerDistributionHub
-    {
-        public static final int PDH_CAN_PORT              = 1;
-
-        public static final String CAN_BUS = ROBORIO;
-    }
-
-    public static class Gyro 
-    {
-        public static final int PIGEON_PORT = 0;
-
-        // public static final AxisDirection FORWARD_AXIS = AxisDirection.PositiveX;
-        // public static final AxisDirection UP_AXIS = AxisDirection.PositiveZ;
-
-        public static final double RESET_GYRO_DELAY = 0.1;
-        public static final String PIGEON_CAN_BUS = CANIVORE;
-    }
-    
-    public static class Proximity
-    {
-        public static final int FIRST_SHUTTLE_PORT = 6;
-        public static final int SECOND_SHUTTLE_PORT = 9;
-        public static final int MIDDLE_INDEX_PORT = 8;
-        public static final int INDEX_WHEELS_PORT = 7;
-    }
-
-    public static class Controller
-    {
-        public static final int DRIVER = 0;
-        public static final int OPERATOR = 1;
+        public static final String CANCODER_CAN_BUS         = cancoderCanBus;
+        public static final String MOTOR_CAN_BUS            = motorCanBus;
     }
 
     public static class DrivetrainConstants
@@ -266,20 +188,20 @@ public final class Constants
 
             if(robotName4237.equals("2024 Robot"))
             {
-                drivetrainWheelbaseMeters = 23.5 * INCHES_TO_METERS; // Front to back
-                drivetrainTrackwidthMeters = 23.5 * INCHES_TO_METERS; // Side to side
+                drivetrainWheelbaseMeters   = 23.5 * INCHES_TO_METERS; // Front to back
+                drivetrainTrackwidthMeters  = 23.5 * INCHES_TO_METERS; // Side to side
                 driveMotorEncoderResolution = 1; // Neo1650
             }
             else if(robotName4237.equals("2023 Robot"))
             {
-                drivetrainWheelbaseMeters = 27.44 * INCHES_TO_METERS; // Front to back
-                drivetrainTrackwidthMeters = 19.50 * INCHES_TO_METERS; // Side to side
+                drivetrainWheelbaseMeters   = 27.44 * INCHES_TO_METERS; // Front to back
+                drivetrainTrackwidthMeters  = 19.50 * INCHES_TO_METERS; // Side to side
                 driveMotorEncoderResolution = 2048;  // Falcon500
             }
             else if(robotName4237.equals("2022 Robot"))
             {
-                drivetrainWheelbaseMeters = 23.5 * INCHES_TO_METERS; // Front to back
-                drivetrainTrackwidthMeters = 23.5 * INCHES_TO_METERS; // Side to side
+                drivetrainWheelbaseMeters   = 23.5 * INCHES_TO_METERS; // Front to back
+                drivetrainTrackwidthMeters  = 23.5 * INCHES_TO_METERS; // Side to side
                 driveMotorEncoderResolution = 1;  //42 // Neo1650
             }
             else
@@ -288,14 +210,13 @@ public final class Constants
             }
         }  
 
-        public static final double DRIVETRAIN_WHEELBASE_METERS = drivetrainWheelbaseMeters;   // Front to back
+        public static final double DRIVETRAIN_WHEELBASE_METERS  = drivetrainWheelbaseMeters;   // Front to back
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = drivetrainTrackwidthMeters; // Side to side
-        public static final int DRIVE_MOTOR_ENCODER_RESOLUTION = driveMotorEncoderResolution;
+        public static final int DRIVE_MOTOR_ENCODER_RESOLUTION  = driveMotorEncoderResolution;
 
-
-        public static final double MAX_MODULE_TURN_SPEED = 1080.0; // degrees per second, this is 3.0 rev/sec, used to be 1980 and 5.5 rev/sec
+        public static final double MAX_MODULE_TURN_SPEED        = 1080.0; // degrees per second, this is 3.0 rev/sec, used to be 1980 and 5.5 rev/sec
         public static final double MAX_MODULE_TURN_ACCELERATION = 1728.0; // degrees per second per second, this is 4.8 rev/sec^2, used to be 17280 and 48 rev/sec^2
-        public static final double MAX_BATTERY_VOLTAGE = 12.0;
+        
 
         public static final double DRIVE_MOTOR_GEAR_RATIO = 8.14;
         public static final double WHEEL_RADIUS_METERS = 2.0 * INCHES_TO_METERS;
@@ -309,6 +230,95 @@ public final class Constants
         public static final double X_DECELERATION_RATE_LIMT = 10.0;
         public static final double Y_ACCELERATION_RATE_LIMT = 10.0;
         public static final double Y_DECELERATION_RATE_LIMT = 10.0;
+    }
+
+    // public static class DrivetrainSetup
+    // {
+    //     static
+    //     {
+    //         System.out.println("Loading: " + MethodHandles.lookup().lookupClass().getCanonicalName());
+    //     }
+
+    //     public static final DrivetrainConfig DRIVETRAIN_DATA = new DrivetrainConfig(
+    //         SwerveModuleSetup.FRONT_LEFT, SwerveModuleSetup.FRONT_RIGHT, SwerveModuleSetup.BACK_LEFT, SwerveModuleSetup.BACK_RIGHT);
+    // }
+
+    public static class Flywheel
+    {
+        public static final int MOTOR_PORT          = 51;
+        public static final String MOTOR_CAN_BUS    = CANIVORE;
+    }
+
+    public static class Gyro 
+    {
+        public static final int PIGEON_PORT         = 0;
+        public static final String PIGEON_CAN_BUS   = CANIVORE;
+
+        // public static final AxisDirection FORWARD_AXIS = AxisDirection.PositiveX;
+        // public static final AxisDirection UP_AXIS = AxisDirection.PositiveZ;
+    }
+
+    public static class Index
+    {
+        public static final int MOTOR_PORT          = 52;
+        public static final String MOTOR_CAN_BUS    = CANIVORE;
+    }
+
+    public static class Intake
+    {
+        public static final int TOP_MOTOR_PORT           = 15;
+        public static final int BOTTOM_MOTOR_PORT        = 16;
+        public static final String TOP_MOTOR_CAN_BUS     = ROBORIO;
+        public static final String BOTTOM_MOTOR_CAN_BUS  = ROBORIO;
+    }
+
+    public static class IntakePositioning
+    {
+        public static final int PCM_PORT                = 1;
+        public static final int EXTEND_ACTIVE_PORT      = 0;
+        public static final int EXTEND_FLOAT_PORT       = 1;
+        public static final int RETRACT_ACTIVE_PORT     = 2;
+        public static final int RETRACT_FLOAT_PORT      = 3;
+
+        public static final int INTAKE_DOWN_SENSOR      = 0;
+        public static final int INTAKE_UP_SENSOR        = 1;
+    }
+
+    public static class Pivot
+    {
+        public static final int MOTOR_PORT          = 53; //Will be changed to 53
+        public static final String MOTOR_CAN_BUS    = CANIVORE;
+        public static final int CANCODER_PORT       = 20;
+        public static final String CANCODER_CAN_BUS = CANIVORE;
+
+        // public static final double DEFAULT_ANGLE = 30.0;
+        // public static final double INTAKE_FROM_SOURCE_ANGLE = 50.0; 
+        // public static final double SHOOT_TO_AMP_ANGLE = 59.5;       
+    }
+
+    public static class PowerDistributionHub
+    {
+        public static final int PDH_PORT    = 1;
+        public static final String CAN_BUS  = ROBORIO;
+    }
+
+    public static class Proximity
+    {
+        public static final int FIRST_SHUTTLE_PORT  = 6;
+        public static final int SECOND_SHUTTLE_PORT = 9;
+        public static final int MIDDLE_INDEX_PORT   = 8;
+        public static final int INDEX_WHEELS_PORT   = 7;
+    }
+
+    public enum ShootingPosition
+    {
+        kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;
+    }
+
+    public static class Shuttle
+    {
+        public static final int MOTOR_PORT          = 17;
+        public static final String MOTOR_CAN_BUS    = ROBORIO;
     }
 
     public static class SwerveModuleSetup
@@ -370,27 +380,5 @@ public final class Constants
         //     "Back Left", BACK_LEFT_LOCATION, Drivetrain.BACK_LEFT_DRIVE, true, Drivetrain.BACK_LEFT_ENCODER, BACK_LEFT_ENCODER_OFFSET, Drivetrain.BACK_LEFT_TURN);
         // public static final SwerveModuleConfig BACK_RIGHT = new SwerveModuleConfig(
         //     "Back Right", BACK_RIGHT_LOCATION, Drivetrain.BACK_RIGHT_DRIVE, false, Drivetrain.BACK_RIGHT_ENCODER, BACK_RIGHT_ENCODER_OFFSET, Drivetrain.BACK_RIGHT_TURN); 
-    }
-
-    // public static class DrivetrainSetup
-    // {
-    //     static
-    //     {
-    //         System.out.println("Loading: " + MethodHandles.lookup().lookupClass().getCanonicalName());
-    //     }
-
-    //     public static final DrivetrainConfig DRIVETRAIN_DATA = new DrivetrainConfig(
-    //         SwerveModuleSetup.FRONT_LEFT, SwerveModuleSetup.FRONT_RIGHT, SwerveModuleSetup.BACK_LEFT, SwerveModuleSetup.BACK_RIGHT);
-    // }
-
-    public static class Candle
-    {
-        public static final int PORT            = 1;
-        public static final String CAN_BUS      = ROBORIO;
-    }
-
-    public enum ShootingPosition
-    {
-        kSpeakerBase, kPodium, kRandomPosition, kToAmp, kOff;
     }
 }
