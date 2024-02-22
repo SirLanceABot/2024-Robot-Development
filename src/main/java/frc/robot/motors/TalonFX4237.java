@@ -28,13 +28,10 @@ import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 import com.ctre.phoenix6.spns.SpnValue;
 
 import edu.wpi.first.util.datalog.StringLogEntry;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
-public class TalonFX4237 extends MotorController4237 //implements Sendable
+public class TalonFX4237 extends MotorController4237
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -595,6 +592,7 @@ public class TalonFX4237 extends MotorController4237 //implements Sendable
     public void setVoltage(double outputVolts) 
     {
         super.setVoltage(outputVolts);
+        feed();
     }
 
     @Override
