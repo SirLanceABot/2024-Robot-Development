@@ -38,7 +38,7 @@ public class Climb extends Subsystem4237
     {
         kChain(CHAIN_ENCODER_POSITION),
         kRobot(ROBOT_ENCODER_POSITION),
-        kOverride(-4237.0);
+        kOverride(4237);
 
         public final double value;
         private TargetPosition(double value)
@@ -82,15 +82,15 @@ public class Climb extends Subsystem4237
     private final double CURRENT_THRESHOLD                   = 10.0;
     private final double TIME_THRESHOLD                      = 10.0;
 
-    private final double kP = 0.00003;
-    private final double kI = 0.0; // 0.0001
-    private final double kD = 0.0;
-    private final double kIz = 0.0;
-    private final double kFF = 0.0;
-    private final double kMaxOutput = 0.7;
-    private final double kMinOutput = -0.7;
-    private final double kRobotMaxOutput = 0.7;
-    private final double kRobotMinOutput = -0.7;
+    // private final double kP = 0.00003;
+    // private final double kI = 0.0; // 0.0001
+    // private final double kD = 0.0;
+    // private final double kIz = 0.0;
+    // private final double kFF = 0.0;
+    // private final double kMaxOutput = 0.7;
+    // private final double kMinOutput = -0.7;
+    // private final double kRobotMaxOutput = 0.7;
+    // private final double kRobotMinOutput = -0.7;
 
     private final double POSITION_TOLERANCE = 3.0;
 
@@ -128,6 +128,7 @@ public class Climb extends Subsystem4237
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
         
         // rightFollowMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
+        rightFollowMotor.setSafetyEnabled(false);
     }
 
     public double getLeftPosition()
@@ -148,6 +149,13 @@ public class Climb extends Subsystem4237
         periodicData.motorSpeed = speed;
     }
 
+    public void extend()
+    {
+        
+        targetPosition = TargetPosition.kOverride;
+        periodicData.motorSpeed = DEFAULT_SPEED;
+    }
+
     // public void extendRight(double speed)
     // {
     //     targetPosition = TargetPosition.kOverride;
@@ -159,6 +167,12 @@ public class Climb extends Subsystem4237
     {
         targetPosition = TargetPosition.kOverride;
         periodicData.motorSpeed = -Math.abs(speed);
+    }
+
+    public void retract()
+    {
+        targetPosition = TargetPosition.kOverride;
+        periodicData.motorSpeed = -DEFAULT_SPEED;
     }
 
     // public void retractRight(double speed)
@@ -251,23 +265,23 @@ public class Climb extends Subsystem4237
     //     return Commands.startEnd( () -> retractRight(speed), () -> stop(), this);
     // }
 
-    /**
-     * Command to extend climb at a desired speed
-     * @parm Desired speed
-     */
-    public Command extendCommand(double speed)
-    {
-        return Commands.runEnd( () -> extend(speed), () -> stop(), this).withName("Extend Climb");
-    }
+    // /**
+    //  * Command to extend climb at a desired speed
+    //  * @parm Desired speed
+    //  */
+    // public Command extendCommand(double speed)
+    // {
+    //     return Commands.runEnd( () -> extend(speed), () -> stop(), this).withName("Extend Climb");
+    // }
 
-    /**
-     * Command to retract climb at a desired speed
-     * @parm Desired speed
-     */
-    public Command retractCommand(double speed)
-    {
-        return Commands.runEnd( () -> retract(speed), () -> stop(), this).withName("Retract Climb");
-    }
+    // /**
+    //  * Command to retract climb at a desired speed
+    //  * @parm Desired speed
+    //  */
+    // public Command retractCommand(double speed)
+    // {
+    //     return Commands.runEnd( () -> retract(speed), () -> stop(), this).withName("Retract Climb");
+    // }
 
     /**
      * Command to extend climb at the default speed
@@ -310,21 +324,25 @@ public class Climb extends Subsystem4237
     {
         if(targetPosition == TargetPosition.kOverride)  // if we are in override mode, just set the speed to whatever was given
         {
-            leftLeadMotor.set(periodicData.motorSpeed);
+            // leftLeadMotor.set(periodicData.motorSpeed);
+            leftLeadMotor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
         }
         else    // if we are NOT in override mode (meaning we want to move to a set position), move to that set position
         {
             if((targetPosition.value - POSITION_TOLERANCE) > leftLeadMotor.getPosition())
             {
-                leftLeadMotor.set(DEFAULT_SPEED);
+                // leftLeadMotor.set(DEFAULT_SPEED);
+                leftLeadMotor.setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
             }
             else if((targetPosition.value + POSITION_TOLERANCE) < leftLeadMotor.getPosition())
             {
-                leftLeadMotor.set(-DEFAULT_SPEED);
+                // leftLeadMotor.set(-DEFAULT_SPEED);
+                leftLeadMotor.setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
             }
             else
             {
-                leftLeadMotor.set(0.0);
+                // leftLeadMotor.set(0.0);
+                leftLeadMotor.setVoltage(0.0);
             }
         }
         

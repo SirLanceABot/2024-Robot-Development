@@ -31,9 +31,10 @@ public class Shuttle extends Subsystem4237
     private final double GEAR_RATIO = 1; // Roller spins three times, the motor spins 20 times
     private final double ROLLER_CIRCUMFERENCE_INCHES = 2.316194; 
     private final double SHUTTLE_SOFT_LIMIT = 3.00;
-    private final double END_OF_MATCH_VOLTAGE = 11.5;
-    private final double PERCENT_VOLTAGE = 0.8;
-    private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
+    // private final double END_OF_MATCH_VOLTAGE = 11.5;
+    // private final double PERCENT_VOLTAGE = 0.8;
+    // private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
+    private final double DEFAULT_SPEED = 0.8;
 
 
     private class PeriodicData
@@ -41,7 +42,7 @@ public class Shuttle extends Subsystem4237
  
         private double motorSpeed = 0.0;
         private double position = 0.0;
-        private double motorVoltage = 0.0;
+        // private double motorVoltage = 0.0;
 
         // OUTPUTS
 
@@ -100,8 +101,8 @@ public class Shuttle extends Subsystem4237
      */
     public void stop()
     {
-        //periodicData.motorSpeed = 0.0;
-        periodicData.motorVoltage = 0.0;
+        periodicData.motorSpeed = 0.0;
+        // periodicData.motorVoltage = 0.0;
     }
 
     /** 
@@ -109,8 +110,9 @@ public class Shuttle extends Subsystem4237
      */
     public void moveUpward()
     {
-        //periodicData.motorSpeed = 0.9;
-        periodicData.motorVoltage = VOLTAGE;
+        // periodicData.motorSpeed = 0.9;
+        // periodicData.motorVoltage = VOLTAGE;
+        periodicData.motorSpeed = DEFAULT_SPEED;
     }
 
     
@@ -119,8 +121,9 @@ public class Shuttle extends Subsystem4237
      */
     public void moveDownward()
     {
-        //periodicData.motorSpeed = -0.1;
-        periodicData.motorVoltage = -VOLTAGE;
+        // periodicData.motorSpeed = -0.1;
+        // periodicData.motorVoltage = -VOLTAGE;
+        periodicData.motorSpeed = -DEFAULT_SPEED;
     }
 
     /**
@@ -155,8 +158,9 @@ public class Shuttle extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        //motor.set(periodicData.motorSpeed);
-        motor.setVoltage(periodicData.motorVoltage);
+        // motor.set(periodicData.motorSpeed);
+        // motor.setVoltage(periodicData.motorVoltage);
+        motor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
         
         if (reset)
         {

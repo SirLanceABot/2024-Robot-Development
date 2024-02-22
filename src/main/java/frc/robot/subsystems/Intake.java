@@ -66,9 +66,9 @@ public class Intake extends Subsystem4237
     private final double WHEEL_DIAMETER_FEET = 2.25 / 12.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
     private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * WHEEL_DIAMETER_FEET;
-    private final double END_OF_MATCH_VOLTAGE = 11.5;
-    private final double PERCENT_VOLTAGE = 0.9;
-    private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
+    // private final double PERCENT_VOLTAGE = 0.9;
+    // private final double VOLTAGE = PERCENT_VOLTAGE * Constants.END_OF_MATCH_BATTERY_VOLTAGE;
+    private final double DEFAULT_SPEED = 0.9;
 
     private final CANSparkMax4237 topMotor = new CANSparkMax4237(Constants.Intake.TOP_MOTOR_PORT, Constants.Intake.TOP_MOTOR_CAN_BUS, "intakeTopMotor");
     private final CANSparkMax4237 bottomMotor = new CANSparkMax4237(Constants.Intake.BOTTOM_MOTOR_PORT, Constants.Intake.BOTTOM_MOTOR_CAN_BUS, "intakeBottomMotor");
@@ -144,26 +144,26 @@ public class Intake extends Subsystem4237
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = VOLTAGE;
-        periodicData.bottomIntakeSpeed = VOLTAGE;
+        periodicData.topIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
+        periodicData.bottomIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
     }
 
     public void ejectFront()
     {
-        periodicData.topIntakeSpeed = -VOLTAGE;
-        periodicData.bottomIntakeSpeed = -VOLTAGE;
+        periodicData.topIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
+        periodicData.bottomIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
     }
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = VOLTAGE;
-        periodicData.bottomIntakeSpeed = -VOLTAGE;
+        periodicData.topIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
+        periodicData.bottomIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
     }
 
     public void ejectBack()
     {
-        periodicData.topIntakeSpeed = -VOLTAGE;
-        periodicData.bottomIntakeSpeed = VOLTAGE;
+        periodicData.topIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
+        periodicData.bottomIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
     }
 
     public void stop()
@@ -222,8 +222,8 @@ public class Intake extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        topMotor.setVoltage(periodicData.topIntakeSpeed);
-        bottomMotor.setVoltage(periodicData.bottomIntakeSpeed);
+        topMotor.setVoltage(periodicData.topIntakeSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomMotor.setVoltage(periodicData.bottomIntakeSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
 
         // if(tunePID)
         // {
