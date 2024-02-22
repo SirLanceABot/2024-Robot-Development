@@ -255,11 +255,8 @@ public class TalonFX4237 extends MotorController4237
         CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
         motor.getConfigurator().refresh(currentLimitsConfigs);
 
-        // currentLimitsConfigs.withSupplyCurrentLimit(currentLimit);
         currentLimitsConfigs.SupplyCurrentLimit = currentLimit;
-        // currentLimitsConfigs.withSupplyCurrentThreshold(currentThreshold);
         currentLimitsConfigs.SupplyCurrentThreshold = currentThreshold;
-        // currentLimitsConfigs.withSupplyTimeThreshold(timeThreshold);
         currentLimitsConfigs.SupplyTimeThreshold = timeThreshold;
         setup(() -> motor.getConfigurator().apply(currentLimitsConfigs), "Setup Current Limit");
     }
@@ -621,13 +618,5 @@ public class TalonFX4237 extends MotorController4237
     {
         motor.disable();
     }
-    
-    // @Override
-    // public void initSendable(SendableBuilder builder) 
-    // {
-    //     builder.setSmartDashboardType("Motor Controller");
-    //     builder.setActuator(true);
-    //     builder.setSafeState(this::stopMotor);
-    //     builder.addDoubleProperty("Value", this::get, this::set);
-    // }
+
 }

@@ -483,13 +483,4 @@ public class CANSparkMax4237 extends MotorController4237
     {
         motor.disable();
     }
-
-    // @Override
-    // public void initSendable(SendableBuilder builder) 
-    // {
-    //     builder.setSmartDashboardType("Motor Controller");
-    //     builder.setActuator(true);
-    //     builder.setSafeState(this::stopMotor);
-    //     builder.addDoubleProperty("Value", this::get, this::set);
-    // }
 }
