@@ -293,7 +293,7 @@ public final class Commands4237
                 shootToSpeakerAngleCommand(),
                 robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(0.5))
+                robotContainer.index.feedNoteToFlywheelCommand(() -> 50.0))
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
@@ -324,7 +324,7 @@ public final class Commands4237
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(0.0))
+                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
@@ -350,13 +350,13 @@ public final class Commands4237
                 getFlywheelToSpeedCommand(17.0),
                 robotContainer.ampAssist.extendCommand()) 
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(20.0)) //TODO: Check speed
+                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0)) //TODO: Check speed
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
-                    robotContainer.index.feedNoteToFlywheelCommand(0.0),
+                    robotContainer.index.feedNoteToFlywheelCommand(() -> 0.0),
                     robotContainer.pivot.setAngleCommand(32.0))) 
             .withName("Shoot To Amp");
         }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -128,28 +129,28 @@ public class Index extends Subsystem4237
 
     public void setVelocity(double speed)
     {
-        periodicData.motorSpeed = speed;
+        // periodicData.motorSpeed = speed;
     }
 
     public void acceptNoteFromShuttle()
     {
-        periodicData.motorSpeed = 10.0;
+        //periodicData.motorSpeed = 10.0;
     }
 
     public void feedNoteToFlywheel()
     {
-        System.out.println("Feeding note");
-        periodicData.motorSpeed = 80.0;
+        // System.out.println("Feeding note");
+        // periodicData.motorSpeed = 80.0;
     }
 
     public void ejectNote()
     {
-        periodicData.motorSpeed = -10;
+        // periodicData.motorSpeed = -10;
     }
 
     public void intake()
     {
-        periodicData.motorSpeed = -0.1;
+        //periodicData.motorSpeed = -0.1;
     }
 
     public void stop()
@@ -159,22 +160,22 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteFromShuttleCommand()
     {
-        return Commands.runOnce(() -> acceptNoteFromShuttle(), this).withName("Accept Note From Shuttle");
+        return Commands.runOnce(() -> motor.setControlVelocity(10.0), this).withName("Accept Note From Shuttle");
     }
 
-    public Command feedNoteToFlywheelCommand(double speed)
+    public Command feedNoteToFlywheelCommand(DoubleSupplier velocity)
     {
-        return Commands.runOnce(() -> feedNoteToFlywheel(), this).withName("Feed Note To Flywheel");
+        return Commands.runOnce(() -> motor.setControlVelocity(velocity.getAsDouble()), this).withName("Feed Note To Flywheel");
     }
 
     public Command ejectCommand()
     {
-        return Commands.runOnce(() -> ejectNote(), this).withName("Eject");
+        return Commands.runOnce(() -> motor.setControlVelocity(-10.0), this).withName("Eject");
     }
 
     public Command intakeCommand()
     {
-        return Commands.runOnce(() -> intake(), this).withName("Intake");
+        return Commands.runOnce(() -> motor.setControlVelocity(-10.0), this).withName("Intake");
     }
 
     public Command stopCommand()
@@ -218,7 +219,7 @@ public class Index extends Subsystem4237
         
         // PIDcontroller.setSetpoint(setPoint);
             
-        motor.setControlVelocity(periodicData.motorSpeed);
+        // motor.setControlVelocity(periodicData.motorSpeed);
     }
 
     @Override
