@@ -78,6 +78,7 @@ public class Camera extends Sensor4237
         periodicData.tv = cameraTable.getEntry("tv");
         periodicData.botpose_wpiblue = cameraTable.getEntry("botpose_wpiblue");
         periodicData.botpose_wpired = cameraTable.getEntry("botpose_wpired");
+        periodicData.camerapose_targetspace = cameraTable.getEntry("camerapose_targetspace");
 
 
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + cameraName);

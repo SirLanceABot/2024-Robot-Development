@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.85,
-      "y": 6.7
+      "x": 1.45,
+      "y": 5.55
     },
-    "rotation": 60.0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "kAmp to N1"
+            "pathName": "kSub to N3"
           }
         },
         {
@@ -58,7 +58,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "N1 to N2"
+            "pathName": "N3 to N2"
           }
         },
         {
