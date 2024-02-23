@@ -83,6 +83,16 @@ public class AmpAssist extends Subsystem4237
         periodicData.ampAssistPosition = AmpAssistPosition.kOff;
     }
 
+    public Command extendCommand()
+    {
+        return Commands.runOnce(() -> extend());
+    }
+
+    public Command retractCommand()
+    {
+        return Commands.runOnce(() -> retract());
+    }
+
     public Command ampAssistCommand(AmpAssistPosition ampAssistPosition)
     {
         if(ampAssistPosition == AmpAssistPosition.kIn || ampAssistPosition == AmpAssistPosition.kOff)

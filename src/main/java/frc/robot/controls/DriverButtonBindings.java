@@ -109,10 +109,7 @@ public class DriverButtonBindings
         Trigger aButtonTrigger = new Trigger(aButton);
 
         // Shooting after flywheel up to speed
-        if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.flywheel != null)
-        {
-            aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
-        }
+        aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
     }
 
     private void configBButton()
@@ -122,10 +119,7 @@ public class DriverButtonBindings
         Trigger bButtonTrigger = new Trigger(bButton);
 
         // Picking up from the front
-        if(true)
-        {
-            bButtonTrigger.onTrue(Commands4237.intakeFromFloor());
-        }
+        bButtonTrigger.onTrue(Commands4237.intakeFromFloorFront());
     }
 
     private void configXButton()
@@ -135,9 +129,9 @@ public class DriverButtonBindings
         Trigger xButtonTrigger = new Trigger(xButton);
 
         // Picking up from the back
-        if(true)
+        if(robotContainer.drivetrain != null)
         {
-            xButtonTrigger.onTrue(Commands4237.intakeFromFloor());
+            xButtonTrigger.onTrue(Commands.runOnce( () -> robotContainer.drivetrain.lockWheels()));
         }
     }
 
@@ -147,8 +141,7 @@ public class DriverButtonBindings
         BooleanSupplier yButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        if(true)
-        {}
+        yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configLeftBumper()

@@ -188,9 +188,14 @@ public class Intake extends Subsystem4237
         return periodicData.bottomIntakeVelocity;
     }
 
-    public Command pickupCommand()
+    public Command pickupFrontCommand()
     {
-        return Commands.runOnce(() -> pickupFront(), this).withName("Pickup");
+        return Commands.runOnce(() -> pickupFront(), this).withName("Pickup Front");
+    }
+
+    public Command pickupBackCommand()
+    {
+        return Commands.runOnce(() -> pickupBack(), this).withName("Pickup Back");
     }
 
     public Command ejectCommand()

@@ -88,7 +88,7 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            Commands4237.intakeFromFloor().schedule();
+            Commands4237.intakeFromFloorFront().schedule();
         //     // configAButton();
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());

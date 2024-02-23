@@ -258,10 +258,10 @@ public class OperatorButtonBindings
         BooleanSupplier dPadLeft = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kLeft);
         Trigger dPadLeftTrigger = new Trigger(dPadLeft);
 
-        if(robotContainer.ampAssist != null)
-        {
-            dPadLeftTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kIn));
-        }
+        // if(robotContainer.ampAssist != null)
+        // {
+        //     dPadLeftTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kIn));
+        // }
     }
 
     private void configDpadRight()
@@ -270,10 +270,10 @@ public class OperatorButtonBindings
         BooleanSupplier dPadRight = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kRight);
         Trigger dPadRightTrigger = new Trigger(dPadRight);
 
-        if(robotContainer.ampAssist != null)
-        {
-            dPadRightTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kOut));
-        }
+        // if(robotContainer.ampAssist != null)
+        // {
+        //     dPadRightTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kOut));
+        // }
     }
 
     private void configLeftTriggerAndDpadDown()
