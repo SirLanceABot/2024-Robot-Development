@@ -47,7 +47,7 @@ public class Candle4237 extends Subsystem4237
     private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);    
     private Animation animation;
     private double blinkSpeed = 0.4;
-    public static final int LED_COUNT = 68;
+    public static final int LED_COUNT = 300;
     public static final int INITIAL_LED = 0;
 
     /** 
