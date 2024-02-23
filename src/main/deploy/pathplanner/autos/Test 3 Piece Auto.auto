@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp to SP1"
+            "pathName": "kAmp to N1"
           }
         },
         {
@@ -58,7 +58,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SP1 to SP2"
+            "pathName": "N1 to N2"
           }
         },
         {
