@@ -195,7 +195,7 @@ public class Intake extends Subsystem4237
 
     public Command ejectCommand()
     {
-        return Commands.runOnce(() -> pickupBack(), this).withName("Eject");
+        return Commands.runOnce(() -> ejectFront(), this).withName("Eject");
     }
 
     public Command stopCommand()

@@ -95,33 +95,64 @@ public final class Commands4237
         //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
 
         //TODO: Add timeout in case of sensor failure until we can test live
-        if(robotContainer.intake != null && robotContainer.intakePositioning != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.secondShuttleProximity != null && robotContainer.indexProximity != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            // robotContainer.candle.setYellowCommand()
+            robotContainer.intake.pickupCommand()
+            .alongWith(
+                // robotContainer.intakePositioning.moveDownCommand(),
+                robotContainer.shuttle.moveUpwardCommand(),
+                robotContainer.index.acceptNoteFromShuttleCommand())
+                // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE)) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
+            // .andThen(
+            //     robotContainer.intakePositioning.floatingCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.intake.stopCommand()
+                .alongWith(
+                    robotContainer.shuttle.stopCommand(),
+                    robotContainer.index.stopCommand()))
+                // .alongWith(
+                //     robotContainer.intakePositioning.moveUpCommand()))
+            // .andThen(
+            //     Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+            // .andThen(
+            //     robotContainer.shuttle.stopCommand()
+            //     .alongWith(
+            //         robotContainer.index.stopCommand()))
+            // // .andThen(
+            //     robotContainer.candle.setGreenCommand())
+            .withName("Intake From Floor");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command ejectNote()
+    {
+        if(robotContainer.index != null && robotContainer.shuttle != null && robotContainer.intake != null && robotContainer.intakePositioning != null)
         {
             return
             robotContainer.candle.setYellowCommand()
             .alongWith(
+                // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE),
                 robotContainer.intakePositioning.moveDownCommand(),
-                robotContainer.intake.pickupCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand())
-                // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE)) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
+                robotContainer.index.ejectCommand(),
+                robotContainer.shuttle.moveDownwardCommand(),
+                robotContainer.intake.ejectCommand())
             .andThen(
-                robotContainer.intakePositioning.floatingCommand())
+                Commands.waitSeconds(5.0))
             .andThen(
-                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.intake.stopCommand()
+                robotContainer.index.stopCommand()
                 .alongWith(
+                    robotContainer.shuttle.stopCommand(),
+                    robotContainer.intake.stopCommand(),
                     robotContainer.intakePositioning.moveUpCommand()))
-            .andThen(
-                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.shuttle.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand()))
-            .andThen(
-                robotContainer.candle.setGreenCommand())
-            .withName("Intake From Floor");
+            .withName("Eject Note");
         }
         else
         {
@@ -132,33 +163,33 @@ public final class Commands4237
     public static Command intakeFromSource()
     {
         
-        if(robotContainer.flywheel != null && robotContainer.index != null && robotContainer.shuttle != null && robotContainer.indexProximity != null && robotContainer.secondShuttleProximity != null)
-        {
+        if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
+        { 
             return
             robotContainer.candle.setYellowCommand()
             .alongWith(
-                robotContainer.flywheel.intakeCommand(),
-                robotContainer.index.intakeCommand(),
-                robotContainer.shuttle.moveDownwardCommand())
+                robotContainer.flywheel.intakeCommand())
+                // robotContainer.index.intakeCommand(),
+                // robotContainer.shuttle.moveDownwardCommand())
                 // robotContainer.pivot.setAngleCommand(Constants.Pivot.INTAKE_FROM_SOURCE_ANGLE)) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
             .andThen(
                 Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
             .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand(),
-                    robotContainer.shuttle.stopCommand()))
-            .andThen(
-                robotContainer.index.acceptNoteFromShuttleCommand()
-                .alongWith(
-                    robotContainer.shuttle.moveUpwardCommand()))
-            .andThen(
-                Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.index.stopCommand()
-                .alongWith(
-                    robotContainer.shuttle. stopCommand()))
-                    // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE))) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
+                robotContainer.flywheel.stopCommand())
+            //     .alongWith(
+            //         robotContainer.index.stopCommand(),
+            //         robotContainer.shuttle.stopCommand()))
+            // .andThen(
+            //     robotContainer.index.acceptNoteFromShuttleCommand()
+            //     .alongWith(
+            //         robotContainer.shuttle.moveUpwardCommand()))
+            // .andThen(
+            //     Commands.waitUntil(robotContainer.indexProximity.isDetectedSupplier()))
+            // .andThen(
+            //     robotContainer.index.stopCommand()
+            //     .alongWith(
+            //         robotContainer.shuttle. stopCommand()))
+            //         // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE))) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
             .andThen(
                 robotContainer.candle.setGreenCommand())   
             .withName("Intake From Source");
@@ -247,11 +278,11 @@ public final class Commands4237
         if(robotContainer.pivot != null && robotContainer.flywheel != null && robotContainer.index != null)
         {
             return
-            getFlywheelToSpeedCommand(0.2)
+            getFlywheelToSpeedCommand(17.0)
             // .andThen(
             //     robotContainer.pivot.setAngleCommand(Constants.Pivot.SHOOT_TO_AMP_ANGLE) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
                 .alongWith(
-                    robotContainer.index.feedNoteToFlywheelCommand(0.2))
+                    robotContainer.index.feedNoteToFlywheelCommand(20.0)) //TODO: Check speed
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(

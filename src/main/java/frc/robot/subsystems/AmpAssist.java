@@ -64,6 +64,11 @@ public class AmpAssist extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
+    public AmpAssistPosition getPosition()
+    {
+        return periodicData.ampAssistPosition;
+    }
+
     public void extend()
     {
         periodicData.ampAssistPosition = AmpAssistPosition.kOut;

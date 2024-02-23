@@ -141,6 +141,10 @@ public class Index extends Subsystem4237
         periodicData.motorSpeed = speed;
     }
 
+    public void ejectNote()
+    {
+        periodicData.motorSpeed = -10;
+    }
 
     public void intake()
     {
@@ -160,6 +164,11 @@ public class Index extends Subsystem4237
     public Command feedNoteToFlywheelCommand(double speed)
     {
         return Commands.runEnd(() -> feedNoteToFlywheel(speed), () -> stop(), this).withName("Feed Note To Flywheel");
+    }
+
+    public Command ejectCommand()
+    {
+        return Commands.runOnce(() -> ejectNote(), this).withName("Eject");
     }
 
     public Command intakeCommand()
