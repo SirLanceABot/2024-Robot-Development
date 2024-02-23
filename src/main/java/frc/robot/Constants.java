@@ -307,7 +307,7 @@ public final class Constants
         public static final int FIRST_SHUTTLE_PORT  = 6;
         public static final int SECOND_SHUTTLE_PORT = 9;
         public static final int MIDDLE_INDEX_PORT   = 8;
-        public static final int INDEX_WHEELS_PORT   = 7;
+        public static final int INDEX_WHEELS_PORT   = 0; // using this proximity
     }
 
     public enum ShootingPosition
