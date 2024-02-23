@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.RelativeEncoder;
@@ -55,7 +57,7 @@ public class Flywheel extends Subsystem4237
 
         // OUTPUTS
        
-        private double flywheelSpeed;
+        // private double flywheelSpeed;
         // private DoubleLogEntry currentDistanceEntry;
         private DoubleLogEntry currentVelocityEntry;
 
@@ -154,23 +156,26 @@ public class Flywheel extends Subsystem4237
 
     public void shoot(double speed)
     {
-        periodicData.flywheelSpeed = speed;
+        // periodicData.flywheelSpeed = speed;
+        motor.setControlVelocity(speed);
     }
 
 
     public void intake()
     {
-        periodicData.flywheelSpeed = -0.1;
+        // periodicData.flywheelSpeed = -0.1;
+        motor.setControlVelocity(10.0);
     }
 
     public void stop()
     {
-        periodicData.flywheelSpeed = 0.0;
+        // periodicData.flywheelSpeed = 0.0;
+        motor.set(0.0);
     }
 
-    public Command shootCommand(double speed)
+    public Command shootCommand(DoubleSupplier speed)
     {
-        return Commands.runEnd( () -> shoot(speed), () -> stop(), this).withName("Shoot");
+        return Commands.runEnd( () -> shoot(speed.getAsDouble()), () -> stop(), this).withName("Shoot");
     }
 
     public Command shootSpeakerCommand()
@@ -190,7 +195,7 @@ public class Flywheel extends Subsystem4237
 
     public Command stopCommand()
     {
-        return Commands.runOnce( () -> motor.set(0.0), this).withName("Stop");
+        return Commands.runOnce( () -> stop(), this).withName("Stop");
     }
 
     // public double speedConversion(double speed)
@@ -237,7 +242,7 @@ public class Flywheel extends Subsystem4237
 
 
 
-        motor.setControlVelocity(periodicData.flywheelSpeed);
+        // motor.setControlVelocity(periodicData.flywheelSpeed);
         SmartDashboard.putNumber("Velocity", periodicData.currentVelocity);
 
         // if(tunePID)
@@ -267,6 +272,6 @@ public class Flywheel extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Shooter Speed: " + periodicData.flywheelSpeed;
+        return "Current Shooter Speed: " + periodicData.currentVelocity;
     }
 }
