@@ -38,12 +38,14 @@ public class Camera extends Sensor4237
         private NetworkTableEntry tv;
         private NetworkTableEntry botpose_wpiblue;
         private NetworkTableEntry botpose_wpired;
+        private NetworkTableEntry camerapose_targetspace;
 
         // Our class variables named with our convention (yes camelcase)
         private double targetSize;
         private boolean isTargetFound;
         private double[] botPoseWPIBlue;
         private double[] botPoseWPIRed;
+        private double[] cameraPoseInTargetSpace;
 
         // private Matrix<N3, N1> measurementStdDevs;
     }
@@ -58,19 +60,19 @@ public class Camera extends Sensor4237
     
 
     private final PeriodicData periodicData = new PeriodicData();
-    private Pose3d poseForAS;
+    // private Pose3d poseForAS;
     private NetworkTable cameraTable;
 
-    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable"); // custom table for AdvantageScope testing
+    // private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable"); // custom table for AdvantageScope testing
 
 
-    public Camera(String camName)
+    public Camera(String cameraName)
     {   
         super("Camera");
-        System.out.println("  Constructor Started:  " + fullClassName + " >> " + camName);
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + cameraName);
 
         // Assign the Network Table variable in the constructor so the camName parameter can be used
-        cameraTable = NetworkTableInstance.getDefault().getTable(camName);   // official limelight table
+        cameraTable = NetworkTableInstance.getDefault().getTable(cameraName);   // official limelight table
 
         periodicData.ta = cameraTable.getEntry("ta");
         periodicData.tv = cameraTable.getEntry("tv");
@@ -78,7 +80,7 @@ public class Camera extends Sensor4237
         periodicData.botpose_wpired = cameraTable.getEntry("botpose_wpired");
 
 
-        System.out.println("  Constructor Started:  " + fullClassName + " >> " + camName);
+        System.out.println("  Constructor Started:  " + fullClassName + " >> " + cameraName);
     }
 
     /**
@@ -156,6 +158,27 @@ public class Camera extends Sensor4237
         return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
     }
 
+    /** @return the camera pose in the cooridnate plane of the target */
+    public Pose3d getCameraPoseInTargetSpace()
+    {
+        return toPose3d(periodicData.cameraPoseInTargetSpace);
+    }
+
+    /** @return the distance between to Pose3ds in meters */
+    public double getDistanceBetweenPose3ds(Pose3d pose1, Pose3d pose2)
+    {
+        Translation3d translation1 = pose1.getTranslation();
+        Translation3d translation2 = pose2.getTranslation();
+
+        return translation1.getDistance(translation2);
+    }
+
+    /** @return the distance between the camera and the target in meters */
+    public double getDistanceFromTarget()
+    {
+        return getDistanceBetweenPose3ds(toPose3d(periodicData.cameraPoseInTargetSpace), new Pose3d());
+    }
+
     // public Matrix<N3, N1> setMeasurementStdDevs()
     // {
     //     // defaults
@@ -184,16 +207,17 @@ public class Camera extends Sensor4237
         periodicData.isTargetFound = periodicData.tv.getDouble(0.0) == 1.0;
         periodicData.botPoseWPIBlue = periodicData.botpose_wpiblue.getDoubleArray(new double[7]);
         periodicData.botPoseWPIRed = periodicData.botpose_wpired.getDoubleArray(new double[7]);
+        periodicData.cameraPoseInTargetSpace = periodicData.camerapose_targetspace.getDoubleArray(new double[6]);
         // periodicData.measurementStdDevs = setMeasurementStdDevs();
     }
 
     @Override
     public void writePeriodicOutputs() 
     {
-        poseForAS = toPose3d(periodicData.botPoseWPIBlue);    // variable for testing in AdvantageScope
+        // poseForAS = toPose3d(periodicData.botPoseWPIBlue);    // variable for testing in AdvantageScope
 
         // put the pose from LL onto the Network Table so AdvantageScope can read it
-        ASTable.getEntry("robotpose").setDoubleArray(Camera.toQuaternions(poseForAS));
+        // ASTable.getEntry("robotpose").setDoubleArray(Camera.toQuaternions(poseForAS));
     }
 
     @Override
