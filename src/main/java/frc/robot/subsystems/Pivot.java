@@ -68,13 +68,13 @@ public class Pivot extends Subsystem4237
         private int slotId = 0;
 
         //limits
-        private final double FORWARD_SOFT_LIMIT = (59.0 / 360.0); // (59.0  * 200.0);
-        private final double REVERSE_SOFT_LIMIT = (23.0 / 360.0); //(23.0 * 200.0);
-        private final double MAX_PIVOT_ANGLE = 59.0;
-        private final double MINIMUM_PIVOT_ANGLE = 23.0; 
+        private final double FORWARD_SOFT_LIMIT = (61.0 / 360.0); //66 degrees is the top
+        private final double REVERSE_SOFT_LIMIT = (27.0 / 360.0); //22 degrees is the bottom
+        private final double MAX_PIVOT_ANGLE = 61.0;
+        private final double MINIMUM_PIVOT_ANGLE = 27.0; 
 
         //for manually moving Pivot
-        private final double MOTOR_SPEED = 0.05;
+        private final double MOTOR_SPEED = 0.1;
     }
     
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
@@ -83,7 +83,7 @@ public class Pivot extends Subsystem4237
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
     private final PeriodicData periodicData = new PeriodicData();
     private final MyConstants myConstants = new MyConstants();
-    // private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
+    private PIDController PIDcontroller = new PIDController(myConstants.kP, myConstants.kI, myConstants.kD);
     private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
 
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
@@ -106,8 +106,8 @@ public class Pivot extends Subsystem4237
         // setAngleDefaultCommand();
 
         periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
-        periodicData.motorEncoderRotationalPosition = motor.getPosition();
-        motor.setPosition(periodicData.canCoderRotationalPosition * 200);
+        // periodicData.motorEncoderRotationalPosition = motor.getPosition();
+        // motor.setPosition(periodicData.canCoderRotationalPosition);
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -121,8 +121,10 @@ public class Pivot extends Subsystem4237
         pivotAngle.getConfigurator().refresh(canCoderConfig);
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canCoderConfig.MagnetSensor.MagnetOffset = -0.61134467; //BW 2/9/2024
+        canCoderConfig.MagnetSensor.MagnetOffset = 0.04012111;
         pivotAngle.getConfigurator().apply(canCoderConfig);
+
+        pivotAngle.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble());
     }
 
     private void configPivotMotor()
@@ -132,11 +134,11 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(true);
         motor.setupBrakeMode();
         // motor.setupPositionConversionFactor(1.0 / 360.0);
-        
+        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
+
         motor.setupPIDController(myConstants.slotId, myConstants.kP, myConstants.kI, myConstants.kD);
         
         // Soft Limits
-        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setupForwardSoftLimit(myConstants.FORWARD_SOFT_LIMIT, true);
         motor.setupReverseSoftLimit(myConstants.REVERSE_SOFT_LIMIT, true);
 
@@ -206,7 +208,7 @@ public class Pivot extends Subsystem4237
         //setAngle using CANcoder
         if(degrees >= myConstants.MINIMUM_PIVOT_ANGLE && degrees <= myConstants.MAX_PIVOT_ANGLE)
         {
-            // motor.setControlPosition(degrees / 360.0);
+            motor.setControlPosition(degrees / 360.0);
         }
         else
         {
@@ -276,7 +278,8 @@ public class Pivot extends Subsystem4237
     {
         //Using CANcoder
         periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
-        periodicData.motorEncoderRotationalPosition = periodicData.canCoderRotationalPosition * 200;
+
+        periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
         //All included in tunePID() command
 
