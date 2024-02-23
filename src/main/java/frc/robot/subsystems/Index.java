@@ -133,12 +133,13 @@ public class Index extends Subsystem4237
 
     public void acceptNoteFromShuttle()
     {
-        periodicData.motorSpeed = 10;
+        periodicData.motorSpeed = 10.0;
     }
 
-    public void feedNoteToFlywheel(double speed)
+    public void feedNoteToFlywheel()
     {
-        periodicData.motorSpeed = speed;
+        System.out.println("Feeding note");
+        periodicData.motorSpeed = 80.0;
     }
 
     public void ejectNote()
@@ -163,7 +164,7 @@ public class Index extends Subsystem4237
 
     public Command feedNoteToFlywheelCommand(double speed)
     {
-        return Commands.runEnd(() -> feedNoteToFlywheel(speed), () -> stop(), this).withName("Feed Note To Flywheel");
+        return Commands.runOnce(() -> feedNoteToFlywheel(), this).withName("Feed Note To Flywheel");
     }
 
     public Command ejectCommand()
@@ -178,7 +179,7 @@ public class Index extends Subsystem4237
 
     public Command stopCommand()
     {
-        return Commands.runOnce(() -> stop(), this).withName("Stop");
+        return Commands.runOnce(() -> motor.set(0.0), this).withName("Stop");
     }
 
     //Returns speed in feet per minute

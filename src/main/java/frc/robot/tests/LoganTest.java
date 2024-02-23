@@ -93,6 +93,10 @@ public class LoganTest implements Test
         //     intakePositioning.moveUp();
         //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
         }
+        else if(joystick.getRawButton(2))
+        {
+            Commands4237.logansEpicShootingCommand().schedule();
+        }
         // else if(joystick.getRawButton(2))
         // {
         //     climb.retract(0.4);

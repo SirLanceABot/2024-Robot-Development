@@ -155,7 +155,6 @@ public class Flywheel extends Subsystem4237
     public void shoot(double speed)
     {
         periodicData.flywheelSpeed = speed;
-        System.out.println("Shooting");
     }
 
 
@@ -167,7 +166,7 @@ public class Flywheel extends Subsystem4237
     public void stop()
     {
         periodicData.flywheelSpeed = 0.0;
-            }
+    }
 
     public Command shootCommand(double speed)
     {
@@ -191,7 +190,7 @@ public class Flywheel extends Subsystem4237
 
     public Command stopCommand()
     {
-        return Commands.runOnce( () -> stop(), this).withName("Stop");
+        return Commands.runOnce( () -> motor.set(0.0), this).withName("Stop");
     }
 
     // public double speedConversion(double speed)

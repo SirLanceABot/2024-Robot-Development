@@ -99,12 +99,12 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.intake.pickupCommand()
+            robotContainer.pivot.setAngleCommand(32.0)
             .alongWith(
                 // robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand())
-                // robotContainer.pivot.setAngleCommand(Constants.Pivot.DEFAULT_ANGLE)) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
+                robotContainer.index.acceptNoteFromShuttleCommand(),
+                robotContainer.intake.pickupCommand()) //TODO: CANNOT USE PIVOT CONSTANTS, they are no longer in Constants.java
             // .andThen(
             //     robotContainer.intakePositioning.floatingCommand())
             .andThen(
@@ -266,6 +266,33 @@ public final class Commands4237
             .andThen(
                 robotContainer.candle.setRedCommand())
             .withName("Shoot");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command logansEpicShootingCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
+        {
+            return
+            Commands.waitSeconds(2.0)
+            .deadlineWith(
+                robotContainer.flywheel.shootCommand(80.0),
+                robotContainer.pivot.setAngleCommand(60.0))
+            .andThen(
+                Commands.print("Past wait sam doesnt like it"))
+            .andThen(
+                robotContainer.index.feedNoteToFlywheelCommand(0.0))
+            .andThen(
+                Commands.waitSeconds(1.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.index.stopCommand(),
+                    robotContainer.pivot.setAngleCommand(32.0)));
         }
         else
         {
