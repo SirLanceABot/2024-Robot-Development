@@ -82,9 +82,9 @@ public class SensorTab
         this.index = robotContainer.index;
         this.intake = robotContainer.intake;
         this.climb = robotContainer.climb;
-        this.firstShuttleProximity = robotContainer.firstShuttleProximity;
-        this.secondShuttleProximity = robotContainer.secondShuttleProximity;
-        this.indexProximity = robotContainer.indexProximity;
+        // this.firstShuttleProximity = robotContainer.firstShuttleProximity;
+        // this.secondShuttleProximity = robotContainer.secondShuttleProximity;
+        // this.indexProximity = robotContainer.indexProximity;
         this.indexWheelsProximity = robotContainer.indexWheelsProximity; 
         
 

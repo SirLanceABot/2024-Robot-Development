@@ -280,8 +280,8 @@ public final class Constants
         public static final int RETRACT_ACTIVE_PORT     = 2;
         public static final int RETRACT_FLOAT_PORT      = 3;
 
-        public static final int INTAKE_DOWN_SENSOR      = 0;
-        public static final int INTAKE_UP_SENSOR        = 1;
+        public static final int INTAKE_DOWN_SENSOR      = 6;
+        public static final int INTAKE_UP_SENSOR        = 7;
     }
 
     public static class Pivot

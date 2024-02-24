@@ -160,7 +160,7 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteFromShuttleCommand()
     {
-        return Commands.runOnce(() -> motor.setControlVelocity(10.0), this).withName("Accept Note From Shuttle");
+        return Commands.runOnce(() -> motor.setControlVelocity(5.0), this).withName("Accept Note From Shuttle");
     }
 
     public Command feedNoteToFlywheelCommand(DoubleSupplier velocity)

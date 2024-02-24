@@ -101,19 +101,20 @@ public final class Commands4237
             // robotContainer.candle.setYellowCommand()
             robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)
             .alongWith(
-                // robotContainer.intakePositioning.moveDownCommand(),
+                robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteFromShuttleCommand(),
                 robotContainer.intake.pickupFrontCommand())
-            // .andThen(
-            //     robotContainer.intakePositioning.floatingCommand())
+            .andThen(
+                robotContainer.intakePositioning.floatingCommand())
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
             .andThen(
                 robotContainer.intake.stopCommand()
                 .alongWith(
                     robotContainer.shuttle.stopCommand(),
-                    robotContainer.index.stopCommand()))
+                    robotContainer.index.stopCommand(),
+                    robotContainer.intakePositioning.moveUpCommand()))
                 // .alongWith(
                 //     robotContainer.intakePositioning.moveUpCommand()))
             // .andThen(
@@ -143,7 +144,7 @@ public final class Commands4237
                 robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
                 robotContainer.index.acceptNoteFromShuttleCommand(),
-                robotContainer.intake.pickupFrontCommand())
+                robotContainer.intake.pickupBackCommand())
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
@@ -204,7 +205,7 @@ public final class Commands4237
                 // robotContainer.index.intakeCommand(),
                 // robotContainer.shuttle.moveDownwardCommand())
             .andThen(
-                Commands.waitUntil(robotContainer.secondShuttleProximity.isDetectedSupplier()))
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
