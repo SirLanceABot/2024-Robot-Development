@@ -28,7 +28,7 @@ public class DaneTest implements Test
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
     private final Pivot pivot;
-    private final Joystick joystick = new Joystick(1);
+    private final Joystick joystick = new Joystick(0);
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -56,11 +56,13 @@ public class DaneTest implements Test
     {
         if(joystick.getRawButton(1))
         {
-            pivot.setAngleCommand(50.0);
+            // pivot.setAngleCommand(50.0);
+            pivot.moveUp();
         }
         else if(joystick.getRawButton(2))
         {
-            pivot.setAngleCommand(30.0);
+            // pivot.setAngleCommand(30.0);
+            pivot.moveDown();
         }
         else
         {

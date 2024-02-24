@@ -125,7 +125,7 @@ public class Pivot extends Subsystem4237
         pivotAngle.getConfigurator().refresh(canCoderConfig);
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canCoderConfig.MagnetSensor.MagnetOffset = 0.04012111;
+        canCoderConfig.MagnetSensor.MagnetOffset = -0.63079956;
         pivotAngle.getConfigurator().apply(canCoderConfig);
 
         pivotAngle.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble());
