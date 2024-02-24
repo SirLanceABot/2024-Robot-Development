@@ -11,9 +11,11 @@ import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
+import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.ColorFlowAnimation.Direction;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -49,9 +51,9 @@ public class Candle4237 extends Subsystem4237
     private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);
     private Animation animation;
     private double blinkSpeed = 0.4;
-    public static final int LED_COUNT = 50; //308;
+    public static final int LED_COUNT = 308;
     public static final int INITIAL_LED = 0;
-    public static final double LED_BRIGHTNESS_VALUE = 0.1;
+    public static final double LED_BRIGHTNESS_VALUE = 0.3;
 
     /** 
      * Creates a new Candle4237. 
@@ -60,9 +62,19 @@ public class Candle4237 extends Subsystem4237
     {
         super("Candle4237");
         System.out.println("  Constructor Started:  " + fullClassName);
-        candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
+        
+        configCANdle();
 
         System.out.println("  Constructor Finished: " + fullClassName);
+    }
+
+    public void configCANdle()
+    {
+        candle.configFactoryDefault();
+        candle.configLEDType(LEDStripType.GRB);
+        candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
+        candle.configLOSBehavior(true);
+        candle.configV5Enabled(true);
     }
     
     public double getCurrent()
@@ -140,6 +152,20 @@ public class Candle4237 extends Subsystem4237
             candle.setLEDs(255, 185, 0, 255, INITIAL_LED, LED_COUNT);
         }
     }
+
+    public void setWhite(boolean shouldBlink)
+    {
+        stop();
+
+        if(shouldBlink)
+        {
+            candle.animate(new StrobeAnimation(255, 255, 255, 255, blinkSpeed, LED_COUNT));
+        }
+        else
+        {
+            candle.setLEDs(255, 255, 255, 255, INITIAL_LED, LED_COUNT);
+        }
+    }
     
     public void stop()
     {
@@ -166,14 +192,14 @@ public class Candle4237 extends Subsystem4237
     {
         stop();
 
-        candle.animate(new RainbowAnimation(1, 0.8, LED_COUNT));
+        candle.animate(new RainbowAnimation(1, 0.7, LED_COUNT));
     }
 
     public void setLarson()
     {
         stop();
 
-        candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.5, LED_COUNT, BounceMode.Center, 7));
+        candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.8, LED_COUNT, BounceMode.Center, 7));
     }
 
     public void setRedAndBlue()
@@ -276,11 +302,12 @@ public class Candle4237 extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        System.out.println(getCurrent());
+        // SmartDashboard.putNumber("Current", getCurrent());
 
         if(getCurrent() > 5.0)
         {
             stop();
+            System.out.println("CANdle current > 5A");
         }
         // if(periodicData.ledStatus == LedStatus.kOff)
         // {

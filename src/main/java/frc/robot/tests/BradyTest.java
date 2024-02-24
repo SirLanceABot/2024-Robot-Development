@@ -74,7 +74,8 @@ public class BradyTest implements Test
         }
         else if(bradysController.getRawButton(2)) //B
         {
-            candle.setRedAndBlue();
+            // candle.setRedAndBlue();
+            candle.setWhite(false);
         }
         else if(bradysController.getRawButton(3)) //X
         {
@@ -86,7 +87,9 @@ public class BradyTest implements Test
         }
         else if(bradysController.getRawButton(6)) //RB
         {
-            candle.setPurple(false);
+            // candle.setPurple(false);
+            candle.setRainbow();
+            // candle.setRGBFade();
         }
 
         // if(proximity.getIsDetected())
