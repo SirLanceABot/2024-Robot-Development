@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.ColorFlowAnimation;
@@ -44,12 +46,12 @@ public class Candle4237 extends Subsystem4237
     }
 
     private final PeriodicData periodicData = new PeriodicData();
-    private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);    
+    private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);
     private Animation animation;
     private double blinkSpeed = 0.4;
-    public static final int LED_COUNT = 308;
+    public static final int LED_COUNT = 50; //308;
     public static final int INITIAL_LED = 0;
-    public static final double LED_BRIGHTNESS_VALUE = 0.3;
+    public static final double LED_BRIGHTNESS_VALUE = 0.1;
 
     /** 
      * Creates a new Candle4237. 
@@ -59,10 +61,15 @@ public class Candle4237 extends Subsystem4237
         super("Candle4237");
         System.out.println("  Constructor Started:  " + fullClassName);
         candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
-        
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
     
+    public double getCurrent()
+    {
+        return candle.getCurrent();
+    }
+
     public void setPurple(boolean shouldBlink)
     {
         stop();
@@ -171,8 +178,8 @@ public class Candle4237 extends Subsystem4237
 
     public void setRedAndBlue()
     {
-        candle.setLEDs(255, 0, 0, 255, 0, 154); //Red
-        candle.setLEDs(0, 0, 255, 255, 154, 154); //Blue
+        candle.setLEDs(255, 0, 0, 255, 0, LED_COUNT / 2); //Red
+        candle.setLEDs(0, 0, 255, 255, LED_COUNT / 2, LED_COUNT / 2); //Blue
     }
 
     public Command setRedCommand()
@@ -269,6 +276,12 @@ public class Candle4237 extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
+        System.out.println(getCurrent());
+
+        if(getCurrent() > 5.0)
+        {
+            stop();
+        }
         // if(periodicData.ledStatus == LedStatus.kOff)
         // {
         //     signalOff();

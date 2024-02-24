@@ -47,7 +47,7 @@ public class BradyTest implements Test
         // this.drivetrain = robotContainer.drivetrain;
         // this.gyro = robotContainer.gyro;
         // this.cameraArray = robotContainer.cameraArray;
-        candle = new Candle4237();
+        this.candle = robotContainer.candle;
         bradysController = new Joystick(0);
         // proximity = new Proximity(9);
         // digitalInput = new DigitalInput(9);
