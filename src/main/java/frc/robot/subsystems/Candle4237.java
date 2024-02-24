@@ -47,8 +47,9 @@ public class Candle4237 extends Subsystem4237
     private final CANdle candle = new CANdle(Constants.Candle.PORT, Constants.Candle.CAN_BUS);    
     private Animation animation;
     private double blinkSpeed = 0.4;
-    public static final int LED_COUNT = 300;
+    public static final int LED_COUNT = 308;
     public static final int INITIAL_LED = 0;
+    public static final double LED_BRIGHTNESS_VALUE = 0.3;
 
     /** 
      * Creates a new Candle4237. 
@@ -57,7 +58,7 @@ public class Candle4237 extends Subsystem4237
     {
         super("Candle4237");
         System.out.println("  Constructor Started:  " + fullClassName);
-
+        candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -170,8 +171,8 @@ public class Candle4237 extends Subsystem4237
 
     public void setRedAndBlue()
     {
-        candle.setLEDs(255, 0, 0, 255, 0, 4); //Red
-        candle.setLEDs(0, 0, 255, 255, 4, 4); //Blue
+        candle.setLEDs(255, 0, 0, 255, 0, 154); //Red
+        candle.setLEDs(0, 0, 255, 255, 154, 154); //Blue
     }
 
     public Command setRedCommand()
