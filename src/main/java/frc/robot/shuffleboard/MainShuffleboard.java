@@ -24,11 +24,12 @@ public class MainShuffleboard implements PeriodicIO
     private boolean useSensorTab                = false;
     private boolean useDriverControllerTab      = false;
     private boolean useOperatorControllerTab    = false;
+    private boolean useDriverTab                = false;
     
     public final AutonomousTab autonomousTab;
     public final CameraTab cameraTab;
     public final SensorTab sensorTab;
-    // public final DriverTab driverTab;
+    public final DriverTab driverTab;
     public final DriverControllerTab driverControllerTab;
     public final OperatorControllerTab operatorControllerTab;
     
@@ -47,6 +48,7 @@ public class MainShuffleboard implements PeriodicIO
         sensorTab               = (useSensorTab)                        ? new SensorTab(robotContainer)                                 : null;                                           
         driverControllerTab     = (useDriverControllerTab)              ? new DriverControllerTab(robotContainer.driverController)      : null;
         operatorControllerTab   = (useOperatorControllerTab)            ? new OperatorControllerTab(robotContainer.operatorController)  : null;
+        driverTab               = (useFullRobot || useDriverTab)        ? new DriverTab(robotContainer)                                 : null;
 
         registerPeriodicIO();
 
@@ -89,13 +91,13 @@ public class MainShuffleboard implements PeriodicIO
             sensorTab.updateSensorData();
     }
 
-    //-------------------------------------------------------------------//
+    // //-------------------------------------------------------------------//
     // DRIVER TAB
-    // public void setDriver()
-    // {
-    //     if(driverTab != null)
-    //         driverTab.updateEncoderData();
-    // }
+    public void setDriver()
+    {
+        if(driverTab != null);
+            // driverTab.updateEncoderData();
+    }
 
     // Driver Tab
 
