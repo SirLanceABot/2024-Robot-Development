@@ -39,15 +39,15 @@
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 0.35,
+      "waypointRelativePos": 0.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "intake"
+                "name": "Intake From Floor Front"
               }
             }
           ]

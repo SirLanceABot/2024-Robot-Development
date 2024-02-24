@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9564782841558124,
-        "y": 5.728861027183812
+        "x": 1.8527875727163086,
+        "y": 5.55076982040085
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 5.55076982040085
       },
       "prevControl": {
-        "x": 1.6677619120362799,
-        "y": 5.472864279061892
+        "x": 1.4827362513562519,
+        "y": 5.570246205735591
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,16 +38,16 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.35,
+      "name": "Intake Marker",
+      "waypointRelativePos": 0.7,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "intake"
+                "name": "Intake From Floor Front"
               }
             }
           ]
