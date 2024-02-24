@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Optional;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -46,8 +46,10 @@ public class PoseEstimator extends Subsystem4237
     private double[] blueSpeakerCoords = {0.0, 5.55};
     private double[] redSpeakerCoords = {16.54, 5.55};
 
-    // private Matrix<N3, N1> visionStdDevs;
-    // private Matrix<N3, N1> stateStdDevs;
+    private Matrix<N3, N1> visionStdDevs;
+    private Matrix<N3, N1> stateStdDevs;
+
+    private final double MAX_TARGET_DISTANCE = 3.4;
 
     private class PeriodicData
     {
@@ -75,23 +77,27 @@ public class PoseEstimator extends Subsystem4237
         this.drivetrain = drivetrain;
         this.cameraArray = cameraArray;
 
-        // configStdDevs();
+        double[] doubleArray = {0, 0, 0};
+        visionStdDevs = new Matrix<N3, N1>(Nat.N3(), Nat.N1(), doubleArray);
+        stateStdDevs = new Matrix<N3, N1>(Nat.N3(), Nat.N1(), doubleArray);
+
+        configStdDevs();
 
         if(drivetrain != null && gyro != null)
         {
-            poseEstimator = new SwerveDrivePoseEstimator(
-                drivetrain.getKinematics(),
-                gyro.getRotation2d(),
-                drivetrain.getSwerveModulePositions(),
-                drivetrain.getPose());
-
             // poseEstimator = new SwerveDrivePoseEstimator(
             //     drivetrain.getKinematics(),
             //     gyro.getRotation2d(),
             //     drivetrain.getSwerveModulePositions(),
-            //     drivetrain.getPose(),
-            //     stateStdDevs,
-            //     visionStdDevs);
+            //     drivetrain.getPose());
+
+            poseEstimator = new SwerveDrivePoseEstimator(
+                drivetrain.getKinematics(),
+                gyro.getRotation2d(),
+                drivetrain.getSwerveModulePositions(),
+                drivetrain.getPose(),
+                stateStdDevs,
+                visionStdDevs);
         }
         else
         {
@@ -103,16 +109,16 @@ public class PoseEstimator extends Subsystem4237
         System.out.println(fullClassName + " : Constructor Finished");
     }
 
-    // public void configStdDevs()
-    // {
-    //     stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
-    //     stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
-    //     stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
+    public void configStdDevs()
+    {
+        stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
+        stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
+        stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
 
-    //     visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
-    //     visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
-    //     visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
-    // }
+        visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
+        visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
+        visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
+    }
     
     /** @return the estimated pose (Pose2d)*/
     public Pose2d getEstimatedPose() 
@@ -213,17 +219,17 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            if(camera != null && camera.isTargetFound())
+            if(camera != null && camera.isTargetFound() && camera.getDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
                 // update pose esitmator with limelight data (vision part)
-                poseEstimator.addVisionMeasurement(
-                    camera.getBotPoseBlue().toPose2d(), 
-                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
-                
                 // poseEstimator.addVisionMeasurement(
                 //     camera.getBotPoseBlue().toPose2d(), 
-                //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                //     camera.getMeasurementStdDevs());
+                //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
+                
+                poseEstimator.addVisionMeasurement(
+                    camera.getBotPoseBlue().toPose2d(), 
+                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                    visionStdDevs.times(camera.getDistanceFromTarget()));
             }
         }
     }

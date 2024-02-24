@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Represents a Limelight to track AprilTags. */
 public class Camera extends Sensor4237
@@ -216,7 +217,7 @@ public class Camera extends Sensor4237
     public void writePeriodicOutputs() 
     {
         // poseForAS = toPose3d(periodicData.botPoseWPIBlue);    // variable for testing in AdvantageScope
-
+        // SmartDashboard.putNumber("Distance", getDistanceFromTarget());
         // put the pose from LL onto the Network Table so AdvantageScope can read it
         // ASTable.getEntry("robotpose").setDoubleArray(Camera.toQuaternions(poseForAS));
     }
