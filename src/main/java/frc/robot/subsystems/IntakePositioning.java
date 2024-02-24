@@ -48,7 +48,7 @@ public class IntakePositioning extends Subsystem4237
         // INPUTS
         private boolean isIntakeUp;
         private boolean isIntakeDown;
-        private double pressure;
+        // private double pressure;
 
         // OUTPUTS
         private IntakePosition intakePosition = IntakePosition.kUp;
@@ -66,7 +66,7 @@ public class IntakePositioning extends Subsystem4237
     private final DigitalInput intakeDownSensor = new DigitalInput(Constants.IntakePositioning.INTAKE_DOWN_SENSOR);
     private final DigitalInput intakeUpSensor = new DigitalInput(Constants.IntakePositioning.INTAKE_UP_SENSOR);
 
-    private final PneumaticHub pneumaticHub = new PneumaticHub(Constants.IntakePositioning.PCM_PORT);
+    // private final PneumaticHub pneumaticHub = new PneumaticHub(Constants.IntakePositioning.PCM_PORT);
 
     /** 
      * Creates a new IntakePositioning. 
@@ -79,15 +79,15 @@ public class IntakePositioning extends Subsystem4237
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public void configPneumaticHub()
-    {
+    // public void configPneumaticHub()
+    // {
 
-    }
+    // }
 
-    public double getPressure()
-    {
-        return periodicData.pressure;
-    }
+    // public double getPressure()
+    // {
+    //     return periodicData.pressure;
+    // }
 
     public void moveUp()
     {
@@ -134,7 +134,7 @@ public class IntakePositioning extends Subsystem4237
     {
         periodicData.isIntakeUp = !intakeUpSensor.get();
         periodicData.isIntakeDown = !intakeDownSensor.get();
-        periodicData.pressure = pneumaticHub.getPressure(0);
+        // periodicData.pressure = pneumaticHub.getPressure(0);
     }
 
     @Override

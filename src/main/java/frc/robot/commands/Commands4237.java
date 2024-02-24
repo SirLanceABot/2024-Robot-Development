@@ -99,7 +99,7 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE)
+            robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)
             .alongWith(
                 // robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
@@ -138,7 +138,7 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE)
+            robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)
             .alongWith(
                 robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
@@ -170,7 +170,7 @@ public final class Commands4237
             return
             robotContainer.candle.setYellowCommand()
             .alongWith(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE),
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE),
                 robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.index.ejectCommand(),
                 robotContainer.shuttle.moveDownwardCommand(),
@@ -200,7 +200,7 @@ public final class Commands4237
             robotContainer.candle.setYellowCommand()
             .alongWith(
                 robotContainer.flywheel.intakeCommand(),
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.INTAKE_FROM_SOURCE_ANGLE))
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.INTAKE_FROM_SOURCE_ANGLE))
                 // robotContainer.index.intakeCommand(),
                 // robotContainer.shuttle.moveDownwardCommand())
             .andThen(
@@ -208,7 +208,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE)))
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)))
             .andThen(
                 robotContainer.candle.setGreenCommand())   
             .withName("Intake From Source");
@@ -280,7 +280,7 @@ public final class Commands4237
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
                     robotContainer.index.stopCommand(),
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE)))
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)))
             .andThen(
                 robotContainer.candle.setRedCommand())
             .withName("Shoot");
@@ -325,7 +325,7 @@ public final class Commands4237
             return
             Commands.waitSeconds(1.0)
             .deadlineWith(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.SHOOT_TO_AMP_ANGLE),
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.SHOOT_TO_AMP_ANGLE),
                 getFlywheelToSpeedCommand(17.0),
                 robotContainer.ampAssist.extendCommand()) 
             .andThen(
@@ -336,7 +336,7 @@ public final class Commands4237
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
                     robotContainer.index.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.pivotConstants.DEFAULT_ANGLE))) 
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE))) 
             .withName("Shoot To Amp");
         }
         else

@@ -6,14 +6,17 @@ package frc.robot;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shuttle;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.Candle4237;
@@ -170,6 +173,8 @@ public class RobotContainer
 
         configLog();
         registerNamedCommands();
+        configCompressor();
+        // compressorBinding();
     }
 
     public void configLog()
@@ -189,6 +194,17 @@ public class RobotContainer
     {
         // compressor.enableAnalog(60.0, 90.0);
         pneumaticHub.enableCompressorAnalog(60.0, 90.0);
+    }
+
+    public void compressorBinding()
+    {
+        BooleanSupplier pressureSupplier = () -> (DriverStation.getMatchTime() < 30.0 && DriverStation.isTeleopEnabled());
+        Trigger pressureTrigger = new Trigger(pressureSupplier);
+
+        if(compressor != null && pneumaticHub != null)
+        {
+            pressureTrigger.onTrue(Commands.runOnce(() -> pneumaticHub.enableCompressorAnalog(30.0, 60.0)));
+        }
     }
 
     public void setAlliance(Optional<Alliance> alliance)

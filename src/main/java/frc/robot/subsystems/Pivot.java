@@ -86,8 +86,8 @@ public class Pivot extends Subsystem4237
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
     private final PeriodicData periodicData = new PeriodicData();
-    public final PivotConstants pivotConstants = new PivotConstants();
-    private PIDController PIDcontroller = new PIDController(pivotConstants.kP, pivotConstants.kI, pivotConstants.kD);
+    public final PivotConstants constants = new PivotConstants();
+    private PIDController PIDcontroller = new PIDController(constants.kP, constants.kI, constants.kD);
     private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
 
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
@@ -140,11 +140,11 @@ public class Pivot extends Subsystem4237
         // motor.setupPositionConversionFactor(1.0 / 360.0);
         motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
 
-        motor.setupPIDController(pivotConstants.slotId, pivotConstants.kP, pivotConstants.kI, pivotConstants.kD);
+        motor.setupPIDController(constants.slotId, constants.kP, constants.kI, constants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(pivotConstants.FORWARD_SOFT_LIMIT, true);
-        motor.setupReverseSoftLimit(pivotConstants.REVERSE_SOFT_LIMIT, true);
+        motor.setupForwardSoftLimit(constants.FORWARD_SOFT_LIMIT, true);
+        motor.setupReverseSoftLimit(constants.REVERSE_SOFT_LIMIT, true);
 
         //Hard Limits
         motor.setupForwardHardLimitSwitch(true, true);
@@ -177,12 +177,12 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        motor.set(pivotConstants.MOTOR_SPEED);
+        motor.set(constants.MOTOR_SPEED);
     }
 
     public void moveDown()
     {
-        motor.set(-pivotConstants.MOTOR_SPEED);
+        motor.set(-constants.MOTOR_SPEED);
     }
 
     public void stop()
@@ -210,7 +210,7 @@ public class Pivot extends Subsystem4237
     private void setAngle(double degrees)
     { 
         //setAngle using CANcoder
-        if(degrees >= pivotConstants.MINIMUM_PIVOT_ANGLE && degrees <= pivotConstants.MAX_PIVOT_ANGLE)
+        if(degrees >= constants.MINIMUM_PIVOT_ANGLE && degrees <= constants.MAX_PIVOT_ANGLE)
         {
             motor.setControlPosition(degrees / 360.0);
         }

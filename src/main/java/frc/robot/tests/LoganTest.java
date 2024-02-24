@@ -88,14 +88,20 @@ public class LoganTest implements Test
         //MOTORS
         if(joystick.getRawButton(1)) // A button
         {
-            Commands4237.intakeFromFloorFront().schedule();
+            // Commands4237.intakeFromFloorFront().schedule();
         //     // configAButton();
-        //     intakePositioning.moveUp();
-        //     System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
+            intakePositioning.moveUp();
+            System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
         }
         else if(joystick.getRawButton(2))
         {
-            Commands4237.logansEpicShootingCommand().schedule();
+            // Commands4237.logansEpicShootingCommand().schedule();
+            intakePositioning.moveDown();
+            System.out.println("Intake is Down: " + intakePositioning.isIntakeDown());
+        }
+        else if(joystick.getRawButtonPressed(3))
+        {
+            intakePositioning.floating();
         }
         // else if(joystick.getRawButton(2))
         // {
