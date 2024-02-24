@@ -345,4 +345,29 @@ public final class Commands4237
             return Commands.none();
         }
     }
+
+    public static Command autonomousShootCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null)
+        {
+            return
+            Commands.waitSeconds(1.0)
+            .deadlineWith(
+                robotContainer.flywheel.shootCommand(() -> 80.0),
+                shootToSpeakerAngleCommand())
+            .andThen(
+                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
+            .andThen(
+                Commands.waitSeconds(1.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.index.stopCommand(),
+                    robotContainer.pivot.setAngleCommand(32.0)));
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 }
