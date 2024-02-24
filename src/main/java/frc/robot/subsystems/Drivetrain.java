@@ -440,6 +440,11 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters();
     }
 
+    public Pose2d getEstimatedPose()
+    {
+        return poseEstimator.getEstimatedPose();
+    }
+
     public BooleanSupplier isAligned()
     {
         return () -> 
