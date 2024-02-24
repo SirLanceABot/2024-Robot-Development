@@ -173,8 +173,12 @@ public class RobotContainer
 
         configLog();
         registerNamedCommands();
-        configCompressor();
-        // compressorBinding();
+        if(compressor != null && pneumaticHub != null)
+        {
+            configCompressor();
+            // compressorBinding();
+        }
+        
     }
 
     public void configLog()
@@ -265,7 +269,7 @@ public class RobotContainer
         NamedCommands.registerCommand("shoot", Commands.print("ShootCommand"));
 
         NamedCommands.registerCommand("Intake From Floor Front", Commands4237.intakeFromFloorFront());
-        NamedCommands.registerCommand("Autonomous Shoot Command", Commands4237.autonomousShootCommand());
+        // NamedCommands.registerCommand("Autonomous Shoot Command", Commands4237.autonomousShootCommand());
     }
 }
 

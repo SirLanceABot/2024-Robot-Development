@@ -99,7 +99,7 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)
+            robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
             .alongWith(
                 robotContainer.intakePositioning.moveDownCommand(),
                 robotContainer.shuttle.moveUpwardCommand(),
@@ -133,166 +133,166 @@ public final class Commands4237
         }
     }
 
-    public static Command intakeFromFloorBack()
-    {
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
-        {
-            return
-            // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)
-            .alongWith(
-                robotContainer.intakePositioning.moveDownCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand(),
-                robotContainer.intake.pickupBackCommand())
-            .andThen(
-                robotContainer.intakePositioning.floatingCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.intake.stopCommand()
-                .alongWith(
-                    robotContainer.intakePositioning.moveUpCommand(),
-                    robotContainer.shuttle.stopCommand(),
-                    robotContainer.index.stopCommand()))
-            //     robotContainer.candle.setGreenCommand())
-            .withName("Intake From Floor Back");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command intakeFromFloorBack()
+    // {
+    //     if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+    //     {
+    //         return
+    //         // robotContainer.candle.setYellowCommand()
+    //         robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+    //         .alongWith(
+    //             robotContainer.intakePositioning.moveDownCommand(),
+    //             robotContainer.shuttle.moveUpwardCommand(),
+    //             robotContainer.index.acceptNoteFromShuttleCommand(),
+    //             robotContainer.intake.pickupBackCommand())
+    //         .andThen(
+    //             robotContainer.intakePositioning.floatingCommand())
+    //         .andThen(
+    //             Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+    //         .andThen(
+    //             robotContainer.intake.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.intakePositioning.moveUpCommand(),
+    //                 robotContainer.shuttle.stopCommand(),
+    //                 robotContainer.index.stopCommand()))
+    //         //     robotContainer.candle.setGreenCommand())
+    //         .withName("Intake From Floor Back");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command ejectNote()
-    {
-        if(robotContainer.index != null && robotContainer.shuttle != null && robotContainer.intake != null && robotContainer.intakePositioning != null)
-        {
-            return
-            robotContainer.candle.setYellowCommand()
-            .alongWith(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE),
-                robotContainer.intakePositioning.moveDownCommand(),
-                robotContainer.index.ejectCommand(),
-                robotContainer.shuttle.moveDownwardCommand(),
-                robotContainer.intake.ejectCommand())
-            .andThen(
-                Commands.waitSeconds(5.0))
-            .andThen(
-                robotContainer.index.stopCommand()
-                .alongWith(
-                    robotContainer.shuttle.stopCommand(),
-                    robotContainer.intake.stopCommand(),
-                    robotContainer.intakePositioning.moveUpCommand()))
-            .withName("Eject Note");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command ejectNote()
+    // {
+    //     if(robotContainer.index != null && robotContainer.shuttle != null && robotContainer.intake != null && robotContainer.intakePositioning != null)
+    //     {
+    //         return
+    //         robotContainer.candle.setYellowCommand()
+    //         .alongWith(
+    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+    //             robotContainer.intakePositioning.moveDownCommand(),
+    //             robotContainer.index.ejectCommand(),
+    //             robotContainer.shuttle.moveDownwardCommand(),
+    //             robotContainer.intake.ejectCommand())
+    //         .andThen(
+    //             Commands.waitSeconds(5.0))
+    //         .andThen(
+    //             robotContainer.index.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.shuttle.stopCommand(),
+    //                 robotContainer.intake.stopCommand(),
+    //                 robotContainer.intakePositioning.moveUpCommand()))
+    //         .withName("Eject Note");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command intakeFromSource()
-    {
+    // public static Command intakeFromSource()
+    // {
         
-        if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
-        { 
-            return
-            robotContainer.candle.setYellowCommand()
-            .alongWith(
-                robotContainer.flywheel.intakeCommand(),
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.INTAKE_FROM_SOURCE_ANGLE))
-                // robotContainer.index.intakeCommand(),
-                // robotContainer.shuttle.moveDownwardCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
-            .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)))
-            .andThen(
-                robotContainer.candle.setGreenCommand())   
-            .withName("Intake From Source");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    //     if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
+    //     { 
+    //         return
+    //         robotContainer.candle.setYellowCommand()
+    //         .alongWith(
+    //             robotContainer.flywheel.intakeCommand(),
+    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE))
+    //             // robotContainer.index.intakeCommand(),
+    //             // robotContainer.shuttle.moveDownwardCommand())
+    //         .andThen(
+    //             Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+    //         .andThen(
+    //             robotContainer.flywheel.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
+    //         .andThen(
+    //             robotContainer.candle.setGreenCommand())   
+    //         .withName("Intake From Source");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command getFlywheelToSpeedCommand(double speed)
-    {
-        if(robotContainer.flywheel != null && robotContainer.candle != null)
-        {
-            return
-            robotContainer.candle.setBlueCommand()
-            .alongWith(
-                robotContainer.flywheel.shootCommand(() -> speed))
-            .withName("Get Flywheel To Speed");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command getFlywheelToSpeedCommand(double speed)
+    // {
+    //     if(robotContainer.flywheel != null && robotContainer.candle != null)
+    //     {
+    //         return
+    //         robotContainer.candle.setBlueCommand()
+    //         .alongWith(
+    //             robotContainer.flywheel.shootCommand(() -> speed))
+    //         .withName("Get Flywheel To Speed");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command shootToSpeakerAngleCommand()
-    {
-        double distance, angle = 0.0;
-        if(robotContainer.isBlueAlliance)
-        {
-            distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
-        }
-        else
-        {
-            distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
-        }
+    // public static Command shootToSpeakerAngleCommand()
+    // {
+    //     double distance, angle = 0.0;
+    //     if(robotContainer.isBlueAlliance)
+    //     {
+    //         distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
+    //     }
+    //     else
+    //     {
+    //         distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
+    //     }
 
-        // distance = (Math.round((distance * 39.37 / 12.0)));
-        distance = distance * 3.28; // meters to feet
-        angle = robotContainer.pivot.calculateAngleFromDistance(distance);
+    //     // distance = (Math.round((distance * 39.37 / 12.0)));
+    //     distance = distance * 3.28; // meters to feet
+    //     angle = robotContainer.pivot.calculateAngleFromDistance(distance);
 
-        if(robotContainer.drivetrain != null && robotContainer.pivot != null)
-        {
-            return
-            robotContainer.pivot.setAngleCommand(angle)
-            .withName("Move Pivot");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    //     if(robotContainer.drivetrain != null && robotContainer.pivot != null)
+    //     {
+    //         return
+    //         robotContainer.pivot.setAngleCommand(angle)
+    //         .withName("Move Pivot");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command shootCommand(DoubleSupplier rotateAngle)
-    {
-        if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null && robotContainer.candle != null)
-        {
-            return 
-            robotContainer.candle.setPurpleCommand()
-            .alongWith(
-                shootToSpeakerAngleCommand(),
-                robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
-            .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(() -> 50.0))
-            .andThen(
-                Commands.waitSeconds(1.0))
-            .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand(),
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE)))
-            .andThen(
-                robotContainer.candle.setRedCommand())
-            .withName("Shoot");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command shootCommand(DoubleSupplier rotateAngle)
+    // {
+    //     if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null && robotContainer.candle != null)
+    //     {
+    //         return 
+    //         robotContainer.candle.setPurpleCommand()
+    //         .alongWith(
+    //             shootToSpeakerAngleCommand(),
+    //             robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
+    //         .andThen(
+    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 50.0))
+    //         .andThen(
+    //             Commands.waitSeconds(1.0))
+    //         .andThen(
+    //             robotContainer.flywheel.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.index.stopCommand(),
+    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
+    //         .andThen(
+    //             robotContainer.candle.setRedCommand())
+    //         .withName("Shoot");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command logansEpicShootingCommand()
+    public static Command shootFromSubWooferCommand()
     {
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
@@ -310,8 +310,8 @@ public final class Commands4237
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
-                    robotContainer.index.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(32.0)));
+                    robotContainer.index.stopCommand()));
+                    // robotContainer.pivot.setAngleCommand(32.0)));
         }
         else
         {
@@ -319,55 +319,55 @@ public final class Commands4237
         }
     }
 
-    public static Command shootToAmpCommand()
-    {
-        if(robotContainer.pivot != null && robotContainer.flywheel != null && robotContainer.index != null)
-        {
-            return
-            Commands.waitSeconds(1.0)
-            .deadlineWith(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.SHOOT_TO_AMP_ANGLE),
-                getFlywheelToSpeedCommand(17.0),
-                robotContainer.ampAssist.extendCommand()) 
-            .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0)) //TODO: Check speed
-            .andThen(
-                Commands.waitSeconds(1.0))
-            .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.constants.DEFAULT_ANGLE))) 
-            .withName("Shoot To Amp");
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command shootToAmpCommand()
+    // {
+    //     if(robotContainer.pivot != null && robotContainer.flywheel != null && robotContainer.index != null)
+    //     {
+    //         return
+    //         Commands.waitSeconds(1.0)
+    //         .deadlineWith(
+    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.SHOOT_TO_AMP_ANGLE),
+    //             getFlywheelToSpeedCommand(17.0),
+    //             robotContainer.ampAssist.extendCommand()) 
+    //         .andThen(
+    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0)) //TODO: Check speed
+    //         .andThen(
+    //             Commands.waitSeconds(1.0))
+    //         .andThen(
+    //             robotContainer.flywheel.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.index.stopCommand(),
+    //                 robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))) 
+    //         .withName("Shoot To Amp");
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 
-    public static Command autonomousShootCommand()
-    {
-        if(robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null)
-        {
-            return
-            Commands.waitSeconds(1.0)
-            .deadlineWith(
-                robotContainer.flywheel.shootCommand(() -> 80.0),
-                shootToSpeakerAngleCommand())
-            .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
-            .andThen(
-                Commands.waitSeconds(1.0))
-            .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.index.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(32.0)));
-        }
-        else
-        {
-            return Commands.none();
-        }
-    }
+    // public static Command autonomousShootCommand()
+    // {
+    //     if(robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null)
+    //     {
+    //         return
+    //         Commands.waitSeconds(1.0)
+    //         .deadlineWith(
+    //             robotContainer.flywheel.shootCommand(() -> 80.0),
+    //             shootToSpeakerAngleCommand())
+    //         .andThen(
+    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
+    //         .andThen(
+    //             Commands.waitSeconds(1.0))
+    //         .andThen(
+    //             robotContainer.flywheel.stopCommand()
+    //             .alongWith(
+    //                 robotContainer.index.stopCommand(),
+    //                 robotContainer.pivot.setAngleCommand(32.0)));
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
 }

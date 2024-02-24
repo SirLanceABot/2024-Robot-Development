@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Commands4237;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheel;
 // import frc.robot.subsystems.Shooter;
@@ -41,9 +42,9 @@ public class OwenTest implements Test
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    // private final Flywheel flywheel;
-    // private final Index index;
-    // private final Pivot pivot;
+    private final Flywheel flywheel;
+    private final Index index;
+    private final Pivot pivot;
     private final Intake intake;
     private final Shuttle shuttle;
     // private final Climb climb;
@@ -62,9 +63,9 @@ public class OwenTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        // flywheel = this.robotContainer.flywheel;
-        // index = this.robotContainer.index;
-        // pivot = this.robotContainer.pivot;
+        flywheel = this.robotContainer.flywheel;
+        index = this.robotContainer.index;
+        pivot = this.robotContainer.pivot;
         intake = this.robotContainer.intake;
         shuttle = this.robotContainer.shuttle;
         // climb = this.robotContainer.climb;
@@ -112,19 +113,24 @@ public class OwenTest implements Test
             // flywheel.stop();
         // }
 
+        if(joystick.getRawButton(1))
+        {
+            Commands4237.intakeFromFloorFront().schedule();
+        }
         if(joystick.getRawButton(2))
         {
             // index.feedNoteToFlywheel(17.0);
-            intake.pickupBack();
-            shuttle.moveUpward();
+            // intake.pickupBack();
+            // shuttle.moveUpward();
+            Commands4237.shootFromSubWooferCommand().schedule();
         }
-        else
-        {
-        // //     // flywheel.stop();
-            // index.stop();
-            intake.stop();
-            shuttle.stop();
-        }
+        // else
+        // {
+        // // //     // flywheel.stop();
+        //     // index.stop();
+        //     intake.stop();
+        //     shuttle.stop();
+        // }
 
         // if(joystick.getRawButton(3))
         // {

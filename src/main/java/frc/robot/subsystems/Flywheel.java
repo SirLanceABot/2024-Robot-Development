@@ -127,6 +127,7 @@ public class Flywheel extends Subsystem4237
         motor.setupFactoryDefaults();
         motor.setupInverted(true);
         motor.setupCoastMode();
+        motor.setSafetyEnabled(false);
         motor.setupPIDController(0, kP, kI, kD, kS, kV);
         // motor.setupPIDController(0, periodicData.kP, periodicData.kI, periodicData.kD);
         // motor.setupVelocityConversionFactor(2 * Math.PI * ROLLER_RADIUS * (1.0 / 60.0) * 0.833); // converts rpm to ft/s

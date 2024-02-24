@@ -95,7 +95,7 @@ public class LoganTest implements Test
         }
         else if(joystick.getRawButton(2))
         {
-            Commands4237.logansEpicShootingCommand().schedule();
+            Commands4237.shootFromSubWooferCommand().schedule();
         }
         // else if(joystick.getRawButton(2))
         // {

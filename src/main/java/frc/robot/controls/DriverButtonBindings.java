@@ -109,7 +109,7 @@ public class DriverButtonBindings
         Trigger aButtonTrigger = new Trigger(aButton);
 
         // Shooting after flywheel up to speed
-        aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
+        // aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
     }
 
     private void configBButton()
@@ -120,6 +120,11 @@ public class DriverButtonBindings
 
         // Picking up from the front
         bButtonTrigger.onTrue(Commands4237.intakeFromFloorFront());
+        // if(bButton.getAsBoolean())
+        // {
+        //     System.out.println("b button pressed");
+        //     Commands4237.intakeFromFloorFront();
+        // }
     }
 
     private void configXButton()
@@ -141,7 +146,7 @@ public class DriverButtonBindings
         BooleanSupplier yButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
+        // yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configLeftBumper()
@@ -151,7 +156,9 @@ public class DriverButtonBindings
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
         if(true)
-        {}
+        {
+            leftBumperTrigger.onTrue(Commands4237.shootFromSubWooferCommand());
+        }
     }
 
     private void configRightBumper()

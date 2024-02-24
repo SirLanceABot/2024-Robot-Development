@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 // final
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -58,7 +60,7 @@ public class Pivot extends Subsystem4237
         private boolean isBadAngle = false;
    }
 
-    public class PivotConstants
+    public class ClassConstants
     {
         //for PID
         private double kP = 140.0;
@@ -72,10 +74,13 @@ public class Pivot extends Subsystem4237
         private final double REVERSE_SOFT_LIMIT = (27.0 / 360.0); //22 degrees is the bottom
         private final double MAX_PIVOT_ANGLE = 61.0;
         private final double MINIMUM_PIVOT_ANGLE = 27.0;
+        private final double MAGNET_OFFSET = -0.63014367;
+
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 50.0;   //TODO: Check angle
         public final double SHOOT_TO_AMP_ANGLE = 59.5;
+        public final double ANGLE_TOLERANCE = 0.1;
 
         //for manually moving Pivot
         private final double MOTOR_SPEED = 0.1;
@@ -86,8 +91,8 @@ public class Pivot extends Subsystem4237
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
     private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
     private final PeriodicData periodicData = new PeriodicData();
-    public final PivotConstants constants = new PivotConstants();
-    private PIDController PIDcontroller = new PIDController(constants.kP, constants.kI, constants.kD);
+    public final ClassConstants classConstants = new ClassConstants();
+    private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
     private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
 
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
@@ -121,12 +126,22 @@ public class Pivot extends Subsystem4237
 
     private void configCANcoder()
     {
-        CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
-        pivotAngle.getConfigurator().refresh(canCoderConfig);
-        canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-        canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canCoderConfig.MagnetSensor.MagnetOffset = -0.63079956;
-        pivotAngle.getConfigurator().apply(canCoderConfig);
+        CANcoderConfiguration canCoderConfigs = new CANcoderConfiguration();
+        pivotAngle.getConfigurator().apply(canCoderConfigs);
+
+        MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
+        magnetSensorConfigs.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1);
+        magnetSensorConfigs.withMagnetOffset(classConstants.MAGNET_OFFSET);
+        magnetSensorConfigs.withSensorDirection(SensorDirectionValue.Clockwise_Positive);
+
+        canCoderConfigs.withMagnetSensor(magnetSensorConfigs);
+
+        pivotAngle.getConfigurator().apply(canCoderConfigs);
+        // pivotAngle.getConfigurator().refresh(canCoderConfig);
+        // canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+        // canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+        // canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
+        // pivotAngle.getConfigurator().apply(canCoderConfig);
 
         pivotAngle.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble());
     }
@@ -139,12 +154,13 @@ public class Pivot extends Subsystem4237
         motor.setupBrakeMode();
         // motor.setupPositionConversionFactor(1.0 / 360.0);
         motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
+        motor.setSafetyEnabled(false);
 
-        motor.setupPIDController(constants.slotId, constants.kP, constants.kI, constants.kD);
+        motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(constants.FORWARD_SOFT_LIMIT, true);
-        motor.setupReverseSoftLimit(constants.REVERSE_SOFT_LIMIT, true);
+        motor.setupForwardSoftLimit(classConstants.FORWARD_SOFT_LIMIT, true);
+        motor.setupReverseSoftLimit(classConstants.REVERSE_SOFT_LIMIT, true);
 
         //Hard Limits
         motor.setupForwardHardLimitSwitch(true, true);
@@ -177,12 +193,12 @@ public class Pivot extends Subsystem4237
 
     public void moveUp()
     {
-        motor.set(constants.MOTOR_SPEED);
+        motor.set(classConstants.MOTOR_SPEED);
     }
 
     public void moveDown()
     {
-        motor.set(-constants.MOTOR_SPEED);
+        motor.set(-classConstants.MOTOR_SPEED);
     }
 
     public void stop()
@@ -210,7 +226,7 @@ public class Pivot extends Subsystem4237
     private void setAngle(double degrees)
     { 
         //setAngle using CANcoder
-        if(degrees >= constants.MINIMUM_PIVOT_ANGLE && degrees <= constants.MAX_PIVOT_ANGLE)
+        if(degrees >= classConstants.MINIMUM_PIVOT_ANGLE && degrees <= classConstants.MAX_PIVOT_ANGLE)
         {
             motor.setControlPosition(degrees / 360.0);
         }
@@ -246,6 +262,23 @@ public class Pivot extends Subsystem4237
         // {
         //     stopMotor();
         // }
+    }
+
+    public BooleanSupplier isAtAngle(double targetAngle)
+    {
+        return () ->
+        {
+            boolean isAtAngle;
+            if(getCANCoderAngle() > targetAngle - classConstants.ANGLE_TOLERANCE && getCANCoderAngle() < targetAngle + classConstants.ANGLE_TOLERANCE)
+            {
+                isAtAngle = true;
+            }
+            else
+            {
+                isAtAngle = false;
+            }
+            return isAtAngle;
+        };
     }
 
     /**

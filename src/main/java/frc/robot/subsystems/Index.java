@@ -99,6 +99,7 @@ public class Index extends Subsystem4237
         motor.setupCoastMode();
         motor.setupFactoryDefaults();
         motor.setupInverted(false);
+        motor.setSafetyEnabled(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
         motor.setupPIDController(0, kP, kI, kD, kS, kD);
@@ -160,6 +161,8 @@ public class Index extends Subsystem4237
 
     public Command acceptNoteFromShuttleCommand()
     {
+        // return Commands.runOnce(() -> motor.setVoltage(0.2 * Constants.END_OF_MATCH_BATTERY_VOLTAGE), this).withName("Accept Note From Shuttle");
+        // return Commands.runOnce(() -> motor.set(0.9), this).withName("Accept Note From Shuttle");
         return Commands.runOnce(() -> motor.setControlVelocity(5.0), this).withName("Accept Note From Shuttle");
     }
 
