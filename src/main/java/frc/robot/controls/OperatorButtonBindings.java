@@ -125,7 +125,7 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        bButtonTrigger.onTrue(Commands4237.podiumShootCommand());
+        bButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
     }
 
     private void configXButton()
