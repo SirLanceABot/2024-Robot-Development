@@ -228,17 +228,17 @@ public final class Commands4237
     // public static Command getFlywheelToSpeedCommand(double speed)
     // {
     //     if(robotContainer.flywheel != null && robotContainer.candle != null)
-    //     {
+        //     {
     //         return
-    //         robotContainer.candle.setBlueCommand()
-    //         .alongWith(
-    //             robotContainer.flywheel.shootCommand(() -> speed))
-    //         .withName("Get Flywheel To Speed");
-    //     }
+            //         robotContainer.candle.setBlueCommand()
+            //         .alongWith(
+                //             robotContainer.flywheel.shootCommand(() -> speed))
+            //         .withName("Get Flywheel To Speed");
+        //     }
     //     else
-    //     {
+        //     {
     //         return Commands.none();
-    //     }
+        //     }
     // }
 
     // public static Command shootToSpeakerAngleCommand()
@@ -325,7 +325,7 @@ public final class Commands4237
         }
     }
 
-    public static Command samsEpicShootCommand()
+    public static Command podiumShootCommand()
     {
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
@@ -359,25 +359,25 @@ public final class Commands4237
     //     {
     //         return
     //         Commands.waitSeconds(1.0)
-    //         .deadlineWith(
-    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.SHOOT_TO_AMP_ANGLE),
-    //             getFlywheelToSpeedCommand(17.0),
-    //             robotContainer.ampAssist.extendCommand()) 
-    //         .andThen(
-    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0)) //TODO: Check speed
-    //         .andThen(
-    //             Commands.waitSeconds(1.0))
-    //         .andThen(
-    //             robotContainer.flywheel.stopCommand()
-    //             .alongWith(
-    //                 robotContainer.index.stopCommand(),
-    //                 robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))) 
-    //         .withName("Shoot To Amp");
-    //     }
+            //         .deadlineWith(
+                //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.SHOOT_TO_AMP_ANGLE),
+                //             getFlywheelToSpeedCommand(17.0),
+                //             robotContainer.ampAssist.extendCommand()) 
+            //         .andThen(
+                //             robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0)) //TODO: Check speed
+            //         .andThen(
+                //             Commands.waitSeconds(1.0))
+            //         .andThen(
+                //             robotContainer.flywheel.stopCommand()
+                //             .alongWith(
+                    //                 robotContainer.index.stopCommand(),
+                    //                 robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))) 
+            //         .withName("Shoot To Amp");
+        //     }
     //     else
-    //     {
+        //     {
     //         return Commands.none();
-    //     }
+        //     }
     // }
 
     // public static Command autonomousShootCommand()

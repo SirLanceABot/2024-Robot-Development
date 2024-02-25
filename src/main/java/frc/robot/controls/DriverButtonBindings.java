@@ -110,7 +110,6 @@ public class DriverButtonBindings
 
         // Shooting after flywheel up to speed
         // aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
-        aButtonTrigger.onTrue(Commands4237.samsEpicShootCommand());
     }
 
     private void configBButton()
@@ -120,7 +119,6 @@ public class DriverButtonBindings
         Trigger bButtonTrigger = new Trigger(bButton);
 
         // Picking up from the front
-        bButtonTrigger.onTrue(Commands4237.intakeFromFloorFront());
         // if(bButton.getAsBoolean())
         // {
         //     System.out.println("b button pressed");
@@ -147,7 +145,6 @@ public class DriverButtonBindings
         BooleanSupplier yButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configLeftBumper()
@@ -156,10 +153,7 @@ public class DriverButtonBindings
         BooleanSupplier leftBumper = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        if(true)
-        {
-            leftBumperTrigger.onTrue(Commands4237.shootFromSubWooferCommand());
-        }
+        leftBumperTrigger.onTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configRightBumper()
@@ -170,7 +164,7 @@ public class DriverButtonBindings
 
         if(robotContainer.drivetrain != null)
         {
-            rightBumperTrigger.toggleOnTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.5));
+            rightBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorFront());
             // rightBumperTrigger.onFalse(Commands.runOnce(() -> scaleFactor = 1.0));
         }
     }
@@ -221,10 +215,7 @@ public class DriverButtonBindings
         BooleanSupplier leftTrigger = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        if(true)
-        {
-            // leftTriggerTrigger.onTrue(robotContainer.pivot.moveUp());
-        }
+        leftTriggerTrigger.onTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.5));
     }
 
     private void configRightTrigger()
@@ -233,8 +224,7 @@ public class DriverButtonBindings
         BooleanSupplier rightTrigger = robotContainer.driverController.getButtonSupplier(Xbox.Button.kRightTrigger);
         Trigger rightTriggerTrigger = new Trigger(rightTrigger);
 
-        if(true)
-        {}
+        rightTriggerTrigger.onTrue(Commands4237.intakeFromSource());
     }
 
     private void configDpadUp()
@@ -243,10 +233,6 @@ public class DriverButtonBindings
         BooleanSupplier dPadUp = robotContainer.driverController.getDpadSupplier(Xbox.Dpad.kUp);
         Trigger dPadUpTrigger = new Trigger(dPadUp);
 
-        if(robotContainer.intakePositioning != null)
-        {
-            dPadUpTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
-        }
     }
 
     private void configRumble()

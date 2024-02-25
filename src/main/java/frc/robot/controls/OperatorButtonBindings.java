@@ -102,6 +102,7 @@ public class OperatorButtonBindings
             configLeftTriggerAndDpadDown();
             configLeftTriggerAndDpadUp();
             configLeftTriggerAndAButton();
+            configLeftTriggerAndYButton();
             configRumble();
             configDefaultCommands();
         }
@@ -115,7 +116,7 @@ public class OperatorButtonBindings
         BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        // aButtonTrigger.onTrue(Commands4237.shootToAmpCommand());
+        // aButtonTrigger.onTrue(Commands4237.shootCommand());
     }
 
     private void configBButton()
@@ -124,7 +125,7 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        // bButtonTrigger.onTrue(Commands4237.ejectNote());
+        bButtonTrigger.onTrue(Commands4237.podiumShootCommand());
     }
 
     private void configXButton()
@@ -142,7 +143,7 @@ public class OperatorButtonBindings
         BooleanSupplier yButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        yButtonTrigger.onTrue(Commands4237.intakeFromSource());
+        yButtonTrigger.onTrue(Commands4237.shootFromSubWooferCommand());
     }
 
     private void configLeftBumper()
@@ -330,6 +331,22 @@ public class OperatorButtonBindings
         Trigger leftTriggerAndAButtonTrigger = leftTriggerTrigger.and(aButtonTrigger);
         
         // leftTriggerAndAButtonTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(robotContainer.ampAssist.getPosition()));
+    }
+
+    private void configLeftTriggerAndYButton()
+    {
+        // Y Button
+        BooleanSupplier yButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kY);
+        Trigger yButtonTrigger = new Trigger(yButton);
+
+        //Left trigger 
+        BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
+        Trigger leftTriggerTrigger = new Trigger(leftTrigger);  
+        
+        //Left trigger and Y button combination
+        Trigger leftTriggerAndYButtonTrigger = leftTriggerTrigger.and(yButtonTrigger);
+
+        // leftTriggerAndYButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
     }
 
     private void configRumble()
