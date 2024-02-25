@@ -165,7 +165,7 @@ public class Flywheel extends Subsystem4237
     public void intake()
     {
         // periodicData.flywheelSpeed = -0.1;
-        motor.setControlVelocity(10.0);
+        motor.setControlVelocity(-10.0);
     }
 
     public void stop()

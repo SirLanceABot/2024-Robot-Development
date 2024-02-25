@@ -56,18 +56,25 @@ public class DaneTest implements Test
     {
         if(joystick.getRawButton(1))
         {
+            pivot.setAngle(50.0);
             // pivot.setAngleCommand(50.0);
-            pivot.moveUp();
+            // pivot.moveUp();
         }
         else if(joystick.getRawButton(2))
         {
+            pivot.setAngle(30.0);
             // pivot.setAngleCommand(30.0);
-            pivot.moveDown();
+            // pivot.moveDown();
         }
-        else
+        
+        if(joystick.getRawButton(3))
         {
-            pivot.stop();
+            pivot.resetRelativeEncoder();
         }
+        // else
+        // {
+        //     pivot.stop();
+        // }
     }
     
     /**

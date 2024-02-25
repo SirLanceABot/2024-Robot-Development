@@ -156,7 +156,7 @@ public class Intake extends Subsystem4237
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
+        periodicData.topIntakeSpeed = DEFAULT_SPEED + 0.1; //VOLTAGE;
         periodicData.bottomIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
     }
 

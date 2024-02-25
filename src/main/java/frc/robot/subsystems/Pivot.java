@@ -63,22 +63,23 @@ public class Pivot extends Subsystem4237
     public class ClassConstants
     {
         //for PID
-        private double kP = 140.0;
+        private double kP = 0.5; //140.0;
         private double kI = 0.0;
         private double kD = 0.0;
         // private double setPoint = 0.0;
         private int slotId = 0;
 
         //limits
-        private final double FORWARD_SOFT_LIMIT = (61.0 / 360.0); //66 degrees is the top
-        private final double REVERSE_SOFT_LIMIT = (27.0 / 360.0); //22 degrees is the bottom
-        private final double MAX_PIVOT_ANGLE = 61.0;
-        private final double MINIMUM_PIVOT_ANGLE = 27.0;
-        private final double MAGNET_OFFSET = -0.63014367;
+        private final double FORWARD_SOFT_LIMIT = 64.0; //(65.0 / 360.0); //66 degrees is the top
+        private final double REVERSE_SOFT_LIMIT = 25.0; //(27.0 / 360.0); //22 degrees is the bottom
+        private final double MAX_PIVOT_ANGLE = 65.0;
+        private final double MINIMUM_PIVOT_ANGLE = 24.0;
+        private final double MAGNET_OFFSET = -0.5538955;
+        private final double RELATIVE_ENCODER_OFFEST = 21.0;
 
 
         public final double DEFAULT_ANGLE = 32.0;
-        public final double INTAKE_FROM_SOURCE_ANGLE = 50.0;   //TODO: Check angle
+        public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
         public final double SHOOT_TO_AMP_ANGLE = 59.5;
         public final double ANGLE_TOLERANCE = 0.1;
 
@@ -112,6 +113,8 @@ public class Pivot extends Subsystem4237
         configCANcoder();
         configPivotMotor();
         configShotMap();
+
+        resetRelativeEncoder();
         // setAngleDefaultCommand();
 
         periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
@@ -153,7 +156,8 @@ public class Pivot extends Subsystem4237
         motor.setupInverted(true);
         motor.setupBrakeMode();
         // motor.setupPositionConversionFactor(1.0 / 360.0);
-        motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
+        motor.setupPositionConversionFactor(200.0 / 360.0);
+        // motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setSafetyEnabled(false);
 
         motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
@@ -191,6 +195,11 @@ public class Pivot extends Subsystem4237
 
     }
 
+    public void resetRelativeEncoder()
+    {
+        motor.setPosition(classConstants.RELATIVE_ENCODER_OFFEST);
+    }
+
     public void moveUp()
     {
         motor.set(classConstants.MOTOR_SPEED);
@@ -223,12 +232,12 @@ public class Pivot extends Subsystem4237
         return periodicData.motorEncoderRotationalPosition;
     }
     
-    private void setAngle(double degrees)
+    public void setAngle(double degrees)
     { 
         //setAngle using CANcoder
         if(degrees >= classConstants.MINIMUM_PIVOT_ANGLE && degrees <= classConstants.MAX_PIVOT_ANGLE)
         {
-            motor.setControlPosition(degrees / 360.0);
+            motor.setControlPosition(degrees);
         }
         else
         {
@@ -269,7 +278,7 @@ public class Pivot extends Subsystem4237
         return () ->
         {
             boolean isAtAngle;
-            if(getCANCoderAngle() > targetAngle - classConstants.ANGLE_TOLERANCE && getCANCoderAngle() < targetAngle + classConstants.ANGLE_TOLERANCE)
+            if(motor.getPosition() > targetAngle - classConstants.ANGLE_TOLERANCE && motor.getPosition() < targetAngle + classConstants.ANGLE_TOLERANCE)
             {
                 isAtAngle = true;
             }
@@ -351,6 +360,8 @@ public class Pivot extends Subsystem4237
         SmartDashboard.putNumber("pivotAngle.currentAngle", getCANCoderAngle());
         SmartDashboard.putNumber("pivotAngle.currentPosition", getCANCoderPosition());
         SmartDashboard.putNumber("motor.getPosition = ", periodicData.motorEncoderRotationalPosition);
+
+        // System.out.println("Motor position = " + motor.getPosition());
 
         //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller

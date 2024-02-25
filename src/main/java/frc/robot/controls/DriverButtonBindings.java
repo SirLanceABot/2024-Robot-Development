@@ -94,7 +94,7 @@ public class DriverButtonBindings
             configRightTrigger();
             configLeftStick();
             configRightStick();
-            configDpad();
+            configDpadUp();
             configRumble();
             configDefaultCommands();
         }
@@ -110,6 +110,7 @@ public class DriverButtonBindings
 
         // Shooting after flywheel up to speed
         // aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));
+        aButtonTrigger.onTrue(Commands4237.samsEpicShootCommand());
     }
 
     private void configBButton()
@@ -146,7 +147,7 @@ public class DriverButtonBindings
         BooleanSupplier yButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        // yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
+        yButtonTrigger.onTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configLeftBumper()
@@ -221,7 +222,9 @@ public class DriverButtonBindings
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
         if(true)
-        {}
+        {
+            // leftTriggerTrigger.onTrue(robotContainer.pivot.moveUp());
+        }
     }
 
     private void configRightTrigger()
@@ -234,14 +237,16 @@ public class DriverButtonBindings
         {}
     }
 
-    private void configDpad()
+    private void configDpadUp()
     {
         // Dpad down button
-        BooleanSupplier dPadDown = robotContainer.driverController.getDpadSupplier(Xbox.Dpad.kDown);
-        Trigger dPadDownTrigger = new Trigger(dPadDown);
+        BooleanSupplier dPadUp = robotContainer.driverController.getDpadSupplier(Xbox.Dpad.kUp);
+        Trigger dPadUpTrigger = new Trigger(dPadUp);
 
-        if(true)
-        {}
+        if(robotContainer.intakePositioning != null)
+        {
+            dPadUpTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
+        }
     }
 
     private void configRumble()

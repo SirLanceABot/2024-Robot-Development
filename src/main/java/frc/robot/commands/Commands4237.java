@@ -133,36 +133,36 @@ public final class Commands4237
         }
     }
 
-    // public static Command intakeFromFloorBack()
-    // {
-    //     if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
-    //     {
-    //         return
-    //         // robotContainer.candle.setYellowCommand()
-    //         robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
-    //         .alongWith(
-    //             robotContainer.intakePositioning.moveDownCommand(),
-    //             robotContainer.shuttle.moveUpwardCommand(),
-    //             robotContainer.index.acceptNoteFromShuttleCommand(),
-    //             robotContainer.intake.pickupBackCommand())
-    //         .andThen(
-    //             robotContainer.intakePositioning.floatingCommand())
-    //         .andThen(
-    //             Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
-    //         .andThen(
-    //             robotContainer.intake.stopCommand()
-    //             .alongWith(
-    //                 robotContainer.intakePositioning.moveUpCommand(),
-    //                 robotContainer.shuttle.stopCommand(),
-    //                 robotContainer.index.stopCommand()))
-    //         //     robotContainer.candle.setGreenCommand())
-    //         .withName("Intake From Floor Back");
-    //     }
-    //     else
-    //     {
-    //         return Commands.none();
-    //     }
-    // }
+    public static Command intakeFromFloorBack()
+    {
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            // robotContainer.candle.setYellowCommand()
+            robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+            .alongWith(
+                robotContainer.intakePositioning.moveDownCommand(),
+                robotContainer.shuttle.moveUpwardCommand(),
+                robotContainer.index.acceptNoteFromShuttleCommand(),
+                robotContainer.intake.pickupBackCommand())
+            .andThen(
+                robotContainer.intakePositioning.floatingCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            .andThen(
+                robotContainer.intake.stopCommand()
+                .alongWith(
+                    robotContainer.intakePositioning.moveUpCommand(),
+                    robotContainer.shuttle.stopCommand(),
+                    robotContainer.index.stopCommand()))
+            //     robotContainer.candle.setGreenCommand())
+            .withName("Intake From Floor Back");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 
     // public static Command ejectNote()
     // {
@@ -192,33 +192,38 @@ public final class Commands4237
     //     }
     // }
 
-    // public static Command intakeFromSource()
-    // {
+    public static Command intakeFromSource()
+    {
         
-    //     if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
-    //     { 
-    //         return
-    //         robotContainer.candle.setYellowCommand()
-    //         .alongWith(
-    //             robotContainer.flywheel.intakeCommand(),
-    //             robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE))
-    //             // robotContainer.index.intakeCommand(),
-    //             // robotContainer.shuttle.moveDownwardCommand())
-    //         .andThen(
-    //             Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
-    //         .andThen(
-    //             robotContainer.flywheel.stopCommand()
-    //             .alongWith(
-    //                 robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
-    //         .andThen(
-    //             robotContainer.candle.setGreenCommand())   
-    //         .withName("Intake From Source");
-    //     }
-    //     else
-    //     {
-    //         return Commands.none();
-    //     }
-    // }
+        if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
+        { 
+            return
+            // robotContainer.candle.setYellowCommand()
+            // .alongWith(
+            Commands.waitSeconds(1.0)
+            .deadlineWith(
+                robotContainer.flywheel.intakeCommand()
+                .alongWith(
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)))
+                // robotContainer.index.intakeCommand(),
+                // robotContainer.shuttle.moveDownwardCommand())
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            .andThen(
+                Commands.waitSeconds(1.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
+            // .andThen(
+                // robotContainer.candle.setGreenCommand())   
+            .withName("Intake From Source");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 
     // public static Command getFlywheelToSpeedCommand(double speed)
     // {
@@ -297,10 +302,10 @@ public final class Commands4237
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
             return
-            Commands.waitSeconds(2.0)
+            Commands.waitSeconds(1.0)
             .deadlineWith(
                 robotContainer.flywheel.shootCommand(() -> 80.0),
-                robotContainer.pivot.setAngleCommand(60.0))
+                robotContainer.pivot.setAngleCommand(65.0))
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
@@ -310,6 +315,35 @@ public final class Commands4237
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.index.stopCommand()));
+                    // robotContainer.pivot.setAngleCommand(32.0)));
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command samsEpicShootCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
+        {
+            return
+            Commands.waitSeconds(1.0)
+            .deadlineWith(
+                robotContainer.flywheel.shootCommand(() -> 60.0),
+                robotContainer.pivot.setAngleCommand(48.0))
+            .andThen(
+                Commands.print("Past wait sam doesnt like it"))
+            .andThen(
+                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
+            .andThen(
+                Commands.waitSeconds(1.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand()
+                .alongWith(
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand()));
                     // robotContainer.pivot.setAngleCommand(32.0)));
         }

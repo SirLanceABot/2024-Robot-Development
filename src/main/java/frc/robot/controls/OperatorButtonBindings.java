@@ -142,7 +142,7 @@ public class OperatorButtonBindings
         BooleanSupplier yButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        // yButtonTrigger.onTrue(Commands4237.intakeFromSource());
+        yButtonTrigger.onTrue(Commands4237.intakeFromSource());
     }
 
     private void configLeftBumper()
