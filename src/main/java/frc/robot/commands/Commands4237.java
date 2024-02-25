@@ -201,7 +201,8 @@ public final class Commands4237
             .andThen(
                 Commands.waitSeconds(3.0))
             .andThen(
-                robotContainer.flywheel.stopCommand());
+                robotContainer.flywheel.stopCommand())
+            .withName("Burp Note");
         }
         else
         {
@@ -258,33 +259,34 @@ public final class Commands4237
         //     }
     // }
 
-    // public static Command shootToSpeakerAngleCommand()
-    // {
-    //     double distance, angle = 0.0;
-    //     if(robotContainer.isBlueAlliance)
-    //     {
-    //         distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
-    //     }
-    //     else
-    //     {
-    //         distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
-    //     }
+    public static Command shootToSpeakerAngleCommand()
+    {
+        double distance, angle = 0.0;
+        // distance = (Math.round((distance * 39.37 / 12.0)));
+        
+        if(robotContainer.drivetrain != null && robotContainer.pivot != null)
+        {
+            if(robotContainer.isBlueAlliance)
+            {
+                distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
+            }
+            else
+            {
+                distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
+            }
 
-    //     // distance = (Math.round((distance * 39.37 / 12.0)));
-    //     distance = Math.round(distance * 3.28); // meters to feet
-    //     angle = robotContainer.pivot.calculateAngleFromDistance(distance);
+            distance = Math.round(distance * 3.28); // meters to feet
+            angle = robotContainer.pivot.calculateAngleFromDistance(distance);
 
-    //     if(robotContainer.drivetrain != null && robotContainer.pivot != null)
-    //     {
-    //         return
-    //         robotContainer.pivot.setAngleCommand(angle)
-    //         .withName("Move Pivot");
-    //     }
-    //     else
-    //     {
-    //         return Commands.none();
-    //     }
-    // }
+            return
+            robotContainer.pivot.setAngleCommand(angle)
+            .withName("Move Pivot");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 
     // public static Command rotateToSpeakerCommand()
     // {
@@ -292,11 +294,11 @@ public final class Commands4237
     //     {
     //         if(robotContainer.isBlueAlliance)
     //         {
-    //             return robotContainer.drivetrain.rotateToBlueSpeakerCommand();
+    //             return robotContainer.drivetrain.rotateToBlueSpeakerCommand().withName("Robot Rotate to Blue");
     //         }
     //         else
     //         {
-    //             return robotContainer.drivetrain.rotateToRedSpeakerCommand();
+    //             return robotContainer.drivetrain.rotateToRedSpeakerCommand().withName("Robot Rotate to Red");
     //         }
     //     }
     //     else
@@ -353,7 +355,8 @@ public final class Commands4237
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
                     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()));
+                    robotContainer.index.stopCommand()))
+            .withName("Subwoofer Shoot");
                     // robotContainer.pivot.setAngleCommand(32.0)));
         }
         else
@@ -381,7 +384,8 @@ public final class Commands4237
                 robotContainer.flywheel.stopCommand()
                 .alongWith(
                     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()));
+                    robotContainer.index.stopCommand()))
+            .withName("Podium Shoot");
                     // robotContainer.pivot.setAngleCommand(32.0)));
         }
         else
