@@ -170,7 +170,7 @@ public class OperatorButtonBindings
         BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
-        backButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
+        // backButtonTrigger.onTrue(Commands4237.ejectNote());
     }
 
     private void configStartButton()
@@ -179,7 +179,7 @@ public class OperatorButtonBindings
         BooleanSupplier startButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kStart);
         Trigger startButtonTrigger = new Trigger(startButton);
 
-        // startButtonTrigger.onTrue(Commands4237.ejectNote());
+        startButtonTrigger.onTrue(Commands4237.burpNoteCommand());
     }
 
     private void configLeftStick()

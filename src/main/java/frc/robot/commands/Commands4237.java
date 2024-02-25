@@ -192,6 +192,23 @@ public final class Commands4237
     //     }
     // }
 
+    public static Command burpNoteCommand()
+    {
+        if(robotContainer.flywheel != null)
+        {
+            return
+            robotContainer.flywheel.shootCommand(() -> 10.0)
+            .andThen(
+                Commands.waitSeconds(3.0))
+            .andThen(
+                robotContainer.flywheel.stopCommand());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
     public static Command intakeFromSource()
     {
         
