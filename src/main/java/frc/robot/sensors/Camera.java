@@ -58,6 +58,7 @@ public class Camera extends Sensor4237
     public static final int ROTATION_PITCH_DEGREES_INDEX = 4;
     public static final int ROTATION_YAW_DEGREES_INDEX = 5;
     public static final int TOTAL_LATENCY_INDEX = 6;
+    public static final int AVERAGE_TAG_DISTANCE_FROM_CAMERA_INDEX = 9;
     
 
     private final PeriodicData periodicData = new PeriodicData();
@@ -175,10 +176,18 @@ public class Camera extends Sensor4237
         return translation1.getDistance(translation2);
     }
 
+    /** Calculates the distance to the target with custom math. NOT the same as getDistanceFromTarget() */
     /** @return the distance between the camera and the target in meters */
-    public double getDistanceFromTarget()
+    public double calculateDistanceFromTarget()
     {
         return getDistanceBetweenPose3ds(toPose3d(periodicData.cameraPoseInTargetSpace), new Pose3d());
+    }
+
+    /** Gets the average distance to the target that the LL calculates and provides in botpose array */
+    /** @return the average distance between the camera and the target in meters */
+    public double getAverageDistanceFromTarget()
+    {
+        return periodicData.botPoseWPIBlue[AVERAGE_TAG_DISTANCE_FROM_CAMERA_INDEX];
     }
 
     // public Matrix<N3, N1> setMeasurementStdDevs()
@@ -207,8 +216,8 @@ public class Camera extends Sensor4237
     {
         periodicData.targetSize = periodicData.ta.getDouble(0.0);
         periodicData.isTargetFound = periodicData.tv.getDouble(0.0) == 1.0;
-        periodicData.botPoseWPIBlue = periodicData.botpose_wpiblue.getDoubleArray(new double[7]);
-        periodicData.botPoseWPIRed = periodicData.botpose_wpired.getDoubleArray(new double[7]);
+        periodicData.botPoseWPIBlue = periodicData.botpose_wpiblue.getDoubleArray(new double[11]);
+        periodicData.botPoseWPIRed = periodicData.botpose_wpired.getDoubleArray(new double[11]);
         periodicData.cameraPoseInTargetSpace = periodicData.camerapose_targetspace.getDoubleArray(new double[6]);
         // periodicData.measurementStdDevs = setMeasurementStdDevs();
     }

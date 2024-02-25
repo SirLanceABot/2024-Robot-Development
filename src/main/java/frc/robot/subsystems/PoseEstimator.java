@@ -111,13 +111,13 @@ public class PoseEstimator extends Subsystem4237
 
     public void configStdDevs()
     {
-        stateStdDevs.set(0, 0, 0.1);    // x (meters) - default = 0.1
-        stateStdDevs.set(1, 0, 0.1);    // y (meters) - default = 0.1
-        stateStdDevs.set(2, 0, 0.05);   // heading (radians) - default = 0.1
+        stateStdDevs.set(0, 0, 0.1);    // x (meters)           default = 0.1
+        stateStdDevs.set(1, 0, 0.1);    // y (meters)           default = 0.1
+        stateStdDevs.set(2, 0, 0.05);   // heading (radians)    default = 0.1
 
-        visionStdDevs.set(0, 0, 0.9);   // x (meters) - default = 0.9
-        visionStdDevs.set(1, 0, 0.9);   // y (meters) - default = 0.9
-        visionStdDevs.set(2, 0, 0.95);  // heading (radians) - default = 0.9
+        visionStdDevs.set(0, 0, 0.9);   // x (meters)           default = 0.9
+        visionStdDevs.set(1, 0, 0.9);   // y (meters)           default = 0.9
+        visionStdDevs.set(2, 0, 0.95);  // heading (radians)    default = 0.9
     }
     
     /** @return the estimated pose (Pose2d)*/
@@ -219,7 +219,7 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            if(camera != null && camera.isTargetFound() && camera.getDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            if(camera != null && camera.isTargetFound() && camera.calculateDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
                 // update pose esitmator with limelight data (vision part)
                 // poseEstimator.addVisionMeasurement(
@@ -229,7 +229,7 @@ public class PoseEstimator extends Subsystem4237
                 poseEstimator.addVisionMeasurement(
                     camera.getBotPoseBlue().toPose2d(), 
                     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                    visionStdDevs.times(camera.getDistanceFromTarget()));
+                    visionStdDevs.times(camera.calculateDistanceFromTarget()));
             }
         }
     }
