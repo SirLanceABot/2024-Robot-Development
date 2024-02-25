@@ -254,7 +254,7 @@ public final class Commands4237
     //     }
 
     //     // distance = (Math.round((distance * 39.37 / 12.0)));
-    //     distance = distance * 3.28; // meters to feet
+    //     distance = Math.round(distance * 3.28); // meters to feet
     //     angle = robotContainer.pivot.calculateAngleFromDistance(distance);
 
     //     if(robotContainer.drivetrain != null && robotContainer.pivot != null)
@@ -269,7 +269,26 @@ public final class Commands4237
     //     }
     // }
 
-    // public static Command shootCommand(DoubleSupplier rotateAngle)
+    // public static Command rotateToSpeakerCommand()
+    // {
+    //     if(robotContainer.drivetrain !=null)
+    //     {
+    //         if(robotContainer.isBlueAlliance)
+    //         {
+    //             return robotContainer.drivetrain.rotateToBlueSpeakerCommand();
+    //         }
+    //         else
+    //         {
+    //             return robotContainer.drivetrain.rotateToRedSpeakerCommand();
+    //         }
+    //     }
+    //     else
+    //     {
+    //         return Commands.none();
+    //     }
+    // }
+
+    // public static Command shootCommand()
     // {
     //     if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.index != null && robotContainer.flywheel != null && robotContainer.candle != null)
     //     {
@@ -277,9 +296,10 @@ public final class Commands4237
     //         robotContainer.candle.setPurpleCommand()
     //         .alongWith(
     //             shootToSpeakerAngleCommand(),
-    //             robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
+    //             rotateToSpeakerCommand())
+    //             // robotContainer.drivetrain.rotateToRedSpeakerCommand())  // need to figure out which alliance we are on
     //         .andThen(
-    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 50.0))
+    //             robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
     //         .andThen(
     //             Commands.waitSeconds(1.0))
     //         .andThen(
