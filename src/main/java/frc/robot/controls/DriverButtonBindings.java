@@ -162,7 +162,7 @@ public class DriverButtonBindings
         BooleanSupplier rightBumper = robotContainer.driverController.getButtonSupplier(Xbox.Button.kRightBumper);
         Trigger rightBumperTrigger = new Trigger(rightBumper);
 
-        if(robotContainer.drivetrain != null)
+        if(true)
         {
             rightBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorFront());
             // rightBumperTrigger.onFalse(Commands.runOnce(() -> scaleFactor = 1.0));
@@ -185,8 +185,10 @@ public class DriverButtonBindings
         BooleanSupplier startButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kStart);
         Trigger startButtonTrigger = new Trigger(startButton);
 
-        if(true)
-        {}
+        // if(robotContainer.pivot != null)
+        // {
+        //     startButtonTrigger.onTrue(robotContainer.pivot.resetAngleCommand());
+        // }
     }
 
     private void configLeftStick()

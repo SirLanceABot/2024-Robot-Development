@@ -116,7 +116,7 @@ public class OperatorButtonBindings
         BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        // aButtonTrigger.onTrue(Commands4237.shootCommand());
+        aButtonTrigger.onTrue(Commands4237.podiumShootCommand());
     }
 
     private void configBButton()
@@ -152,7 +152,11 @@ public class OperatorButtonBindings
         BooleanSupplier leftBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        leftBumperTrigger.onTrue(robotContainer.ampAssist.extendCommand());
+        if(robotContainer.ampAssist != null)
+        {
+            leftBumperTrigger.onTrue(robotContainer.ampAssist.extendCommand());
+        }
+        
     }
 
     private void configRightBumper()

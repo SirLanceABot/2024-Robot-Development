@@ -305,6 +305,11 @@ public class Pivot extends Subsystem4237
         return Commands.runOnce(() -> setAngle(angle), this).withName("Set Angle");
     }
 
+    public Command resetAngleCommand()
+    {
+        return Commands.runOnce(() -> resetRelativeEncoder(), this).withName("Reset Pivot Angle");
+    }
+
     // public Command tunePID()
     // {
     //     return Commands.runOnce(() -> motor.setupPIDController(myConstants.slotId, PIDcontroller.getP(), PIDcontroller.getI(), PIDcontroller.getD())).withName("setK's")
