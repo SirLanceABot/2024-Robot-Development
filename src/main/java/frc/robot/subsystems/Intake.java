@@ -44,14 +44,14 @@ public class Intake extends Subsystem4237
     private final class PeriodicData
     {
         // INPUTS
-        private double topIntakePosition = 0.0;
-        private double bottomIntakePosition = 0.0;
-        private double topIntakeVelocity;
-        private double bottomIntakeVelocity;
+        private double topRollerPosition = 0.0;
+        private double bottomRollerPosition = 0.0;
+        private double topRollerVelocity;
+        private double bottomRollerVelocity;
 
         // OUTPUTS
-        private double topIntakeSpeed = 0.0;
-        private double bottomIntakeSpeed = 0.0;
+        private double topRollerSpeed = 0.0;
+        private double bottomRollerSpeed = 0.0;
 
 
         // private double kP = SmartDashboard.getNumber("kP", 0.0);
@@ -124,68 +124,68 @@ public class Intake extends Subsystem4237
 
     public double getTopPosition()
     {
-        return periodicData.topIntakePosition;
+        return periodicData.topRollerPosition;
     }
 
     public double getBottomPosition()
     {
-        return periodicData.bottomIntakePosition;
+        return periodicData.bottomRollerPosition;
     }
 
     public double getTopSpeed()
     {
-        return periodicData.topIntakeSpeed;
+        return periodicData.topRollerSpeed;
     }
 
     public double getBottomSpeed()
     {
-        return periodicData.bottomIntakeSpeed;
+        return periodicData.bottomRollerSpeed;
     }
 
     public void pickupFront()
     {
-        periodicData.topIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
-        periodicData.bottomIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
+        periodicData.topRollerSpeed = 0.9;
+        periodicData.bottomRollerSpeed = 0.9;
     }
 
     public void ejectFront()
     {
-        periodicData.topIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
-        periodicData.bottomIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
+        periodicData.topRollerSpeed = -0.9;
+        periodicData.bottomRollerSpeed = -0.9;
     }
 
     public void pickupBack()
     {
-        periodicData.topIntakeSpeed = DEFAULT_SPEED + 0.1; //VOLTAGE;
-        periodicData.bottomIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
+        periodicData.topRollerSpeed = 1.0;
+        periodicData.bottomRollerSpeed = -0.9;
     }
 
     public void ejectBack()
     {
-        periodicData.topIntakeSpeed = -DEFAULT_SPEED; //-VOLTAGE;
-        periodicData.bottomIntakeSpeed = DEFAULT_SPEED; //VOLTAGE;
+        periodicData.topRollerSpeed = -0.9;
+        periodicData.bottomRollerSpeed = 0.9;
     }
 
     public void stop()
     {
-        periodicData.topIntakeSpeed = 0.0;
-        periodicData.bottomIntakeSpeed = 0.0;
+        periodicData.topRollerSpeed = 0.0;
+        periodicData.bottomRollerSpeed = 0.0;
     }
 
     public void in(double speed)
     {
-        periodicData.topIntakeSpeed = speed;
-        periodicData.bottomIntakeSpeed = speed;
+        periodicData.topRollerSpeed = speed;
+        periodicData.bottomRollerSpeed = speed;
     }
 
     public double getTopVelocity()
     {
-        return periodicData.topIntakeVelocity;
+        return periodicData.topRollerVelocity;
     }
 
     public double getBottomVelocity()
     {
-        return periodicData.bottomIntakeVelocity;
+        return periodicData.bottomRollerVelocity;
     }
 
     public Command pickupFrontCommand()
@@ -211,10 +211,10 @@ public class Intake extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.topIntakePosition = topMotor.getPosition();
-        periodicData.bottomIntakePosition = bottomMotor.getPosition();
-        periodicData.topIntakeVelocity = topMotor.getVelocity();
-        periodicData.bottomIntakeVelocity = bottomMotor.getVelocity();
+        periodicData.topRollerPosition = topMotor.getPosition();
+        periodicData.bottomRollerPosition = bottomMotor.getPosition();
+        periodicData.topRollerVelocity = topMotor.getVelocity();
+        periodicData.bottomRollerVelocity = bottomMotor.getVelocity();
 
         // if(tunePID)
         // {
@@ -227,8 +227,8 @@ public class Intake extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        topMotor.setVoltage(periodicData.topIntakeSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-        bottomMotor.setVoltage(periodicData.bottomIntakeSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        topMotor.setVoltage(periodicData.topRollerSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomMotor.setVoltage(periodicData.bottomRollerSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
 
         // if(tunePID)
         // {
@@ -256,6 +256,6 @@ public class Intake extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Top Intake Position: " + periodicData.topIntakePosition + " Current Bottom Intake Position: " + periodicData.bottomIntakePosition;
+        return "Current Top Intake Position: " + periodicData.topRollerPosition + " Current Bottom Intake Position: " + periodicData.bottomRollerPosition;
     }
 }

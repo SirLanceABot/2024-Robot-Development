@@ -88,11 +88,11 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(255, 0, 255, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(255, 0, 255, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(255, 0, 255, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(255, 0, 255, 0, 0, LED_COUNT);
         }
     }
 
@@ -103,11 +103,11 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(255, 0, 0, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(255, 0, 0, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(255, 0, 0, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(255, 0, 0, 0, 0, LED_COUNT);
         }
     }
 
@@ -117,11 +117,11 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(0, 255, 0, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(0, 255, 0, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(0, 255, 0, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(0, 255, 0, 0, 0, LED_COUNT);
         }
     }
 
@@ -131,11 +131,11 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(0, 0, 255, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(0, 0, 255, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(0, 0, 255, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(0, 0, 255, 0, 0, LED_COUNT);
         }
     }
 
@@ -145,11 +145,11 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(255, 185, 0, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(255, 185, 0, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(255, 185, 0, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(255, 185, 0, 0, 0, LED_COUNT);
         }
     }
 
@@ -159,18 +159,18 @@ public class Candle4237 extends Subsystem4237
 
         if(shouldBlink)
         {
-            candle.animate(new StrobeAnimation(255, 255, 255, 255, blinkSpeed, LED_COUNT));
+            candle.animate(new StrobeAnimation(255, 255, 255, 0, blinkSpeed, LED_COUNT));
         }
         else
         {
-            candle.setLEDs(255, 255, 255, 255, INITIAL_LED, LED_COUNT);
+            candle.setLEDs(255, 255, 255, 0, 0, LED_COUNT);
         }
     }
     
     public void stop()
     {
         candle.animate(null, 0);
-        candle.setLEDs(0, 0, 0, 0, INITIAL_LED, LED_COUNT);
+        candle.setLEDs(0, 0, 0, 0, 0, LED_COUNT);
     }
 
     
@@ -185,7 +185,7 @@ public class Candle4237 extends Subsystem4237
     {
         stop();
 
-        candle.animate(new ColorFlowAnimation(255, 0, 0, 255, 0.3, LED_COUNT, Direction.Forward));
+        candle.animate(new ColorFlowAnimation(255, 0, 0, 0, 0.3, LED_COUNT, Direction.Forward));
     }
 
     public void setRainbow()
@@ -199,13 +199,13 @@ public class Candle4237 extends Subsystem4237
     {
         stop();
 
-        candle.animate(new LarsonAnimation(255, 0, 0, 255, 0.8, LED_COUNT, BounceMode.Center, 7));
+        candle.animate(new LarsonAnimation(255, 0, 0, 0, 0.8, LED_COUNT, BounceMode.Center, 7));
     }
 
     public void setRedAndBlue()
     {
-        candle.setLEDs(255, 0, 0, 255, 0, LED_COUNT / 2); //Red
-        candle.setLEDs(0, 0, 255, 255, LED_COUNT / 2, LED_COUNT / 2); //Blue
+        candle.setLEDs(255, 0, 0, 0, 0, LED_COUNT / 2); //Red
+        candle.setLEDs(0, 0, 255, 0, LED_COUNT / 2, LED_COUNT / 2); //Blue
     }
 
     public Command setRedCommand()
