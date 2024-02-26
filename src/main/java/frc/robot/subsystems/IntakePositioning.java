@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -112,6 +113,11 @@ public class IntakePositioning extends Subsystem4237
     public boolean isIntakeUp()
     {
         return periodicData.isIntakeUp;
+    }
+
+     public BooleanSupplier isIntakeDownSupplier()
+    {
+        return () -> isIntakeDown();
     }
 
     public Command moveUpCommand()

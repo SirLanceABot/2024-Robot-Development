@@ -99,22 +99,43 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
-            .alongWith(
-                robotContainer.intakePositioning.moveDownCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand(),
-                robotContainer.intake.pickupFrontCommand())
+            robotContainer.intakePositioning.moveDownCommand()
+            .andThen(
+                Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))
             .andThen(
-                robotContainer.intake.stopCommand()
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                .deadlineWith(
+                    robotContainer.intake.pickupFrontCommand(),
+                    robotContainer.shuttle.moveUpwardCommand(),
+                    robotContainer.index.acceptNoteFromShuttleCommand()))
+            .andThen(
+                robotContainer.index.stopCommand()
                 .alongWith(
-                    robotContainer.shuttle.stopCommand(),
-                    robotContainer.index.stopCommand(),
-                    robotContainer.intakePositioning.moveUpCommand()))
+                    robotContainer.intakePositioning.moveUpCommand(),
+                    robotContainer.intake.stopCommand(),
+                    robotContainer.shuttle.stopCommand()))
+                    
+                    
+            // robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+            // .alongWith(
+            //     robotContainer.intakePositioning.moveDownCommand(),
+            //     robotContainer.shuttle.moveUpwardCommand(),
+            //     robotContainer.index.acceptNoteFromShuttleCommand(),
+            //     robotContainer.intake.pickupFrontCommand())
+            // .andThen(
+            //     robotContainer.intakePositioning.floatingCommand())
+            // .andThen(
+            //     Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            // .andThen(
+            //     robotContainer.intake.stopCommand()
+            //     .alongWith(
+            //         robotContainer.shuttle.stopCommand(),
+            //         robotContainer.index.stopCommand(),
+            //         robotContainer.intakePositioning.moveUpCommand()))
                 // .alongWith(
                 //     robotContainer.intakePositioning.moveUpCommand()))
             // .andThen(

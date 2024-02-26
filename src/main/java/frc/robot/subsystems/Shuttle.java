@@ -63,6 +63,7 @@ public class Shuttle extends Subsystem4237
         System.out.println("  Constructor Started: " + fullClassName);
         
         configMotor();
+        setDefaultCommand(stopCommand());
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -160,7 +161,7 @@ public class Shuttle extends Subsystem4237
 
     public Command moveUpwardCommand()
     {
-        return Commands.runOnce(() -> moveUpward(), this).withName("Move Downward");
+        return Commands.run(() -> moveUpward(), this).withName("Move Upward");
     }
 
     public Command moveDownwardCommand()
