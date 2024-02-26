@@ -1,0 +1,76 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.55,
+        "y": 6.83
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.94649899620084,
+        "y": 7.225738959188476
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.890467026485654,
+        "y": 7.439979197870614
+      },
+      "prevControl": {
+        "x": 6.731622099068635,
+        "y": 7.469193775872724
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Marker",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake From Floor Front"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 1080.0,
+    "maxAngularAcceleration": 1728.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": {
+    "rotation": 26.486150995257397,
+    "velocity": 0.0
+  },
+  "useDefaultConstraints": false
+}

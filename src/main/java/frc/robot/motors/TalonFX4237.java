@@ -588,7 +588,7 @@ public class TalonFX4237 extends MotorController4237
     @Override
     public void setVoltage(double outputVolts) 
     {
-        super.setVoltage(outputVolts);
+        motor.setVoltage(outputVolts);
         feed();
     }
 
