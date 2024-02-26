@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shuttle;
@@ -110,6 +111,7 @@ public class RobotContainer
     // public final Proximity secondShuttleProximity;
     // public final Proximity indexProximity;
     public final Proximity indexWheelsProximity;
+    public final PowerDistribution powerDistribution;
     public final ExampleSubsystem exampleSubsystem;
 
     public final MainShuffleboard mainShuffleboard;
@@ -156,6 +158,7 @@ public class RobotContainer
         indexWheelsProximity    = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
         compressor              = (useFullRobot || useCompressor)           ? new Compressor(PneumaticsModuleType.REVPH)                : null;
         pneumaticHub            = (useFullRobot || usePneumaticHub)         ? new PneumaticHub(1)                                       : null;
+        powerDistribution    = new PowerDistribution();
 
         exampleSubsystem        = (useExampleSubsystem)                     ? new ExampleSubsystem()                                    : null;
 
@@ -178,6 +181,7 @@ public class RobotContainer
             configCompressor();
             // compressorBinding();
         }
+        powerDistribution.clearStickyFaults();
         
     }
 
@@ -197,6 +201,7 @@ public class RobotContainer
     public void configCompressor()
     {
         // compressor.enableAnalog(60.0, 90.0);
+        pneumaticHub.clearStickyFaults();
         pneumaticHub.enableCompressorAnalog(60.0, 90.0);
     }
 

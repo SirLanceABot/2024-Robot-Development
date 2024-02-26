@@ -50,8 +50,8 @@ public class Intake extends Subsystem4237
         private double bottomRollerVelocity;
 
         // OUTPUTS
-        private double topRollerSpeed = 0.0;
-        private double bottomRollerSpeed = 0.0;
+        // private double topRollerSpeed = 0.0;
+        // private double bottomRollerSpeed = 0.0;
 
 
         // private double kP = SmartDashboard.getNumber("kP", 0.0);
@@ -86,6 +86,8 @@ public class Intake extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
 
         configCANSparkMax();
+        setDefaultCommand(stopCommand());
+
 
         // if(tunePID)
         // {
@@ -132,50 +134,82 @@ public class Intake extends Subsystem4237
         return periodicData.bottomRollerPosition;
     }
 
-    public double getTopSpeed()
-    {
-        return periodicData.topRollerSpeed;
-    }
+    // public double getTopSpeed()
+    // {
+    //     return periodicData.topRollerSpeed;
+    // }
 
-    public double getBottomSpeed()
-    {
-        return periodicData.bottomRollerSpeed;
-    }
+    // public double getBottomSpeed()
+    // {
+    //     return periodicData.bottomRollerSpeed;
+    // }
 
     public void pickupFront()
     {
-        periodicData.topRollerSpeed = 0.9;
-        periodicData.bottomRollerSpeed = 0.9;
+        // periodicData.topRollerSpeed = 0.9;
+        // periodicData.bottomRollerSpeed = 0.9;
+        topSetVoltage(1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void ejectFront()
     {
-        periodicData.topRollerSpeed = -0.9;
-        periodicData.bottomRollerSpeed = -0.9;
+        // periodicData.topRollerSpeed = -0.9;
+        // periodicData.bottomRollerSpeed = -0.9;
+        topSetVoltage(-1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(-1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void pickupBack()
     {
-        periodicData.topRollerSpeed = 1.0;
-        periodicData.bottomRollerSpeed = -0.9;
+        // periodicData.topRollerSpeed = 1.0;
+        // periodicData.bottomRollerSpeed = -0.9;
+        topSetVoltage(1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(-1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void ejectBack()
     {
-        periodicData.topRollerSpeed = -0.9;
-        periodicData.bottomRollerSpeed = 0.9;
+        // periodicData.topRollerSpeed = -0.9;
+        // periodicData.bottomRollerSpeed = 0.9;
+        topSetVoltage(-1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(1.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void stop()
     {
-        periodicData.topRollerSpeed = 0.0;
-        periodicData.bottomRollerSpeed = 0.0;
+        // periodicData.topRollerSpeed = 0.0;
+        // periodicData.bottomRollerSpeed = 0.0;
+        topSetVoltage(0.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(0.0 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void in(double speed)
     {
-        periodicData.topRollerSpeed = speed;
-        periodicData.bottomRollerSpeed = speed;
+        // periodicData.topRollerSpeed = speed;
+        // periodicData.bottomRollerSpeed = speed;
+        topSetVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        bottomSetVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+    }
+
+    private void topSetVoltage(double voltage)
+    {
+        topMotor.setVoltage(voltage);
+    }
+
+    private void bottomSetVoltage(double voltage)
+    {
+        bottomMotor.setVoltage(voltage);
+    }
+
+    private void topSet(double speed)
+    {
+        topMotor.set(speed);
+    }
+
+    private void bottomSet(double speed)
+    {
+        bottomMotor.set(speed);
     }
 
     public double getTopVelocity()
@@ -190,17 +224,17 @@ public class Intake extends Subsystem4237
 
     public Command pickupFrontCommand()
     {
-        return Commands.runOnce(() -> pickupFront(), this).withName("Pickup Front");
+        return Commands.run(() -> pickupFront(), this).withName("Pickup Front");
     }
 
     public Command pickupBackCommand()
     {
-        return Commands.runOnce(() -> pickupBack(), this).withName("Pickup Back");
+        return Commands.run(() -> pickupBack(), this).withName("Pickup Back");
     }
 
     public Command ejectCommand()
     {
-        return Commands.runOnce(() -> ejectFront(), this).withName("Eject");
+        return Commands.run(() -> ejectFront(), this).withName("Eject");
     }
 
     public Command stopCommand()
@@ -227,9 +261,6 @@ public class Intake extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        topMotor.setVoltage(periodicData.topRollerSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-        bottomMotor.setVoltage(periodicData.bottomRollerSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-
         // if(tunePID)
         // {
         //     PIDcontroller.setP(periodicData.kP);

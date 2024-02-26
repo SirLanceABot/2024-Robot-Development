@@ -166,7 +166,7 @@ public class Shuttle extends Subsystem4237
 
     public Command moveDownwardCommand()
     {
-        return Commands.runOnce(() -> moveDownward(), this).withName("Move Downward");
+        return Commands.run(() -> moveDownward(), this).withName("Move Downward");
     }
 
     public Command stopCommand()
