@@ -164,7 +164,7 @@ public class DriverButtonBindings
 
         if(true)
         {
-            rightBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorFront());
+            rightBumperTrigger.onTrue(Commands4237.intakeFromFloorFront());
             // rightBumperTrigger.onFalse(Commands.runOnce(() -> scaleFactor = 1.0));
         }
     }

@@ -16,7 +16,6 @@ import frc.robot.Constants.ShootingPosition;
 import frc.robot.subsystems.AmpAssist.AmpAssistPosition;
 import frc.robot.subsystems.Climb.TargetPosition;
 import frc.robot.commands.Commands4237;
-import frc.robot.commands.ShootFromPosition;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 
@@ -125,7 +124,11 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        bButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
+        if(robotContainer.intakePositioning != null)
+        {
+            bButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
+        }
+        
     }
 
     private void configXButton()
@@ -134,7 +137,7 @@ public class OperatorButtonBindings
         BooleanSupplier xButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kX);
         Trigger xButtonTrigger = new Trigger(xButton);
 
-        // xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand(80.0));
+        // xButtonTrigger.onTrue(Commands4237.ejectNote());
     }
 
     private void configYButton()
