@@ -369,7 +369,7 @@ public final class Commands4237
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
+                robotContainer.index.feedNoteToFlywheelCommand())
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
@@ -398,7 +398,7 @@ public final class Commands4237
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand(() -> 80.0))
+                robotContainer.index.feedNoteToFlywheelCommand())
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(

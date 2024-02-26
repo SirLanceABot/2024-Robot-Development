@@ -44,7 +44,7 @@ public class Index extends Subsystem4237
         
 
         // OUTPUTS
-        private double motorSpeed;
+        // private double motorSpeed;
         private double encoderPosition;
         // private DoubleLogEntry positiDoubleLogEntry;
     }
@@ -89,7 +89,7 @@ public class Index extends Subsystem4237
             // SmartDashboard.putNumber("Velocity", 0.0);
         }
         
-
+        setDefaultCommand(stopCommand());
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -136,54 +136,69 @@ public class Index extends Subsystem4237
     public void acceptNoteFromShuttle()
     {
         //periodicData.motorSpeed = 10.0;
+        setControlVelocity(5.0);
     }
 
     public void feedNoteToFlywheel()
     {
         // System.out.println("Feeding note");
         // periodicData.motorSpeed = 80.0;
+        setControlVelocity(80.0);
     }
 
     public void ejectNote()
     {
         // periodicData.motorSpeed = -10;
+        setControlVelocity(-10.0);
     }
 
-    public void intake()
+    public void intakeNote()
     {
         //periodicData.motorSpeed = -0.1;
+        setControlVelocity(-10.0);
     }
 
     public void stop()
     {
-        periodicData.motorSpeed = 0.0;
+        // periodicData.motorSpeed = 0.0;
+        set(0.0);
+    }
+
+    private void setControlVelocity(double velocity)
+    {
+        motor.setControlVelocity(velocity);
+    }
+
+    private void set(double speed)
+    {
+        motor.set(speed);
     }
 
     public Command acceptNoteFromShuttleCommand()
     {
         // return Commands.runOnce(() -> motor.setVoltage(0.2 * Constants.END_OF_MATCH_BATTERY_VOLTAGE), this).withName("Accept Note From Shuttle");
         // return Commands.runOnce(() -> motor.set(0.9), this).withName("Accept Note From Shuttle");
-        return Commands.runOnce(() -> motor.setControlVelocity(5.0), this).withName("Accept Note From Shuttle");
+        return Commands.run(() -> acceptNoteFromShuttle(), this).withName("Accept Note From Shuttle");
     }
 
-    public Command feedNoteToFlywheelCommand(DoubleSupplier velocity)
+    public Command feedNoteToFlywheelCommand()
     {
-        return Commands.runOnce(() -> motor.setControlVelocity(velocity.getAsDouble()), this).withName("Feed Note To Flywheel");
+        return Commands.run(() -> feedNoteToFlywheel(), this).withName("Feed Note To Flywheel");
     }
 
-    public Command ejectCommand()
+    public Command ejectNoteCommand()
     {
-        return Commands.runOnce(() -> motor.setControlVelocity(-10.0), this).withName("Eject");
+        return Commands.run(() -> ejectNote(), this).withName("Eject Note");
     }
 
-    public Command intakeCommand()
+    public Command intakeNoteCommand()
     {
-        return Commands.runOnce(() -> motor.setControlVelocity(-10.0), this).withName("Intake");
+        return Commands.run(() -> intakeNote(), this).withName("Intake Note");
     }
 
     public Command stopCommand()
     {
-        return Commands.runOnce(() -> motor.set(0.0), this).withName("Stop");
+        return Commands.runOnce(() -> stop(), this).withName("Stop");
     }
 
     //Returns speed in feet per minute
@@ -240,6 +255,6 @@ public class Index extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Index Speed: " + periodicData.motorSpeed;
+        return "Current Index Speed: " + periodicData.currentVelocity;
     }
 }
