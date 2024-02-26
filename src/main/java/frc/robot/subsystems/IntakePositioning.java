@@ -76,7 +76,7 @@ public class IntakePositioning extends Subsystem4237
     {
         super("Intake Positioning");
         System.out.println("  Constructor Started:  " + fullClassName);
-        
+        setDefaultCommand(moveUpCommand());
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
