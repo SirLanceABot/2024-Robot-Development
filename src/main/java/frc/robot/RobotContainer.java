@@ -63,30 +63,30 @@ public class RobotContainer
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
     private boolean useClimb                = false;
-    private boolean useDrivetrain           = true;
-    private boolean useFlywheel             = true;
-    private boolean useIndex                = true;
-    private boolean useIntake               = true;
-    private boolean useIntakePositioning    = true;
-    private boolean usePivot                = true;
-    private boolean usePoseEstimator        = true;
-    private boolean useShuttle              = true;
+    private boolean useDrivetrain           = false;
+    private boolean useFlywheel             = false;
+    private boolean useIndex                = false;
+    private boolean useIntake               = false;
+    private boolean useIntakePositioning    = false;
+    private boolean usePivot                = false;
+    private boolean usePoseEstimator        = false;
+    private boolean useShuttle              = false;
 
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
     private boolean useCameraThree          = false;
     private boolean useCameraFour           = false;
-    private boolean useGyro                 = true;
-    private boolean useAllProximity         = true;
+    private boolean useGyro                 = false;
+    private boolean useAllProximity         = false;
     private boolean useCompressor           = false;
     private boolean usePneumaticHub         = false;
     private boolean useExampleSubsystem     = false;
 
     private boolean useMainShuffleboard     = false;
 
-    private boolean useBindings             = true;
-    private boolean useDriverController     = true;
-    private boolean useOperatorController   = true;
+    private boolean useBindings             = false;
+    private boolean useDriverController     = false;
+    private boolean useOperatorController   = false;
 
 
     public final boolean fullRobot;
