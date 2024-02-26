@@ -40,7 +40,7 @@ public class Shuttle extends Subsystem4237
     private class PeriodicData
     {
  
-        private double motorSpeed = 0.0;
+        // private double motorSpeed = 0.0;
         private double position = 0.0;
         // private double motorVoltage = 0.0;
 
@@ -48,7 +48,7 @@ public class Shuttle extends Subsystem4237
 
     }
 
-    private boolean reset = false;
+    // private boolean reset = false;
 
     private final PeriodicData periodicData = new PeriodicData();
     
@@ -61,8 +61,6 @@ public class Shuttle extends Subsystem4237
     {
         super("Shuttle");
         System.out.println("  Constructor Started: " + fullClassName);
-
-        motor.setupFactoryDefaults();
         
         configMotor();
 
@@ -74,6 +72,7 @@ public class Shuttle extends Subsystem4237
      */
     private void configMotor()
     {
+        motor.setupFactoryDefaults();
         motor.setupCoastMode();
         motor.setupForwardSoftLimit(SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFERENCE_INCHES, false);
         motor.setupReverseSoftLimit(-SHUTTLE_SOFT_LIMIT * ROLLER_CIRCUMFERENCE_INCHES, false);
@@ -101,9 +100,12 @@ public class Shuttle extends Subsystem4237
      */
     public void stop()
     {
-        periodicData.motorSpeed = 0.0;
+        // periodicData.motorSpeed = 0.0;
         // periodicData.motorVoltage = 0.0;
+        set(0.0);
     }
+
+    
 
     /** 
      * Turns on the motor to move the ring up and towards the shooter
@@ -112,7 +114,8 @@ public class Shuttle extends Subsystem4237
     {
         // periodicData.motorSpeed = 0.9;
         // periodicData.motorVoltage = VOLTAGE;
-        periodicData.motorSpeed = DEFAULT_SPEED;
+        // periodicData.motorSpeed = DEFAULT_SPEED;
+        setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     
@@ -123,7 +126,8 @@ public class Shuttle extends Subsystem4237
     {
         // periodicData.motorSpeed = -0.1;
         // periodicData.motorVoltage = -VOLTAGE;
-        periodicData.motorSpeed = -DEFAULT_SPEED;
+        // periodicData.motorSpeed = -DEFAULT_SPEED;
+        setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     /**
@@ -131,7 +135,27 @@ public class Shuttle extends Subsystem4237
      */
     public void resetEncoder()
     {
-        reset = true;
+        // reset = true;
+        motor.setPosition(0.0);
+
+    }
+
+    /**
+     * Private method which calls motor.set()
+     * @param speed The speed to set. Value should be between -1.0 and 1.0.
+     */
+    private void set(double speed)
+    {
+        motor.set(speed);
+    }
+
+    /**
+     * Private method which calls motor.setVoltage()
+     * @param voltage The voltage to output
+     */
+    private void setVoltage(double voltage)
+    {
+        motor.setVoltage(voltage);
     }
 
     public Command moveUpwardCommand()
@@ -160,13 +184,13 @@ public class Shuttle extends Subsystem4237
     {
         // motor.set(periodicData.motorSpeed);
         // motor.setVoltage(periodicData.motorVoltage);
-        motor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        // motor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
         
-        if (reset)
-        {
-            motor.setPosition(0.0);
-            reset = false;
-        }
+        // if (reset)
+        // {
+        //     motor.setPosition(0.0);
+        //     reset = false;
+        // }
          
     }
 
