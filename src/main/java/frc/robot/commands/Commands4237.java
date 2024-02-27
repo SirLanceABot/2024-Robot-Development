@@ -332,7 +332,7 @@ public final class Commands4237
                 distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
             }
 
-            distance = Math.round(distance * 3.28); // meters to feet
+            distance = distance * 3.2808; // meters to feet
             angle = robotContainer.pivot.calculateAngleFromDistance(distance);
 
             return
