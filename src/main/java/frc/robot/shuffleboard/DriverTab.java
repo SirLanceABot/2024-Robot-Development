@@ -41,13 +41,13 @@ public class DriverTab
     private Pivot pivot;
     private Intake intake;
     private IntakePositioning intakePositioning;
-    //private PoseEstimator poseEstimator;
+    private PoseEstimator poseEstimator;
 
-    private String intakeString;
+    private String intakeString = " ";
     
     private GenericEntry pivotAngleBox;
     private GenericEntry intakeStatusBox;
-    //private ComplexWidget createFieldBox;
+    
  
 
     // *** CLASS CONSTRUCTOR ***
@@ -66,15 +66,15 @@ public class DriverTab
         
 
         
-        // if(pivot != null)
-        // {
-        //     pivotAngleBox = createPivotAngleBox();
-        // }
+        if(pivot != null)
+        {
+            pivotAngleBox = createPivotAngleBox();
+        }
 
-        // if(intakePositioning != null)
-        // {
-        //     intakeStatusBox = createIntakeStatusBox();
-        // }
+        if(intakePositioning != null)
+        {
+            intakeStatusBox = createIntakeStatusBox();
+        }
 
         createFieldBox();
 
@@ -82,19 +82,14 @@ public class DriverTab
         System.out.println("  Constructor Finished: " + fullClassName);
     }
  
-    private ComplexWidget createFieldBox()
+    private void createFieldBox()
     {
+        
+        driverTab.add("Field", field);
         field.setRobotPose(drivetrain.getEstimatedPose());
-        // driverTab.add("Field", field);
         
         
         //  SmartDashboard.putData("Field", field);
-
-         return driverTab.add("Field", field)
-        .withWidget(BuiltInWidgets.kField)
-        .withPosition(7,2) // sets position of widget
-        .withSize(24,16);  // sets size of widget
-        //.getEntry();
     }
 
     private GenericEntry createPivotAngleBox()
@@ -109,21 +104,14 @@ public class DriverTab
 
     private GenericEntry createIntakeStatusBox()
     {
-    
-        // if(intakePositioning.isIntakeUp())
-        // {
-        //     intakeString = "Up";
-        // }
-        // else if (intakePositioning.isIntakeDown())
-        // {
-        //     intakeString = "Down";
-        // }
 
-        return driverTab.add("Intake Position: ", intakeString)
-        .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
-        .withPosition(5,8) // sets position of widget
-        .withSize(4,2)  // sets size of widget
+
+        return driverTab.add("Intake Status", "Down")
+        .withWidget(BuiltInWidgets.kTextView)
+        .withPosition(1, 8)
+        .withSize(5, 2)
         .getEntry();
+       
             
     }
 
@@ -138,6 +126,15 @@ public class DriverTab
 
         if(intake != null)
         {
+            if(intakePositioning.isIntakeUp())
+            {
+                intakeString = "Up";
+            }
+            else if (intakePositioning.isIntakeDown())
+            {
+                intakeString = "Down";
+            }
+            
             intakeStatusBox.setString(intakeString);
         }
      

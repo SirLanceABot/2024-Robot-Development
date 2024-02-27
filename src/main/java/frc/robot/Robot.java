@@ -233,6 +233,11 @@ public class Robot extends TimedRobot
             {
                 robotContainer.mainShuffleboard.sensorTab.updateSensorData();
             }
+
+            if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.driverTab != null)
+            {
+                robotContainer.mainShuffleboard.driverTab.updateData();
+            }
         }
     }
 
@@ -276,6 +281,11 @@ public class Robot extends TimedRobot
         if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.sensorTab != null)
         {
             robotContainer.mainShuffleboard.sensorTab.updateSensorData();
+        }
+
+        if(robotContainer.mainShuffleboard != null && robotContainer.mainShuffleboard.driverTab != null)
+        {
+            robotContainer.mainShuffleboard.driverTab.updateData();
         }
         testMode.periodic();
     }
