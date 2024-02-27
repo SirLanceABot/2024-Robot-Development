@@ -363,8 +363,8 @@ public final class Commands4237
         {
             return
             // Commands.waitSeconds(2.0)
-            rotateToSpeakerCommand()
-            .andThen(
+            // rotateToSpeakerCommand()
+            // .andThen(
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
                                         robotContainer.flywheel.isAtSpeed(70.0).getAsBoolean()))
                                         .withTimeout(1.0)
@@ -372,7 +372,7 @@ public final class Commands4237
                 //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 70.0),
-                    robotContainer.pivot.setAngleCommand(64.0)))
+                    robotContainer.pivot.setAngleCommand(64.0))
             .andThen(
                 Commands.print("Hello Woodard"))      
             .andThen(
@@ -398,16 +398,21 @@ public final class Commands4237
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
             return
-            Commands.waitSeconds(1.0)
+            // Commands.waitSeconds(1.0)
+            Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                                        robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                                        .withTimeout(1.0)
             .deadlineWith(
                 robotContainer.flywheel.shootCommand(() -> 60.0),
                 robotContainer.pivot.setAngleCommand(48.0))
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand())
-            .andThen(
-                Commands.waitSeconds(1.0))
+                Commands.waitSeconds(1.0)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
+            // .andThen(
+            //     Commands.waitSeconds(1.0))
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(

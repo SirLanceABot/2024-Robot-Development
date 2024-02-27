@@ -34,7 +34,7 @@ public class Shuttle extends Subsystem4237
     // private final double END_OF_MATCH_VOLTAGE = 11.5;
     // private final double PERCENT_VOLTAGE = 0.8;
     // private final double VOLTAGE = PERCENT_VOLTAGE * END_OF_MATCH_VOLTAGE;
-    private final double DEFAULT_SPEED = 0.8;
+    private final double DEFAULT_SPEED = 1.0;
 
 
     private class PeriodicData
