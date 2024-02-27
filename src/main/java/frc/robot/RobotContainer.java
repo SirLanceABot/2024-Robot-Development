@@ -222,6 +222,11 @@ public class RobotContainer
         isBlueAlliance = (alliance.get() == Alliance.Blue);
     }
 
+    public BooleanSupplier isBlueAllianceSupplier()
+    {
+        return () -> isBlueAlliance;
+    }
+
     public void resetRobot(AutonomousTabData.StartingSide startingLocation)
     {
         if(gyro != null)

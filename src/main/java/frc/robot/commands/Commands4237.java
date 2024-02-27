@@ -349,12 +349,14 @@ public final class Commands4237
     {
         if(robotContainer.drivetrain !=null)
         {
-            if(robotContainer.isBlueAlliance)
+            // if(robotContainer.isBlueAllianceSupplier().getAsBoolean())
+            if(true)
             {
                 return 
                 robotContainer.drivetrain.rotateToBlueSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithBlueSpeaker())
+                .withTimeout(1.0)
                 .withName("Rotate to Blue Speaker");
             }
             else
@@ -363,6 +365,7 @@ public final class Commands4237
                 robotContainer.drivetrain.rotateToRedSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithRedSpeaker())
+                .withTimeout(1.0)
                 .withName("Rotate to Red Speaker");
             }
         }
@@ -448,12 +451,14 @@ public final class Commands4237
         {
             return
             // Commands.waitSeconds(1.0)
-            Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
-                                        robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
-                                        .withTimeout(1.0)
-            .deadlineWith(
-                robotContainer.flywheel.shootCommand(() -> 60.0),
-                robotContainer.pivot.setAngleCommand(48.0))
+            rotateToSpeakerCommand()
+            .andThen(
+                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                                            robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                                            .withTimeout(1.0)
+                .deadlineWith(
+                    robotContainer.flywheel.shootCommand(() -> 60.0),
+                    robotContainer.pivot.setAngleCommand(48.0)))
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
             .andThen(
