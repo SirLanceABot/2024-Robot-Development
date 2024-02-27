@@ -1,33 +1,17 @@
 package frc.robot.subsystems;
-// final
+
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.CANcoderConfigurator;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
-
-import frc.robot.motors.TalonFX4237;
-import edu.wpi.first.math.MathSharedStore;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
-
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.motors.TalonFX4237;
+import frc.robot.sensors.CANcoder4237;
 
 
 /**
@@ -90,7 +74,7 @@ public class Pivot extends Subsystem4237
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
+    private final CANcoder4237 pivotAngle = new CANcoder4237(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS, "pivot CANCoder");
     private final PeriodicData periodicData = new PeriodicData();
     public final ClassConstants classConstants = new ClassConstants();
     private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
@@ -117,7 +101,7 @@ public class Pivot extends Subsystem4237
         resetRelativeEncoder();
         // setAngleDefaultCommand();
 
-        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition();//.getValueAsDouble();
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
         // motor.setPosition(periodicData.canCoderRotationalPosition);
        
@@ -129,24 +113,38 @@ public class Pivot extends Subsystem4237
 
     private void configCANcoder()
     {
-        CANcoderConfiguration canCoderConfigs = new CANcoderConfiguration();
-        pivotAngle.getConfigurator().apply(canCoderConfigs);
+        pivotAngle.logPeriodicData(true);
 
-        MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        magnetSensorConfigs.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1);
-        magnetSensorConfigs.withMagnetOffset(classConstants.MAGNET_OFFSET);
-        magnetSensorConfigs.withSensorDirection(SensorDirectionValue.Clockwise_Positive);
+        pivotAngle.setupAbsoluteSensorRange_0To1();
+        pivotAngle.setupMagnetOffset(classConstants.MAGNET_OFFSET);
+        pivotAngle.setupSensorDirection_ClockwisePositive();
+        Timer.delay(3.0);
 
-        canCoderConfigs.withMagnetSensor(magnetSensorConfigs);
+        System.out.println(pivotAngle);
 
-        pivotAngle.getConfigurator().apply(canCoderConfigs);
+        pivotAngle.setPosition(pivotAngle.getAbsolutePosition());
+        Timer.delay(1.0);
+
+
+        // CANcoderConfiguration canCoderConfigs = new CANcoderConfiguration();
+        // pivotAngle.getConfigurator().apply(canCoderConfigs);
+
+        // MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
+        // magnetSensorConfigs.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Unsigned_0To1);
+        // magnetSensorConfigs.withMagnetOffset(classConstants.MAGNET_OFFSET);
+        // magnetSensorConfigs.withSensorDirection(SensorDirectionValue.Clockwise_Positive);
+
+        // canCoderConfigs.withMagnetSensor(magnetSensorConfigs);
+
+        // pivotAngle.getConfigurator().apply(canCoderConfigs);
         // pivotAngle.getConfigurator().refresh(canCoderConfig);
         // canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         // canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         // canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
         // pivotAngle.getConfigurator().apply(canCoderConfig);
 
-        pivotAngle.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble());
+        // pivotAngle.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble());
+
     }
 
     private void configPivotMotor()
@@ -330,7 +328,7 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
+        periodicData.canCoderRotationalPosition = pivotAngle.getAbsolutePosition();//.getValueAsDouble();
 
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
