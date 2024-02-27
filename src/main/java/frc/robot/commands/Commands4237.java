@@ -315,11 +315,19 @@ public final class Commands4237
         {
             if(robotContainer.isBlueAlliance)
             {
-                return robotContainer.drivetrain.rotateToBlueSpeakerCommand().withName("Robot Rotate to Blue");
+                return 
+                robotContainer.drivetrain.rotateToBlueSpeakerCommand()
+                .until(
+                    robotContainer.drivetrain.isAlignedWithBlueSpeaker())
+                .withName("Rotate to Blue Speaker");
             }
             else
             {
-                return robotContainer.drivetrain.rotateToRedSpeakerCommand().withName("Robot Rotate to Red");
+                return 
+                robotContainer.drivetrain.rotateToRedSpeakerCommand()
+                .until(
+                    robotContainer.drivetrain.isAlignedWithRedSpeaker())
+                .withName("Rotate to Red Speaker");
             }
         }
         else

@@ -445,11 +445,31 @@ public class Drivetrain extends Subsystem4237
         return poseEstimator.getEstimatedPose();
     }
 
-    public BooleanSupplier isAligned()
+    public BooleanSupplier isAlignedWithBlueSpeaker()
     {
         return () -> 
         {
             double targetYaw = getAngleToBlueSpeaker();
+            isAligned = false;
+            if(gyro.getYaw() > targetYaw - ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + ALIGNMENT_TOLERANCE)
+            {
+                isAligned = true;
+            }
+            else
+            {
+                isAligned = false;
+            }
+            // System.out.println("targetYaw " + targetYaw);
+    
+            return isAligned;
+        };
+    }
+
+    public BooleanSupplier isAlignedWithRedSpeaker()
+    {
+        return () -> 
+        {
+            double targetYaw = getAngleToRedSpeaker();
             isAligned = false;
             if(gyro.getYaw() > targetYaw - ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + ALIGNMENT_TOLERANCE)
             {
@@ -605,14 +625,14 @@ public class Drivetrain extends Subsystem4237
     public Command rotateToBlueSpeakerCommand()
     {
         return this.run(() -> rotateToBlueSpeaker())
-                       .until(isAligned())
+                    //    .until(isAlignedWithBlueSpeaker())
                        .withName("rotateToBlueSpeakerCommand");
     }
 
     public Command rotateToRedSpeakerCommand()
     {
         return this.run(() -> rotateToRedSpeaker())
-                       .until(isAligned())
+                    //    .until(isAlignedWithRedSpeaker())
                        .withName("rotateToRedSpeakerCommand");
     }
 
