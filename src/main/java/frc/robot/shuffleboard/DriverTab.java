@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -46,6 +47,7 @@ public class DriverTab
     
     private GenericEntry pivotAngleBox;
     private GenericEntry intakeStatusBox;
+    //private ComplexWidget createFieldBox;
  
 
     // *** CLASS CONSTRUCTOR ***
@@ -53,7 +55,7 @@ public class DriverTab
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        createFieldBox();
+        
         // createPivotAngleBox();
         // createIntakeStatusBox();
     
@@ -64,26 +66,35 @@ public class DriverTab
         
 
         
-        if(pivot != null)
-        {
-            pivotAngleBox = createPivotAngleBox();
-        }
+        // if(pivot != null)
+        // {
+        //     pivotAngleBox = createPivotAngleBox();
+        // }
 
-        if(intakePositioning != null)
-        {
-            intakeStatusBox = createIntakeStatusBox();
-        }
+        // if(intakePositioning != null)
+        // {
+        //     intakeStatusBox = createIntakeStatusBox();
+        // }
 
+        createFieldBox();
 
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
  
-    private void createFieldBox()
+    private ComplexWidget createFieldBox()
     {
         field.setRobotPose(drivetrain.getEstimatedPose());
-        driverTab.add("Field", field);
-        // SmartDashboard.putData("Field", field);
+        // driverTab.add("Field", field);
+        
+        
+        //  SmartDashboard.putData("Field", field);
+
+         return driverTab.add("Field", field)
+        .withWidget(BuiltInWidgets.kField)
+        .withPosition(7,2) // sets position of widget
+        .withSize(24,16);  // sets size of widget
+        //.getEntry();
     }
 
     private GenericEntry createPivotAngleBox()
@@ -99,14 +110,14 @@ public class DriverTab
     private GenericEntry createIntakeStatusBox()
     {
     
-        if(intakePositioning.isIntakeUp())
-        {
-            intakeString = "Up";
-        }
-        else if (intakePositioning.isIntakeDown())
-        {
-            intakeString = "Down";
-        }
+        // if(intakePositioning.isIntakeUp())
+        // {
+        //     intakeString = "Up";
+        // }
+        // else if (intakePositioning.isIntakeDown())
+        // {
+        //     intakeString = "Down";
+        // }
 
         return driverTab.add("Intake Position: ", intakeString)
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
@@ -120,10 +131,10 @@ public class DriverTab
     public void updateData()
     {
 
-        // if(pivot != null)
-        // {
-        //     pivotAngleBox.setDouble(round(pivot.getCANCoderAngle(), 3));
-        // }
+        if(pivot != null)
+        {
+            pivotAngleBox.setDouble(round(pivot.getCANCoderAngle(), 3));
+        }
 
         if(intake != null)
         {
