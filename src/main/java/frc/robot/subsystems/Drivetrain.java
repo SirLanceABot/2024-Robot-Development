@@ -488,7 +488,7 @@ public class Drivetrain extends Subsystem4237
     public void rotateToBlueSpeaker()
     {
         targetYaw = getAngleToBlueSpeaker();
-        // System.out.println("targetYaw in rotate method " + targetYaw);
+        System.out.println("targetYaw = " + targetYaw);
         double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
         // System.out.println(rotationSpeed);
         // if(rotationSpeed > 2)

@@ -8,6 +8,7 @@ import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import frc.robot.commands.Commands4237;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
@@ -47,7 +48,7 @@ public class SamTest implements Test
     // private final Drivetrain drivetrain;
     // private final Gyro4237 gyro;
     // private final Boolean isBlueAlliance;
-    private final Climb climb;
+    // private final Climb climb;
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -67,14 +68,14 @@ public class SamTest implements Test
         // this.drivetrain = robotContainer.drivetrain;
         // this.gyro = robotContainer.gyro;
         // this.isBlueAlliance = robotContainer.isBlueAlliance;
-        this.climb = robotContainer.climb;
+        // this.climb = robotContainer.climb;
 
         // SmartDashboard.putNumber("kP", 0.0);
         // SmartDashboard.putNumber("kI", 0.0);
         // SmartDashboard.putNumber("kD", 0.0);
 
-        SmartDashboard.putNumber("Left Encoder Value:", 0.0);
-        SmartDashboard.putNumber("Right Encoder Value:", 0.0);
+        // SmartDashboard.putNumber("Left Encoder Value:", 0.0);
+        // SmartDashboard.putNumber("Right Encoder Value:", 0.0);
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -96,8 +97,8 @@ public class SamTest implements Test
      */
     public void periodic()
     {
-        SmartDashboard.putNumber("Left Encoder Value:", climb.getLeftPosition());
-        SmartDashboard.putNumber("Right Encoder Value:", climb.getRightPosition());
+        // SmartDashboard.putNumber("Left Encoder Value:", climb.getLeftPosition());
+        // SmartDashboard.putNumber("Right Encoder Value:", climb.getRightPosition());
         // if(prox1.isDetected() && prox2.isDetected())
         // {
         //     candle.setGreen(false);
@@ -119,9 +120,10 @@ public class SamTest implements Test
         //     // flywheel.shoot(0.5);
         // }
 
-
+        SmartDashboard.putNumber("Current Yaw", robotContainer.gyro.getYaw());
         if(joystick.getRawButton(1))    //A
         {
+            Commands4237.rotateToSpeakerCommand().schedule();
             // flywheel.intake();
             // index.intake();
             // shuttle.moveDownward();
@@ -134,17 +136,22 @@ public class SamTest implements Test
             // drivetrain.rotateToBlueSpeaker();
                 // System.out.println(drivetrain.isAlligned(drivetrain.getAngleToBlueSpeaker()).getAsBoolean());
             // }
-            climb.extend(0.1);
+            // climb.extend(0.1);
             // climb.moveToSetPosition(TargetPosition.kChain);
         }
         else if(joystick.getRawButton(2))   //B
         {
-            climb.retract(0.1);
+            System.out.println(robotContainer.drivetrain.getAngleToRedSpeaker());
+            // climb.retract(0.1);
             // climb.moveToSetPosition(TargetPosition.kRobot);
+        }
+        else if(joystick.getRawButton(3))   //X
+        {
+            System.out.println(robotContainer.drivetrain.getAngleToBlueSpeaker());
         }
         else
         {
-            climb.stop();
+            // climb.stop();
         }
 
         // System.out.println(robotContainer.isBlueAlliance);
@@ -193,7 +200,7 @@ public class SamTest implements Test
         // shuttle.stop();
         // pivot.stopMotor();
         // intake.stop();
-        climb.stop();
+        // climb.stop();
     }
 
     // *** METHODS ***

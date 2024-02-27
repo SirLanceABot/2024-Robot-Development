@@ -113,11 +113,17 @@ public final class Commands4237
                     robotContainer.shuttle.moveUpwardCommand(),
                     robotContainer.index.acceptNoteFromShuttleCommand()))
             .andThen(
-                robotContainer.index.stopCommand()
-                .alongWith(
+                Commands.parallel(
+                    robotContainer.index.stopCommand(),
                     robotContainer.intakePositioning.moveUpCommand(),
                     robotContainer.intake.stopCommand(),
                     robotContainer.shuttle.stopCommand()))
+            .withName("Intake From Floor Front");
+                // robotContainer.index.stopCommand()
+                // .alongWith(
+                //     robotContainer.intakePositioning.moveUpCommand(),
+                //     robotContainer.intake.stopCommand(),
+                //     robotContainer.shuttle.stopCommand()))
                     
                     
             // robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
@@ -146,7 +152,6 @@ public final class Commands4237
             //         robotContainer.index.stopCommand()))
             // // .andThen(
             //     robotContainer.candle.setGreenCommand())
-            .withName("Intake From Floor Front");
         }
         else
         {
@@ -160,24 +165,47 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
-            .alongWith(
-                robotContainer.intakePositioning.moveDownCommand(),
-                robotContainer.shuttle.moveUpwardCommand(),
-                robotContainer.index.acceptNoteFromShuttleCommand(),
-                robotContainer.intake.pickupBackCommand())
+            robotContainer.intakePositioning.moveDownCommand()
+            .andThen(
+                Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+                robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))
             .andThen(
-                robotContainer.intake.stopCommand()
-                .alongWith(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                .deadlineWith(
+                    robotContainer.intake.pickupBackCommand(),
+                    robotContainer.shuttle.moveUpwardCommand(),
+                    robotContainer.index.acceptNoteFromShuttleCommand()))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.index.stopCommand(),
                     robotContainer.intakePositioning.moveUpCommand(),
-                    robotContainer.shuttle.stopCommand(),
-                    robotContainer.index.stopCommand()))
-            //     robotContainer.candle.setGreenCommand())
+                    robotContainer.intake.stopCommand(),
+                    robotContainer.shuttle.stopCommand()))
+                    // robotContainer.candle.setGreenCommand()
             .withName("Intake From Floor Back");
+
+            // robotContainer.candle.setYellowCommand()
+            // robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+            // .alongWith(
+            //     robotContainer.intakePositioning.moveDownCommand(),
+            //     robotContainer.shuttle.moveUpwardCommand(),
+            //     robotContainer.index.acceptNoteFromShuttleCommand(),
+            //     robotContainer.intake.pickupBackCommand())
+            // .andThen(
+            //     robotContainer.intakePositioning.floatingCommand())
+            // .andThen(
+            //     Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
+            // .andThen(
+            //     robotContainer.intake.stopCommand()
+            //     .alongWith(
+            //         robotContainer.intakePositioning.moveUpCommand(),
+            //         robotContainer.shuttle.stopCommand(),
+            //         robotContainer.index.stopCommand()))
+            // //     robotContainer.candle.setGreenCommand())
+            // .withName("Intake From Floor Back");
         }
         else
         {
@@ -241,9 +269,13 @@ public final class Commands4237
             // .alongWith(
             Commands.waitSeconds(1.0)
             .deadlineWith(
-                robotContainer.flywheel.intakeCommand()
-                .alongWith(
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)))
+                Commands.parallel(
+                    robotContainer.flywheel.intakeCommand(),
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)
+                ))
+                // robotContainer.flywheel.intakeCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)))
                 // robotContainer.index.intakeCommand(),
                 // robotContainer.shuttle.moveDownwardCommand())
             .andThen(
@@ -251,9 +283,13 @@ public final class Commands4237
             .andThen(
                 Commands.waitSeconds(1.0))
             .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
+                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+                ))
+                // robotContainer.flywheel.stopCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
             // .andThen(
                 // robotContainer.candle.setGreenCommand())   
             .withName("Intake From Source");
@@ -388,10 +424,15 @@ public final class Commands4237
                 .deadlineWith(
                     robotContainer.index.feedNoteToFlywheelCommand()))
             .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()))
+                    robotContainer.index.stopCommand()
+                ))
+                // robotContainer.flywheel.stopCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                //     robotContainer.index.stopCommand()))
             .withName("Subwoofer Shoot");
                     // robotContainer.pivot.setAngleCommand(32.0)));
         }
@@ -422,10 +463,15 @@ public final class Commands4237
             // .andThen(
             //     Commands.waitSeconds(1.0))
             .andThen(
-                robotContainer.flywheel.stopCommand()
-                .alongWith(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()))
+                    robotContainer.index.stopCommand()
+                ))
+                // robotContainer.flywheel.stopCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                //     robotContainer.index.stopCommand()))
             .withName("Podium Shoot");
                     // robotContainer.pivot.setAngleCommand(32.0)));
         }
