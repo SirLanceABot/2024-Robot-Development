@@ -8,6 +8,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -274,6 +275,8 @@ public class RobotContainer
         NamedCommands.registerCommand("shoot", Commands.print("ShootCommand"));
 
         NamedCommands.registerCommand("Intake From Floor Front", Commands4237.intakeFromFloorFront());
+        NamedCommands.registerCommand("Shoot From Subwoofer", Commands4237.shootFromSubWooferCommand());
+        NamedCommands.registerCommand("Podium Shoot", Commands4237.podiumShootCommand());
         // NamedCommands.registerCommand("Autonomous Shoot Command", Commands4237.autonomousShootCommand());
     }
 }

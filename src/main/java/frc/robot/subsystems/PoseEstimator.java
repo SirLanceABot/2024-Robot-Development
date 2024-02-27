@@ -139,14 +139,16 @@ public class PoseEstimator extends Subsystem4237
      */
     public double getAngleToBlueSpeaker()
     {
-        double deltaX = Math.abs(blueSpeakerCoords[0] - periodicData.estimatedPose.getX());
-        double deltaY = Math.abs(blueSpeakerCoords[1] - periodicData.estimatedPose.getY());
+        double xPose = periodicData.estimatedPose.getX();
+        double yPose = periodicData.estimatedPose.getY();
+        double deltaX = Math.abs(blueSpeakerCoords[0] - xPose);
+        double deltaY = Math.abs(blueSpeakerCoords[1] - yPose);
         double angleRads = Math.atan2(deltaY, deltaX);
-        if(periodicData.estimatedPose.getY() > blueSpeakerCoords[1])
+        if(yPose > blueSpeakerCoords[1])
         {
             return Math.toDegrees(angleRads);
         }
-        else if(periodicData.estimatedPose.getY() < blueSpeakerCoords[1])
+        else if(yPose < blueSpeakerCoords[1])
         {
             return -Math.toDegrees(angleRads);
         }
@@ -161,16 +163,16 @@ public class PoseEstimator extends Subsystem4237
      */
     public double getAngleToRedSpeaker()
     {
-        double deltaX = redSpeakerCoords[0] - periodicData.estimatedPose.getX();
-        deltaX = Math.abs(deltaX);
-        double deltaY = redSpeakerCoords[1] - periodicData.estimatedPose.getY();
-        deltaY = Math.abs(deltaY);
+        double xPose = periodicData.estimatedPose.getX();
+        double yPose = periodicData.estimatedPose.getY();
+        double deltaX = Math.abs(redSpeakerCoords[0] - xPose);
+        double deltaY = Math.abs(redSpeakerCoords[1] - yPose);
         double angleRads = Math.atan2(deltaY, deltaX);
-        if(periodicData.estimatedPose.getY() > redSpeakerCoords[1])
+        if(yPose > redSpeakerCoords[1])
         {
             return 180.0 - Math.toDegrees(angleRads);
         }
-        else if(periodicData.estimatedPose.getY() < redSpeakerCoords[1])
+        else if(yPose < redSpeakerCoords[1])
         {
             return -(180.0 - Math.toDegrees(angleRads));
         }
