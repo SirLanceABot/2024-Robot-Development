@@ -309,24 +309,24 @@ public final class Commands4237
         }
     }
 
-    // public static Command rotateToSpeakerCommand()
-    // {
-    //     if(robotContainer.drivetrain !=null)
-    //     {
-    //         if(robotContainer.isBlueAlliance)
-    //         {
-    //             return robotContainer.drivetrain.rotateToBlueSpeakerCommand().withName("Robot Rotate to Blue");
-    //         }
-    //         else
-    //         {
-    //             return robotContainer.drivetrain.rotateToRedSpeakerCommand().withName("Robot Rotate to Red");
-    //         }
-    //     }
-    //     else
-    //     {
-    //         return Commands.none();
-    //     }
-    // }
+    public static Command rotateToSpeakerCommand()
+    {
+        if(robotContainer.drivetrain !=null)
+        {
+            if(robotContainer.isBlueAlliance)
+            {
+                return robotContainer.drivetrain.rotateToBlueSpeakerCommand().withName("Robot Rotate to Blue");
+            }
+            else
+            {
+                return robotContainer.drivetrain.rotateToRedSpeakerCommand().withName("Robot Rotate to Red");
+            }
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 
     // public static Command shootCommand()
     // {
@@ -362,16 +362,23 @@ public final class Commands4237
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
             return
-            Commands.waitSeconds(1.0)
-            .deadlineWith(
-                robotContainer.flywheel.shootCommand(() -> 80.0),
-                robotContainer.pivot.setAngleCommand(65.0))
+            // Commands.waitSeconds(2.0)
+            rotateToSpeakerCommand()
             .andThen(
-                Commands.print("Past wait sam doesnt like it"))
+                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
+                                        robotContainer.flywheel.isAtSpeed(70.0).getAsBoolean()))
+                                        .withTimeout(1.0)
+                // .alongWith(
+                //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
+                .deadlineWith(
+                    robotContainer.flywheel.shootCommand(() -> 70.0),
+                    robotContainer.pivot.setAngleCommand(64.0)))
             .andThen(
-                robotContainer.index.feedNoteToFlywheelCommand())
+                Commands.print("Hello Woodard"))      
             .andThen(
-                Commands.waitSeconds(1.0))
+                Commands.waitSeconds(1.0)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
             .andThen(
                 robotContainer.flywheel.stopCommand()
                 .alongWith(

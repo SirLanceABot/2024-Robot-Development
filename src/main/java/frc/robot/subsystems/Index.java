@@ -102,7 +102,7 @@ public class Index extends Subsystem4237
         motor.setSafetyEnabled(false);
         // motor.setupCurrentLimit(getPosition(), getVelocity(), getPosition());
         // motor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        motor.setupPIDController(0, kP, kI, kD, kS, kD);
+        motor.setupPIDController(0, kP, kI, kD, kS, kV);
         // motor.setupVelocityConversionFactor(Math.PI * ROLLER_DIAMETER_FEET * (1.0 / 60.0) * 0.0833); // converts rpm to ft/s
         motor.setupVelocityConversionFactor(RPS_TO_FPS);
 

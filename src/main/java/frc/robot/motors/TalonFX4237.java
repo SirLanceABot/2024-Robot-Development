@@ -566,6 +566,11 @@ public class TalonFX4237 extends MotorController4237
         return motor.getMotorVoltage().getValueAsDouble();
     }
 
+    public double getMotorSupplyVoltage()
+    {
+        return motor.getSupplyVoltage().getValueAsDouble();
+    }
+
     @Override
     public void stopMotor()
     {

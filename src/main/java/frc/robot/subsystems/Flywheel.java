@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -78,6 +79,7 @@ public class Flywheel extends Subsystem4237
     private final double RPS_TO_FPS = GEAR_RATIO * ( 1.0 / Math.PI) * (1.0 / ROLLER_DIAMETER_FEET); // 1.432
     // private boolean tunePID = false;
 
+    private final double SPEED_TOLERANCE = 1.0;
 
     // -10 ft/s for intaking
     private final double kP = 0.45;
@@ -109,6 +111,7 @@ public class Flywheel extends Subsystem4237
         super("Flywheel");
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
+
         // if(tunePID)
         // {
         //     SmartDashboard.putNumber("kP", periodicData.kP);
@@ -117,7 +120,7 @@ public class Flywheel extends Subsystem4237
 
         //     SmartDashboard.putNumber("Velocity", 0.0);
         // }
-        //boobies lol
+        setDefaultCommand(stopCommand());
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -158,40 +161,72 @@ public class Flywheel extends Subsystem4237
     public void shoot(double speed)
     {
         // periodicData.flywheelSpeed = speed;
-        motor.setControlVelocity(speed);
+        setControlVelocity(speed);
     }
 
 
     public void intake()
     {
         // periodicData.flywheelSpeed = -0.1;
-        motor.setControlVelocity(-10.0);
+        setControlVelocity(-10.0);
     }
 
     public void stop()
     {
         // periodicData.flywheelSpeed = 0.0;
-        motor.set(0.0);
+        set(0.0);
+    }
+
+    private void setControlVelocity(double speed)
+    {
+        motor.setControlVelocity(speed);
+    }
+
+    private void set(double speed)
+    {
+        motor.set(speed);
+    }
+
+    public BooleanSupplier isAtSpeed(double targetSpeed)
+    {
+        return () ->
+        {
+            double speed = motor.getVelocity();
+
+            System.out.println("Velocity: " + motor.getVelocity());
+            System.out.println("Voltage: " + motor.getMotorVoltage());
+            System.out.println("Supply Voltage" + motor.getMotorSupplyVoltage());
+            boolean isAtSpeed;
+            if(speed > targetSpeed - SPEED_TOLERANCE && speed < targetSpeed + SPEED_TOLERANCE)
+            {
+                isAtSpeed = true;
+            }
+            else
+            {
+                isAtSpeed = false;
+            }
+            return isAtSpeed;
+        };
     }
 
     public Command shootCommand(DoubleSupplier speed)
     {
-        return Commands.runEnd( () -> shoot(speed.getAsDouble()), () -> stop(), this).withName("Shoot");
+        return Commands.run(() -> shoot(speed.getAsDouble()), this).withName("Shoot");
     }
 
     public Command shootSpeakerCommand()
     {
-        return Commands.runEnd(() -> shoot(0.6), () -> stop(), this).withName("Shoot Speaker");
+        return Commands.run(() -> shoot(0.6), this).withName("Shoot Speaker");
     }
 
     public Command shootAmpCommand()
     {
-        return Commands.runEnd(() -> shoot(0.2),  () -> stop(), this).withName("Shoot Amp");
+        return Commands.run(() -> shoot(0.2), this).withName("Shoot Amp");
     }
 
     public Command intakeCommand()
     {
-        return Commands.runOnce( () -> intake(), this).withName("Intake");
+        return Commands.run( () -> intake(), this).withName("Intake");
     }
 
     public Command stopCommand()

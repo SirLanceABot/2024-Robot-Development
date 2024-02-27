@@ -81,7 +81,7 @@ public class Pivot extends Subsystem4237
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
         public final double SHOOT_TO_AMP_ANGLE = 59.5;
-        public final double ANGLE_TOLERANCE = 0.1;
+        public final double ANGLE_TOLERANCE = 0.3;
 
         //for manually moving Pivot
         private final double MOTOR_SPEED = 0.1;
@@ -277,8 +277,10 @@ public class Pivot extends Subsystem4237
     {
         return () ->
         {
+            double position = motor.getPosition();
+            // System.out.println("Position: " + motor.getPosition());
             boolean isAtAngle;
-            if(motor.getPosition() > targetAngle - classConstants.ANGLE_TOLERANCE && motor.getPosition() < targetAngle + classConstants.ANGLE_TOLERANCE)
+            if(position > targetAngle - classConstants.ANGLE_TOLERANCE && position < targetAngle + classConstants.ANGLE_TOLERANCE)
             {
                 isAtAngle = true;
             }
