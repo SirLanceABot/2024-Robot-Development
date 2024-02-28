@@ -478,12 +478,12 @@ public class AutonomousTab
 
         // }
 
-        if(isSitPretty && (isStartingLocation || isScoreMoreNotes))
-        {
-            isValid = false;
+        // if(isSitPretty && isScoreMoreNotes)
+        // {
+        //     isValid = false;
 
-            msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
-        }
+        //     msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
+        // }
 
         
 

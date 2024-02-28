@@ -132,8 +132,8 @@ public class AutonomousTabData
 
     public static enum SitPretty
     {
-        kYes("Do Nothing"), 
-        kNo("Run Autonomous"); 
+        kYes("Do_Nothing -- "), 
+        kNo("Run_Autonomous -- "); 
 
 
         private final String name;

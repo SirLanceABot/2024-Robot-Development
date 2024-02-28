@@ -53,7 +53,8 @@ public class AutoCommandList extends SequentialCommandGroup
     private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
-    private String pathPlannerString = "";
+    private String pathPlannerString;
+    private String compare;
     
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
@@ -93,13 +94,22 @@ public class AutoCommandList extends SequentialCommandGroup
     {
         // if(drivetrain != null)
         //     add(new StopDrive(drivetrain));
-
         pathPlannerString += autonomousTabData.startingSide;
-        //pathPlannerString += autonomousTabData.scorePreload;
-        // pathPlannerString += autonomousTabData.shootDelay;
-        // pathPlannerString += autonomousTabData.driveDelay;
-        pathPlannerString += autonomousTabData.scoreExtraNotes;
-        pathPlannerString += autonomousTabData.sitPretty;
+        
+        compare += autonomousTabData.sitPretty;
+
+        if (compare == "Do_Nothing -- ")
+        {
+            pathPlannerString += "Do_Nothing";
+        }
+        else
+        {   
+            pathPlannerString += autonomousTabData.sitPretty;
+            //pathPlannerString += autonomousTabData.scorePreload;
+            // pathPlannerString += autonomousTabData.shootDelay;
+            // pathPlannerString += autonomousTabData.driveDelay;
+            pathPlannerString += autonomousTabData.scoreExtraNotes;
+        }
         System.out.println(pathPlannerString);
         
     }

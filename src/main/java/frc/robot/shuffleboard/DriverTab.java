@@ -47,6 +47,7 @@ public class DriverTab
     
     private GenericEntry pivotAngleBox;
     private GenericEntry intakeStatusBox;
+   
     
  
 
@@ -76,7 +77,12 @@ public class DriverTab
             intakeStatusBox = createIntakeStatusBox();
         }
 
-        createFieldBox();
+        if(drivetrain != null)
+        {
+            createFieldBox();
+        }
+
+        
 
 
         System.out.println("  Constructor Finished: " + fullClassName);

@@ -39,7 +39,7 @@ public class PoseEstimator extends Subsystem4237
     private final Camera[] cameraArray;
 
     private final SwerveDrivePoseEstimator poseEstimator;
-    private final Field2d field = new Field2d();
+    //private final Field2d field = new Field2d();
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
@@ -104,7 +104,7 @@ public class PoseEstimator extends Subsystem4237
             poseEstimator = null;
         }
 
-        SmartDashboard.putData("Field",field);
+        //SmartDashboard.putData("Field",field);
 
         System.out.println(fullClassName + " : Constructor Finished");
     }
@@ -251,7 +251,7 @@ public class PoseEstimator extends Subsystem4237
             };
             ASTable.getEntry("poseEstimator").setDoubleArray(pose);
 
-            field.setRobotPose(getEstimatedPose());
+            //field.setRobotPose(getEstimatedPose());
         }
     }
 
