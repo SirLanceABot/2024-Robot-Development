@@ -628,4 +628,32 @@ public final class Commands4237
             return Commands.none();
         }
     }
+
+    public static Command autonomousFinishIntakeCommand()
+    {
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            Commands.either(
+                Commands.none(),
+
+            Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                    .deadlineWith(
+                        robotContainer.shuttle.moveUpwardCommand(),
+                        robotContainer.index.acceptNoteFromShuttleCommand())
+                .andThen(
+                    Commands.parallel(
+                        robotContainer.index.stopCommand(),
+                        // robotContainer.intakePositioning.moveUpCommand(),
+                        robotContainer.shuttle.stopCommand()))
+                .withTimeout(3.0)
+                .withName("Autonomous Finish Intake"),
+
+                robotContainer.indexWheelsProximity.isDetectedSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 }

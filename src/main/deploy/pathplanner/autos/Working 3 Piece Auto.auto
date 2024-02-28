@@ -12,9 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Positioning Up"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -37,7 +43,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake From Floor Front"
+                  "name": "Autonomous Finish Intake"
                 }
               },
               {
@@ -62,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake From Floor Front"
+                  "name": "Autonomous Finish Intake"
                 }
               },
               {

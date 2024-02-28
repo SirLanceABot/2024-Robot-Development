@@ -283,6 +283,8 @@ public class RobotContainer
         NamedCommands.registerCommand("Shoot From Subwoofer", Commands4237.shootFromSubWooferCommand());
         NamedCommands.registerCommand("Podium Shoot", Commands4237.podiumShootCommand());
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
+        NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
+        NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
     }
 }
 
