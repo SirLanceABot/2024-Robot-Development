@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
@@ -47,6 +48,7 @@ public class DriverTab
     
     private GenericEntry pivotAngleBox;
     private GenericEntry intakeStatusBox;
+    private ComplexWidget fieldBox;
    
     
  
@@ -88,15 +90,20 @@ public class DriverTab
         System.out.println("  Constructor Finished: " + fullClassName);
     }
  
-    private void createFieldBox()
+    private ComplexWidget createFieldBox()
     {
-        
-        driverTab.add("Field", field);
         field.setRobotPose(drivetrain.getEstimatedPose());
+        return driverTab.add("Field", field)
+        .withWidget(BuiltInWidgets.kField) //specifies type of widget: "kField
+        .withPosition(7,1) // sets position of widget
+        .withSize(19,12);  // sets size of widget
         
+
         
         //  SmartDashboard.putData("Field", field);
     }
+
+    
 
     private GenericEntry createPivotAngleBox()
     {

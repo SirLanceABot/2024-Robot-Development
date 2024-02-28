@@ -111,10 +111,10 @@ public class AutonomousTabData
 
     public static enum ScoreExtraNotes
     {
-        k0("ExtraNotes_0 "), 
-        k1("ExtraNotes_1 "), 
-        k2("ExtraNotes_2 "), 
-        k3("ExtraNotes_3 ");
+        k0(" -- ExtraNotes_0 "), 
+        k1(" -- ExtraNotes_1 "), 
+        k2(" -- ExtraNotes_2 "), 
+        k3(" -- ExtraNotes_3 ");
 
         private final String name;
 
@@ -132,8 +132,8 @@ public class AutonomousTabData
 
     public static enum SitPretty
     {
-        kYes("Do_Nothing -- "), 
-        kNo("Run_Autonomous -- "); 
+        kYes("Do_Nothing"), 
+        kNo("Run_Autonomous"); 
 
 
         private final String name;

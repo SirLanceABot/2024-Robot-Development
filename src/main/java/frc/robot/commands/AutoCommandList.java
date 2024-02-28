@@ -19,6 +19,7 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shuttle;
+import frc.robot.shuffleboard.AutonomousTab;
 import frc.robot.shuffleboard.AutonomousTabData;
 
 
@@ -53,8 +54,8 @@ public class AutoCommandList extends SequentialCommandGroup
     private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
-    private String pathPlannerString;
-    private String compare;
+    private String pathPlannerString = "";
+    private String compare = "";
     
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
@@ -95,21 +96,22 @@ public class AutoCommandList extends SequentialCommandGroup
         // if(drivetrain != null)
         //     add(new StopDrive(drivetrain));
         pathPlannerString += autonomousTabData.startingSide;
+        pathPlannerString += autonomousTabData.sitPretty;
+       
         
-        compare += autonomousTabData.sitPretty;
+        //compare += autonomousTabData.sitPretty;
 
-        if (compare == "Do_Nothing -- ")
+        if (!AutonomousTab.doNothing())
         {
-            pathPlannerString += "Do_Nothing";
+            pathPlannerString += autonomousTabData.scoreExtraNotes;;
         }
-        else
-        {   
-            pathPlannerString += autonomousTabData.sitPretty;
+          
+            
             //pathPlannerString += autonomousTabData.scorePreload;
             // pathPlannerString += autonomousTabData.shootDelay;
             // pathPlannerString += autonomousTabData.driveDelay;
-            pathPlannerString += autonomousTabData.scoreExtraNotes;
-        }
+            // pathPlannerString += autonomousTabData.scoreExtraNotes;
+        
         System.out.println(pathPlannerString);
         
     }

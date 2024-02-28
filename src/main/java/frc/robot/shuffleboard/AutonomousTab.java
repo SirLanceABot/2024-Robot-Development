@@ -46,7 +46,7 @@ public class AutonomousTab
     // private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScoreExtraNotes> scoreExtraNotesBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
+    private static SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
 
     
 
@@ -397,6 +397,7 @@ public class AutonomousTab
         return autonomousTabData;
     }
 
+
     public void updateIsDataValidAndErrorMessage()
     {
         errorMessage = "No Errors";
@@ -414,7 +415,7 @@ public class AutonomousTab
         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
         boolean isScoreMoreNotes = 
-        (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
+        (//scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3);
@@ -440,9 +441,6 @@ public class AutonomousTab
         boolean isScoreManyMoreNotes = 
         (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
-
-
-
 
         // if(!isContainingPreload && isScorePreload) :)
         // {
@@ -478,12 +476,12 @@ public class AutonomousTab
 
         // }
 
-        // if(isSitPretty && isScoreMoreNotes)
-        // {
-        //     isValid = false;
+        if(isSitPretty && isScoreMoreNotes)
+        {
+            isValid = false;
 
-        //     msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
-        // }
+            msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
+        }
 
         
 
@@ -499,4 +497,13 @@ public class AutonomousTab
         isDataValid = isValid;
 
     }   
+
+    public static boolean doNothing()
+    {
+        boolean doNothing =
+        (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
+        
+        return doNothing;
+    }
+    
 }
