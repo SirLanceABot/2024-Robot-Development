@@ -37,7 +37,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Podium Shoot"
+                  "name": "Intake From Floor Front"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Shoot"
                 }
               }
             ]
@@ -56,7 +62,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Podium Shoot"
+                  "name": "Intake From Floor Front"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Shoot"
                 }
               }
             ]
