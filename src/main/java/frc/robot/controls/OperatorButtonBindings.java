@@ -238,7 +238,7 @@ public class OperatorButtonBindings
         if(robotContainer.climb != null)
         {
             // dPadDownTrigger.whileTrue(robotContainer.climb.retractCommand(-0.2));
-            dPadDownTrigger.onTrue(robotContainer.climb.moveToPositionCommand(TargetPosition.kRobot));
+            dPadDownTrigger.onTrue(robotContainer.climb.moveToRobotCommand());
         }
     }
 
@@ -251,7 +251,7 @@ public class OperatorButtonBindings
         if(robotContainer.climb != null)
         {
             // dPadUpTrigger.whileTrue(robotContainer.climb.extendCommand(0.2));
-            dPadUpTrigger.onTrue(robotContainer.climb.moveToPositionCommand(TargetPosition.kChain));
+            dPadUpTrigger.onTrue(robotContainer.climb.moveToChainCommand());
 
         }
     }
@@ -295,7 +295,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            // leftTriggerAndDpadDownTrigger.whileTrue(robotContainer.climb.retractCommand());
+            leftTriggerAndDpadDownTrigger.whileTrue(robotContainer.climb.retractCommand());
         }
     }
 
@@ -314,7 +314,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.climb != null)
         {
-            // leftTriggerAndDpadUpTrigger.whileTrue(robotContainer.climb.extendCommand());
+            leftTriggerAndDpadUpTrigger.whileTrue(robotContainer.climb.extendCommand());
         }
     }
 

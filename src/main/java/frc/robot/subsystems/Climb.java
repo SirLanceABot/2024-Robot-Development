@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -57,26 +58,26 @@ public class Climb extends Subsystem4237
         // OUTPUTS
         private DoubleLogEntry positionEntry;
         private DoubleLogEntry velocityEntry;
-        private double motorSpeed = 0.0;
+        // private double motorSpeed = 0.0;
         // private double rightMotorSpeed = 0.0;
     }
 
     private PeriodicData periodicData = new PeriodicData();
-    private final CANSparkMax4237 leftLeadMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
-    private final CANSparkMax4237 rightFollowMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
-    private TargetPosition targetPosition = TargetPosition.kOverride;
+    private final CANSparkMax4237 leadMotor = new CANSparkMax4237(Constants.Climb.RIGHT_MOTOR_PORT, Constants.Climb.RIGHT_MOTOR_CAN_BUS, "rightMotor");
+    private final CANSparkMax4237 followMotor = new CANSparkMax4237(Constants.Climb.LEFT_MOTOR_PORT, Constants.Climb.LEFT_MOTOR_CAN_BUS, "leftMotor");
+    // private TargetPosition targetPosition = TargetPosition.kOverride;
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    private final double LEFT_MOTOR_FORWARD_SOFT_LIMIT       = 200.0;
-    private final double LEFT_MOTOR_REVERSE_SOFT_LIMIT       = 0.0;
+    private final double FORWARD_SOFT_LIMIT       = 195.0;
+    private final double REVERSE_SOFT_LIMIT       = 0.0;
     // private final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 40.0;
     // private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
     private static final double CHAIN_ENCODER_POSITION       = 190.0;
     private static final double ROBOT_ENCODER_POSITION       = 30.0;//5.0;
 
-    private final double DEFAULT_SPEED = 0.5;
+    private final double DEFAULT_SPEED = 0.1;
     private final double HOLDING_SPEED = 0.2;
 
     private final double CURRENT_LIMIT                       = 30.0;
@@ -103,33 +104,33 @@ public class Climb extends Subsystem4237
         super("Climb");
         System.out.println("  Constructor Started:  " + fullClassName);
         configMotors();
-
+        setDefaultCommand(stopCommand());
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
     private void configMotors()
     {
-        leftLeadMotor.setupFactoryDefaults();
-        rightFollowMotor.setupFactoryDefaults();
-        leftLeadMotor.setupBrakeMode();
-        rightFollowMotor.setupBrakeMode();
-        leftLeadMotor.setupInverted(false);
-        rightFollowMotor.setupInverted(false);
-        leftLeadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        rightFollowMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
-        leftLeadMotor.setPosition(0.0);
-        rightFollowMotor.setPosition(0.0);
-        rightFollowMotor.setupFollower(Constants.Climb.LEFT_MOTOR_PORT, true);
+        leadMotor.setupFactoryDefaults();
+        followMotor.setupFactoryDefaults();
+        leadMotor.setupBrakeMode();
+        followMotor.setupBrakeMode();
+        leadMotor.setupInverted(true);
+        followMotor.setupInverted(true);
+        leadMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        followMotor.setupCurrentLimit(CURRENT_LIMIT, CURRENT_THRESHOLD, TIME_THRESHOLD);
+        leadMotor.setPosition(0.0);
+        followMotor.setPosition(0.0);
+        followMotor.setupFollower(Constants.Climb.RIGHT_MOTOR_PORT, true);
 
-        leftLeadMotor.setupForwardSoftLimit(LEFT_MOTOR_FORWARD_SOFT_LIMIT, true);
-        leftLeadMotor.setupReverseSoftLimit(LEFT_MOTOR_REVERSE_SOFT_LIMIT, true);
-        leftLeadMotor.setupForwardHardLimitSwitch(true, true);
-        leftLeadMotor.setupReverseHardLimitSwitch(true, true);
+        leadMotor.setupForwardSoftLimit(FORWARD_SOFT_LIMIT, true);
+        leadMotor.setupReverseSoftLimit(REVERSE_SOFT_LIMIT, true);
+        leadMotor.setupForwardHardLimitSwitch(true, true);
+        leadMotor.setupReverseHardLimitSwitch(true, true);
         // rightFollowMotor.setupForwardSoftLimit(RIGHT_MOTOR_FORWARD_SOFT_LIMIT, true);
         
         // rightFollowMotor.setupReverseSoftLimit(RIGHT_MOTOR_REVERSE_SOFT_LIMIT, true);
-        rightFollowMotor.setSafetyEnabled(false);
+        followMotor.setSafetyEnabled(false);
     }
 
     public double getLeftPosition()
@@ -143,18 +144,20 @@ public class Climb extends Subsystem4237
         return periodicData.currentRightPosition;
     }
 
-    public void extend(double speed)
+    private void extend(double speed)
     {
         
-        targetPosition = TargetPosition.kOverride;
-        periodicData.motorSpeed = speed;
+        // targetPosition = TargetPosition.kOverride;
+        // periodicData.motorSpeed = speed;
+        setVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void extend()
     {
         
-        targetPosition = TargetPosition.kOverride;
-        periodicData.motorSpeed = DEFAULT_SPEED;
+        // targetPosition = TargetPosition.kOverride;
+        // periodicData.motorSpeed = DEFAULT_SPEED;
+        setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     // public void extendRight(double speed)
@@ -164,16 +167,18 @@ public class Climb extends Subsystem4237
     //     periodicData.rightMotorSpeed = speed;
     // }
 
-    public void retract(double speed)
+    private void retract(double speed)
     {
-        targetPosition = TargetPosition.kOverride;
-        periodicData.motorSpeed = -Math.abs(speed);
+        // targetPosition = TargetPosition.kOverride;
+        // periodicData.motorSpeed = -Math.abs(speed);
+        setVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void retract()
     {
-        targetPosition = TargetPosition.kOverride;
-        periodicData.motorSpeed = -DEFAULT_SPEED;
+        // targetPosition = TargetPosition.kOverride;
+        // periodicData.motorSpeed = -DEFAULT_SPEED;
+        setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     // public void retractRight(double speed)
@@ -197,53 +202,110 @@ public class Climb extends Subsystem4237
 
     public void hold()
     {
-        periodicData.motorSpeed = 0.05;
+        // periodicData.motorSpeed = 0.05;
         // periodicData.rightMotorSpeed = 0.05;
+        setVoltage(0.05 * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void stop()
     {
-        periodicData.motorSpeed = 0.0;
+        // periodicData.motorSpeed = 0.0;
         // periodicData.rightMotorSpeed = 0.0;
+        set(0.0);
     }
 
     public void moveToChain()
     {
-        targetPosition = TargetPosition.kChain;
+        // targetPosition = TargetPosition.kChain;
+        if((TargetPosition.kChain.value - POSITION_TOLERANCE) > leadMotor.getPosition())
+        {
+            setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //0.3
+            // rightFollowMotor.set(0.05);
+        }
+        else if((TargetPosition.kChain.value + POSITION_TOLERANCE) < leadMotor.getPosition())
+        {
+            setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //-0.3
+            // rightFollowMotor.set(-0.05);
+        }
+        else
+        {
+            set(0.0);
+            // rightFollowMotor.set(0.0); 
+        }
     }
 
-    public void moveToOuterRobot()
+    public void moveToRobot()
     {
-        targetPosition = TargetPosition.kRobot;
-    }
-
-    public void moveToSetPosition(TargetPosition targetPosition)
-    {
-        this.targetPosition = targetPosition;
-        // if(targetPosition == TargetPosition.kOverride)
-        // {
-        //     leftLeadMotor.set(periodicData.motorSpeed);
-        //     // rightFollowMotor.set(periodicData.leftMotorSpeed);
-        // }
-        // else
-        // {
-        //     if((targetPosition.value - 1.0) > leftLeadMotor.getPosition())
+        if((TargetPosition.kRobot.value - POSITION_TOLERANCE) > leadMotor.getPosition())
+        {
+            setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //0.3
+            // rightFollowMotor.set(0.05);
+        }
+        else if((TargetPosition.kRobot.value + POSITION_TOLERANCE) < leadMotor.getPosition())
+        {
+            setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //-0.3
+            // rightFollowMotor.set(-0.05);
+        }
+        else
+        {
+            set(0.0);
+            // rightFollowMotor.set(0.0); 
+        }
+        // targetPosition = TargetPosition.kRobot;
+        // if((TargetPosition.kRobot.value - 1.0) > leadMotor.getPosition())
         //     {
-        //         leftLeadMotor.set(0.1); //0.3
+        //         leadMotor.set(0.1); //0.3
         //         // rightFollowMotor.set(0.05);
         //     }
-        //     else if((targetPosition.value + 1.0) < leftLeadMotor.getPosition())
+        //     else if((targetPosition.value + 1.0) < leadMotor.getPosition())
         //     {
-        //         leftLeadMotor.set(-0.1); //-0.3
+        //         leadMotor.set(-0.1); //-0.3
         //         // rightFollowMotor.set(-0.05);
         //     }
         //     else
         //     {
-        //         leftLeadMotor.set(0.0);
+        //         leadMotor.set(0.0);
         //         // rightFollowMotor.set(0.0); 
         //     }
-        //     // leftLeadMotor.setControlPosition(targetPosition.value);
-        // }
+    }
+
+    // public void moveToSetPosition(TargetPosition targetPosition)
+    // {
+    //     this.targetPosition = targetPosition;
+    //     // if(targetPosition == TargetPosition.kOverride)
+    //     // {
+    //     //     leftLeadMotor.set(periodicData.motorSpeed);
+    //     //     // rightFollowMotor.set(periodicData.leftMotorSpeed);
+    //     // }
+    //     // else
+    //     // {
+    //         if((targetPosition.value - POSITION_TOLERANCE) > leadMotor.getPosition())
+    //         {
+    //             leadMotor.setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //0.3
+    //             // rightFollowMotor.set(0.05);
+    //         }
+    //         else if((targetPosition.value + POSITION_TOLERANCE) < leadMotor.getPosition())
+    //         {
+    //             leadMotor.setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE); //-0.3
+    //             // rightFollowMotor.set(-0.05);
+    //         }
+    //         else
+    //         {
+    //             leadMotor.set(0.0);
+    //             // rightFollowMotor.set(0.0); 
+    //         }
+    //     //     // leftLeadMotor.setControlPosition(targetPosition.value);
+    //     // }
+    // }
+
+    private void set(double speed)
+    {
+        leadMotor.set(speed);
+    }
+
+    private void setVoltage(double voltage)
+    {
+        leadMotor.setVoltage(voltage);
     }
 
     // public Command extendLeftClimbCommand(double speed)
@@ -289,7 +351,7 @@ public class Climb extends Subsystem4237
      */
     public Command extendCommand()
     {
-        return Commands.runEnd( () -> extend(), () -> stop(), this).withName("Extend Climb");
+        return Commands.run( () -> extend(), this).withName("Extend Climb");
     }
 
     /**
@@ -297,13 +359,23 @@ public class Climb extends Subsystem4237
      */
     public Command retractCommand()
     {
-        return Commands.runEnd( () -> retract(), () -> stop(), this).withName("Retract Climb");
+        return Commands.run( () -> retract(), this).withName("Retract Climb");
     }
 
-    public Command moveToPositionCommand(TargetPosition targetPosition)
+    public Command moveToChainCommand()
     {
-        return Commands.runOnce( () -> moveToSetPosition(targetPosition), this).withName("Move To Position");
+        return Commands.run( () -> moveToChain(), this).withName("Move to Chain");
     }
+
+    public Command moveToRobotCommand()
+    {
+        return Commands.run( () -> moveToRobot(), this).withName("Move to Robot");
+    }
+
+    // public Command moveToPositionCommand(TargetPosition targetPosition)
+    // {
+    //     return Commands.runOnce( () -> moveToSetPosition(targetPosition), this).withName("Move To Position");
+    // }
 
     public Command stopCommand()
     {
@@ -313,8 +385,8 @@ public class Climb extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
-        periodicData.currentLeftPosition = leftLeadMotor.getPosition();
-        periodicData.currentRightPosition = rightFollowMotor.getPosition();
+        periodicData.currentLeftPosition = leadMotor.getPosition();
+        periodicData.currentRightPosition = followMotor.getPosition();
         // getPosit();
         // periodicData.currentLeftPosition = leftMotor.getPosition();
         // periodicData.currentRightPosition = rightMotor.getPosition();
@@ -323,39 +395,39 @@ public class Climb extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        if(targetPosition == TargetPosition.kOverride)  // if we are in override mode, just set the speed to whatever was given
-        {
-            // leftLeadMotor.set(periodicData.motorSpeed);
-            leftLeadMotor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-        }
-        else    // if we are NOT in override mode (meaning we want to move to a set position), move to that set position
-        {
-            if((targetPosition.value - POSITION_TOLERANCE) > leftLeadMotor.getPosition())
-            {
-                // leftLeadMotor.set(DEFAULT_SPEED);
-                leftLeadMotor.setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-            }
-            else if((targetPosition.value + POSITION_TOLERANCE) < leftLeadMotor.getPosition())
-            {
-                // leftLeadMotor.set(-DEFAULT_SPEED);
-                leftLeadMotor.setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
-            }
-            else
-            {
-                // leftLeadMotor.set(0.0);
-                leftLeadMotor.setVoltage(0.0);
-            }
-        }
-        
+        // if(targetPosition == TargetPosition.kOverride)  // if we are in override mode, just set the speed to whatever was given
+        // {
+        //     // leftLeadMotor.set(periodicData.motorSpeed);
+        //     leadMotor.setVoltage(periodicData.motorSpeed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        // }
+        // else    // if we are NOT in override mode (meaning we want to move to a set position), move to that set position
+        // {
+        //     if((targetPosition.value - POSITION_TOLERANCE) > leadMotor.getPosition())
+        //     {
+        //         // leftLeadMotor.set(DEFAULT_SPEED);
+        //         leadMotor.setVoltage(DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        //     }
+        //     else if((targetPosition.value + POSITION_TOLERANCE) < leadMotor.getPosition())
+        //     {
+        //         // leftLeadMotor.set(-DEFAULT_SPEED);
+        //         leadMotor.setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        //     }
+        //     else
+        //     {
+        //         // leftLeadMotor.set(0.0);
+        //         leadMotor.setVoltage(0.0);
+        //     }
+        // }
+        SmartDashboard.putNumber("Current", getRightPosition());
 
-        if(leftLeadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentLeftPosition) > POSITION_TOLERANCE)
+        if(leadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentLeftPosition) > POSITION_TOLERANCE)
         {
-            leftLeadMotor.setPosition(0.0);
+            leadMotor.setPosition(0.0);
         }
 
-        if(leftLeadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentRightPosition) > POSITION_TOLERANCE)
+        if(leadMotor.isReverseLimitSwitchPressed() && Math.abs(periodicData.currentRightPosition) > POSITION_TOLERANCE)
         {
-            rightFollowMotor.setPosition(0.0);
+            followMotor.setPosition(0.0);
         }
     }
 
@@ -374,7 +446,7 @@ public class Climb extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leftLeadMotor.getPosition();
+        return "Current Encoder Position: " + getLeftPosition() + "\n" + "Current Encoder PositionV2: " + leadMotor.getPosition();
     }
 
 }
