@@ -58,7 +58,7 @@ public class PoseEstimator extends Subsystem4237
         private SwerveModulePosition[] swerveModulePositions;
 
         // OUTPUTS
-        private Pose2d estimatedPose;
+        private Pose2d estimatedPose = new Pose2d();
         private Pose2d poseForAS;
 
     }

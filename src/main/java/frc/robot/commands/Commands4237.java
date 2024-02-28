@@ -105,7 +105,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))
+                robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                 .deadlineWith(
@@ -171,7 +171,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
             .andThen(
-                robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE))
+                robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                 .deadlineWith(
@@ -271,7 +271,7 @@ public final class Commands4237
             .deadlineWith(
                 Commands.parallel(
                     robotContainer.flywheel.intakeCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.INTAKE_FROM_SOURCE_ANGLE)
                 ))
                 // robotContainer.flywheel.intakeCommand()
                 // .alongWith(
@@ -285,7 +285,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)
                 ))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
@@ -316,28 +316,82 @@ public final class Commands4237
         //     }
     // }
 
-    public static Command shootToSpeakerAngleCommand()
+    public static Command setAngleToCorrectSpeakerCommand()
     {
         double distance, angle = 0.0;
         // distance = (Math.round((distance * 39.37 / 12.0)));
         
         if(robotContainer.drivetrain != null && robotContainer.pivot != null)
         {
-            if(robotContainer.isBlueAlliance)
-            {
-                distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
-            }
-            else
-            {
-                distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
-            }
+            // if(robotContainer.isBlueAlliance)
+            // {
+            //     distance = robotContainer.drivetrain.getDistanceToBlueSpeaker();
+            // }
+            // else
+            // {
+            //     distance = robotContainer.drivetrain.getDistanceToRedSpeaker();
+            // }
 
-            distance = distance * 3.2808; // meters to feet
-            angle = robotContainer.pivot.calculateAngleFromDistance(distance);
+            // distance = distance * 3.2808; // meters to feet
+            // angle = robotContainer.pivot.calculateAngleFromDistance(distance);
+
+            // return
+            // robotContainer.pivot.setAngleCommand(angle)
+            // .withName("Move Pivot");
 
             return
-            robotContainer.pivot.setAngleCommand(angle)
-            .withName("Move Pivot");
+            Commands.either(
+                robotContainer.pivot.setAngleCommand(() -> (
+                    robotContainer.pivot.calculateAngleFromDistance(() -> (
+                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
+
+                robotContainer.pivot.setAngleCommand(() -> (
+                    robotContainer.pivot.calculateAngleFromDistance(() -> (
+                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
+
+                robotContainer.isBlueAllianceSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command setFlywheelToCorrectVelocityCommand()
+    {
+        DoubleSupplier distance;
+        DoubleSupplier velocity;
+        // distance = (Math.round((distance * 39.37 / 12.0)));
+        
+        if(robotContainer.drivetrain != null && robotContainer.flywheel != null)
+        {
+            // if(robotContainer.isBlueAlliance)
+            // {
+            //     distance = () -> (robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808);
+            // }
+            // else
+            // {
+            //     distance = () -> (robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808);
+            // }
+
+            // // distance = () -> (distance.getAsDouble() * 3.2808); // meters to feet
+            // velocity = () -> (robotContainer.flywheel.calculateSpeedFromDistance(distance.getAsDouble()));
+
+            // return
+            // robotContainer.flywheel.shootCommand(velocity)
+            // .withName("Set Flywheel Speed To Correct Velocity Command");
+            return
+            Commands.either(
+                robotContainer.flywheel.shootCommand( () -> (
+                    robotContainer.flywheel.calculateSpeedFromDistance(() -> (
+                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
+
+                robotContainer.flywheel.shootCommand( () -> (
+                    robotContainer.flywheel.calculateSpeedFromDistance(() -> (
+                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
+
+                robotContainer.isBlueAllianceSupplier());
+
         }
         else
         {
@@ -350,24 +404,39 @@ public final class Commands4237
         if(robotContainer.drivetrain !=null)
         {
             // if(robotContainer.isBlueAllianceSupplier().getAsBoolean())
-            if(true)
-            {
-                return 
+            // if(true)
+            // {
+            //     return 
+            //     robotContainer.drivetrain.rotateToBlueSpeakerCommand()
+            //     .until(
+            //         robotContainer.drivetrain.isAlignedWithBlueSpeaker())
+            //     .withTimeout(1.0)
+            //     .withName("Rotate to Blue Speaker");
+            // }
+            // else
+            // {
+            //     return 
+            //     robotContainer.drivetrain.rotateToRedSpeakerCommand()
+            //     .until(
+            //         robotContainer.drivetrain.isAlignedWithRedSpeaker())
+            //     .withTimeout(1.0)
+            //     .withName("Rotate to Red Speaker");
+            // }
+            return
+            Commands.either(
                 robotContainer.drivetrain.rotateToBlueSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithBlueSpeaker())
                 .withTimeout(1.0)
-                .withName("Rotate to Blue Speaker");
-            }
-            else
-            {
-                return 
+                .withName("Rotate to Blue Speaker"),
+
                 robotContainer.drivetrain.rotateToRedSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithRedSpeaker())
                 .withTimeout(1.0)
-                .withName("Rotate to Red Speaker");
-            }
+                .withName("Rotate to Red Speaker"),
+
+                robotContainer.isBlueAllianceSupplier());
         }
         else
         {
@@ -419,7 +488,7 @@ public final class Commands4237
                 //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 70.0),
-                    robotContainer.pivot.setAngleCommand(64.0))
+                    robotContainer.pivot.setAngleCommand(() -> 64.0))
             .andThen(
                 Commands.print("Hello Woodard"))      
             .andThen(
@@ -429,7 +498,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand()
                 ))
                 // robotContainer.flywheel.stopCommand()
@@ -447,20 +516,21 @@ public final class Commands4237
 
     public static Command podiumShootCommand()
     {
-        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null)
         {
             return
             // Commands.waitSeconds(1.0)
             rotateToSpeakerCommand()
             .andThen(
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
-                                            robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                                            robotContainer.flywheel.isAtSpeed(55.0).getAsBoolean()))
                                             .withTimeout(1.0)
                 .deadlineWith(
-                    robotContainer.flywheel.shootCommand(() -> 60.0),
-                    robotContainer.pivot.setAngleCommand(48.0)))
+                    setFlywheelToCorrectVelocityCommand(),
+                    setAngleToCorrectSpeakerCommand()))
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
+
             .andThen(
                 Commands.waitSeconds(1.0)
                 .deadlineWith(
@@ -470,7 +540,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand()
                 ))
                 // robotContainer.flywheel.stopCommand()

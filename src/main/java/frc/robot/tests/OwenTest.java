@@ -4,10 +4,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -115,15 +118,41 @@ public class OwenTest implements Test
 
         if(joystick.getRawButton(1))
         {
-            Commands4237.intakeFromFloorFront().schedule();
+            // Commands4237.intakeFromFloorFront().schedule();
+            robotContainer.flywheel.shootCommand(() -> 55.0).schedule();
+            // robotContainer.flywheel
+        }
+        else
+        {
+            robotContainer.flywheel.stopCommand().schedule();
         }
         if(joystick.getRawButton(2))
         {
             // index.feedNoteToFlywheel(17.0);
             // intake.pickupBack();
             // shuttle.moveUpward();
-            Commands4237.shootFromSubWooferCommand().schedule();
+            // Commands4237.shootFromSubWooferCommand().schedule();
+            robotContainer.index.feedNoteToFlywheelCommand().schedule();
         }
+        else
+        {
+            robotContainer.index.stopCommand().schedule();
+        }
+
+        if(joystick.getRawButton(3)) //X
+        {
+            robotContainer.pivot.moveUp();
+        }
+        else if(joystick.getRawButton(4)) //Y
+        {
+            robotContainer.pivot.moveDown();
+        }
+        else
+        {
+            robotContainer.pivot.stop();
+        }
+
+        SmartDashboard.putNumber("Pivot angle: ", robotContainer.pivot.getMotorEncoderPosition());
         // else
         // {
         // // //     // flywheel.stop();

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
@@ -78,9 +79,9 @@ public class Pivot extends Subsystem4237
     private final PeriodicData periodicData = new PeriodicData();
     public final ClassConstants classConstants = new ClassConstants();
     private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
-    private final InterpolatingDoubleTreeMap shotMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap angleShotMap = new InterpolatingDoubleTreeMap();
 
-    // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
+    // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);d
     
 
      // *** CLASS CONSTRUCTORS ***
@@ -177,20 +178,33 @@ public class Pivot extends Subsystem4237
     private void configShotMap()
     {
         // first value is distance from speaker in feet, second value is the pivot angle in degrees
-        shotMap.put(3.0, 60.6);
-        shotMap.put(4.0, 53.1);
-        shotMap.put(5.0, 46.8);
-        shotMap.put(6.0, 41.6);
-        shotMap.put(7.0, 37.3);
-        shotMap.put(8.0, 33.7);
-        shotMap.put(9.0, 30.65);
-        shotMap.put(10.0, 28.1);
-        shotMap.put(11.0, 25.9);
-        shotMap.put(12.0, 24.0);
-        shotMap.put(13.0, 22.3);
-        shotMap.put(14.0, 20.9);
-        shotMap.put(15.0, 19.6);
-
+        // These are for the calculated (poseEstimator) distances
+        angleShotMap.put(4.0, 64.0);
+        angleShotMap.put(5.0, 62.8);
+        angleShotMap.put(6.0, 56.7);
+        angleShotMap.put(7.0, 52.5);
+        angleShotMap.put(8.0, 49.9);
+        angleShotMap.put(9.0, 47.6);
+        angleShotMap.put(10.0, 44.0);
+        angleShotMap.put(11.0, 42.2);
+        angleShotMap.put(12.0, 41.3);
+        angleShotMap.put(13.0, 40.65);
+        angleShotMap.put(14.0, 39.64);
+        angleShotMap.put(15.0, 39.1);
+        
+        // These are for the real world distance
+        // angleShotMap.put(4.5, 64.0);
+        // angleShotMap.put(5.5, 62.8);
+        // angleShotMap.put(6.5, 56.7);
+        // angleShotMap.put(7.5, 52.5);
+        // angleShotMap.put(8.5, 49.9);
+        // angleShotMap.put(9.5, 47.6);
+        // angleShotMap.put(10.5, 44.0);
+        // angleShotMap.put(11.5, 42.2);
+        // angleShotMap.put(12.5, 41.3);
+        // angleShotMap.put(13.5, 40.65);
+        // angleShotMap.put(14.5, 39.64);
+        // angleShotMap.put(15.5, 39.1);
     }
 
     public void resetRelativeEncoder()
@@ -225,7 +239,7 @@ public class Pivot extends Subsystem4237
         return periodicData.canCoderRotationalPosition;
     }
 
-    private double getMotorEncoderPosition()
+    public double getMotorEncoderPosition()
     {
         return periodicData.motorEncoderRotationalPosition;
     }
@@ -295,14 +309,14 @@ public class Pivot extends Subsystem4237
      * @param distance (ft)
      * @return angle pivot should move to
      */
-    public double calculateAngleFromDistance(double distance)
+    public double calculateAngleFromDistance(DoubleSupplier distance)
     {
-        return shotMap.get(distance);
+        return angleShotMap.get(distance.getAsDouble());
     }
 
-    public Command setAngleCommand(double angle)
+    public Command setAngleCommand(DoubleSupplier angle)
     {
-        return Commands.runOnce(() -> setAngle(angle), this).withName("Set Angle");
+        return Commands.runOnce(() -> setAngle(angle.getAsDouble()), this).withName("Set Angle");
     }
 
     public Command resetAngleCommand()
