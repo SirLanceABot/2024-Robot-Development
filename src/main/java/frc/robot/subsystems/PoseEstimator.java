@@ -49,7 +49,7 @@ public class PoseEstimator extends Subsystem4237
     private Matrix<N3, N1> visionStdDevs;
     private Matrix<N3, N1> stateStdDevs;
 
-    private final double MAX_TARGET_DISTANCE = 3.4;
+    private final double MAX_TARGET_DISTANCE = 2.5;
 
     private class PeriodicData
     {
@@ -221,7 +221,7 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            if(camera != null && camera.isTargetFound() && camera.calculateDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            if(camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
                 // update pose esitmator with limelight data (vision part)
                 // poseEstimator.addVisionMeasurement(
@@ -231,7 +231,7 @@ public class PoseEstimator extends Subsystem4237
                 poseEstimator.addVisionMeasurement(
                     camera.getBotPoseBlue().toPose2d(), 
                     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                    visionStdDevs.times(camera.calculateDistanceFromTarget()));
+                    visionStdDevs.times(camera.getAverageDistanceFromTarget()));
             }
         }
     }
