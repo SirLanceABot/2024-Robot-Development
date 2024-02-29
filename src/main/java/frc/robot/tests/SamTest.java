@@ -4,11 +4,15 @@ import java.lang.invoke.MethodHandles;
 
 import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Commands4237;
+import frc.robot.motors.CANSparkMax4237;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Pivot;
 import frc.robot.sensors.Gyro4237;
@@ -49,6 +53,7 @@ public class SamTest implements Test
     // private final Gyro4237 gyro;
     // private final Boolean isBlueAlliance;
     // private final Climb climb;
+    private final CANSparkMax4237 swerveModule = new CANSparkMax4237(10, "rio", "swerve module");
 
     // *** CLASS CONSTRUCTOR ***
     public SamTest(RobotContainer robotContainer)
@@ -120,10 +125,11 @@ public class SamTest implements Test
         //     // flywheel.shoot(0.5);
         // }
 
-        SmartDashboard.putNumber("Current Yaw", robotContainer.gyro.getYaw());
+        // SmartDashboard.putNumber("Current Yaw", robotContainer.gyro.getYaw());
         if(joystick.getRawButton(1))    //A
         {
-            Commands4237.rotateToSpeakerCommand().schedule();
+            swerveModule.set(1.0);
+            // Commands4237.rotateToSpeakerCommand().schedule();
             // flywheel.intake();
             // index.intake();
             // shuttle.moveDownward();
@@ -141,16 +147,17 @@ public class SamTest implements Test
         }
         else if(joystick.getRawButton(2))   //B
         {
-            System.out.println(robotContainer.drivetrain.getAngleToRedSpeaker());
+            // System.out.println(robotContainer.drivetrain.getAngleToRedSpeaker());
             // climb.retract(0.1);
             // climb.moveToSetPosition(TargetPosition.kRobot);
         }
         else if(joystick.getRawButton(3))   //X
         {
-            System.out.println(robotContainer.drivetrain.getAngleToBlueSpeaker());
+            // System.out.println(robotContainer.drivetrain.getAngleToBlueSpeaker());
         }
         else
         {
+            swerveModule.set(0);
             // climb.stop();
         }
 
