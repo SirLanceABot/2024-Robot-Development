@@ -364,6 +364,8 @@ public class CANSparkMax4237 extends MotorController4237
         }
         else
             motorLogEntry.append(motorControllerName + " : No Sticky Faults");
+
+        clearStickyFaults();
     }
 
     /**

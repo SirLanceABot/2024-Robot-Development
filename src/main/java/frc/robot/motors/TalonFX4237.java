@@ -505,6 +505,8 @@ public class TalonFX4237 extends MotorController4237
 
         if(faultsCount == 0)
             motorLogEntry.append(motorControllerName + " : No Sticky Faults");
+
+        clearStickyFaults();
     }
 
     /**

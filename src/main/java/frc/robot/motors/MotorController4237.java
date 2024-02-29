@@ -4,8 +4,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 
 import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
@@ -15,7 +13,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
  * This abstract class defines the abstract methods that all motor controllers have.
  * Every motor controller will automatically have the Watchdog enabled.
  */
-public abstract class MotorController4237 extends MotorSafety implements MotorController//, Sendable
+public abstract class MotorController4237 extends MotorSafety implements MotorController
 {
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
@@ -108,14 +106,4 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
     public abstract double getPosition();
     public abstract double getVelocity();
     public abstract double getMotorVoltage();
-
-
-    // @Override
-    // public void initSendable(SendableBuilder builder) 
-    // {
-    //     builder.setSmartDashboardType("Motor Controller");
-    //     builder.setActuator(true);
-    //     builder.setSafeState(this::stopMotor);
-    //     builder.addDoubleProperty("Value", this::get, this::set);
-    // }
 }
