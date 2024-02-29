@@ -31,7 +31,7 @@ public class CANSparkMax4237 extends MotorController4237
     @FunctionalInterface
     private interface Function
     {
-        public abstract REVLibError apply();
+        public abstract REVLibError doAction();
     }
 
     private final CANSparkMax motor;
@@ -82,7 +82,7 @@ public class CANSparkMax4237 extends MotorController4237
         
         do
         {
-            errorCode = func.apply();
+            errorCode = func.doAction();
             logMessage = motorControllerName + " : " + message + " " + errorCode;
 
             if(errorCode == REVLibError.kOk)

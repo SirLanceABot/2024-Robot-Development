@@ -46,7 +46,7 @@ public class TalonFX4237 extends MotorController4237
     @FunctionalInterface
     private interface Function
     {
-        public abstract StatusCode apply();
+        public abstract StatusCode doAction();
     }
 
     private final TalonFX motor;
@@ -98,7 +98,7 @@ public class TalonFX4237 extends MotorController4237
         
         do
         {
-            errorCode = func.apply();
+            errorCode = func.doAction();
             logMessage = motorControllerName + " : " + message + " " + errorCode;
 
             if(errorCode == StatusCode.OK)
@@ -132,7 +132,8 @@ public class TalonFX4237 extends MotorController4237
     public void setupRemoteCANCoder(int remoteSensorId)
     {
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        motor.getConfigurator().refresh(feedbackConfigs);
+        setup(() -> motor.getConfigurator().refresh(feedbackConfigs), "Refresh Remote CANCoder");
+    
         feedbackConfigs.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
         feedbackConfigs.FeedbackRemoteSensorID = remoteSensorId;
         setup(() -> motor.getConfigurator().apply(feedbackConfigs), "Setup Remote CANCoder");
@@ -163,7 +164,8 @@ public class TalonFX4237 extends MotorController4237
     public void setupBrakeMode()
     {
         MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-        motor.getConfigurator().refresh(motorOutputConfigs);
+        setup(() -> motor.getConfigurator().refresh(motorOutputConfigs), "Refresh Brake Mode");
+        
         motorOutputConfigs.NeutralMode = NeutralModeValue.Brake;
         setup(() -> motor.getConfigurator().apply(motorOutputConfigs), "Setup Brake Mode");
     }
@@ -174,7 +176,8 @@ public class TalonFX4237 extends MotorController4237
     public void setupCoastMode()
     {
         MotorOutputConfigs motorOutputConfigs = new MotorOutputConfigs();
-        motor.getConfigurator().refresh(motorOutputConfigs);
+        setup(() -> motor.getConfigurator().refresh(motorOutputConfigs), "Refresh Coast Mode");
+
         motorOutputConfigs.NeutralMode = NeutralModeValue.Coast;
         setup(() -> motor.getConfigurator().apply(motorOutputConfigs), "Setup Coast Mode");
     }
@@ -187,7 +190,8 @@ public class TalonFX4237 extends MotorController4237
     public void setupForwardSoftLimit(double limit, boolean isEnabled)
     {
         SoftwareLimitSwitchConfigs softLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
-        motor.getConfigurator().refresh(softLimitSwitchConfigs);
+        setup(() -> motor.getConfigurator().refresh(softLimitSwitchConfigs), "Refresh Forward Soft Limit");
+
         softLimitSwitchConfigs.ForwardSoftLimitThreshold = limit;
         softLimitSwitchConfigs.ForwardSoftLimitEnable = isEnabled;
         setup(() -> motor.getConfigurator().apply(softLimitSwitchConfigs), "Setup Forward Soft Limit");
@@ -201,7 +205,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupReverseSoftLimit(double limit, boolean isEnabled)
     {
         SoftwareLimitSwitchConfigs softLimitSwitchConfigs = new SoftwareLimitSwitchConfigs();
-        motor.getConfigurator().refresh(softLimitSwitchConfigs);
+        setup(() -> motor.getConfigurator().refresh(softLimitSwitchConfigs), "Refresh Reverse Soft Limit");
 
         softLimitSwitchConfigs.ReverseSoftLimitThreshold = limit;
         softLimitSwitchConfigs.ReverseSoftLimitEnable = isEnabled;
@@ -215,7 +219,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupForwardHardLimitSwitch(boolean isEnabled, boolean isNormallyOpen)
     {
         HardwareLimitSwitchConfigs hardwareLimitSwitchConfigs = new HardwareLimitSwitchConfigs();
-        motor.getConfigurator().refresh(hardwareLimitSwitchConfigs);
+        setup(() -> motor.getConfigurator().refresh(hardwareLimitSwitchConfigs), "Refresh Forward Hard Limit");
 
         hardwareLimitSwitchConfigs.ForwardLimitSource = ForwardLimitSourceValue.LimitSwitchPin;
         if(isNormallyOpen)
@@ -233,7 +237,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupReverseHardLimitSwitch(boolean isEnabled, boolean isNormallyOpen)
     {
         HardwareLimitSwitchConfigs hardwareLimitSwitchConfigs = new HardwareLimitSwitchConfigs();
-        motor.getConfigurator().refresh(hardwareLimitSwitchConfigs);
+        setup(() -> motor.getConfigurator().refresh(hardwareLimitSwitchConfigs), "Refresh Reverse Hard Limit");
 
         hardwareLimitSwitchConfigs.ReverseLimitSource = ReverseLimitSourceValue.LimitSwitchPin;
         if(isNormallyOpen)
@@ -253,7 +257,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupCurrentLimit(double currentLimit, double currentThreshold, double timeThreshold)
     {
         CurrentLimitsConfigs currentLimitsConfigs = new CurrentLimitsConfigs();
-        motor.getConfigurator().refresh(currentLimitsConfigs);
+        setup(() -> motor.getConfigurator().refresh(currentLimitsConfigs), "Refresh Current Limit");
 
         currentLimitsConfigs.SupplyCurrentLimit = currentLimit;
         currentLimitsConfigs.SupplyCurrentThreshold = currentThreshold;
@@ -268,7 +272,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupOpenLoopRampRate(double rampRateSeconds)
     {
         OpenLoopRampsConfigs openLoopRampsConfigs = new OpenLoopRampsConfigs();
-        motor.getConfigurator().refresh(openLoopRampsConfigs);
+        setup(() -> motor.getConfigurator().refresh(openLoopRampsConfigs), "Refresh Open Loop Ramp Rate");
 
         openLoopRampsConfigs.DutyCycleOpenLoopRampPeriod = rampRateSeconds;
         setup(() -> motor.getConfigurator().apply(openLoopRampsConfigs), "Setup Open Loop Ramp Rate");
@@ -281,7 +285,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupVoltageCompensation(double voltageCompensation)
     {
         VoltageConfigs voltageConfigs = new VoltageConfigs();
-        motor.getConfigurator().refresh(voltageConfigs);
+        setup(() -> motor.getConfigurator().refresh(voltageConfigs), "Refresh Voltage Compensation");
 
         voltageConfigs.PeakForwardVoltage = voltageCompensation;
         voltageConfigs.PeakReverseVoltage = -voltageCompensation;
@@ -295,7 +299,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupPositionConversionFactor(double factor)
     {
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        motor.getConfigurator().refresh(feedbackConfigs);
+        setup(() -> motor.getConfigurator().refresh(feedbackConfigs), "Refresh Position Conversion Factor");
 
         feedbackConfigs.SensorToMechanismRatio = factor;
         setup(() -> motor.getConfigurator().apply(feedbackConfigs), "Setup Position Conversion Factor");
@@ -308,7 +312,7 @@ public class TalonFX4237 extends MotorController4237
     public void setupVelocityConversionFactor(double factor)
     {
         FeedbackConfigs feedbackConfigs = new FeedbackConfigs();
-        motor.getConfigurator().refresh(feedbackConfigs);
+        setup(() -> motor.getConfigurator().refresh(feedbackConfigs), "Refresh Velocity Conversion Factor");
 
         feedbackConfigs.SensorToMechanismRatio = factor;
         setup(() -> motor.getConfigurator().apply(feedbackConfigs), "Setup Velocity Conversion Factor");
@@ -325,7 +329,8 @@ public class TalonFX4237 extends MotorController4237
         if(slotId >= 0 && slotId <= 2)
         {
             SlotConfigs slotConfigs = new SlotConfigs();
-            motor.getConfigurator().refresh(slotConfigs);
+            setup(() -> motor.getConfigurator().refresh(slotConfigs), "Refresh PID Controller");
+
             slotConfigs.SlotNumber = slotId;
             slotConfigs.kP = kP;
             slotConfigs.kI = kI;
@@ -345,7 +350,8 @@ public class TalonFX4237 extends MotorController4237
         if(slotId >= 0 && slotId <= 2)
         {
             SlotConfigs slotConfigs = new SlotConfigs();
-            motor.getConfigurator().refresh(slotConfigs);
+            setup(() -> motor.getConfigurator().refresh(slotConfigs), "Refresh PID Controller");
+
             slotConfigs.SlotNumber = slotId;
             slotConfigs.kP = kP;
             slotConfigs.kI = kI;
@@ -365,13 +371,13 @@ public class TalonFX4237 extends MotorController4237
             switch(slotId)
             {
                 case 0:
-                    motor.getConfigurator().refresh(Slot0Configs.from(slotConfigs));
+                    setup(() -> motor.getConfigurator().refresh(Slot0Configs.from(slotConfigs)), "Refresh PID Slot0 Configs");
                     break;
                 case 1:
-                    motor.getConfigurator().refresh(Slot1Configs.from(slotConfigs));
+                    setup(() -> motor.getConfigurator().refresh(Slot1Configs.from(slotConfigs)), "Refresh PID Slot1 Configs");
                     break;
                 case 2:
-                    motor.getConfigurator().refresh(Slot2Configs.from(slotConfigs));
+                    setup(() -> motor.getConfigurator().refresh(Slot2Configs.from(slotConfigs)), "Refresh PID Slot2 Configs");
                     break;
             }     
                 

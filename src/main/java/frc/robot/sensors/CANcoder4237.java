@@ -31,7 +31,7 @@ public class CANcoder4237 extends Sensor4237
     @FunctionalInterface
     private interface Function
     {
-        public abstract StatusCode apply();
+        public abstract StatusCode doAction();
     }
 
     private class PeriodicData
@@ -83,7 +83,7 @@ public class CANcoder4237 extends Sensor4237
         
         do
         {
-            errorCode = func.apply();
+            errorCode = func.doAction();
             logMessage = cancoderName + " : " + message + " " + errorCode;
 
             if(errorCode == StatusCode.OK)
@@ -114,7 +114,7 @@ public class CANcoder4237 extends Sensor4237
     public void setupAbsoluteSensorRange_0To1()
     {
         MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        cancoder.getConfigurator().refresh(magnetSensorConfigs);
+        setup(() -> cancoder.getConfigurator().refresh(magnetSensorConfigs), "Refresh AbsoluteSensorRange_0To1");
 
         magnetSensorConfigs.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         setup(() -> cancoder.getConfigurator().apply(magnetSensorConfigs), "Setup AbsoluteSensorRange_0To1");
@@ -123,7 +123,7 @@ public class CANcoder4237 extends Sensor4237
     public void setupAbsoluteSensorRange_PlusMinusHalf()
     {
         MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        cancoder.getConfigurator().refresh(magnetSensorConfigs);
+        setup(() -> cancoder.getConfigurator().refresh(magnetSensorConfigs), "Refresh AbsoluteSensorRange_PlusMinusHalf");
 
         magnetSensorConfigs.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         setup(() -> cancoder.getConfigurator().apply(magnetSensorConfigs), "Setup AbsoluteSensorRange_PlusMinusHalf");
@@ -132,7 +132,7 @@ public class CANcoder4237 extends Sensor4237
     public void setupMagnetOffset(double magnetOffset)
     {
         MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        cancoder.getConfigurator().refresh(magnetSensorConfigs);
+        setup(() -> cancoder.getConfigurator().refresh(magnetSensorConfigs), "Refresh MagnetOffset_" + magnetOffset);
 
         magnetSensorConfigs.MagnetOffset = magnetOffset;
         setup(() -> cancoder.getConfigurator().apply(magnetSensorConfigs), "Setup MagnetOffset_" + magnetOffset);
@@ -141,7 +141,7 @@ public class CANcoder4237 extends Sensor4237
     public void setupSensorDirection_ClockwisePositive()
     {
         MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        cancoder.getConfigurator().refresh(magnetSensorConfigs);
+        setup(() -> cancoder.getConfigurator().refresh(magnetSensorConfigs), "Refresh SensorDirection_ClockwisePositive");
 
         magnetSensorConfigs.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         setup(() -> cancoder.getConfigurator().apply(magnetSensorConfigs), "Setup SensorDirection_ClockwisePositive");
@@ -150,7 +150,7 @@ public class CANcoder4237 extends Sensor4237
     public void setupSensorDirection_CounterClockwisePositive()
     {
         MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        cancoder.getConfigurator().refresh(magnetSensorConfigs);
+        setup(() -> cancoder.getConfigurator().refresh(magnetSensorConfigs), "Refresh SensorDirection_CounterClockwisePositive");
 
         magnetSensorConfigs.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         setup(() -> cancoder.getConfigurator().apply(magnetSensorConfigs), "Setup SensorDirection_CounterClockwisePositive");
