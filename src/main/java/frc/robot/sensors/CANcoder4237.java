@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.spns.SpnValue;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -46,7 +47,7 @@ public class CANcoder4237 extends Sensor4237
     private final PeriodicData periodicData;
 
     final static DataLog log = DataLogManager.getLog();
-    private StringLogEntry cancoderLogEntry;
+    private StringLogEntry stringLogEntry;
     private DoubleLogEntry doubleLogEntry;
 
     private final int SETUP_ATTEMPT_LIMIT = 5;
@@ -61,8 +62,8 @@ public class CANcoder4237 extends Sensor4237
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + cancoderName);
 
         this.cancoderName = cancoderName;
-        cancoderLogEntry = new StringLogEntry(log, "/cancoders/setup", "Setup");
-        doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + cancoderName, "Degrees");
+        stringLogEntry = new StringLogEntry(log, "/cancoders/setup/" + cancoderName, "Setup");
+        doubleLogEntry = new DoubleLogEntry(log, "cancoders/values/" + cancoderName, "Degrees");
 
         cancoder = new CANcoder(deviceID);
         periodicData = new PeriodicData();
@@ -89,7 +90,7 @@ public class CANcoder4237 extends Sensor4237
                 System.out.println(">> >> " + logMessage);
             else
                 DriverStation.reportWarning(logMessage, true);
-            cancoderLogEntry.append(logMessage);
+            stringLogEntry.append(logMessage);
             attemptCount++;
         }
         while(errorCode != StatusCode.OK && attemptCount < SETUP_ATTEMPT_LIMIT);
@@ -97,6 +98,14 @@ public class CANcoder4237 extends Sensor4237
         setupErrorCount += (attemptCount - 1);
     }
     
+    /**
+     * Clear all sticky faults.
+     */
+    public void clearStickyFaults()
+    {
+        setup(() -> cancoder.clearStickyFaults(), "Clear Sticky Faults");
+    }
+
     public void setupFactoryDefaults()
     {
         setup(() -> cancoder.getConfigurator().apply(new CANcoderConfiguration()), "Setup Factory Defaults");
@@ -167,6 +176,44 @@ public class CANcoder4237 extends Sensor4237
         logPeriodicData = isEnabled;
     }
 
+    /**
+     * Logs the sticky faults
+     */
+    public void logStickyFaults()
+    {
+        int faultsCount = 0;
+        stringLogEntry = new StringLogEntry(log, "/cancoders/faults", "Faults");
+
+        if(cancoder.getStickyFault_BadMagnet().getValue())
+        {
+            stringLogEntry.append(cancoderName + " : " + SpnValue.StickyFault_CANCODER_BadMagnet);
+            faultsCount++;
+        }        
+
+        if(cancoder.getStickyFault_BootDuringEnable().getValue())
+        {
+            stringLogEntry.append(cancoderName + " : " + SpnValue.StickyFault_BootDuringEnable);
+            faultsCount++;
+        }
+
+        if(cancoder.getStickyFault_Hardware().getValue())
+        {
+            stringLogEntry.append(cancoderName + " : " + SpnValue.StickyFault_Hardware);
+            faultsCount++;
+        }
+
+        if(cancoder.getStickyFault_Undervoltage().getValue())
+        {
+            stringLogEntry.append(cancoderName + " : " + SpnValue.StickyFault_Undervoltage);
+            faultsCount++;
+        }
+
+        if(faultsCount == 0)
+            stringLogEntry.append(cancoderName + " : No Sticky Faults");
+
+        clearStickyFaults();
+    }
+
     @Override
     public void readPeriodicInputs()
     {
@@ -193,6 +240,6 @@ public class CANcoder4237 extends Sensor4237
         CANcoderConfiguration cancoderConfiguration = new CANcoderConfiguration();
         cancoder.getConfigurator().refresh(cancoderConfiguration);
 
-        return cancoderConfiguration.serialize();
+        return cancoderConfiguration.toString();
     }
 }
