@@ -100,7 +100,7 @@ public class OperatorButtonBindings
             configDpadRight();
             configLeftTriggerAndDpadDown();
             configLeftTriggerAndDpadUp();
-            configLeftTriggerAndAButton();
+            configLeftTriggerAndXButton();
             configLeftTriggerAndYButton();
             configRumble();
             configDefaultCommands();
@@ -138,6 +138,7 @@ public class OperatorButtonBindings
         Trigger xButtonTrigger = new Trigger(xButton);
 
         // xButtonTrigger.onTrue(Commands4237.ejectNote());
+        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand(55.0));
     }
 
     private void configYButton()
@@ -318,20 +319,18 @@ public class OperatorButtonBindings
         }
     }
 
-    private void configLeftTriggerAndAButton()
+    private void configLeftTriggerAndXButton()
     {
         // Left Trigger
         BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        // A Button
-        BooleanSupplier aButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kA);
-        Trigger aButtonTrigger = new Trigger(aButton);
+        BooleanSupplier xButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kX);
+        Trigger xButtonTrigger = new Trigger(xButton);
 
-        // Left trigger and A button combination
-        // Trigger leftTriggerAndAButtonTrigger = leftTriggerTrigger.and(aButtonTrigger);
+        Trigger leftTriggerAndXButtonTrigger = leftTriggerTrigger.and(xButtonTrigger);
         
-        // leftTriggerAndAButtonTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(robotContainer.ampAssist.getPosition()));
+        leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand());
     }
 
     private void configLeftTriggerAndYButton()

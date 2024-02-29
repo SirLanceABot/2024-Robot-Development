@@ -305,21 +305,21 @@ public final class Commands4237
         }
     }
 
-    // public static Command getFlywheelToSpeedCommand(double speed)
-    // {
-    //     if(robotContainer.flywheel != null && robotContainer.candle != null)
-        //     {
-    //         return
-            //         robotContainer.candle.setBlueCommand()
-            //         .alongWith(
-                //             robotContainer.flywheel.shootCommand(() -> speed))
-            //         .withName("Get Flywheel To Speed");
-        //     }
-    //     else
-        //     {
-    //         return Commands.none();
-        //     }
-    // }
+    public static Command getFlywheelToSpeedCommand(double speed)
+    {
+        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        {
+            return
+            robotContainer.candle.setBlueCommand()
+            .alongWith(
+                robotContainer.flywheel.shootCommand(() -> speed))
+            .withName("Get Flywheel To Speed");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 
     public static Command setAngleToCorrectSpeakerCommand()
     {
@@ -432,13 +432,13 @@ public final class Commands4237
                 robotContainer.drivetrain.rotateToBlueSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithBlueSpeaker())
-                .withTimeout(1.0)
+                .withTimeout(2.0)
                 .withName("Rotate to Blue Speaker"),
 
                 robotContainer.drivetrain.rotateToRedSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithRedSpeaker())
-                .withTimeout(1.0)
+                .withTimeout(2.0)
                 .withName("Rotate to Red Speaker"),
 
                 robotContainer.isBlueAllianceSupplier());
@@ -525,14 +525,20 @@ public final class Commands4237
         {
             return
             // Commands.waitSeconds(1.0)
-            rotateToSpeakerCommand()
-            .andThen(
+            
+            // .andThen(
+            Commands.parallel(
+                rotateToSpeakerCommand(),
+
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                                             robotContainer.flywheel.isAtSpeed(55.0).getAsBoolean()))
                                             .withTimeout(1.0)
                 .deadlineWith(
                     setFlywheelToCorrectVelocityCommand(),
                     setAngleToCorrectSpeakerCommand()))
+                    
+                    // robotContainer.flywheel.shootCommand(() -> 65.0),
+                    // robotContainer.pivot.setAngleCommand(() -> 48)))
             .andThen(
                 Commands.print("Past wait sam doesnt like it"))
 
