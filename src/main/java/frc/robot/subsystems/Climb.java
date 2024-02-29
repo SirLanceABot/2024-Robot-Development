@@ -75,9 +75,9 @@ public class Climb extends Subsystem4237
     // private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
 
     private static final double CHAIN_ENCODER_POSITION       = 190.0;
-    private static final double ROBOT_ENCODER_POSITION       = 30.0;//5.0;
+    private static final double ROBOT_ENCODER_POSITION       = 15.0;//5.0;
 
-    private final double DEFAULT_SPEED = 0.1;
+    private final double DEFAULT_SPEED = 0.4;
     private final double HOLDING_SPEED = 0.2;
 
     private final double CURRENT_LIMIT                       = 30.0;

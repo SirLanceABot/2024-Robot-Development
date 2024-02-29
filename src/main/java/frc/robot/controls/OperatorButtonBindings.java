@@ -252,8 +252,8 @@ public class OperatorButtonBindings
         if(robotContainer.climb != null)
         {
             // dPadUpTrigger.whileTrue(robotContainer.climb.extendCommand(0.2));
-            dPadUpTrigger.onTrue(robotContainer.climb.moveToChainCommand());
-
+            // dPadUpTrigger.onTrue(robotContainer.climb.moveToChainCommand());
+            dPadUpTrigger.onTrue(Commands4237.extendClimbToChainCommand());
         }
     }
 
@@ -329,8 +329,11 @@ public class OperatorButtonBindings
         Trigger xButtonTrigger = new Trigger(xButton);
 
         Trigger leftTriggerAndXButtonTrigger = leftTriggerTrigger.and(xButtonTrigger);
-        
-        leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand());
+
+        if(robotContainer.flywheel != null)
+        {
+            leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand());
+        }
     }
 
     private void configLeftTriggerAndYButton()

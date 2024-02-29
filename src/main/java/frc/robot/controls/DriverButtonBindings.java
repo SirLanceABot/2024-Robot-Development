@@ -252,7 +252,7 @@ public class DriverButtonBindings
         // Default Commands
         if(robotContainer.drivetrain != null)
         {
-            robotContainer.drivetrain.setDefaultCommand(robotContainer.drivetrain.driveCommand(leftYAxis, leftXAxis, rightXAxis, scaleFactorSupplier));
+            robotContainer.drivetrain.setDefaultCommand(robotContainer.drivetrain.driveCommand(leftYAxis, leftXAxis, rightXAxis, scaleFactorSupplier, robotContainer.isBlueAllianceSupplier()));
             // robotContainer.drivetrain.setDefaultCommand(new SwerveDrive(robotContainer.drivetrain, leftYAxis, leftXAxis, rightXAxis, true));
         }
     }

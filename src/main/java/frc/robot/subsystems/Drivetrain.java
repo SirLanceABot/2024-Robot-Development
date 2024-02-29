@@ -636,16 +636,29 @@ public class Drivetrain extends Subsystem4237
                        .withName("rotateToRedSpeakerCommand");
     }
 
-    public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale)
+    public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale, BooleanSupplier isBlueAllianceSupplier)
     {
-        return this.runOnce(
-            () -> drive(
-                xSpeed.getAsDouble() * scale.getAsDouble(),
-                ySpeed.getAsDouble() * scale.getAsDouble(),
-                turn.getAsDouble(), 
-                true)
-            )
-            .withName("driveCommand()");
+        return
+        Commands.either(
+            this.runOnce(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    turn.getAsDouble(), 
+                    true)
+                )
+                .withName("driveCommand()"),
+
+            this.runOnce(
+                () -> drive(
+                    -xSpeed.getAsDouble() * scale.getAsDouble(),
+                    -ySpeed.getAsDouble() * scale.getAsDouble(),
+                    turn.getAsDouble(), 
+                    true)
+                )
+                .withName("driveCommand()"),
+        
+            isBlueAllianceSupplier);
     }
 
     @Override

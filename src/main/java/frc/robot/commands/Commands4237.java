@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.IntakePositioning;
 
 public final class Commands4237
 {
@@ -539,22 +540,22 @@ public final class Commands4237
                     
                     // robotContainer.flywheel.shootCommand(() -> 65.0),
                     // robotContainer.pivot.setAngleCommand(() -> 48)))
-            .andThen(
+                        .andThen(
                 Commands.print("Past wait sam doesnt like it"))
-
-            .andThen(
-                Commands.waitSeconds(0.5)
-                .deadlineWith(
-                    robotContainer.index.feedNoteToFlywheelCommand()))
-                    // .until(() -> !robotContainer.indexWheelsProximity.isDetectedSupplier().getAsBoolean())
-            // .andThen(
-            //     Commands.waitSeconds(1.0))
-            .andThen(
-                Commands.parallel(
-                    robotContainer.flywheel.stopCommand(),
-                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()
-                ))
+                
+                .andThen(
+                    Commands.waitSeconds(0.5)
+                    .deadlineWith(
+                        robotContainer.index.feedNoteToFlywheelCommand()))
+                        // .until(() -> !robotContainer.indexWheelsProximity.isDetectedSupplier().getAsBoolean())
+                // .andThen(
+                //     Commands.waitSeconds(1.0))
+                .andThen(
+                    Commands.parallel(
+                        robotContainer.flywheel.stopCommand(),
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                        robotContainer.index.stopCommand()
+                    ))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
@@ -565,6 +566,24 @@ public final class Commands4237
         else
         {
             return Commands.none();
+        }
+    }
+
+    public static Command extendClimbToChainCommand()
+    {
+        if(robotContainer.climb != null && robotContainer.intakePositioning != null && robotContainer.pivot != null)
+        {
+            return
+            Commands.parallel(
+                robotContainer.climb.extendCommand(),
+                robotContainer.intakePositioning.moveUpCommand(),
+                robotContainer.pivot.setAngleCommand( () -> 25.0));
+                // Commands.run(() -> robotContainer.candle.setRainbow()));
+        }
+        else
+        {
+            return
+            Commands.none();
         }
     }
 
