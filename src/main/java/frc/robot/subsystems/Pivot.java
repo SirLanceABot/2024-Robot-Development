@@ -78,7 +78,8 @@ public class Pivot extends Subsystem4237
         //limits
         private final double FORWARD_SOFT_LIMIT = 63.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
-        private final double MAGNET_OFFSET = -0.55975456;
+        //TODONT don't use this
+        // private final double MAGNET_OFFSET = -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
@@ -150,7 +151,7 @@ public class Pivot extends Subsystem4237
         setup(() -> pivotAngle.getConfigurator().refresh(canCoderConfig), "Refresh CANcoder");
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
+        // canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
         setup(() -> pivotAngle.getConfigurator().apply(canCoderConfig), "Setup CANcoder");
     }
 
@@ -164,7 +165,8 @@ public class Pivot extends Subsystem4237
         // motor.setupRemoteCANCoder(Constants.Pivot.CANCODER_PORT);
         motor.setSafetyEnabled(false);
         // motor.setPosition(fPart(pivotAngle.getPosition().getValueAsDouble()) * 200);
-        motor.setPosition(pivotAngle.getAbsolutePosition().getValueAsDouble() * 360.0);
+        // motor.setPosition(21.0);
+        motor.setPosition((pivotAngle.getAbsolutePosition().getValueAsDouble() - 0.71478456) * 360.0);
 
 
         motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
@@ -277,7 +279,7 @@ public class Pivot extends Subsystem4237
     public void setAngle(double degrees)
     { 
         //setAngle using CANcoder
-        MathUtil.clamp(degrees, classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
+        degrees = MathUtil.clamp(degrees, classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
         motor.setControlPosition(degrees);
 
         //setAngle using FalconFX encoder
@@ -361,8 +363,8 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.canCoderAbsolutePosition = pivotAngle.getAbsolutePosition().getValueAsDouble();
-        periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
+        periodicData.canCoderAbsolutePosition = pivotAngle.getAbsolutePosition().getValueAsDouble() - 0.71478456;
+        periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble() - 0.71478456;
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
         //All included in tunePID() command

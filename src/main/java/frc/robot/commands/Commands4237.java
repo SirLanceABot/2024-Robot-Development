@@ -487,7 +487,7 @@ public final class Commands4237
             // Commands.waitSeconds(2.0)
             // rotateToSpeakerCommand()
             // .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
+                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(62.9).getAsBoolean() && 
                                         robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 // .alongWith(
