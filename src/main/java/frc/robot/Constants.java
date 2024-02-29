@@ -224,7 +224,7 @@ public final class Constants
             ((10.0 / DRIVE_MOTOR_ENCODER_RESOLUTION) / DRIVE_MOTOR_GEAR_RATIO) * (2.0 * Math.PI * WHEEL_RADIUS_METERS);
         public static final double DRIVE_ENCODER_POSITION_TO_METERS =
             ((1.0 / DRIVE_MOTOR_ENCODER_RESOLUTION) / DRIVE_MOTOR_GEAR_RATIO) * (2.0 * Math.PI * WHEEL_RADIUS_METERS);
-        public static final double MAX_DRIVE_SPEED = 4.4; // meters per second
+        public static final double MAX_DRIVE_SPEED = 6.0; //4.4; // meters per second
 
         public static final double X_ACCELERATION_RATE_LIMT = 10.0;
         public static final double X_DECELERATION_RATE_LIMT = 10.0;
