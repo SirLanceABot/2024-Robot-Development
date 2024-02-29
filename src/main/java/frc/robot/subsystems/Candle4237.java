@@ -233,6 +233,11 @@ public class Candle4237 extends Subsystem4237
         return Commands.runOnce( () -> setPurple(false)).withName("setPurple");
     }
 
+    public Command setRainbowCommand()
+    {
+        return Commands.runOnce( () -> setRainbow()).withName("setRainbow");
+    }
+
     // public void signalPurple()
     // {
     //     periodicData.ledStatus = LedStatus.kPurple;
