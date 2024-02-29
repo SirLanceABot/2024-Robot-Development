@@ -284,7 +284,10 @@ public class RobotContainer
         NamedCommands.registerCommand("Podium Shoot", Commands4237.podiumShootCommand());
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
-        NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
+        if(intakePositioning != null)
+        {
+            NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
+        }
     }
 }
 
