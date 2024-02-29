@@ -66,15 +66,10 @@ public class DaneTest implements Test
             // pivot.setAngleCommand(30.0);
             // pivot.moveDown();
         }
-        
-        if(joystick.getRawButton(3))
+        else
         {
-            pivot.resetRelativeEncoder();
+            pivot.stop();
         }
-        // else
-        // {
-        //     pivot.stop();
-        // }
     }
     
     /**
