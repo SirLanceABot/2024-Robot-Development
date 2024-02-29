@@ -9,6 +9,8 @@ import com.ctre.phoenix6.configs.Pigeon2FeaturesConfigs;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 /*
  * This class creates gyro which is used for rotation 
@@ -152,6 +154,16 @@ public class Gyro4237 extends Sensor4237
     public Rotation2d getRotation2d()
     {
         return periodicData.rotation2d;
+    }
+
+    public Command setYawRedCommand()
+    {
+        return Commands.runOnce(() -> setYaw(RED_SUB_STARTING_YAW));
+    }
+
+    public Command setYawBlueCommand()
+    {
+        return Commands.runOnce(() -> setYaw(BLUE_SUB_STARTING_YAW));
     }
 
     @Override

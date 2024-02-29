@@ -144,6 +144,8 @@ public class Robot extends TimedRobot
                 robotContainer.resetRobot(autonomousTabData.startingSide);
             }
         }
+
+        DriverStation.getAlliance();
     }
 
     /**

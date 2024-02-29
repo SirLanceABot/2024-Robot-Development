@@ -178,6 +178,11 @@ public class OperatorButtonBindings
         BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
+        if(robotContainer.pivot != null)
+        {
+            backButtonTrigger.onTrue(Commands4237.resetPivotAngle());
+        }
+
         // backButtonTrigger.onTrue(Commands4237.ejectNote());
     }
 

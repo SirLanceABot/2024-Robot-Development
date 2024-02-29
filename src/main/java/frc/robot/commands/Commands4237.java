@@ -308,12 +308,12 @@ public final class Commands4237
 
     public static Command getFlywheelToSpeedCommand(double speed)
     {
-        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        if(robotContainer.flywheel != null)
         {
             return
-            robotContainer.candle.setBlueCommand()
-            .alongWith(
-                robotContainer.flywheel.shootCommand(() -> speed))
+            // robotContainer.candle.setBlueCommand()
+            // .alongWith(
+                robotContainer.flywheel.shootCommand(() -> speed)
             .withName("Get Flywheel To Speed");
         }
         else
@@ -356,6 +356,25 @@ public final class Commands4237
                         robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
 
                 robotContainer.isBlueAllianceSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command resetPivotAngle()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return
+            Commands.waitSeconds(2.0)
+            .deadlineWith(
+                robotContainer.pivot.moveDownCommand())
+            .andThen(
+                robotContainer.pivot.stopCommand())
+            .andThen(
+                robotContainer.pivot.resetMotorEncoderCommand());
         }
         else
         {
@@ -529,7 +548,7 @@ public final class Commands4237
             
             // .andThen(
             Commands.parallel(
-                rotateToSpeakerCommand(),
+                // rotateToSpeakerCommand(),
 
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                                             robotContainer.flywheel.isAtSpeed(55.0).getAsBoolean()))
@@ -675,6 +694,22 @@ public final class Commands4237
                 .withName("Autonomous Finish Intake"),
 
                 robotContainer.indexWheelsProximity.isDetectedSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command resetGyroCommand()
+    {
+        if(robotContainer.gyro !=null)
+        {
+            return
+            Commands.either(
+                robotContainer.gyro.setYawBlueCommand(),
+                robotContainer.gyro.setYawRedCommand(), 
+                robotContainer.isBlueAllianceSupplier());
         }
         else
         {

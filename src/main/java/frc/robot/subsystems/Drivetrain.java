@@ -728,6 +728,8 @@ public class Drivetrain extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
+        SmartDashboard.putNumber("Blue Distance", getDistanceToBlueSpeaker());
+        SmartDashboard.putNumber("Red Distance", getDistanceToRedSpeaker());
         // update odometry all the time
         periodicData.odometry.update(
                 gyro.getRotation2d(),

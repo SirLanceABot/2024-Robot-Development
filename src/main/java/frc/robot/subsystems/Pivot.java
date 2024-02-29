@@ -131,8 +131,7 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configShotMap();
 
-        // setAngleDefaultCommand();
-
+        setDefaultCommand(setAngleCommand(() -> 32.0));
         // periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
         // motor.setPosition(periodicData.canCoderRotationalPosition);
@@ -207,27 +206,22 @@ public class Pivot extends Subsystem4237
         setupErrorCount += (attemptCount - 1);
     }
 
-    public void setAngleDefaultCommand()
-    {
-        // this.setDefaultCommand(this.setAngleCommand(30.0));
-    }
-
     private void configShotMap()
     {
         // first value is distance from speaker in feet, second value is the pivot angle in degrees
         // These are for the calculated (poseEstimator) distances
-        angleShotMap.put(4.0, 64.0);
-        angleShotMap.put(5.0, 62.8);
-        angleShotMap.put(6.0, 56.7);
-        angleShotMap.put(7.0, 52.5);
-        angleShotMap.put(8.0, 49.9);
-        angleShotMap.put(9.0, 47.6);
-        angleShotMap.put(10.0, 44.0);
-        angleShotMap.put(11.0, 42.2);
-        angleShotMap.put(12.0, 41.3);
-        angleShotMap.put(13.0, 40.65);
-        angleShotMap.put(14.0, 39.64);
-        angleShotMap.put(15.0, 39.1);
+        // angleShotMap.put(4.0, 64.0);
+        // angleShotMap.put(5.0, 62.8);
+        // angleShotMap.put(6.0, 56.7);
+        // angleShotMap.put(7.0, 52.5);
+        // angleShotMap.put(8.0, 49.9);
+        // angleShotMap.put(9.0, 47.6);
+        // angleShotMap.put(10.0, 44.0);
+        // angleShotMap.put(11.0, 42.2);
+        // angleShotMap.put(12.0, 41.3);
+        // angleShotMap.put(13.0, 40.65);
+        // angleShotMap.put(14.0, 39.64);
+        // angleShotMap.put(15.0, 39.1);
         
         // These are for the real world distance
         // angleShotMap.put(4.5, 64.0);
@@ -242,6 +236,19 @@ public class Pivot extends Subsystem4237
         // angleShotMap.put(13.5, 40.65);
         // angleShotMap.put(14.5, 39.64);
         // angleShotMap.put(15.5, 39.1);
+
+        angleShotMap.put(5.0, 64.0);
+        angleShotMap.put(6.0, 62.8);
+        angleShotMap.put(7.0, 56.7);
+        angleShotMap.put(8.0, 52.5);
+        angleShotMap.put(9.0, 49.9);
+        angleShotMap.put(10.0, 47.6);
+        angleShotMap.put(11.0, 44.0);
+        angleShotMap.put(12.0, 42.2);
+        angleShotMap.put(13.0, 41.3);
+        angleShotMap.put(14.0, 40.65);
+        angleShotMap.put(15.0, 39.64);
+        angleShotMap.put(16.0, 39.1);
     }
 
     public void moveUp()
@@ -343,6 +350,21 @@ public class Pivot extends Subsystem4237
     public Command setAngleCommand(DoubleSupplier angle)
     {
         return Commands.runOnce(() -> setAngle(angle.getAsDouble()), this).withName("Set Angle");
+    }
+
+    public Command moveDownCommand()
+    {
+        return Commands.run(() -> moveDown(), this);
+    }
+
+    public Command resetMotorEncoderCommand()
+    {
+        return Commands.runOnce(() -> motor.setPosition(classConstants.REVERSE_SOFT_LIMIT), this).withName("Reset Pivot Position");
+    }
+
+    public Command stopCommand()
+    {
+        return Commands.runOnce(() -> stop());
     }
 
     // public Command tunePID()
