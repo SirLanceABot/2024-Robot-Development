@@ -78,7 +78,7 @@ public class Pivot extends Subsystem4237
         //limits
         private final double FORWARD_SOFT_LIMIT = 63.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
-        private final double MAGNET_OFFSET = -0.72911244;
+        private final double MAGNET_OFFSET = -0.55975456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
