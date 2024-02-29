@@ -1,0 +1,56 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.85,
+      "y": 4.35
+    },
+    "rotation": -60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Positioning Up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot From Subwoofer"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kSource to N3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

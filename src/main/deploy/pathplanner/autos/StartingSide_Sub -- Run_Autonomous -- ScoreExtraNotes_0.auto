@@ -12,9 +12,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Shoot From Subwoofer"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Positioning Up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot From Subwoofer"
+                }
+              }
+            ]
           }
         },
         {

@@ -37,22 +37,15 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Finish Intake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Shoot"
-                }
-              }
-            ]
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Shoot"
           }
         },
         {
@@ -62,22 +55,33 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Finish Intake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Shoot"
-                }
-              }
-            ]
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N2 to N1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Shoot"
           }
         }
       ]
