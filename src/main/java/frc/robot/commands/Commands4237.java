@@ -515,14 +515,14 @@ public final class Commands4237
             // .andThen(
             robotContainer.candle.setPurpleCommand()
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(62.9).getAsBoolean() && 
+                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.5).getAsBoolean() && 
                                         robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 // .alongWith(
                 //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 65.0),
-                    robotContainer.pivot.setAngleCommand(() -> 64.0)))
+                    robotContainer.pivot.setAngleCommand(() -> 64.5)))
             // .andThen(
             //     Commands.print("Hello Woodard"))      
             .andThen(
@@ -672,8 +672,8 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()
-                ))
+                    robotContainer.index.stopCommand(),
+                    robotContainer.candle.setRedCommand()))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
@@ -699,17 +699,18 @@ public final class Commands4237
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                 .deadlineWith(
+                    robotContainer.intake.pickupFrontCommand(),
                     robotContainer.shuttle.moveUpwardCommand(),
                     robotContainer.index.acceptNoteFromShuttleCommand()))
             .andThen(
                 Commands.parallel(
                     robotContainer.index.stopCommand(),
                     robotContainer.shuttle.stopCommand(),
-                    robotContainer.candle.setRedCommand()))
+                    robotContainer.candle.setGreenCommand()))
             .withTimeout(3.0)
             .withName("Autonomous Finish Intake"),
 
-                robotContainer.indexWheelsProximity.isDetectedSupplier());
+            robotContainer.indexWheelsProximity.isDetectedSupplier());
         }
         else
         {

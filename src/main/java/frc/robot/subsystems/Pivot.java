@@ -76,7 +76,7 @@ public class Pivot extends Subsystem4237
         private int slotId = 0;
 
         //limits
-        private final double FORWARD_SOFT_LIMIT = 63.0; //66 degrees is the top
+        private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
         // private final double MAGNET_OFFSET = -0.71478456;
