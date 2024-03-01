@@ -111,10 +111,10 @@ public class AutonomousTabData
 
     public static enum ScoreExtraNotes
     {
-        k0(" -- ExtraNotes_0 "), 
-        k1(" -- ExtraNotes_1 "), 
-        k2(" -- ExtraNotes_2 "), 
-        k3(" -- ExtraNotes_3 ");
+        k0(" -- ScoreExtraNotes_0"), 
+        k1(" -- ScoreExtraNotes_1"), 
+        k2(" -- ScoreExtraNotes_2"), 
+        k3(" -- ScoreExtraNotes_3");
 
         private final String name;
 

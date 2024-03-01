@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.commands.AutoCommandList;
 import edu.wpi.first.util.sendable.SendableRegistry;
 
 
@@ -52,6 +53,7 @@ public class AutonomousTab
 
     private GenericEntry successfulDownload;
     private GenericEntry errorMessageBox;
+    private GenericEntry autonomousNameBox;
 
     // Create the Button object
     private SendableChooser<Boolean> sendDataButton = new SendableChooser<>();
@@ -59,6 +61,7 @@ public class AutonomousTab
     private ButtonState previousButtonState = ButtonState.kStillReleased;
     private boolean isDataValid = true;
     private String errorMessage = "No Errors";
+    public String autonomousName = AutoCommandList.pathPlannerString;
 
     // *** CLASS CONSTRUCTOR ***
     AutonomousTab()
@@ -74,6 +77,7 @@ public class AutonomousTab
         // createPickupNotesBox();
         createScoreMoreNotesBox();
         createSitPrettyBox();
+
     
         
         createSendDataButton();
@@ -81,6 +85,8 @@ public class AutonomousTab
         successfulDownload.setBoolean(false);
 
         errorMessageBox = createErrorMessageBox();
+        autonomousNameBox = createAutonomousNameBox();
+        
 
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -109,6 +115,7 @@ public class AutonomousTab
             .withSize(5, 3);
     }
 
+    {
     /**
     * <b>Drive Out of Start Zone box</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
@@ -242,7 +249,7 @@ public class AutonomousTab
     //         .withSize(4, 3);
     // }
 
-
+    }
     private void createScoreMoreNotesBox()
     {
         //create and name the Box
@@ -289,8 +296,8 @@ public class AutonomousTab
         SendableRegistry.add(sendDataButton, "Send Data");
         SendableRegistry.setName(sendDataButton, "Send Data");
 
-        sendDataButton.setDefaultOption("Yes", true);
-        sendDataButton.addOption("No", false);
+        sendDataButton.setDefaultOption("No", false);
+        sendDataButton.addOption("Yes", true);
 
         autonomousTab.add(sendDataButton)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
@@ -309,7 +316,7 @@ public class AutonomousTab
         booleanBoxProperties.put("Color when true", "Lime");
         booleanBoxProperties.put("Color when false", "Red");
         
-        return autonomousTab.add("Successful Download?", false)
+        return autonomousTab.add("Is Data Valid?", false)
              .withWidget(BuiltInWidgets.kBooleanBox)
              .withPosition(19, 1)
              .withSize(4, 4)
@@ -325,9 +332,19 @@ public class AutonomousTab
     {
          return autonomousTab.add("Error Messages", "No Errors")
              .withWidget(BuiltInWidgets.kTextView)
-             .withPosition(1, 10)
-             .withSize(25, 3)
+             .withPosition(1, 6)
+             .withSize(18, 3)
              .getEntry();
+    }
+
+    private GenericEntry createAutonomousNameBox()
+    {
+         return autonomousTab.add("Autonomous Name", "")
+             .withWidget(BuiltInWidgets.kTextView)
+             .withPosition(1, 10)
+             .withSize(18, 3)
+             .getEntry(); 
+
     }
 
     private void updateAutonomousTabData()
@@ -356,6 +373,7 @@ public class AutonomousTab
                 if(isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kPressed;
+                    //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 }
                 break;
 
@@ -367,25 +385,32 @@ public class AutonomousTab
                     updateAutonomousTabData();
                     isNewData = true;
                     // errorMessageBox.setString(errorMessage);
+                    //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
+                    
                 }
                 else
                 {
                     successfulDownload.setBoolean(false);
                     DriverStation.reportWarning(errorMessage, false);
                     // errorMessageBox.setString(errorMessage);
+                    //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 }
                 previousButtonState = ButtonState.kStillPressed;
                 break;
 
             case kStillPressed:
+                autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 if(!isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kReleased;
+                    
                 }
                 break;
 
             case kReleased:
                 previousButtonState = ButtonState.kStillReleased;
+                //autonomousNameBox = createAutonomousNameBox();
+                //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 break;
         }
 
@@ -403,6 +428,7 @@ public class AutonomousTab
         errorMessage = "No Errors";
         String msg = "";
         boolean isValid = true;
+        //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
         
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
         // boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
@@ -492,6 +518,9 @@ public class AutonomousTab
         
         // Displays either "No Errors" or the error messages
         errorMessageBox.setString(errorMessage);
+        //autonomousNameBox.setString(" ");
+
+        //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
 
         // 
         isDataValid = isValid;

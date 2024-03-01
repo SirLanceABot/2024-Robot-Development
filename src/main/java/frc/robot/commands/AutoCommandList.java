@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
@@ -54,8 +57,9 @@ public class AutoCommandList extends SequentialCommandGroup
     private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
-    private String pathPlannerString = "";
+    
     private String compare = "";
+    public static String pathPlannerString = "";
     
     // *** CLASS CONSTRUCTOR ***
     public AutoCommandList(RobotContainer robotContainer, AutonomousTabData autonomousTabData)
@@ -76,6 +80,7 @@ public class AutoCommandList extends SequentialCommandGroup
 
 
         // this.autonomousTabData = autonomousTabData;
+        pathPlannerString = "";
 
 
         build();
@@ -93,6 +98,7 @@ public class AutoCommandList extends SequentialCommandGroup
      */
     private void build()
     {
+        pathPlannerString = "";
         // if(drivetrain != null)
         //     add(new StopDrive(drivetrain));
         pathPlannerString += autonomousTabData.startingSide;
@@ -103,7 +109,7 @@ public class AutoCommandList extends SequentialCommandGroup
 
         if (!AutonomousTab.doNothing())
         {
-            pathPlannerString += autonomousTabData.scoreExtraNotes;;
+            pathPlannerString += autonomousTabData.scoreExtraNotes;
         }
           
             
@@ -113,7 +119,9 @@ public class AutoCommandList extends SequentialCommandGroup
             // pathPlannerString += autonomousTabData.scoreExtraNotes;
         
         System.out.println(pathPlannerString);
-        
+        add(AutoBuilder.buildAuto(pathPlannerString));
+    
+
     }
 
 

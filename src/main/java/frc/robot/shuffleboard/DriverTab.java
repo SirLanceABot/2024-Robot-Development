@@ -107,7 +107,7 @@ public class DriverTab
 
     private GenericEntry createPivotAngleBox()
     {
-        return driverTab.add("Pivot Angle", round(pivot.getCANCoderAngle(),3))
+        return driverTab.add("Pivot Angle", round(pivot.getMotorEncoderPosition(),3))
         .withWidget(BuiltInWidgets.kTextView) //specifies type of widget: "kTextView"
         .withPosition(1,2) // sets position of widget
         .withSize(4,2)  // sets size of widget
