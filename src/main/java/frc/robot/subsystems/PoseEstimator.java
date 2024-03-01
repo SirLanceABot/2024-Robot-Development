@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.sql.Driver;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
@@ -16,6 +17,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
@@ -221,9 +223,9 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            if(camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            if(!DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
-                // update pose esitmator with limelight data (vision part)
+                // update pose estimator with limelight data (vision part)
                 // poseEstimator.addVisionMeasurement(
                 //     camera.getBotPoseBlue().toPose2d(), 
                 //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
@@ -232,6 +234,13 @@ public class PoseEstimator extends Subsystem4237
                     camera.getBotPoseBlue().toPose2d(), 
                     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
                     visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+            }
+            else if(DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            {
+                poseEstimator.addVisionMeasurement(
+                    camera.getBotPoseBlue().toPose2d(), 
+                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                    visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
             }
         }
     }

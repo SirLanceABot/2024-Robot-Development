@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "kSource to N3"
+            "pathName": "kSource to N3 Flat"
           }
         },
         {
@@ -43,9 +43,21 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "N3 Flat to kSource"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Autonomous Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kSource to Center Line"
           }
         }
       ]

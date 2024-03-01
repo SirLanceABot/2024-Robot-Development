@@ -65,6 +65,12 @@
           "data": {
             "name": "Autonomous Shoot"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N2 to Center Line"
+          }
         }
       ]
     }

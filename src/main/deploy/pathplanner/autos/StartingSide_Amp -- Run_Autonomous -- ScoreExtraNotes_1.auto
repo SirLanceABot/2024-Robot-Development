@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "kAmp to N1"
+            "pathName": "kAmp to N1 Flat"
           }
         },
         {
@@ -43,9 +43,21 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "N1 Flat to kAmp"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "Autonomous Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kAmp to Center Line"
           }
         }
       ]
