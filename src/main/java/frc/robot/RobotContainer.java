@@ -60,7 +60,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = true;
+    private boolean useFullRobot            = false;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -86,9 +86,9 @@ public class RobotContainer
 
     private boolean useMainShuffleboard     = false;
 
-    private boolean useBindings             = true;
-    private boolean useDriverController     = true;
-    private boolean useOperatorController   = true;
+    private boolean useBindings             = false;
+    private boolean useDriverController     = false;
+    private boolean useOperatorController   = false;
 
 
     public final boolean fullRobot;
