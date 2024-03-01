@@ -334,9 +334,9 @@ public class OperatorButtonBindings
 
         Trigger leftTriggerAndXButtonTrigger = leftTriggerTrigger.and(xButtonTrigger);
 
-        if(robotContainer.flywheel != null)
+        if(robotContainer.flywheel != null && robotContainer.candle != null)
         {
-            leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand());
+            leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand().andThen(robotContainer.candle.setRedCommand()));
         }
     }
 
