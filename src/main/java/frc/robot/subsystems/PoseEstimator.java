@@ -209,6 +209,19 @@ public class PoseEstimator extends Subsystem4237
         poseEstimator.resetPosition(gyroAngle, modulePositions, newPose);
     }
 
+    public boolean isPoseCloseToPrevious(Pose2d visionPose)
+    {
+        // if vision pose is close to the current pose (within 6 meters)
+        if(visionPose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 6.0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     @Override
     public void readPeriodicInputs()
     {
@@ -223,25 +236,46 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            if(!DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
+
+            if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
-                // update pose estimator with limelight data (vision part)
-                // poseEstimator.addVisionMeasurement(
-                //     camera.getBotPoseBlue().toPose2d(), 
-                //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
+                if(DriverStation.isAutonomousEnabled() && isPoseCloseToPrevious(visionPose))
+                {
+                    poseEstimator.addVisionMeasurement(
+                        camera.getBotPoseBlue().toPose2d(), 
+                        Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                        visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
+                }
+
+                if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
+                {
+                    poseEstimator.addVisionMeasurement(
+                        camera.getBotPoseBlue().toPose2d(), 
+                        Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                        visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                }
+            }
+            
+            // if(!DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            // {
+            //     // update pose estimator with limelight data (vision part)
+            //     // poseEstimator.addVisionMeasurement(
+            //     //     camera.getBotPoseBlue().toPose2d(), 
+            //     //     Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000));
                 
-                poseEstimator.addVisionMeasurement(
-                    camera.getBotPoseBlue().toPose2d(), 
-                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                    visionStdDevs.times(camera.getAverageDistanceFromTarget()));
-            }
-            else if(DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
-            {
-                poseEstimator.addVisionMeasurement(
-                    camera.getBotPoseBlue().toPose2d(), 
-                    Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                    visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
-            }
+            //     poseEstimator.addVisionMeasurement(
+            //         camera.getBotPoseBlue().toPose2d(), 
+            //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+            //         visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+            // }
+            // else if(DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            // {
+            //     poseEstimator.addVisionMeasurement(
+            //         camera.getBotPoseBlue().toPose2d(), 
+            //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+            //         visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
+            // }
         }
     }
 
