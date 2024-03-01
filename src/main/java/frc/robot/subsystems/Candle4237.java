@@ -65,6 +65,8 @@ public class Candle4237 extends Subsystem4237
         
         configCANdle();
 
+        // setDefaultCommand(setRedCommand());
+
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -236,6 +238,11 @@ public class Candle4237 extends Subsystem4237
     public Command setRainbowCommand()
     {
         return Commands.runOnce( () -> setRainbow()).withName("setRainbow");
+    }
+
+    public Command setWhiteCommand()
+    {
+        return Commands.runOnce( () -> setWhite(false)).withName("setWhite");
     }
 
     // public void signalPurple()

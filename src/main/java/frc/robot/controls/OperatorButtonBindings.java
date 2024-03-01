@@ -231,8 +231,10 @@ public class OperatorButtonBindings
         BooleanSupplier rightTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightTrigger);
         Trigger rightTriggerTrigger = new Trigger(rightTrigger);
 
-        if(true)
-        {}
+        if(robotContainer.candle != null)
+        {
+            rightTriggerTrigger.whileTrue(robotContainer.candle.setWhiteCommand());
+        }
     }
 
     private void configDpadDown()
@@ -254,12 +256,9 @@ public class OperatorButtonBindings
         BooleanSupplier dPadUp = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kUp);
         Trigger dPadUpTrigger = new Trigger(dPadUp);
 
-        if(robotContainer.climb != null)
-        {
             // dPadUpTrigger.whileTrue(robotContainer.climb.extendCommand(0.2));
             // dPadUpTrigger.onTrue(robotContainer.climb.moveToChainCommand());
-            dPadUpTrigger.onTrue(Commands4237.extendClimbToChainCommand());
-        }
+        dPadUpTrigger.onTrue(Commands4237.extendClimbToChainCommand());
     }
 
     private void configDpadLeft()

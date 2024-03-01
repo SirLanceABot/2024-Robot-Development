@@ -70,26 +70,34 @@ public class BradyTest implements Test
     {
         if(bradysController.getRawButton(1)) //A
         {
-            candle.setGreen(false);
+            candle.setGreenCommand().schedule();
         }
         else if(bradysController.getRawButton(2)) //B
         {
             // candle.setRedAndBlue();
-            candle.setWhite(false);
+            candle.setWhiteCommand().schedule();
         }
         else if(bradysController.getRawButton(3)) //X
         {
-            candle.setBlue(false);
+            candle.setBlueCommand().schedule();
         }
         else if(bradysController.getRawButton(4)) //Y
         {
-            candle.setYellow(false);
+            candle.setYellowCommand().schedule();
+        }
+        else if(bradysController.getRawButton(5)) //LB 
+        {
+            candle.setPurpleCommand().schedule();
         }
         else if(bradysController.getRawButton(6)) //RB
         {
             // candle.setPurple(false);
-            candle.setRainbow();
+            candle.setRainbowCommand().schedule();
             // candle.setRGBFade();
+        }
+        else
+        {
+            candle.setRedCommand().schedule();
         }
 
         // if(proximity.getIsDetected())
