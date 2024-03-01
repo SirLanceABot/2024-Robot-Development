@@ -60,7 +60,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = false;
+    private boolean useFullRobot            = true;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -86,9 +86,9 @@ public class RobotContainer
 
     private boolean useMainShuffleboard     = false;
 
-    private boolean useBindings             = false;
-    private boolean useDriverController     = false;
-    private boolean useOperatorController   = false;
+    private boolean useBindings             = true;
+    private boolean useDriverController     = true;
+    private boolean useOperatorController   = true;
 
 
     public final boolean fullRobot;
@@ -136,23 +136,23 @@ public class RobotContainer
         // Create the needed subsystems
         fullRobot               = (useFullRobot);
 
-        gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                            : null;	
-        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, usePoseEstimator)       : null;
+        gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                                        : null;	
+        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator)     : null;
 
-        ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                           : null;
-        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                          : null;
-        climb                   = (useFullRobot || useClimb)                ? new Climb()                                               : null;
-        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                            : null;
-        index                   = (useFullRobot || useIndex)                ? new Index()                                               : null;
-        intake                  = (useFullRobot || useIntake)               ? new Intake()                                              : null;
-        intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                   : null;
-        pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                               : null;
-        shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                             : null;
+        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                                       : null;
+        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                                      : null;
+        climb                   = (useFullRobot || useClimb)                ? new Climb()                                                           : null;
+        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                                        : null;
+        index                   = (useFullRobot || useIndex)                ? new Index()                                                           : null;
+        intake                  = (useFullRobot || useIntake)               ? new Intake()                                                          : null;
+        intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                               : null;
+        pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                                           : null;
+        shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                                         : null;
         
-        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                               : null;
-        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                               : null;
-        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                             : null;
-        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                              : null;
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                                : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                                : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                              : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                               : null;
         // firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
         // secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         // indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;

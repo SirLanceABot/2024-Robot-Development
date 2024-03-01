@@ -64,6 +64,7 @@ public class Candle4237 extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
         
         configCANdle();
+        setRed(false);
 
         // setDefaultCommand(setRedCommand());
 

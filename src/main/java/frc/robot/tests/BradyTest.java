@@ -95,10 +95,10 @@ public class BradyTest implements Test
             candle.setRainbowCommand().schedule();
             // candle.setRGBFade();
         }
-        else
-        {
-            candle.setRedCommand().schedule();
-        }
+        // else
+        // {
+        //     candle.setRedCommand().schedule();
+        // }
 
         // if(proximity.getIsDetected())
         // {

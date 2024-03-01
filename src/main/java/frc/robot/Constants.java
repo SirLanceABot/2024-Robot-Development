@@ -107,7 +107,7 @@ public final class Constants
     public static class Candle
     {
         public static final int PORT            = 1;
-        public static final String CAN_BUS      = ROBORIO;
+        public static final String CAN_BUS      = CANIVORE;
     }
 
     public static class Climb

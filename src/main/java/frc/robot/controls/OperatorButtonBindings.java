@@ -180,7 +180,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.pivot != null)
         {
-            backButtonTrigger.onTrue(Commands4237.resetPivotAngle());
+            backButtonTrigger.onTrue(Commands4237.resetPivotAngleCommand());
         }
 
         // backButtonTrigger.onTrue(Commands4237.ejectNote());

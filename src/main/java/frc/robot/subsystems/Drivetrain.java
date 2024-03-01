@@ -159,7 +159,7 @@ public class Drivetrain extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();;
     
     // *** CLASS CONSTRUCTOR ***
-    public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean usePoseEstimator)//, DriverController driverController)
+    public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean useFullRobot, boolean usePoseEstimator)//, DriverController driverController)
     {
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -244,7 +244,7 @@ public class Drivetrain extends Subsystem4237
             });
 
         
-        poseEstimator = (usePoseEstimator) ? new PoseEstimator(this, gyro, cameraArray) : null;
+        poseEstimator = (useFullRobot || usePoseEstimator) ? new PoseEstimator(this, gyro, cameraArray) : null;
 
         // setSafetyEnabled(true);
 

@@ -15,6 +15,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -269,6 +270,12 @@ public class Robot extends TimedRobot
         // Create a TestMode object to test one team members code.
         testMode = new TestMode(robotContainer);
 
+        if(robotContainer.pneumaticHub != null && robotContainer.compressor != null)
+        {
+            robotContainer.pneumaticHub.enableCompressorAnalog(110.0, 120.0);
+        }
+        
+
         // pidTunerTab = new PIDTunerTab();
 
         testMode.init();
@@ -303,6 +310,11 @@ public class Robot extends TimedRobot
         // Set the TestMode object to null so that garbage collection will remove the object.
         testMode = null;
         
+        if(robotContainer.pneumaticHub != null && robotContainer.compressor != null)
+        {
+            robotContainer.pneumaticHub.enableCompressorAnalog(60.0, 90.0);
+        }
+
         robotContainer.stopRobot();
     }
 

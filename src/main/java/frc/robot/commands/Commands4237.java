@@ -370,7 +370,7 @@ public final class Commands4237
         }
     }
 
-    public static Command resetPivotAngle()
+    public static Command resetPivotAngleCommand()
     {
         if(robotContainer.pivot != null)
         {
@@ -689,7 +689,7 @@ public final class Commands4237
 
     public static Command autonomousFinishIntakeCommand()
     {
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
         {
             return
             Commands.either(
