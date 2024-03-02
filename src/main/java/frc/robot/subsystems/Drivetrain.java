@@ -589,7 +589,7 @@ public class Drivetrain extends Subsystem4237
     public void resetOdometryPose(Pose2d newPose)
     {
         periodicData.odometry.resetPosition(
-                        gyro.getRotation2d(),
+            gyro.getRotation2d(),
             new SwerveModulePosition[]
             {
                 frontLeft.getPosition(),
@@ -598,6 +598,17 @@ public class Drivetrain extends Subsystem4237
                 backRight.getPosition()
             },
             newPose);
+
+            poseEstimator.resetPosition(
+                gyro.getRotation2d(),
+                new SwerveModulePosition[]
+                {
+                    frontLeft.getPosition(),
+                    frontRight.getPosition(),
+                    backLeft.getPosition(),
+                    backRight.getPosition()
+                },
+                newPose);
     }
 
     public void resetPoseEstimator(Pose2d newPose)
