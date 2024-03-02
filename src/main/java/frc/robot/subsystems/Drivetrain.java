@@ -256,8 +256,8 @@ public class Drivetrain extends Subsystem4237
     public void configureAutoBuilder()
     {
         AutoBuilder.configureHolonomic(
-                poseEstimator::getEstimatedPose, // Robot pose supplier
-                // this::getPose,
+                // poseEstimator::getEstimatedPose, // Robot pose supplier
+                this::getPose,
                 this::resetOdometryPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
@@ -589,14 +589,14 @@ public class Drivetrain extends Subsystem4237
     public void resetOdometryPose(Pose2d newPose)
     {
         periodicData.odometry.resetPosition(
-            gyro.getRotation2d(), 
-            new SwerveModulePosition[] 
+                        gyro.getRotation2d(),
+            new SwerveModulePosition[]
             {
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
                 backLeft.getPosition(),
                 backRight.getPosition()
-            }, 
+            },
             newPose);
     }
 
@@ -639,26 +639,34 @@ public class Drivetrain extends Subsystem4237
     public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale, BooleanSupplier isBlueAllianceSupplier)
     {
         return
-        Commands.either(
-            this.runOnce(
+        this.runOnce(
                 () -> drive(
                     xSpeed.getAsDouble() * scale.getAsDouble(),
                     ySpeed.getAsDouble() * scale.getAsDouble(),
                     turn.getAsDouble(), 
                     true)
                 )
-                .withName("driveCommand()"),
+                .withName("driveCommand()");
+        // Commands.either(
+        //     this.runOnce(
+        //         () -> drive(
+        //             xSpeed.getAsDouble() * scale.getAsDouble(),
+        //             ySpeed.getAsDouble() * scale.getAsDouble(),
+        //             turn.getAsDouble(), 
+        //             true)
+        //         )
+        //         .withName("driveCommand()"),
 
-            this.runOnce(
-                () -> drive(
-                    -xSpeed.getAsDouble() * scale.getAsDouble(),
-                    -ySpeed.getAsDouble() * scale.getAsDouble(),
-                    turn.getAsDouble(), 
-                    true)
-                )
-                .withName("driveCommand()"),
+        //     this.runOnce(
+        //         () -> drive(
+        //             -xSpeed.getAsDouble() * scale.getAsDouble(),
+        //             -ySpeed.getAsDouble() * scale.getAsDouble(),
+        //             turn.getAsDouble(), 
+        //             true)
+        //         )
+        //         .withName("driveCommand()"),
         
-            isBlueAllianceSupplier);
+        //     isBlueAllianceSupplier);
     }
 
     @Override

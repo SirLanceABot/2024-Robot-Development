@@ -49,9 +49,9 @@ public class Gyro4237 extends Sensor4237
     public final double BLUE_AMP_STARTING_YAW = 60.0;
     public final double BLUE_SUB_STARTING_YAW = 0.0;
     public final double BLUE_SOURCE_STARTING_YAW = -60.0;
-    public final double RED_AMP_STARTING_YAW = 120.0;
-    public final double RED_SUB_STARTING_YAW = 180.0;
-    public final double RED_SOURCE_STARTING_YAW = -120.0;
+    public final double RED_AMP_STARTING_YAW = -60.0; //120.0
+    public final double RED_SUB_STARTING_YAW = 0.0; //180.0
+    public final double RED_SOURCE_STARTING_YAW = 60.0; // -120.0
 
     // private final WPI_Pigeon2 gyro = new WPI_Pigeon2(Constants.Gyro.PIGEON_ID, Constants.Gyro.PIGEON_CAN_BUS);
     private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_PORT, Constants.Gyro.PIGEON_CAN_BUS);
