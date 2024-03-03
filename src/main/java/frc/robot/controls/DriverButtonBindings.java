@@ -227,7 +227,7 @@ public class DriverButtonBindings
         BooleanSupplier leftTrigger = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        leftTriggerTrigger.onTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.5));
+        leftTriggerTrigger.onTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.65));
     }
 
     private void configRightTrigger()
