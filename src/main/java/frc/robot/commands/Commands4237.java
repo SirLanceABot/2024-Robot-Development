@@ -95,8 +95,9 @@ public final class Commands4237
         //         .alongWith(
         //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
 
+        
         //TODO: Add timeout in case of sensor failure until we can test live
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null && robotContainer.firstShuttleProximity != null)
         {
             return
             Commands.either(
@@ -116,14 +117,18 @@ public final class Commands4237
                     .deadlineWith(
                         robotContainer.intake.pickupFrontCommand(),
                         robotContainer.shuttle.moveUpwardCommand(),
-                        robotContainer.index.acceptNoteFromShuttleCommand()))
+                        robotContainer.index.acceptNoteFromShuttleCommand(),
+                        robotContainer.candle.setGreenCommand()
+                            .onlyIf(
+                            robotContainer.firstShuttleProximity.isDetectedSupplier())
+                            .repeatedly()))
                 .andThen(
                     Commands.parallel(
                         robotContainer.index.stopCommand(),
                         robotContainer.intakePositioning.moveUpCommand(),
                         robotContainer.intake.stopCommand(),
-                        robotContainer.shuttle.stopCommand()),
-                        robotContainer.candle.setGreenCommand())
+                        robotContainer.shuttle.stopCommand()))
+                        // robotContainer.candle.setGreenCommand())
                 .withName("Intake From Floor Front"),
 
                 robotContainer.indexWheelsProximity.isDetectedSupplier());
@@ -647,12 +652,13 @@ public final class Commands4237
 
     public static Command autonomousShootCommand()
     {
-        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.candle != null)
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.candle != null && robotContainer.indexWheelsProximity != null)
         {
             return
             // Commands.waitSeconds(1.0)
             // rotateToSpeakerCommand()
             // .andThen(
+            Commands.either(
             robotContainer.candle.setPurpleCommand()
             .andThen(
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
@@ -678,8 +684,14 @@ public final class Commands4237
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                 //     robotContainer.index.stopCommand()))
+                
+                ,Commands.none(),
+
+                robotContainer.indexWheelsProximity.isDetectedSupplier()
+            )
             .withName("Autonomous Shoot");
                     // robotContainer.pivot.setAngleCommand(32.0)));
+
         }
         else
         {
@@ -689,7 +701,7 @@ public final class Commands4237
 
     public static Command autonomousFinishIntakeCommand()
     {
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null && robotContainer.firstShuttleProximity != null)
         {
             return
             Commands.either(
@@ -701,12 +713,17 @@ public final class Commands4237
                 .deadlineWith(
                     robotContainer.intake.pickupFrontCommand(),
                     robotContainer.shuttle.moveUpwardCommand(),
-                    robotContainer.index.acceptNoteFromShuttleCommand()))
+                    robotContainer.index.acceptNoteFromShuttleCommand(),
+                    robotContainer.candle.setGreenCommand()
+                        .onlyIf(
+                        robotContainer.firstShuttleProximity.isDetectedSupplier())
+                        .repeatedly()
+                    ))
             .andThen(
                 Commands.parallel(
                     robotContainer.index.stopCommand(),
-                    robotContainer.shuttle.stopCommand(),
-                    robotContainer.candle.setGreenCommand()))
+                    robotContainer.shuttle.stopCommand()))
+                    // robotContainer.candle.setGreenCommand()))
             .withTimeout(1.5)
             .withName("Autonomous Finish Intake"),
 
