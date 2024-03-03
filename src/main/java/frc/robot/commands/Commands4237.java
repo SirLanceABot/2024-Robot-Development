@@ -95,6 +95,7 @@ public final class Commands4237
         //         .alongWith(
         //             Commands.runOnce(() -> robotContainer.intakePositioning.retract(), robotContainer.intakePositioning)));
 
+        
         //TODO: Add timeout in case of sensor failure until we can test live
         if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
         {
