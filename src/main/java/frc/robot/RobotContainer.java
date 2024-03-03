@@ -108,7 +108,7 @@ public class RobotContainer
 
     public final Camera[] cameraArray = new Camera[4];
     public final Gyro4237 gyro;
-    // public final Proximity firstShuttleProximity;
+    public final Proximity firstShuttleProximity;
     // public final Proximity secondShuttleProximity;
     // public final Proximity indexProximity;
     public final Proximity indexWheelsProximity;
@@ -153,7 +153,7 @@ public class RobotContainer
         cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                                : null;
         cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                              : null;
         cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                               : null;
-        // firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
+        firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
         // secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         // indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
         indexWheelsProximity    = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.INDEX_WHEELS_PORT)      : null;
