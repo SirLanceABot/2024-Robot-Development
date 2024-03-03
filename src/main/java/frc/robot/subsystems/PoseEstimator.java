@@ -236,25 +236,33 @@ public class PoseEstimator extends Subsystem4237
 
         for(Camera camera : cameraArray)
         {
-            Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
+            // Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
 
             if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
-                if(DriverStation.isAutonomousEnabled() && isPoseCloseToPrevious(visionPose))
+                // if(DriverStation.isAutonomousEnabled() && isPoseCloseToPrevious(visionPose))
+                if(DriverStation.isAutonomousEnabled())
                 {
                     poseEstimator.addVisionMeasurement(
                         camera.getBotPoseBlue().toPose2d(), 
                         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
                         visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
                 }
-
-                if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
+                else
                 {
                     poseEstimator.addVisionMeasurement(
                         camera.getBotPoseBlue().toPose2d(), 
                         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
                         visionStdDevs.times(camera.getAverageDistanceFromTarget()));
                 }
+                // if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
+                // if(DriverStation.isTeleopEnabled())
+                // {
+                //     poseEstimator.addVisionMeasurement(
+                //         camera.getBotPoseBlue().toPose2d(), 
+                //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                //         visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                // }
             }
             
             // if(!DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
