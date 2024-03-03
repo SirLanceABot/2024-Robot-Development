@@ -707,7 +707,7 @@ public final class Commands4237
                     robotContainer.index.stopCommand(),
                     robotContainer.shuttle.stopCommand(),
                     robotContainer.candle.setGreenCommand()))
-            .withTimeout(3.0)
+            .withTimeout(1.5)
             .withName("Autonomous Finish Intake"),
 
             robotContainer.indexWheelsProximity.isDetectedSupplier());
