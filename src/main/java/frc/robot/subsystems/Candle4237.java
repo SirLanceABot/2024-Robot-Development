@@ -251,39 +251,39 @@ public class Candle4237 extends Subsystem4237
         return Commands.runOnce( () -> stop()).withName("stop");
     }
 
-    public Command setColorCommand(LEDColor color)
-    {
-        switch(color)
-        {
-            case kRed:
-                return setRedCommand();
-                // break;
-            case kYellow:
-                return setYellowCommand();
-                // break;
-            case kGreen:
-                return setGreenCommand();
-                // break;
-            case kBlue:
-                return setBlueCommand();
-                // break;
-            case kPurple:
-                return setPurpleCommand();
-                // break;
-            case kWhite:
-                return setWhiteCommand();
-                // break;
-            case kRainbow:
-                return setRainbowCommand();
-                // break;
-            case kOff:
-                return stopCommand();
-                // break;
-            default:
-                return Commands.none();
-                // break;
-        }
-    }
+    // public Command setColorCommand(LEDColor color)
+    // {
+    //     switch(color)
+    //     {
+    //         case kRed:
+    //             return setRedCommand();
+    //             // break;
+    //         case kYellow:
+    //             return setYellowCommand();
+    //             // break;
+    //         case kGreen:
+    //             return setGreenCommand();
+    //             // break;
+    //         case kBlue:
+    //             return setBlueCommand();
+    //             // break;
+    //         case kPurple:
+    //             return setPurpleCommand();
+    //             // break;
+    //         case kWhite:
+    //             return setWhiteCommand();
+    //             // break;
+    //         case kRainbow:
+    //             return setRainbowCommand();
+    //             // break;
+    //         case kOff:
+    //             return stopCommand();
+    //             // break;
+    //         default:
+    //             return Commands.none();
+    //             // break;
+    //     }
+    // }
 
     // public void signalPurple()
     // {

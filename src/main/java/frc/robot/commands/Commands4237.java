@@ -12,6 +12,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.IntakePositioning;
+import frc.robot.subsystems.Candle4237.LEDColor;
 
 public final class Commands4237
 {
@@ -98,13 +99,14 @@ public final class Commands4237
 
         
         //TODO: Add timeout in case of sensor failure until we can test live
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null && robotContainer.firstShuttleProximity != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.firstShuttleProximity != null)
         {
             return
             Commands.either(
                 Commands.none(),
 
-                robotContainer.candle.setYellowCommand()
+                // robotContainer.candle.setYellowCommand()
+                setCandleCommand(LEDColor.kYellow)
                 .andThen(
                     robotContainer.intakePositioning.moveDownCommand())
                 .andThen(
@@ -119,9 +121,10 @@ public final class Commands4237
                         robotContainer.intake.pickupFrontCommand(),
                         robotContainer.shuttle.moveUpwardCommand(),
                         robotContainer.index.acceptNoteFromShuttleCommand(),
-                        robotContainer.candle.setGreenCommand()
+                        // robotContainer.candle.setGreenCommand()
+                        setCandleCommand(LEDColor.kGreen)
                             .onlyIf(
-                            robotContainer.firstShuttleProximity.isDetectedSupplier())
+                                robotContainer.firstShuttleProximity.isDetectedSupplier())
                             .repeatedly()))
                 .andThen(
                     Commands.parallel(
@@ -175,10 +178,11 @@ public final class Commands4237
 
     public static Command intakeFromFloorBack()
     {
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
         {
             return
-            robotContainer.candle.setYellowCommand()
+            // robotContainer.candle.setYellowCommand()
+            setCandleCommand(LEDColor.kYellow)
             .andThen(
                 robotContainer.intakePositioning.moveDownCommand())
             .andThen(
@@ -199,7 +203,8 @@ public final class Commands4237
                     robotContainer.intakePositioning.moveUpCommand(),
                     robotContainer.intake.stopCommand(),
                     robotContainer.shuttle.stopCommand(),
-                    robotContainer.candle.setGreenCommand()))
+                    // robotContainer.candle.setGreenCommand()))
+                    setCandleCommand(LEDColor.kGreen)))
             .withName("Intake From Floor Back");
 
             // robotContainer.candle.setYellowCommand()
@@ -258,10 +263,11 @@ public final class Commands4237
 
     public static Command burpNoteCommand()
     {
-        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        if(robotContainer.flywheel != null)
         {
             return
-            robotContainer.candle.setPurpleCommand()
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
             .andThen(
                 robotContainer.flywheel.shootCommand(() -> 10.0))
                 .withTimeout(3.0)
@@ -270,7 +276,8 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    robotContainer.candle.setRedCommand()))
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed)))
             .withName("Burp Note");
         }
         else
@@ -282,10 +289,11 @@ public final class Commands4237
     public static Command intakeFromSource()
     {
         
-        if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null)
+        if(robotContainer.flywheel != null && robotContainer.indexWheelsProximity != null)
         { 
             return
-            robotContainer.candle.setYellowCommand()
+            // robotContainer.candle.setYellowCommand()
+            setCandleCommand(LEDColor.kYellow)
             .andThen(
             Commands.waitSeconds(1.0)
             .deadlineWith(
@@ -305,7 +313,8 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.candle.setGreenCommand()))
+                    // robotContainer.candle.setGreenCommand()))
+                    setCandleCommand(LEDColor.kGreen)))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
@@ -321,10 +330,11 @@ public final class Commands4237
 
     public static Command getFlywheelToSpeedCommand(double speed)
     {
-        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        if(robotContainer.flywheel != null)
         {
             return
-            robotContainer.candle.setBlueCommand()
+            // robotContainer.candle.setBlueCommand()
+            setCandleCommand(LEDColor.kBlue)
             .andThen(
                 robotContainer.flywheel.shootCommand(() -> speed))
             .withName("Get Flywheel To Speed");
@@ -513,13 +523,14 @@ public final class Commands4237
 
     public static Command shootFromSubWooferCommand()
     {
-        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.candle != null)
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null)
         {
             return
             // Commands.waitSeconds(2.0)
             // rotateToSpeakerCommand()
             // .andThen(
-            robotContainer.candle.setPurpleCommand()
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
             .andThen(
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.5).getAsBoolean() && 
                                         robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
@@ -540,7 +551,8 @@ public final class Commands4237
                     robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand(),
-                    robotContainer.candle.setRedCommand()))
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed)))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
@@ -556,13 +568,14 @@ public final class Commands4237
 
     public static Command podiumShootCommand()
     {
-        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.candle != null)
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null)
         {
             return
             // Commands.waitSeconds(1.0)
             
             // .andThen(
-            robotContainer.candle.setPurpleCommand()
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
             .andThen(
                 Commands.parallel(
                 // rotateToSpeakerCommand(),
@@ -591,7 +604,8 @@ public final class Commands4237
                     robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand(),
-                    robotContainer.candle.setRedCommand()))
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed)))
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
@@ -607,11 +621,12 @@ public final class Commands4237
 
     public static Command extendClimbToChainCommand()
     {
-        if(robotContainer.climb != null && robotContainer.intakePositioning != null && robotContainer.pivot != null && robotContainer.candle != null)
+        if(robotContainer.climb != null && robotContainer.intakePositioning != null && robotContainer.pivot != null)
         {
             return
             Commands.parallel(
-                robotContainer.candle.setRainbowCommand(),
+                // robotContainer.candle.setRainbowCommand(),
+                setCandleCommand(LEDColor.kRainbow),
                 robotContainer.climb.extendCommand(),
                 robotContainer.intakePositioning.moveUpCommand(),
                 robotContainer.pivot.setAngleCommand( () -> 25.0));
@@ -653,14 +668,15 @@ public final class Commands4237
 
     public static Command autonomousShootCommand()
     {
-        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.candle != null && robotContainer.indexWheelsProximity != null)
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.indexWheelsProximity != null)
         {
             return
             // Commands.waitSeconds(1.0)
             // rotateToSpeakerCommand()
             // .andThen(
             Commands.either(
-            robotContainer.candle.setPurpleCommand()
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
             .andThen(
                 Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
@@ -680,13 +696,14 @@ public final class Commands4237
                     robotContainer.flywheel.stopCommand(),
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand(),
-                    robotContainer.candle.setRedCommand()))
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed))),
                 // robotContainer.flywheel.stopCommand()
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                 //     robotContainer.index.stopCommand()))
                 
-                ,Commands.none(),
+                Commands.none(),
 
                 robotContainer.indexWheelsProximity.isDetectedSupplier()
             )
@@ -702,20 +719,22 @@ public final class Commands4237
 
     public static Command autonomousFinishIntakeCommand()
     {
-        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.candle != null && robotContainer.firstShuttleProximity != null)
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.firstShuttleProximity != null)
         {
             return
             Commands.either(
                 Commands.none(),
 
-            robotContainer.candle.setYellowCommand()
+            // robotContainer.candle.setYellowCommand()
+            setCandleCommand(LEDColor.kYellow)
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                 .deadlineWith(
                     robotContainer.intake.pickupFrontCommand(),
                     robotContainer.shuttle.moveUpwardCommand(),
                     robotContainer.index.acceptNoteFromShuttleCommand(),
-                    robotContainer.candle.setGreenCommand()
+                    // robotContainer.candle.setGreenCommand()
+                    setCandleCommand(LEDColor.kGreen)
                         .onlyIf(
                         robotContainer.firstShuttleProximity.isDetectedSupplier())
                         .repeatedly()
@@ -752,14 +771,51 @@ public final class Commands4237
         }
     }
 
-    public static Command setCandleCommand(Candle4237.LEDColor ledColor)
+    public static Command setCandleCommand(LEDColor ledColor)
     {
-        return
-        Commands.either(
-            robotContainer.candle.setColorCommand(ledColor),
+        if(robotContainer.candle != null)
+        {
+            switch(ledColor)
+            {
+                case kRed:
+                    return robotContainer.candle.setRedCommand();
 
-            Commands.none(),
+                case kYellow:
+                    return robotContainer.candle.setYellowCommand();
 
-            () -> (robotContainer.candle != null));
+                case kGreen:
+                    return robotContainer.candle.setGreenCommand();
+
+                case kBlue:
+                    return robotContainer.candle.setBlueCommand();
+
+                case kPurple:
+                    return robotContainer.candle.setPurpleCommand();
+
+                case kWhite:
+                    return robotContainer.candle.setWhiteCommand();
+                    
+                case kRainbow:
+                    return robotContainer.candle.setRainbowCommand();
+
+                case kOff:
+                    return robotContainer.candle.stopCommand();
+
+                default:
+                    return Commands.none();
+            }
+        }
+        else
+        {
+            return 
+            Commands.none();
+        }
+        // return
+        // Commands.either(
+        //     robotContainer.candle.setColorCommand(ledColor),
+
+        //     Commands.none(),
+
+        //     () -> (robotContainer.candle != null));
     }
 }

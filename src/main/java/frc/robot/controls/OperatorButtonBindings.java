@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShootingPosition;
 import frc.robot.subsystems.AmpAssist.AmpAssistPosition;
+import frc.robot.subsystems.Candle4237.LEDColor;
 import frc.robot.subsystems.Climb.TargetPosition;
 import frc.robot.commands.Commands4237;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -231,10 +232,7 @@ public class OperatorButtonBindings
         BooleanSupplier rightTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightTrigger);
         Trigger rightTriggerTrigger = new Trigger(rightTrigger);
 
-        if(robotContainer.candle != null)
-        {
-            rightTriggerTrigger.whileTrue(robotContainer.candle.setWhiteCommand());
-        }
+        rightTriggerTrigger.whileTrue(Commands4237.setCandleCommand(LEDColor.kWhite));
     }
 
     private void configDpadDown()
@@ -334,9 +332,9 @@ public class OperatorButtonBindings
 
         Trigger leftTriggerAndXButtonTrigger = leftTriggerTrigger.and(xButtonTrigger);
 
-        if(robotContainer.flywheel != null && robotContainer.candle != null)
+        if(robotContainer.flywheel != null)
         {
-            leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand().andThen(robotContainer.candle.setRedCommand()));
+            leftTriggerAndXButtonTrigger.onTrue(robotContainer.flywheel.stopCommand().andThen(Commands4237.setCandleCommand(LEDColor.kRed)));
         }
     }
 
