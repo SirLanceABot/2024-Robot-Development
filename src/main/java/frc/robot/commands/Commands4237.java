@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.IntakePositioning;
 
 public final class Commands4237
@@ -749,5 +750,16 @@ public final class Commands4237
         {
             return Commands.none();
         }
+    }
+
+    public static Command setCandleCommand(Candle4237.LEDColor ledColor)
+    {
+        return
+        Commands.either(
+            robotContainer.candle.setColorCommand(ledColor),
+
+            Commands.none(),
+
+            () -> (robotContainer.candle != null));
     }
 }

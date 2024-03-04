@@ -11,7 +11,7 @@ import frc.robot.sensors.Proximity;
 import frc.robot.subsystems.Candle4237;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.PoseEstimator;
-import frc.robot.subsystems.Candle4237.LedStatus;
+import frc.robot.subsystems.Candle4237.LEDColor;
 
 public class BradyTest implements Test
 {
