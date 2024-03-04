@@ -44,7 +44,7 @@ public class Camera extends Sensor4237
         // Our class variables named with our convention (yes camelcase)
         private double targetSize;
         private boolean isTargetFound;
-        private double[] botPoseWPIBlue = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        private double[] botPoseWPIBlue;
         private double[] botPoseWPIRed;
         private double[] cameraPoseInTargetSpace;
 

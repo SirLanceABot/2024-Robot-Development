@@ -45,8 +45,9 @@ public class PoseEstimator extends Subsystem4237
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
-    private double[] blueSpeakerCoords = {0.0, 5.55};
-    private double[] redSpeakerCoords = {16.54, 5.55};
+    private final double[] blueSpeakerCoords = {0.0, 5.55};
+    private final double[] redSpeakerCoords = {16.54, 5.55};
+    private final double[] fieldDimensions = {16.542, 8.211};
 
     private Matrix<N3, N1> visionStdDevs;
     private Matrix<N3, N1> stateStdDevs;
@@ -209,10 +210,36 @@ public class PoseEstimator extends Subsystem4237
         poseEstimator.resetPosition(gyroAngle, modulePositions, newPose);
     }
 
-    public boolean isPoseCloseToPrevious(Pose2d visionPose)
+    public boolean isPoseCloseToPrevious(Pose2d pose)
     {
-        // if vision pose is close to the current pose (within 6 meters)
-        if(visionPose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 6.0)
+        // if pose is close to the current pose (within 6 meters)
+        if(pose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 6.0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean isPoseInsideField(Pose2d pose)
+    {
+        // if the x component of the pose is within the field, and the y component is in the field
+        // 1 meter of leniency given
+        if((pose.getX() > -1.0 && pose.getX() < fieldDimensions[0] + 1.0) && (pose.getY() > -1.0 && pose.getY() < fieldDimensions[1] + 1.0))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean isPoseValid(Pose2d pose)
+    {
+        if(isPoseCloseToPrevious(pose) && isPoseInsideField(pose))
         {
             return true;
         }
@@ -240,20 +267,24 @@ public class PoseEstimator extends Subsystem4237
 
             if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             {
-                // if(DriverStation.isAutonomousEnabled() && isPoseCloseToPrevious(visionPose))
-                if(DriverStation.isAutonomousEnabled())
+                Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
+
+                if(isPoseValid(visionPose))
                 {
-                    poseEstimator.addVisionMeasurement(
-                        camera.getBotPoseBlue().toPose2d(), 
-                        Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                        visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
-                }
-                else
-                {
-                    poseEstimator.addVisionMeasurement(
-                        camera.getBotPoseBlue().toPose2d(), 
-                        Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                        visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                    if(DriverStation.isAutonomousEnabled())
+                    {
+                        poseEstimator.addVisionMeasurement(
+                            camera.getBotPoseBlue().toPose2d(), 
+                            Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                            visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
+                    }
+                    else
+                    {
+                        poseEstimator.addVisionMeasurement(
+                            camera.getBotPoseBlue().toPose2d(), 
+                            Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                            visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                    }
                 }
                 // if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
                 // if(DriverStation.isTeleopEnabled())
