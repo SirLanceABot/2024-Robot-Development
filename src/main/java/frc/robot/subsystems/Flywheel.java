@@ -69,7 +69,7 @@ public class Flywheel extends Subsystem4237
 
     private final TalonFX4237 motor = new TalonFX4237(Constants.Flywheel.MOTOR_PORT, Constants.Flywheel.MOTOR_CAN_BUS, "flywheelMotor");
     // private RelativeEncoder encoder;
-    BangBangController controller = new BangBangController();
+    // BangBangController controller = new BangBangController();
     private final InterpolatingDoubleTreeMap speedShotMap = new InterpolatingDoubleTreeMap();
 
     private ResetState resetState = ResetState.kDone;
