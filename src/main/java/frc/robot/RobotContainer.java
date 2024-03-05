@@ -333,6 +333,11 @@ public class RobotContainer
         {
             NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
         }
+
+        if(pivot != null)
+        {
+            NamedCommands.registerCommand("Pivot To Default Angle", pivot.setAngleCommand(() -> pivot.classConstants.DEFAULT_ANGLE));
+        }
     }
 }
 

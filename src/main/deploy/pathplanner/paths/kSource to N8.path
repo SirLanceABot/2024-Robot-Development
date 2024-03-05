@@ -3,53 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.65,
-        "y": 5.55
+        "x": 0.79,
+        "y": 4.43
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.459222365092511,
-        "y": 5.166739700807069
+        "x": 1.867710484032866,
+        "y": 1.5404863833901412
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.825884210786364,
-        "y": 4.119307667186764
+        "x": 6.146073557491779,
+        "y": 0.79
       },
       "prevControl": {
-        "x": 4.94341113328119,
-        "y": 4.143695690601957
+        "x": 5.146073557491779,
+        "y": 0.79
       },
       "nextControl": {
-        "x": 6.5910630818702565,
-        "y": 4.098161186120665
+        "x": 7.146073557491775,
+        "y": 0.79
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.96240792481585,
-        "y": 4.119307667186764
+        "x": 8.08,
+        "y": 0.79
       },
       "prevControl": {
-        "x": 7.091022605085816,
-        "y": 4.1046482092964185
+        "x": 6.950451672385877,
+        "y": 0.7778028020645268
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 1.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -58,23 +64,6 @@
               "type": "named",
               "data": {
                 "name": "Intake From Floor Front"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Pivot Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Pivot To Default Angle"
               }
             }
           ]
@@ -96,7 +85,7 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -60.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

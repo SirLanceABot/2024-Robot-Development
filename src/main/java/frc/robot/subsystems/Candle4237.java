@@ -77,7 +77,7 @@ public class Candle4237 extends Subsystem4237
         candle.configLEDType(LEDStripType.GRB);
         candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
         candle.configLOSBehavior(true);
-        candle.configV5Enabled(false);  // DO NOT CHANGE THIS
+        candle.configV5Enabled(true);
     }
     
     public double getCurrent()
