@@ -148,7 +148,7 @@ public class RobotContainer
         gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                                                       : null;	
         drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator, isBlueAlliance)     : null;
 
-        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                                                      : null;
+        ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                                                      : null;
         candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                                                     : null;
         climb                   = (useFullRobot || useClimb)                ? new Climb()                                                                          : null;
         flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                                                       : null;
@@ -185,7 +185,7 @@ public class RobotContainer
         operatorButtonBindings  = (useFullRobot || useBindings)             ? new OperatorButtonBindings(this)                          : null;
 
         configLog();
-        registerNamedCommands();
+        
         if(compressor != null && pneumaticHub != null)
         {
             configCompressor();
@@ -193,9 +193,18 @@ public class RobotContainer
         }
         powerDistribution.clearStickyFaults();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-        
+        // the AutoBuilder gets configured in drivetrain
+        if(drivetrain != null)
+        {
+            registerNamedCommands();
+            autoChooser = AutoBuilder.buildAutoChooser();
+            SmartDashboard.putData("Auto Chooser", autoChooser);
+        }
+        else
+        {
+            autoChooser = null;
+        }
+                
     }
 
     public void configLog()

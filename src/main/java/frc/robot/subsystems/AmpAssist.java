@@ -3,15 +3,12 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 
-import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
-import frc.robot.motors.CANSparkMax4237;
 
 /**
  * This class is used to operate the Amp Assist which uses pnuematics to control a bar.
@@ -46,12 +43,12 @@ public class AmpAssist extends Subsystem4237
         
 
         // OUTPUTS
-        private AmpAssistPosition ampAssistPosition = AmpAssistPosition.kRetract;
+        private AmpAssistPosition ampAssistCurrentPosition = AmpAssistPosition.kRetract;
     }
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.AmpAssist.SOLENOID_PORT,PneumaticsModuleType.CTREPCM, Constants.AmpAssist.OUT_POSITION, Constants.AmpAssist.IN_POSITION);
+    private final DoubleSolenoid solenoid = new DoubleSolenoid(Constants.AmpAssist.SOLENOID_PORT,PneumaticsModuleType.REVPH, Constants.AmpAssist.OUT_POSITION, Constants.AmpAssist.IN_POSITION);
     
 
     /** 
@@ -61,7 +58,7 @@ public class AmpAssist extends Subsystem4237
     {
         super("Amp Assist");
         System.out.println("  Constructor Started:  " + fullClassName);
-        setDefaultCommand(retractCommand());
+        // setDefaultCommand(retractCommand());
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
@@ -72,34 +69,39 @@ public class AmpAssist extends Subsystem4237
 
     public BooleanSupplier isAmpAssistRetracted()
     {
-        if(periodicData.ampAssistPosition == AmpAssistPosition.kRetract)
+        return () ->
         {
-            return () -> true;
-        }
-        else
-        {
-            return () -> false;
-        }
+            if(periodicData.ampAssistCurrentPosition == AmpAssistPosition.kRetract)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        };
     }
 
     public void extend()
     {
-        periodicData.ampAssistPosition = AmpAssistPosition.kExtend;
+        periodicData.ampAssistCurrentPosition = AmpAssistPosition.kExtend;
+        solenoid.set(AmpAssistPosition.kExtend.value);
     }
 
     public void retract()
     {
-        periodicData.ampAssistPosition = AmpAssistPosition.kRetract;
+        periodicData.ampAssistCurrentPosition = AmpAssistPosition.kRetract;
+        solenoid.set(AmpAssistPosition.kRetract.value);
     }
 
     public Command extendCommand()
     {
-        return Commands.runOnce(() -> extend());
+        return Commands.runOnce(() -> extend(), this);
     }
 
     public Command retractCommand()
     {
-        return Commands.runOnce(() -> retract());
+        return Commands.runOnce(() -> retract(), this);
     }
 
     // public Command ampAssistCommand(AmpAssistPosition ampAssistPosition)
@@ -131,7 +133,7 @@ public class AmpAssist extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        solenoid.set(periodicData.ampAssistPosition.value);
+        // solenoid.set(periodicData.ampAssistPosition.value);
     }
 
     @Override
@@ -149,6 +151,6 @@ public class AmpAssist extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Current AmpAssist Position: " + periodicData.ampAssistPosition;
+        return "Current AmpAssist Position: " + periodicData.ampAssistCurrentPosition;
     }
 }

@@ -42,17 +42,17 @@ public class LoganTest implements Test
     // private final CANSparkMax intakeMotor = new CANSparkMax(3, MotorType.kBrushless);
     // private RelativeEncoder intakeEncoder;
     private final Joystick joystick = new Joystick(1);
-    private double topEncoderPosition;
-    private double bottomEncoderPosition;
-    private Intake intake;
+    // private double topEncoderPosition;
+    // private double bottomEncoderPosition;
+    // private Intake intake;
     private AmpAssist ampAssist;
-    private IntakePositioning intakePositioning;
-    private Shuttle shuttle;
-    private Index index;
-    private Climb climb;
-    private Direction direction;
-    private Proximity secondShuttleProximity;
-    private Proximity indexProximity;
+    // private IntakePositioning intakePositioning;
+    // private Shuttle shuttle;
+    // private Index index;
+    // private Climb climb;
+    // private Direction direction;
+    // private Proximity secondShuttleProximity;
+    // private Proximity indexProximity;
 
 
     // *** CLASS CONSTRUCTOR ***
@@ -61,12 +61,12 @@ public class LoganTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        intake = robotContainer.intake;
+        // intake = robotContainer.intake;
         ampAssist = robotContainer.ampAssist;
-        intakePositioning = robotContainer.intakePositioning;
-        shuttle = robotContainer.shuttle;
-        index = robotContainer.index;
-        climb = robotContainer.climb;
+        // intakePositioning = robotContainer.intakePositioning;
+        // shuttle = robotContainer.shuttle;
+        // index = robotContainer.index;
+        // climb = robotContainer.climb;
         // secondShuttleProximity = robotContainer.secondShuttleProximity;
         // indexProximity = robotContainer.indexProximity;
 
@@ -92,12 +92,14 @@ public class LoganTest implements Test
         //     // configAButton();
             // intakePositioning.moveUp();
             // System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
-            ampAssist.extend();
+            ampAssist.extendCommand().schedule();
+            // System.out.println("Extend");
         }
         else if(joystick.getRawButton(2))
         {
             // Commands4237.shootFromSubWooferCommand().schedule();
-            ampAssist.retract();
+            ampAssist.retractCommand().schedule();
+            // System.out.println("Retract");
         }
         // else if(joystick.getRawButton(2))
         // {

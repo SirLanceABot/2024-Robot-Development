@@ -157,7 +157,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        leftBumperTrigger.onTrue(Commands4237.extendAmpCommand());
+        leftBumperTrigger.onTrue(Commands4237.moveAmpAssistCommand());
     }
 
     private void configRightBumper()
@@ -215,7 +215,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        leftTriggerTrigger.onTrue(Commands4237.retractAmpCommand());
+        // leftTriggerTrigger.onTrue(Commands4237.retractAmpCommand());
     }
 
     private void configRightTrigger()

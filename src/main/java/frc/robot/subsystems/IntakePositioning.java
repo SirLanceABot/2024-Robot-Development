@@ -29,8 +29,8 @@ public class IntakePositioning extends Subsystem4237
 
     public enum IntakePosition
     {
-        kUp(Value.kReverse, Value.kForward), 
-        kDown(Value.kForward, Value.kReverse), 
+        kUp(Value.kForward, Value.kReverse),
+        kDown(Value.kReverse, Value.kForward),
         kFloat(Value.kReverse, Value.kReverse);
 
         public final Value extendValue;
@@ -52,7 +52,7 @@ public class IntakePositioning extends Subsystem4237
         // private double pressure;
 
         // OUTPUTS
-        private IntakePosition intakePosition = IntakePosition.kUp;
+        // private IntakePosition intakePosition = IntakePosition.kUp;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -92,17 +92,24 @@ public class IntakePositioning extends Subsystem4237
 
     public void moveUp()
     {
-        periodicData.intakePosition = IntakePosition.kDown;
+        // periodicData.intakePosition = IntakePosition.kDown;
+        extendSolenoid.set(IntakePosition.kUp.extendValue);
+        retractSolenoid.set(IntakePosition.kUp.retractValue);
     }
 
     public void moveDown()
     {
-        periodicData.intakePosition = IntakePosition.kUp;
+        // periodicData.intakePosition = IntakePosition.kUp;
+        extendSolenoid.set(IntakePosition.kDown.extendValue);
+        retractSolenoid.set(IntakePosition.kDown.retractValue);
+
     }
 
     public void floating()
     {
-        periodicData.intakePosition = IntakePosition.kFloat;
+        // periodicData.intakePosition = IntakePosition.kFloat;
+        extendSolenoid.set(IntakePosition.kFloat.extendValue);
+        retractSolenoid.set(IntakePosition.kFloat.retractValue);
     }
 
     public boolean isIntakeDown()
@@ -146,8 +153,8 @@ public class IntakePositioning extends Subsystem4237
     @Override
     public void writePeriodicOutputs()
     {
-        extendSolenoid.set(periodicData.intakePosition.extendValue);
-        retractSolenoid.set(periodicData.intakePosition.retractValue);
+        // extendSolenoid.set(periodicData.intakePosition.extendValue);
+        // retractSolenoid.set(periodicData.intakePosition.retractValue);
     }
 
     @Override
@@ -165,6 +172,6 @@ public class IntakePositioning extends Subsystem4237
     @Override
     public String toString()
     {
-        return "Intake Position: " + periodicData.intakePosition;
+        return "Is Intake Up: " + periodicData.isIntakeUp;
     }
 }

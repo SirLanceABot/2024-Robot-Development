@@ -710,8 +710,8 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
                     // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand(),
-                    setCandleCommand(LEDColor.kRed)))
+                    robotContainer.index.stopCommand()))
+                    // setCandleCommand(LEDColor.kRed)))
             .withName("Shoot to amp Command");
         }
         else
@@ -727,7 +727,9 @@ public final class Commands4237
             return
             // setCandleCommand(LEDColor.kPurple)
             // .andThen(
-                robotContainer.ampAssist.extendCommand()
+                robotContainer.ampAssist.retractCommand()
+                .alongWith(
+                    Commands.waitSeconds(0.5))
             .andThen(
                 Commands.waitUntil(() -> robotContainer.pivot.isAtAngle(robotContainer.pivot.classConstants.DEFAULT_ANGLE).getAsBoolean())
                                         .withTimeout(1.0)

@@ -95,9 +95,9 @@ public final class Constants
 
     public static class AmpAssist
     {
-        public static final int SOLENOID_PORT       = 0;
-        public static final int OUT_POSITION        = 0;
-        public static final int IN_POSITION         = 1;
+        public static final int SOLENOID_PORT       = 1;
+        public static final int OUT_POSITION        = 5;
+        public static final int IN_POSITION         = 4;
 
         // public static final String MOTOR_CAN_BUS    = ROBORIO;
         // public static final int OUT_SOFT_LIMIT      = 4237;
