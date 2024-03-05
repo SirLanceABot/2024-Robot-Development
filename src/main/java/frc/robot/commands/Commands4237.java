@@ -814,6 +814,34 @@ public final class Commands4237
         }
     }
 
+    public static Command autonomousShootFromSubWooferCommand()
+    {
+        if(robotContainer.index  != null && robotContainer.flywheel != null)
+        {
+            return
+            setCandleCommand(LEDColor.kPurple)
+            .andThen(
+                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                                        .withTimeout(1.0)
+                .deadlineWith(
+                    robotContainer.flywheel.shootCommand(() -> 65.0)))    
+            .andThen(
+                Commands.waitSeconds(0.5)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
+                    robotContainer.index.stopCommand(),
+                    setCandleCommand(LEDColor.kRed)))
+            .withName("Subwoofer Shoot");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
     public static Command autonomousFinishIntakeCommand()
     {
         if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.firstShuttleProximity != null)

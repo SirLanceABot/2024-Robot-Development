@@ -77,7 +77,7 @@ public class Candle4237 extends Subsystem4237
         candle.configLEDType(LEDStripType.GRB);
         candle.configBrightnessScalar(LED_BRIGHTNESS_VALUE);
         candle.configLOSBehavior(true);
-        candle.configV5Enabled(true);
+        candle.configV5Enabled(false);  // DO NOT CHANGE THIS
     }
     
     public double getCurrent()
@@ -356,11 +356,11 @@ public class Candle4237 extends Subsystem4237
     {
         // SmartDashboard.putNumber("Current", getCurrent());
 
-        if(getCurrent() > 5.0)
-        {
-            stop();
-            System.out.println("CANdle current > 5A");
-        }
+        // if(getCurrent() > 5.0)
+        // {
+        //     stop();
+        //     System.out.println("CANdle current > 5A");
+        // }
         // if(periodicData.ledStatus == LedStatus.kOff)
         // {
         //     signalOff();

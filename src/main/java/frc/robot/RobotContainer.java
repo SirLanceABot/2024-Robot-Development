@@ -65,7 +65,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = false;
+    private boolean useFullRobot            = true;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -325,6 +325,7 @@ public class RobotContainer
 
         NamedCommands.registerCommand("Intake From Floor Front", Commands4237.intakeFromFloorFront());
         NamedCommands.registerCommand("Shoot From Subwoofer", Commands4237.shootFromSubWooferCommand());
+        NamedCommands.registerCommand("Autonomous Shoot From Subwoofer", Commands4237.autonomousShootFromSubWooferCommand());
         NamedCommands.registerCommand("Podium Shoot", Commands4237.podiumShootCommand());
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
