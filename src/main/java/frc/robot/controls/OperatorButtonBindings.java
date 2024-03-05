@@ -139,7 +139,7 @@ public class OperatorButtonBindings
         Trigger xButtonTrigger = new Trigger(xButton);
 
         // xButtonTrigger.onTrue(Commands4237.ejectNote());
-        xButtonTrigger.toggleOnTrue(Commands4237.getFlywheelToSpeedCommand(55.0));
+        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand(55.0));
     }
 
     private void configYButton()
