@@ -158,7 +158,7 @@ public class DriverButtonBindings
         BooleanSupplier leftBumper = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        leftBumperTrigger.onTrue(Commands4237.intakeFromFloorBack());
+        leftBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configRightBumper()
@@ -169,7 +169,7 @@ public class DriverButtonBindings
 
         if(true)
         {
-            rightBumperTrigger.onTrue(Commands4237.intakeFromFloorFront());
+            rightBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorFront());
             // rightBumperTrigger.onFalse(Commands.runOnce(() -> scaleFactor = 1.0));
         }
     }
@@ -236,7 +236,7 @@ public class DriverButtonBindings
         BooleanSupplier rightTrigger = robotContainer.driverController.getButtonSupplier(Xbox.Button.kRightTrigger);
         Trigger rightTriggerTrigger = new Trigger(rightTrigger);
 
-        rightTriggerTrigger.onTrue(Commands4237.intakeFromSource());
+        rightTriggerTrigger.toggleOnTrue(Commands4237.intakeFromSource());
     }
 
     private void configDpadUp()

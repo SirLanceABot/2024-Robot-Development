@@ -206,6 +206,7 @@ public final class Commands4237
                     robotContainer.shuttle.stopCommand(),
                     // robotContainer.candle.setGreenCommand()))
                     setCandleCommand(LEDColor.kGreen)))
+            .handleInterrupt( () -> setCandleDefaultRed())
             .withName("Intake From Floor Back");
 
             // robotContainer.candle.setYellowCommand()
@@ -320,7 +321,8 @@ public final class Commands4237
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)))
             // .andThen(
-                // robotContainer.candle.setGreenCommand())   
+                // robotContainer.candle.setGreenCommand())
+            .handleInterrupt( () -> setCandleDefaultRed())
             .withName("Intake From Source");
         }
         else
@@ -338,6 +340,7 @@ public final class Commands4237
             setCandleCommand(LEDColor.kBlue)
             .andThen(
                 robotContainer.flywheel.shootCommand(() -> speed))
+            .handleInterrupt( () -> setCandleDefaultRed())
             .withName("Get Flywheel To Speed");
         }
         else
@@ -742,12 +745,20 @@ public final class Commands4237
 
     public static Command moveAmpAssistCommand()
     {
-        return
-        Commands.either(
-            extendAmpCommand(), 
-            retractAmpCommand(), 
-            robotContainer.ampAssist.isAmpAssistRetracted())
-        .withName("Move AmpAssist Command");
+        if(robotContainer.ampAssist != null)
+        {
+            return
+            Commands.either(
+                extendAmpCommand(), 
+                retractAmpCommand(), 
+                robotContainer.ampAssist.isAmpAssistRetracted())
+            .withName("Move AmpAssist Command");
+        }
+        else
+        {
+            return Commands.none();
+        }
+        
     }
 
     public static Command autonomousShootCommand()

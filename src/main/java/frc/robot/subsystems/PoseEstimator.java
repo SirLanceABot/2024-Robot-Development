@@ -265,37 +265,39 @@ public class PoseEstimator extends Subsystem4237
         {
             // Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
 
-            if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
+            if(camera != null)
             {
-                Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
-
-                if(isPoseValid(visionPose))
+                if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
                 {
-                    if(DriverStation.isAutonomousEnabled())
+                    Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
+
+                    if(isPoseValid(visionPose))
                     {
-                        poseEstimator.addVisionMeasurement(
-                            camera.getBotPoseBlue().toPose2d(), 
-                            Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                            visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
+                        if(DriverStation.isAutonomousEnabled())
+                        {
+                            poseEstimator.addVisionMeasurement(
+                                camera.getBotPoseBlue().toPose2d(), 
+                                Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                                visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
+                        }
+                        else
+                        {
+                            poseEstimator.addVisionMeasurement(
+                                camera.getBotPoseBlue().toPose2d(), 
+                                Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                                visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                        }
                     }
-                    else
-                    {
-                        poseEstimator.addVisionMeasurement(
-                            camera.getBotPoseBlue().toPose2d(), 
-                            Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                            visionStdDevs.times(camera.getAverageDistanceFromTarget()));
-                    }
+                    // if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
+                    // if(DriverStation.isTeleopEnabled())
+                    // {
+                    //     poseEstimator.addVisionMeasurement(
+                    //         camera.getBotPoseBlue().toPose2d(), 
+                    //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                    //         visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                    // }
                 }
-                // if(DriverStation.isTeleopEnabled() && isPoseCloseToPrevious(visionPose))
-                // if(DriverStation.isTeleopEnabled())
-                // {
-                //     poseEstimator.addVisionMeasurement(
-                //         camera.getBotPoseBlue().toPose2d(), 
-                //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
-                //         visionStdDevs.times(camera.getAverageDistanceFromTarget()));
-                // }
             }
-            
             // if(!DriverStation.isAutonomousEnabled() && camera != null && camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
             // {
             //     // update pose estimator with limelight data (vision part)

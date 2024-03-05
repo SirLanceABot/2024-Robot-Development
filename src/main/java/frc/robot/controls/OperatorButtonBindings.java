@@ -139,7 +139,7 @@ public class OperatorButtonBindings
         Trigger xButtonTrigger = new Trigger(xButton);
 
         // xButtonTrigger.onTrue(Commands4237.ejectNote());
-        xButtonTrigger.onTrue(Commands4237.getFlywheelToSpeedCommand(55.0));
+        xButtonTrigger.toggleOnTrue(Commands4237.getFlywheelToSpeedCommand(55.0));
     }
 
     private void configYButton()
@@ -157,11 +157,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        if(robotContainer.ampAssist != null)
-        {
-            leftBumperTrigger.onTrue(Commands4237.extendAmpCommand());
-        }
-        
+        leftBumperTrigger.onTrue(Commands4237.extendAmpCommand());
     }
 
     private void configRightBumper()
@@ -179,10 +175,7 @@ public class OperatorButtonBindings
         BooleanSupplier backButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
-        if(robotContainer.pivot != null)
-        {
-            backButtonTrigger.onTrue(Commands4237.resetPivotAngleCommand());
-        }
+        backButtonTrigger.onTrue(Commands4237.resetPivotAngleCommand());
 
         // backButtonTrigger.onTrue(Commands4237.ejectNote());
     }
