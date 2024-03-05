@@ -159,7 +159,7 @@ public class OperatorButtonBindings
 
         if(robotContainer.ampAssist != null)
         {
-            leftBumperTrigger.onTrue(robotContainer.ampAssist.extendCommand());
+            leftBumperTrigger.onTrue(Commands4237.extendAmpCommand());
         }
         
     }
@@ -170,7 +170,7 @@ public class OperatorButtonBindings
         BooleanSupplier rightBumper = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kRightBumper);
         Trigger rightBumperTrigger = new Trigger(rightBumper);
 
-        // rightBumperTrigger.onTrue(Commands4237.shootToAmpCommand());
+        rightBumperTrigger.onTrue(Commands4237.shootToAmpCommand());
     }
 
     private void configBackButton()
@@ -222,8 +222,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        if(true)
-        {}
+        leftTriggerTrigger.onTrue(Commands4237.retractAmpCommand());
     }
 
     private void configRightTrigger()
@@ -265,10 +264,7 @@ public class OperatorButtonBindings
         BooleanSupplier dPadLeft = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kLeft);
         Trigger dPadLeftTrigger = new Trigger(dPadLeft);
 
-        // if(robotContainer.ampAssist != null)
-        // {
-        //     dPadLeftTrigger.onTrue(robotContainer.ampAssist.ampAssistCommand(AmpAssistPosition.kIn));
-        // }
+        dPadLeftTrigger.onTrue(Commands4237.moveAmpAssistCommand());
     }
 
     private void configDpadRight()

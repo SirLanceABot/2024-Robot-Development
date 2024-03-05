@@ -146,6 +146,11 @@ public class Index extends Subsystem4237
         setControlVelocity(80.0);
     }
 
+    public void feedNoteToFlywheelAmp()
+    {
+        setControlVelocity(17.0);
+    }
+
     public void ejectNote()
     {
         // periodicData.motorSpeed = -10;
@@ -184,6 +189,11 @@ public class Index extends Subsystem4237
     public Command feedNoteToFlywheelCommand()
     {
         return Commands.run(() -> feedNoteToFlywheel(), this).withName("Feed Note To Flywheel");
+    }
+
+    public Command feedNoteToFlywheelAmpCommand()
+    {
+        return Commands.run(() -> feedNoteToFlywheelAmp(), this).withName("Feed Note To Flywheel Amp");
     }
 
     public Command ejectNoteCommand()

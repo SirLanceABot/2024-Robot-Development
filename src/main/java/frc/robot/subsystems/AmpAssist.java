@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 
 import com.revrobotics.RelativeEncoder;
 
@@ -29,7 +30,7 @@ public class AmpAssist extends Subsystem4237
 
     public enum AmpAssistPosition
     {
-        kIn(Value.kForward), kOut(Value.kReverse), kOff(Value.kOff);
+        kRetract(Value.kForward), kExtend(Value.kReverse);
 
         public final Value value;
 
@@ -45,7 +46,7 @@ public class AmpAssist extends Subsystem4237
         
 
         // OUTPUTS
-        private AmpAssistPosition ampAssistPosition = AmpAssistPosition.kOff;
+        private AmpAssistPosition ampAssistPosition = AmpAssistPosition.kRetract;
     }
 
     private PeriodicData periodicData = new PeriodicData();
@@ -60,27 +61,35 @@ public class AmpAssist extends Subsystem4237
     {
         super("Amp Assist");
         System.out.println("  Constructor Started:  " + fullClassName);
-        
+        setDefaultCommand(retractCommand());
         System.out.println("  Constructor Finished: " + fullClassName);
     }
 
-    public AmpAssistPosition getPosition()
+    // public AmpAssistPosition getPosition()
+    // {
+    //     return periodicData.ampAssistPosition;
+    // }
+
+    public BooleanSupplier isAmpAssistRetracted()
     {
-        return periodicData.ampAssistPosition;
+        if(periodicData.ampAssistPosition == AmpAssistPosition.kRetract)
+        {
+            return () -> true;
+        }
+        else
+        {
+            return () -> false;
+        }
     }
 
     public void extend()
     {
-        periodicData.ampAssistPosition = AmpAssistPosition.kOut;
+        periodicData.ampAssistPosition = AmpAssistPosition.kExtend;
     }
 
     public void retract()
     {
-        periodicData.ampAssistPosition = AmpAssistPosition.kIn;
-    }
-    public void stop()
-    {
-        periodicData.ampAssistPosition = AmpAssistPosition.kOff;
+        periodicData.ampAssistPosition = AmpAssistPosition.kRetract;
     }
 
     public Command extendCommand()
@@ -93,23 +102,23 @@ public class AmpAssist extends Subsystem4237
         return Commands.runOnce(() -> retract());
     }
 
-    public Command ampAssistCommand(AmpAssistPosition ampAssistPosition)
-    {
-        if(ampAssistPosition == AmpAssistPosition.kIn || ampAssistPosition == AmpAssistPosition.kOff)
-        {
-            return Commands.runOnce( () -> extend(), this);
-        }
-        else if(ampAssistPosition == AmpAssistPosition.kOut)
-        {
-            return Commands.runOnce( () -> retract(), this);
-        }
-        else
-        {
-            return Commands.runOnce( () -> stop(), this);
-        }
+    // public Command ampAssistCommand(AmpAssistPosition ampAssistPosition)
+    // {
+    //     if(ampAssistPosition == AmpAssistPosition.kRetract || ampAssistPosition == AmpAssistPosition.kOff)
+    //     {
+    //         return Commands.runOnce( () -> extend(), this);
+    //     }
+    //     else if(ampAssistPosition == AmpAssistPosition.kExtend)
+    //     {
+    //         return Commands.runOnce( () -> retract(), this);
+    //     }
+    //     else
+    //     {
+    //         return Commands.runOnce( () -> stop(), this);
+    //     }
 
-        // return this.runOnce( () -> extend());
-    }
+    //     // return this.runOnce( () -> extend());
+    // }
 
    
 
