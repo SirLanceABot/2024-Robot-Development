@@ -70,20 +70,20 @@ public class RobotContainer
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
     private boolean useClimb                = false;
-    private boolean useDrivetrain           = true;
+    private boolean useDrivetrain           = false;
     private boolean useFlywheel             = false;
     private boolean useIndex                = false;
     private boolean useIntake               = false;
     private boolean useIntakePositioning    = false;
     private boolean usePivot                = false;
-    private boolean usePoseEstimator        = true;
+    private boolean usePoseEstimator        = false;
     private boolean useShuttle              = false;
 
-    private boolean useCameraOne            = true;
-    private boolean useCameraTwo            = true;
-    private boolean useCameraThree          = true;
-    private boolean useCameraFour           = true;
-    private boolean useGyro                 = true;
+    private boolean useCameraOne            = false;
+    private boolean useCameraTwo            = false;
+    private boolean useCameraThree          = false;
+    private boolean useCameraFour           = false;
+    private boolean useGyro                 = false;
     private boolean useAllProximity         = false;
     private boolean useCompressor           = false;
     private boolean usePneumaticHub         = false;
@@ -91,8 +91,8 @@ public class RobotContainer
 
     private boolean useMainShuffleboard     = false;
 
-    private boolean useBindings             = true;
-    private boolean useDriverController     = true;
+    private boolean useBindings             = false;
+    private boolean useDriverController     = false;
     private boolean useOperatorController   = false;
 
 
