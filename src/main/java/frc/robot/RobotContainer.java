@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 import com.fasterxml.jackson.databind.util.Named;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -17,6 +18,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Shuttle;
@@ -60,7 +64,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = true;
+    private boolean useFullRobot            = false;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -123,6 +127,7 @@ public class RobotContainer
     public final OperatorController operatorController;
     
     private CommandSchedulerLog schedulerLog = null;
+    private final SendableChooser<Command> autoChooser;
 
     public boolean isBlueAlliance;
 
@@ -183,6 +188,9 @@ public class RobotContainer
             // compressorBinding();
         }
         powerDistribution.clearStickyFaults();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Chooser", autoChooser);
         
     }
 
@@ -271,6 +279,11 @@ public class RobotContainer
         {
             drivetrain.stopMotors();
         }
+    }
+
+    public Command getAutonomousCommand() 
+    {
+        return autoChooser.getSelected();
     }
 
     public void registerNamedCommands()
