@@ -133,6 +133,7 @@ public final class Commands4237
                         robotContainer.intake.stopCommand(),
                         robotContainer.shuttle.stopCommand()))
                         // robotContainer.candle.setGreenCommand())
+                .handleInterrupt( () -> setCandleDefaultRed())
                 .withName("Intake From Floor Front"),
 
                 robotContainer.indexWheelsProximity.isDetectedSupplier());
@@ -901,4 +902,16 @@ public final class Commands4237
 
         //     () -> (robotContainer.candle != null));
     }
+
+    private static void setCandleDefaultRed()
+    {
+        if(robotContainer.candle != null)
+        {
+            robotContainer.candle.setRed(false);
+        }
+        else
+        {
+            // do nothing
+        }
+    } 
 }
