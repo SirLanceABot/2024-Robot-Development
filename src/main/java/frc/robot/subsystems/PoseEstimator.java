@@ -173,11 +173,11 @@ public class PoseEstimator extends Subsystem4237
         double angleRads = Math.atan2(deltaY, deltaX);
         if(yPose > redSpeakerCoords[1])
         {
-            return 180.0 - Math.toDegrees(angleRads);
+            return Math.toDegrees(angleRads);
         }
         else if(yPose < redSpeakerCoords[1])
         {
-            return -(180.0 - Math.toDegrees(angleRads));
+            return -Math.toDegrees(angleRads);
         }
         else
         {
