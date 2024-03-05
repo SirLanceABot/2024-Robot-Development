@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AutoCommandList;
 import frc.robot.motors.MotorController4237;
 import frc.robot.shuffleboard.AutonomousTabData;
@@ -77,7 +78,7 @@ public class Robot extends TimedRobot
         System.out.println("Robot Init");
 
         DataLogManager.start();
-        addPeriodic(() -> robotContainer.setAlliance(DriverStation.getAlliance()), 1);
+        // addPeriodic(() -> robotContainer.setAlliance(DriverStation.getAlliance()), 1);
         // enableLiveWindowInTest(true);
     }
 
@@ -117,7 +118,7 @@ public class Robot extends TimedRobot
     public void disabledInit()
     {
         System.out.println("Disabled Mode");
-        System.gc();
+        // System.gc();
     }
 
     /**
@@ -146,7 +147,7 @@ public class Robot extends TimedRobot
             }
         }
 
-        DriverStation.getAlliance();
+        // DriverStation.getAlliance().isPresent();
     }
 
     /**
@@ -202,6 +203,8 @@ public class Robot extends TimedRobot
     public void autonomousExit()
     {
         robotContainer.stopRobot();
+        robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
+
     }
 
     /**

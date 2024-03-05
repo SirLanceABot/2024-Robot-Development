@@ -79,7 +79,7 @@ public class Pivot extends Subsystem4237
         private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
-        // private final double MAGNET_OFFSET = -0.71478456;
+        private final double MAGNET_OFFSET = -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
@@ -131,7 +131,7 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configShotMap();
 
-        setDefaultCommand(setAngleCommand(() -> 32.0));
+        // setDefaultCommand(setAngleCommand(() -> classConstants.DEFAULT_ANGLE));
         // periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
         // motor.setPosition(periodicData.canCoderRotationalPosition);
@@ -165,7 +165,7 @@ public class Pivot extends Subsystem4237
         motor.setSafetyEnabled(false);
         // motor.setPosition(fPart(pivotAngle.getPosition().getValueAsDouble()) * 200);
         // motor.setPosition(21.0);
-        motor.setPosition((pivotAngle.getAbsolutePosition().getValueAsDouble() - 0.71478456) * 360.0);
+        motor.setPosition((pivotAngle.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0);
 
 
         motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
@@ -385,8 +385,8 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.canCoderAbsolutePosition = pivotAngle.getAbsolutePosition().getValueAsDouble() - 0.71478456;
-        periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble() - 0.71478456;
+        periodicData.canCoderAbsolutePosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
         //All included in tunePID() command
@@ -429,7 +429,7 @@ public class Pivot extends Subsystem4237
         SmartDashboard.putNumber("Pivot Cancoder Rotational Position:", getCANCoderPosition());
         SmartDashboard.putNumber("Pivot Motor Position:", getMotorEncoderPosition());
 
-        // System.out.println("Motor position = " + motor.getPosition());
+
 
         //For Testing
         //Displays any changed values on the PID controller widget and sets the correct values to the PID controller

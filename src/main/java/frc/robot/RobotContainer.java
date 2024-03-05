@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -132,32 +133,35 @@ public class RobotContainer
     public boolean isBlueAlliance;
 
 
+
     /** 
      * The container for the robot. Contains subsystems, OI devices, and commands.
      * Use the default modifier so that new objects can only be constructed in the same package.
      */
     RobotContainer()
     {
+        isBlueAlliance = isBlueAlliance();
+
         // Create the needed subsystems
         fullRobot               = (useFullRobot);
 
-        gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                                        : null;	
-        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator)     : null;
+        gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                                                       : null;	
+        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator, isBlueAlliance)     : null;
 
-        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                                       : null;
-        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                                      : null;
-        climb                   = (useFullRobot || useClimb)                ? new Climb()                                                           : null;
-        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                                        : null;
-        index                   = (useFullRobot || useIndex)                ? new Index()                                                           : null;
-        intake                  = (useFullRobot || useIntake)               ? new Intake()                                                          : null;
-        intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                               : null;
-        pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                                           : null;
-        shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                                         : null;
-        
-        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                                : null;
-        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                                : null;
-        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                              : null;
-        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                               : null;
+        ampAssist               = (useAmpAssist)                            ? new AmpAssist()                                                                      : null;
+        candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                                                     : null;
+        climb                   = (useFullRobot || useClimb)                ? new Climb()                                                                          : null;
+        flywheel                = (useFullRobot || useFlywheel)             ? new Flywheel()                                                                       : null;
+        index                   = (useFullRobot || useIndex)                ? new Index()                                                                          : null;
+        intake                  = (useFullRobot || useIntake)               ? new Intake()                                                                         : null;
+        intakePositioning       = (useFullRobot || useIntakePositioning)    ? new IntakePositioning()                                                              : null;
+        pivot                   = (useFullRobot || usePivot)                ? new Pivot()                                                                          : null;
+        shuttle                 = (useFullRobot || useShuttle)              ? new Shuttle()                                                                        : null;
+                    
+        cameraArray[0]          = (useFullRobot || useCameraOne)            ? new Camera("limelight-one")                                               : null;
+        cameraArray[1]          = (useFullRobot || useCameraTwo)            ? new Camera("limelight-two")                                               : null;
+        cameraArray[2]          = (useFullRobot || useCameraThree)          ? new Camera("limelight-three")                                             : null;
+        cameraArray[3]          = (useFullRobot || useCameraFour)           ? new Camera("limelight-four")                                              : null;
         firstShuttleProximity   = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.FIRST_SHUTTLE_PORT)     : null;
         // secondShuttleProximity  = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.SECOND_SHUTTLE_PORT)    : null;
         // indexProximity          = (useFullRobot || useAllProximity)         ? new Proximity(Constants.Proximity.MIDDLE_INDEX_PORT)      : null;
@@ -225,9 +229,27 @@ public class RobotContainer
         }
     }
 
-    public void setAlliance(Optional<Alliance> alliance)
+/**
+ * 
+ * @return returns the current alliance true:blue false:red
+ */
+    public boolean isBlueAlliance()
     {
-        isBlueAlliance = (alliance.get() == Alliance.Blue);
+        for(int i = 0; i < 5; i++)
+        {
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) 
+            {
+                return alliance.get() == DriverStation.Alliance.Blue;
+            }
+            else
+            {
+                DriverStation.reportError("No alliance has been found still waiting", true);
+                Timer.delay(1.0);
+            }
+        }
+        DriverStation.reportError("No alliance is avaliable, assuming Red", true);
+        return false;
     }
 
     public BooleanSupplier isBlueAllianceSupplier()
