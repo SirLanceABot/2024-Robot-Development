@@ -699,10 +699,10 @@ public final class Commands4237
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(17.0).getAsBoolean()))
+                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(14.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 .deadlineWith(
-                    robotContainer.flywheel.shootCommand(() -> 17.0)))
+                    robotContainer.flywheel.shootCommand(() -> 14.0)))
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(

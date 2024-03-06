@@ -148,7 +148,7 @@ public class Index extends Subsystem4237
 
     public void feedNoteToFlywheelAmp()
     {
-        setControlVelocity(17.0);
+        setControlVelocity(8.0);
     }
 
     public void ejectNote()
