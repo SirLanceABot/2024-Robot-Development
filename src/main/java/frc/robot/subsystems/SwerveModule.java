@@ -48,7 +48,7 @@ class SwerveModule extends RobotDriveBase
     private final MotorController4237 turnMotor;
     // private final RelativeEncoder turnMotorEncoder;
 
-    private final PIDController drivePIDController = new PIDController(3.7, 0, 0.09); // volts / (m/s) for P and volts / (m/s^2) for D
+    private final PIDController drivePIDController = new PIDController(3.9, 0, 0.09); // volts / (m/s) for P and volts / (m/s^2) for D
     // private final PIDController turningPIDController = new PIDController(1.0, 0, 0);
 
     private final ProfiledPIDController turningPIDController =
@@ -62,7 +62,7 @@ class SwerveModule extends RobotDriveBase
     //First parameter is static gain (how much voltage it takes to move)
     //Second parameters is veloctiy gain (how much additional speed you get per volt)
     
-    private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(0.165, 2.35, 0.0);
+    private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(0.165, 2.6, 0.0);
     
     // TODO Changing radians to degrees, Changed volts per radian to volts per degree by multiplying by 2 pi and dividing by 360
     private final SimpleMotorFeedforward turnFeedforward = new SimpleMotorFeedforward(0.0035, 0.0052, 0.0);

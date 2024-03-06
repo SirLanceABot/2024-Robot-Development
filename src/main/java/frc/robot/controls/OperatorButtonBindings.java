@@ -257,7 +257,7 @@ public class OperatorButtonBindings
         BooleanSupplier dPadLeft = robotContainer.operatorController.getDpadSupplier(Xbox.Dpad.kLeft);
         Trigger dPadLeftTrigger = new Trigger(dPadLeft);
 
-        dPadLeftTrigger.onTrue(Commands4237.moveAmpAssistCommand());
+        // dPadLeftTrigger.onTrue(Commands4237.moveAmpAssistCommand());
     }
 
     private void configDpadRight()

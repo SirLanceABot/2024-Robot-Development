@@ -218,13 +218,13 @@ public final class Constants
         public static final double MAX_MODULE_TURN_ACCELERATION = 1728.0; // degrees per second per second, this is 4.8 rev/sec^2, used to be 17280 and 48 rev/sec^2
         
 
-        public static final double DRIVE_MOTOR_GEAR_RATIO = 8.14;
+        public static final double DRIVE_MOTOR_GEAR_RATIO = 6.75; // L1: 8.14;
         public static final double WHEEL_RADIUS_METERS = 2.0 * INCHES_TO_METERS;
         public static final double DRIVE_ENCODER_RATE_TO_METERS_PER_SEC = 
             ((10.0 / DRIVE_MOTOR_ENCODER_RESOLUTION) / DRIVE_MOTOR_GEAR_RATIO) * (2.0 * Math.PI * WHEEL_RADIUS_METERS);
         public static final double DRIVE_ENCODER_POSITION_TO_METERS =
             ((1.0 / DRIVE_MOTOR_ENCODER_RESOLUTION) / DRIVE_MOTOR_GEAR_RATIO) * (2.0 * Math.PI * WHEEL_RADIUS_METERS);
-        public static final double MAX_DRIVE_SPEED = 6.0; //4.4; // meters per second
+        public static final double MAX_DRIVE_SPEED = 10.0; //4.4; // meters per second
 
         public static final double X_ACCELERATION_RATE_LIMT = 10.0;
         public static final double X_DECELERATION_RATE_LIMT = 10.0;
@@ -335,10 +335,10 @@ public final class Constants
 
             if(robotName4237.equals("2024 Robot"))
             {
-                frontLeftEncoderOffset  = -0.292236328125; // Berrien Springs 0.269531;
-                frontRightEncoderOffset = -0.19140625; // Berrien Springs -0.142822;
-                backLeftEncoderOffset   = 0.3271484375; // Berrien Springs 0.022461;
-                backRightEncoderOffset  = 0.235595703125;  // Berrien Springs 0.043213;
+                frontLeftEncoderOffset  = -0.29296875; // Berrien Springs 0.269531;
+                frontRightEncoderOffset = -0.19384765625; // Berrien Springs -0.142822;
+                backLeftEncoderOffset   = -0.673583984375; // Berrien Springs 0.022461;
+                backRightEncoderOffset  = -0.75732421875;  // Berrien Springs 0.043213;
             }
             else if(robotName4237.equals("2023 Robot"))
             {
@@ -364,7 +364,6 @@ public final class Constants
         public static final double FRONT_RIGHT_ENCODER_OFFSET = frontRightEncoderOffset;
         public static final double BACK_LEFT_ENCODER_OFFSET   = backLeftEncoderOffset;
         public static final double BACK_RIGHT_ENCODER_OFFSET  = backRightEncoderOffset;
-
 
 
         // private static final Translation2d FRONT_LEFT_LOCATION = new Translation2d(DrivetrainConstants.DRIVETRAIN_WHEELBASE_METERS / 2, DrivetrainConstants.DRIVETRAIN_TRACKWIDTH_METERS / 2);

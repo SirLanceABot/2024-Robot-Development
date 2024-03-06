@@ -113,8 +113,8 @@ public final class Commands4237
                     Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
                 .andThen(
                     robotContainer.intakePositioning.floatingCommand())
-                // .andThen(
-                //     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
+                .andThen(
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
                 .andThen(
                     Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                     .deadlineWith(
@@ -190,8 +190,8 @@ public final class Commands4237
                 Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
             .andThen(
                 robotContainer.intakePositioning.floatingCommand())
-            // .andThen(
-            //     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
+            .andThen(
+                robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
                 .deadlineWith(
@@ -314,7 +314,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     // robotContainer.candle.setGreenCommand()))
                     setCandleCommand(LEDColor.kGreen)))
                 // robotContainer.flywheel.stopCommand()
@@ -553,7 +553,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand(),
                     // robotContainer.candle.setRedCommand()))
                     setCandleCommand(LEDColor.kRed)))
@@ -606,7 +606,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
-                    // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                     robotContainer.index.stopCommand(),
                     // robotContainer.candle.setRedCommand()))
                     setCandleCommand(LEDColor.kRed)))
@@ -708,10 +708,9 @@ public final class Commands4237
                 .deadlineWith(
                     robotContainer.index.feedNoteToFlywheelAmpCommand()))
             .andThen(
-                Commands.parallel(
-                    robotContainer.flywheel.stopCommand(),
+                    // robotContainer.flywheel.stopCommand(),
                     // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
-                    robotContainer.index.stopCommand()))
+                    robotContainer.index.stopCommand())
                     // setCandleCommand(LEDColor.kRed)))
             .withName("Shoot to amp Command");
         }
@@ -735,9 +734,10 @@ public final class Commands4237
                 Commands.waitUntil(() -> robotContainer.pivot.isAtAngle(robotContainer.pivot.classConstants.DEFAULT_ANGLE).getAsBoolean())
                                         .withTimeout(1.0)
                 .deadlineWith(
-                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    Commands.parallel(
+                        robotContainer.flywheel.stopCommand(),
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)),
                     setCandleCommand(LEDColor.kRed)))
-
             .withName("Extend AmpAssist to Shoot Command");
         }
         else
