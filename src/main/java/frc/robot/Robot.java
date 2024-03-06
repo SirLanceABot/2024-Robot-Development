@@ -181,12 +181,12 @@ public class Robot extends TimedRobot
         //     .withName("Follow Path Command")
         //     .schedule();
          
-        // new PathPlannerAuto("3 Piece Auto").schedule();
+        new PathPlannerAuto("Source 3 Piece").schedule();
 
-        if(autonomousCommand != null)
-        {
-            autonomousCommand.schedule();
-        }
+        // if(autonomousCommand != null)
+        // {
+        //     autonomousCommand.schedule();
+        // }
     }
 
     /**
@@ -203,8 +203,10 @@ public class Robot extends TimedRobot
     public void autonomousExit()
     {
         robotContainer.stopRobot();
-        robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
-
+        if(robotContainer.pivot != null)
+        {
+            robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
+        }
     }
 
     /**
@@ -225,6 +227,12 @@ public class Robot extends TimedRobot
             autonomousCommand = null;
             autonomousTabData = null;
         }
+
+        // if(robotContainer.pivot != null)
+        // {
+        //     robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
+        // }
+        
     }
 
     /**

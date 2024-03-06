@@ -61,6 +61,9 @@ public class DriverButtonBindings
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
+    private final double CRAWL_SPEED = 0.3;
+    private final double WALK_SPEED = 0.65;
+    private final double RUN_SPEED = 1.0;
 
     private double scaleFactor = 0.5;
     private DoubleSupplier leftYAxis;
@@ -158,7 +161,12 @@ public class DriverButtonBindings
         BooleanSupplier leftBumper = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftBumper);
         Trigger leftBumperTrigger = new Trigger(leftBumper);
 
-        leftBumperTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+        if(robotContainer.drivetrain != null)
+        {
+            leftBumperTrigger.onTrue(Commands.runOnce(() -> scaleFactor = (scaleFactor > (CRAWL_SPEED + WALK_SPEED) / 2.0) ? CRAWL_SPEED : RUN_SPEED));
+        }
+
+        
     }
 
     private void configRightBumper()
@@ -180,8 +188,7 @@ public class DriverButtonBindings
         BooleanSupplier backButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
-        if(true)
-        {}
+        backButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configStartButton()
@@ -227,7 +234,7 @@ public class DriverButtonBindings
         BooleanSupplier leftTrigger = robotContainer.driverController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        leftTriggerTrigger.onTrue(Commands.runOnce(() -> scaleFactor = scaleFactor < 1.0 ? 1.0 : 0.65));
+        leftTriggerTrigger.onTrue(Commands.runOnce(() -> scaleFactor = (scaleFactor > (WALK_SPEED + RUN_SPEED) / 2.0) ? WALK_SPEED : RUN_SPEED));
     }
 
     private void configRightTrigger()

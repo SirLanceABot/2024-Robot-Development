@@ -83,7 +83,7 @@ public class Pivot extends Subsystem4237
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
-        public final double SHOOT_TO_AMP_ANGLE = 59.5;
+        public final double SHOOT_TO_AMP_ANGLE = 62.0;
         public final double ANGLE_TOLERANCE = 0.3;
 
         //for manually moving Pivot

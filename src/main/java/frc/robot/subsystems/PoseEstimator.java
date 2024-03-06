@@ -212,8 +212,8 @@ public class PoseEstimator extends Subsystem4237
 
     public boolean isPoseCloseToPrevious(Pose2d pose)
     {
-        // if pose is close to the current pose (within 6 meters)
-        if(pose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 6.0)
+        // if pose is close to the current pose (within 3 meters)
+        if(pose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 3.0)
         {
             return true;
         }
@@ -270,6 +270,14 @@ public class PoseEstimator extends Subsystem4237
                 if(camera.isTargetFound() && camera.getAverageDistanceFromTarget() < MAX_TARGET_DISTANCE)
                 {
                     Pose2d visionPose = camera.getBotPoseBlue().toPose2d();
+
+                    if(DriverStation.isDisabled())
+                    {
+                        poseEstimator.addVisionMeasurement(
+                                camera.getBotPoseBlue().toPose2d(), 
+                                Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
+                                visionStdDevs.times(camera.getAverageDistanceFromTarget()));
+                    }
 
                     if(isPoseValid(visionPose))
                     {

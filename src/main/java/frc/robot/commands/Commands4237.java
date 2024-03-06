@@ -543,7 +543,7 @@ public final class Commands4237
                 //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 65.0),
-                    robotContainer.pivot.setAngleCommand(() -> 64.5)))
+                    robotContainer.pivot.setAngleCommand(() -> 63.5)))
             // .andThen(
             //     Commands.print("Hello Woodard"))      
             .andThen(
@@ -695,6 +695,7 @@ public final class Commands4237
     {
         if(robotContainer.pivot != null && robotContainer.flywheel != null && robotContainer.index != null)
         {
+            // 14 ft per sec
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(

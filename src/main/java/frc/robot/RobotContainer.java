@@ -141,6 +141,7 @@ public class RobotContainer
     RobotContainer()
     {
         isBlueAlliance = isBlueAlliance();
+        DriverStation.reportWarning("Is Blue Alliance: " + isBlueAlliance, false);
 
         // Create the needed subsystems
         fullRobot               = (useFullRobot);

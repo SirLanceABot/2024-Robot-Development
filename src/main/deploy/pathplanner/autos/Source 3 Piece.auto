@@ -37,22 +37,15 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Finish Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "N8 to Source Shoot"
-                }
-              }
-            ]
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N8 to Source Shoot"
           }
         },
         {
@@ -68,22 +61,15 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Autonomous Finish Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "N7 to Source Shoot"
-                }
-              }
-            ]
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N7 to Source Shoot"
           }
         },
         {
