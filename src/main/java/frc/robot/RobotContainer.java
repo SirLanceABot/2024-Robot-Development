@@ -130,7 +130,7 @@ public class RobotContainer
     private CommandSchedulerLog schedulerLog = null;
     private final SendableChooser<Command> autoChooser;
 
-    public boolean isBlueAlliance;
+    // public boolean isBlueAlliance;
 
 
 
@@ -140,14 +140,14 @@ public class RobotContainer
      */
     RobotContainer()
     {
-        isBlueAlliance = isBlueAlliance();
-        DriverStation.reportWarning("Is Blue Alliance: " + isBlueAlliance, false);
+        // isBlueAlliance = isBlueAlliance();
+        // DriverStation.reportWarning("Is Blue Alliance: " + isBlueAlliance, false);
 
         // Create the needed subsystems
         fullRobot               = (useFullRobot);
 
         gyro                    = (useFullRobot || useGyro)                 ? new Gyro4237()                                                                       : null;	
-        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator, isBlueAlliance)     : null;
+        drivetrain              = (useFullRobot || useDrivetrain)           ? new Drivetrain(gyro, cameraArray, useFullRobot, usePoseEstimator, isRedAllianceSupplier())     : null;
 
         ampAssist               = (useFullRobot || useAmpAssist)            ? new AmpAssist()                                                                      : null;
         candle                  = (useFullRobot || useCandle)               ? new Candle4237()                                                                     : null;
@@ -241,53 +241,49 @@ public class RobotContainer
 
 /**
  * 
- * @return returns the current alliance true:blue false:red
+ * @return returns the current alliance true:red false:blue
  */
-    public boolean isBlueAlliance()
+    public BooleanSupplier isRedAllianceSupplier()
     {
-        for(int i = 0; i < 5; i++)
+        return () ->
         {
             var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) 
+            if (alliance.isPresent())
             {
-                return alliance.get() == DriverStation.Alliance.Blue;
+            return alliance.get() == DriverStation.Alliance.Red;
             }
-            else
-            {
-                DriverStation.reportError("No alliance has been found still waiting", true);
-                Timer.delay(1.0);
-            }
-        }
-        DriverStation.reportError("No alliance is avaliable, assuming Red", true);
-        return false;
+            DriverStation.reportError("No alliance is avaliable, assuming Blue", false);
+            return false;
+        };
+
+
+        // for(int i = 0; i < 5; i++)
+        // {
+        //     var alliance = DriverStation.getAlliance();
+        //     if (alliance.isPresent()) 
+        //     {
+        //         return alliance.get() == DriverStation.Alliance.Blue;
+        //     }
+        //     else
+        //     {
+        //         DriverStation.reportError("No alliance has been found still waiting", true);
+        //         Timer.delay(1.0);
+        //     }
+        // }
+        // DriverStation.reportError("No alliance is avaliable, assuming Red", true);
+        // return false;
     }
 
-    public BooleanSupplier isBlueAllianceSupplier()
-    {
-        return () -> isBlueAlliance;
-    }
+    // public BooleanSupplier isBlueAllianceSupplier()
+    // {
+    //     return () -> isBlueAlliance;
+    // }
 
     public void resetRobot(AutonomousTabData.StartingSide startingLocation)
     {
         if(gyro != null)
         {
-            if(isBlueAlliance)
-            {
-                switch(startingLocation)
-                {
-                    case kAmp:
-                        gyro.setYaw(gyro.BLUE_AMP_STARTING_YAW);
-                        break;
-                    case kSub:
-                        gyro.setYaw(gyro.BLUE_SUB_STARTING_YAW);
-                        break;
-                    case kSource:
-                        gyro.setYaw(gyro.BLUE_SOURCE_STARTING_YAW);
-                        break;
-                }
-
-            }
-            else
+            if(isRedAllianceSupplier().getAsBoolean())
             {
                 switch(startingLocation)
                 {
@@ -299,6 +295,22 @@ public class RobotContainer
                         break;
                     case kSource:
                         gyro.setYaw(gyro.RED_SOURCE_STARTING_YAW);
+                        break;
+                }
+
+            }
+            else
+            {
+                switch(startingLocation)
+                {
+                    case kAmp:
+                        gyro.setYaw(gyro.BLUE_AMP_STARTING_YAW);
+                        break;
+                    case kSub:
+                        gyro.setYaw(gyro.BLUE_SUB_STARTING_YAW);
+                        break;
+                    case kSource:
+                        gyro.setYaw(gyro.BLUE_SOURCE_STARTING_YAW);
                         break;
                 }
             }

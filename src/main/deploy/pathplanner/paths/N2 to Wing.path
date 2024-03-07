@@ -3,59 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.79,
-        "y": 4.43
+        "x": 2.65,
+        "y": 5.55
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.867710484032866,
-        "y": 1.5404863833901412
+        "x": 4.459222365092511,
+        "y": 5.166739700807069
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.146073557491779,
-        "y": 0.79
+        "x": 6.331950441678662,
+        "y": 4.118900460023142
       },
       "prevControl": {
-        "x": 5.146073557491779,
-        "y": 0.79
-      },
-      "nextControl": {
-        "x": 7.146073557491775,
-        "y": 0.79
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.08,
-        "y": 0.79
-      },
-      "prevControl": {
-        "x": 6.950451672385877,
-        "y": 0.7778028020645268
+        "x": 5.449477364173488,
+        "y": 4.143288483438336
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake Marker",
-      "waypointRelativePos": 1.0,
+      "name": "Pivot Marker",
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "sequential",
         "data": {
@@ -63,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake From Floor Front"
+                "name": "Pivot To Default Angle"
               }
             }
           ]
@@ -72,8 +50,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 1080.0,
     "maxAngularAcceleration": 1728.0
   },
@@ -85,8 +63,8 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": -60.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

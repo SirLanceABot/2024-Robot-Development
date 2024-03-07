@@ -3,40 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.65,
-        "y": 5.55
+        "x": 6.331950441678662,
+        "y": 4.1046482092964185
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.459222365092511,
-        "y": 5.166739700807069
+        "x": 7.331950441678662,
+        "y": 4.1046482092964185
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.825884210786364,
-        "y": 4.119307667186764
+        "x": 8.284508791239805,
+        "y": 4.1046482092964185
       },
       "prevControl": {
-        "x": 4.94341113328119,
-        "y": 4.143695690601957
-      },
-      "nextControl": {
-        "x": 6.5910630818702565,
-        "y": 4.098161186120665
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.96240792481585,
-        "y": 4.119307667186764
-      },
-      "prevControl": {
-        "x": 7.091022605085816,
+        "x": 7.284508791239805,
         "y": 4.1046482092964185
       },
       "nextControl": null,
@@ -49,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 1.45,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -63,28 +47,11 @@
           ]
         }
       }
-    },
-    {
-      "name": "Pivot Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Pivot To Default Angle"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 1080.0,
     "maxAngularAcceleration": 1728.0
   },
@@ -99,5 +66,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -61,7 +61,7 @@ public class DriverButtonBindings
     // *** CLASS & INSTANCE VARIABLES ***
     // Put all class and instance variables here.
     private final RobotContainer robotContainer;
-    private final double CRAWL_SPEED = 0.3;
+    private final double CRAWL_SPEED = 0.4;
     private final double WALK_SPEED = 0.65;
     private final double RUN_SPEED = 1.0;
 
@@ -269,7 +269,7 @@ public class DriverButtonBindings
         // Default Commands
         if(robotContainer.drivetrain != null)
         {
-            robotContainer.drivetrain.setDefaultCommand(robotContainer.drivetrain.driveCommand(leftYAxis, leftXAxis, rightXAxis, scaleFactorSupplier, robotContainer.isBlueAllianceSupplier()));
+            robotContainer.drivetrain.setDefaultCommand(robotContainer.drivetrain.driveCommand(leftYAxis, leftXAxis, rightXAxis, scaleFactorSupplier));
             // robotContainer.drivetrain.setDefaultCommand(new SwerveDrive(robotContainer.drivetrain, leftYAxis, leftXAxis, rightXAxis, true));
         }
     }

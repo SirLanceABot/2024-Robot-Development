@@ -8,29 +8,53 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9367550727547158,
-        "y": 7.0253998109507085
+        "x": 2.8116445121779137,
+        "y": 7.368413625716141
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.083213108824707,
-        "y": 7.439303112789418
+        "x": 8.284508791239805,
+        "y": 7.453927130076483
       },
       "prevControl": {
-        "x": 6.083213108824707,
-        "y": 7.439303112789418
+        "x": 5.43405864589507,
+        "y": 7.411170377896312
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Marker",
+      "waypointRelativePos": 0.75,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake From Floor Front"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 1.5,

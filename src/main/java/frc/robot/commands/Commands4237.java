@@ -376,13 +376,13 @@ public final class Commands4237
             Commands.either(
                 robotContainer.pivot.setAngleCommand(() -> (
                     robotContainer.pivot.calculateAngleFromDistance(() -> (
-                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
+                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
 
                 robotContainer.pivot.setAngleCommand(() -> (
                     robotContainer.pivot.calculateAngleFromDistance(() -> (
-                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
+                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
 
-                robotContainer.isBlueAllianceSupplier());
+                robotContainer.isRedAllianceSupplier());
         }
         else
         {
@@ -436,13 +436,13 @@ public final class Commands4237
             Commands.either(
                 robotContainer.flywheel.shootCommand( () -> (
                     robotContainer.flywheel.calculateSpeedFromDistance(() -> (
-                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
+                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
 
                 robotContainer.flywheel.shootCommand( () -> (
                     robotContainer.flywheel.calculateSpeedFromDistance(() -> (
-                        robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
+                        robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
 
-                robotContainer.isBlueAllianceSupplier());
+                robotContainer.isRedAllianceSupplier());
 
         }
         else
@@ -476,19 +476,19 @@ public final class Commands4237
             // }
             return
             Commands.either(
-                robotContainer.drivetrain.rotateToBlueSpeakerCommand()
-                .until(
-                    robotContainer.drivetrain.isAlignedWithBlueSpeaker())
-                .withTimeout(2.0)
-                .withName("Rotate to Blue Speaker"),
-
                 robotContainer.drivetrain.rotateToRedSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithRedSpeaker())
                 .withTimeout(2.0)
                 .withName("Rotate to Red Speaker"),
 
-                robotContainer.isBlueAllianceSupplier());
+                robotContainer.drivetrain.rotateToBlueSpeakerCommand()
+                .until(
+                    robotContainer.drivetrain.isAlignedWithBlueSpeaker())
+                .withTimeout(2.0)
+                .withName("Rotate to Blue Speaker"),
+
+                robotContainer.isRedAllianceSupplier());
         }
         else
         {
@@ -801,7 +801,9 @@ public final class Commands4237
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                 //     robotContainer.index.stopCommand()))
                 
-                Commands.none(),
+                Commands.waitSeconds(0.1),
+                // Commands.none()
+                // .andThen(robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, () -> 0.0, () -> 1)),
 
                 robotContainer.indexWheelsProximity.isDetectedSupplier()
             )
@@ -822,10 +824,12 @@ public final class Commands4237
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
+                                            robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 .deadlineWith(
-                    robotContainer.flywheel.shootCommand(() -> 65.0)))    
+                    robotContainer.flywheel.shootCommand(() -> 65.0),
+                    robotContainer.pivot.setAngleCommand(() -> 64.0)))    
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(
@@ -887,9 +891,9 @@ public final class Commands4237
         {
             return
             Commands.either(
-                robotContainer.gyro.setYawBlueCommand(),
-                robotContainer.gyro.setYawRedCommand(), 
-                robotContainer.isBlueAllianceSupplier());
+                robotContainer.gyro.setYawRedCommand(),
+                robotContainer.gyro.setYawBlueCommand(), 
+                robotContainer.isRedAllianceSupplier());
         }
         else
         {

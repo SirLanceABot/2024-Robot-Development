@@ -335,9 +335,9 @@ public final class Constants
 
             if(robotName4237.equals("2024 Robot"))
             {
-                frontLeftEncoderOffset  = -0.29296875; // Berrien Springs 0.269531;
-                frontRightEncoderOffset = -0.19384765625; // Berrien Springs -0.142822;
-                backLeftEncoderOffset   = -0.673583984375; // Berrien Springs 0.022461;
+                frontLeftEncoderOffset  = -0.292724609375; // Berrien Springs 0.269531;
+                frontRightEncoderOffset = -0.194580078125; // Berrien Springs -0.142822;
+                backLeftEncoderOffset   = -0.675048828125; // Berrien Springs 0.022461;
                 backRightEncoderOffset  = -0.75732421875;  // Berrien Springs 0.043213;
             }
             else if(robotName4237.equals("2023 Robot"))

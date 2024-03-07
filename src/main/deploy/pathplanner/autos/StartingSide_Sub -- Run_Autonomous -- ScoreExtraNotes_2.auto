@@ -69,7 +69,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "N2 to Center Line"
+            "pathName": "N2 to Wing"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Wing to N6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
           }
         }
       ]

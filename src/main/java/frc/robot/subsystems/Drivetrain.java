@@ -108,7 +108,7 @@ public class Drivetrain extends Subsystem4237
 
     // *** CLASS & INSTANCE VARIABLES ***
     private final Gyro4237 gyro; //Pigeon2
-    private boolean isBlueAlliance;
+    private BooleanSupplier isRedAllianceSupplier;
     private boolean useDataLog = true;
     private final DataLog log;
     private final SwerveDriveKinematics kinematics;
@@ -161,7 +161,7 @@ public class Drivetrain extends Subsystem4237
     private PeriodicData periodicData = new PeriodicData();;
     
     // *** CLASS CONSTRUCTOR ***
-    public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean useFullRobot, boolean usePoseEstimator, boolean isBlueAlliance)//, DriverController driverController)
+    public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean useFullRobot, boolean usePoseEstimator, BooleanSupplier isRedAllianceSupplier)//, DriverController driverController)
     {
         super("Drivetrain");
         System.out.println("  Constructor Started:  " + fullClassName);
@@ -172,7 +172,7 @@ public class Drivetrain extends Subsystem4237
         
         this.gyro = gyro;
 
-        this.isBlueAlliance = isBlueAlliance;
+        this.isRedAllianceSupplier = isRedAllianceSupplier;
 
         log = DataLogManager.getLog();
 
@@ -260,8 +260,8 @@ public class Drivetrain extends Subsystem4237
     public void configureAutoBuilder()
     {
         AutoBuilder.configureHolonomic(
-                poseEstimator::getEstimatedPose, // Robot pose supplier
-                // this::getPose,
+                // poseEstimator::getEstimatedPose, // Robot pose supplier
+                this::getPose,
                 this::resetOdometryPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
@@ -272,7 +272,7 @@ public class Drivetrain extends Subsystem4237
                         0.417, // Drive base radius in meters. Distance from robot center to furthest module.
                         new ReplanningConfig() // Default path replanning config. See the API for the options here
                 ),
-                () -> !isBlueAlliance,
+                    isRedAllianceSupplier,
                     // Boolean supplier that controls when the path will be mirrored for the red alliance
                     // This will flip the path being followed to the red side of the field.
                     // THE ORIGIN WILL REMAIN ON THE BLUE SIDE 
@@ -644,7 +644,7 @@ public class Drivetrain extends Subsystem4237
                        .withName("rotateToRedSpeakerCommand");
     }
 
-    public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale, BooleanSupplier isBlueAllianceSupplier)
+    public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale)
     {
         return
         this.runOnce(
