@@ -69,13 +69,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "N2 to Wing"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Wing to N6"
+            "pathName": "N2 to N6"
           }
         },
         {

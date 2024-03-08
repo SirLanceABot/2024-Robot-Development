@@ -59,6 +59,12 @@
           "data": {
             "pathName": "kSource to Center Line"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
         }
       ]
     }
