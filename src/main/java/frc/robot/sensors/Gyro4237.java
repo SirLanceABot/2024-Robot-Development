@@ -8,6 +8,8 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.Pigeon2FeaturesConfigs;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +59,8 @@ public class Gyro4237 extends Sensor4237
     private final Pigeon2 gyro = new Pigeon2(Constants.Gyro.PIGEON_PORT, Constants.Gyro.PIGEON_CAN_BUS);
     private ResetState resetState = ResetState.kDone;
     private Timer timer = new Timer();
+
+    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
 
     private final PeriodicData periodicData = new PeriodicData();
 
@@ -205,6 +209,8 @@ public class Gyro4237 extends Sensor4237
             case kDone:
                 break;
         }
+
+        ASTable.getEntry("gyro yaw").setDouble(periodicData.yaw);
     }
 
     @Override

@@ -83,9 +83,10 @@ public class Drivetrain extends Subsystem4237
         
         // OUTPUTS
         private ChassisSpeeds chassisSpeeds;
-        private SwerveModuleState[] swerveModuleStates;
+        private SwerveModuleState[] inputSwerveModuleStates;
         private SwerveModuleState[] targetStatesPP;
         private SwerveDriveOdometry odometry;
+        private SwerveModuleState[] outputModuleStates;
     }
 
     private enum DriveMode
@@ -509,7 +510,8 @@ public class Drivetrain extends Subsystem4237
                 frontLeft.getPosition(),
                 frontRight.getPosition(),
                 backLeft.getPosition(),
-                backRight.getPosition()
+                backRight.getPosition(),
+
             };
     }
 
@@ -564,8 +566,8 @@ public class Drivetrain extends Subsystem4237
         driveMode = DriveMode.kDrive;
         periodicData.fieldRelative = false;
         // periodicData.chassisSpeeds = chassisSpeeds;
-        periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+        periodicData.inputSwerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.inputSwerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
         // System.out.println(periodicData.swerveModuleStates);
     }
 
@@ -688,6 +690,12 @@ public class Drivetrain extends Subsystem4237
             periodicData.backLeftPosition = backLeft.getPosition();
             periodicData.backRightPosition = backRight.getPosition();
         // }
+
+        periodicData.outputModuleStates[0] = frontLeft.getState();
+        periodicData.outputModuleStates[1] = frontRight.getState();
+        periodicData.outputModuleStates[2] = backLeft.getState();
+        periodicData.outputModuleStates[3] = backRight.getState();
+ 
     }
 
     @Override
@@ -706,30 +714,30 @@ public class Drivetrain extends Subsystem4237
 
                 // System.out.println(periodicData.chassisSpeeds);
 
-                periodicData.swerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
+                periodicData.inputSwerveModuleStates = kinematics.toSwerveModuleStates(periodicData.chassisSpeeds);
 
                 // System.out.println(periodicData.swerveModuleStates[0] + "   "
                 // + periodicData.swerveModuleStates[1] + "   "
                 // + periodicData.swerveModuleStates[2] + "   "
                 // + periodicData.swerveModuleStates[3]);
 
-                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.inputSwerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
                 break;
 
             case kLockwheels:
 
-                periodicData.swerveModuleStates = new SwerveModuleState[4];
+                periodicData.inputSwerveModuleStates = new SwerveModuleState[4];
             
                 
-                periodicData.swerveModuleStates[0] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
-                periodicData.swerveModuleStates[1] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
-                periodicData.swerveModuleStates[2] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
-                periodicData.swerveModuleStates[3] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
+                periodicData.inputSwerveModuleStates[0] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
+                periodicData.inputSwerveModuleStates[1] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
+                periodicData.inputSwerveModuleStates[2] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(135));
+                periodicData.inputSwerveModuleStates[3] = new SwerveModuleState(0.0, Rotation2d.fromDegrees(45));
                 //System.out.println("drivetrain.Lockwheels");
                 break;
 
             case kArcadeDrive:
-                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.swerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
+                SwerveDriveKinematics.desaturateWheelSpeeds(periodicData.inputSwerveModuleStates, Constants.DrivetrainConstants.MAX_DRIVE_SPEED);
                 break;
 
             case kStop:
@@ -811,10 +819,10 @@ public class Drivetrain extends Subsystem4237
             // + periodicData.swerveModuleStates[1] + "   "
             // + periodicData.swerveModuleStates[2] + "   "
             // + periodicData.swerveModuleStates[3]);
-            frontLeft.setDesiredState(periodicData.swerveModuleStates[0]);
-            frontRight.setDesiredState(periodicData.swerveModuleStates[1]);
-            backLeft.setDesiredState(periodicData.swerveModuleStates[2]);
-            backRight.setDesiredState(periodicData.swerveModuleStates[3]);
+            frontLeft.setDesiredState(periodicData.inputSwerveModuleStates[0]);
+            frontRight.setDesiredState(periodicData.inputSwerveModuleStates[1]);
+            backLeft.setDesiredState(periodicData.inputSwerveModuleStates[2]);
+            backRight.setDesiredState(periodicData.inputSwerveModuleStates[3]);
             // frontLeft.setDesiredState(periodicData.targetStatesPP[0]);
             // frontRight.setDesiredState(periodicData.targetStatesPP[1]);
             // backLeft.setDesiredState(periodicData.targetStatesPP[2]);
@@ -831,12 +839,22 @@ public class Drivetrain extends Subsystem4237
             periodicData.odometry.getPoseMeters().getX(), periodicData.odometry.getPoseMeters().getY(), periodicData.odometry.getPoseMeters().getRotation().getDegrees()
         };
         ASTable.getEntry("drivetrain odometry").setDoubleArray(pose);
-        double[] moduleStates = {
-        periodicData.swerveModuleStates[0].angle.getDegrees(), periodicData.swerveModuleStates[0].speedMetersPerSecond,
-        periodicData.swerveModuleStates[1].angle.getDegrees(), periodicData.swerveModuleStates[1].speedMetersPerSecond,
-        periodicData.swerveModuleStates[2].angle.getDegrees(), periodicData.swerveModuleStates[2].speedMetersPerSecond,
-        periodicData.swerveModuleStates[3].angle.getDegrees(), periodicData.swerveModuleStates[3].speedMetersPerSecond};
-        ASTable.getEntry("drivetrain swerve module states").setDoubleArray(moduleStates);
+
+
+        double[] inputModuleStates = {
+        periodicData.inputSwerveModuleStates[0].angle.getDegrees(), periodicData.inputSwerveModuleStates[0].speedMetersPerSecond,
+        periodicData.inputSwerveModuleStates[1].angle.getDegrees(), periodicData.inputSwerveModuleStates[1].speedMetersPerSecond,
+        periodicData.inputSwerveModuleStates[2].angle.getDegrees(), periodicData.inputSwerveModuleStates[2].speedMetersPerSecond,
+        periodicData.inputSwerveModuleStates[3].angle.getDegrees(), periodicData.inputSwerveModuleStates[3].speedMetersPerSecond};
+        ASTable.getEntry("input module states").setDoubleArray(inputModuleStates);
+
+
+        double[] outputModuleStates = {
+        periodicData.outputModuleStates[0].angle.getDegrees(), periodicData.outputModuleStates[0].speedMetersPerSecond,
+        periodicData.outputModuleStates[1].angle.getDegrees(), periodicData.outputModuleStates[1].speedMetersPerSecond,
+        periodicData.outputModuleStates[2].angle.getDegrees(), periodicData.outputModuleStates[2].speedMetersPerSecond,
+        periodicData.outputModuleStates[3].angle.getDegrees(), periodicData.outputModuleStates[3].speedMetersPerSecond};
+        ASTable.getEntry("output module states").setDoubleArray(outputModuleStates);
     }
 
     public void feedWatchdog() 
@@ -918,15 +936,15 @@ public class Drivetrain extends Subsystem4237
 
         WheelSpeeds speeds = DifferentialDrive.arcadeDriveIK(xSpeed, rotation, false);
 
-        periodicData.swerveModuleStates = new SwerveModuleState[4];
+        periodicData.inputSwerveModuleStates = new SwerveModuleState[4];
         // double m_maxOutput = 2.;
         double maxOutput = Math.abs(xSpeed);
         
         //  assuming fl, fr, bl, br
-        periodicData.swerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicData.swerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicData.swerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
-        periodicData.swerveModuleStates[3] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.inputSwerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.inputSwerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.inputSwerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(moduleAngle));
+        periodicData.inputSwerveModuleStates[3] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(moduleAngle));
         // periodicIO.swerveModuleStates[0] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(0));
         // periodicIO.swerveModuleStates[1] = new SwerveModuleState(speeds.right * maxOutput, Rotation2d.fromDegrees(0));
         // periodicIO.swerveModuleStates[2] = new SwerveModuleState(speeds.left * maxOutput, Rotation2d.fromDegrees(0));
