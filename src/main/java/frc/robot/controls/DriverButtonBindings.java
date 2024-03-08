@@ -121,6 +121,8 @@ public class DriverButtonBindings
         BooleanSupplier bButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
+        bButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+
         // Picking up from the front
         // if(bButton.getAsBoolean())
         // {
@@ -188,7 +190,7 @@ public class DriverButtonBindings
         BooleanSupplier backButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kBack);
         Trigger backButtonTrigger = new Trigger(backButton);
 
-        backButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+        // backButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
     }
 
     private void configStartButton()

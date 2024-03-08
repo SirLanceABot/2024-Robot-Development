@@ -53,6 +53,12 @@
           "data": {
             "pathName": "N2 to N6"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
         }
       ]
     }
