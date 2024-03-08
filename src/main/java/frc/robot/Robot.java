@@ -203,10 +203,10 @@ public class Robot extends TimedRobot
     public void autonomousExit()
     {
         robotContainer.stopRobot();
-        if(robotContainer.pivot != null)
-        {
-            robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
-        }
+        // if(robotContainer.pivot != null)
+        // {
+        //     robotContainer.pivot.setDefaultCommand(robotContainer.pivot.setAngleCommand(() -> 32.0));
+        // }
     }
 
     /**
@@ -265,6 +265,7 @@ public class Robot extends TimedRobot
 
         // Log all sticky faults.
         MotorController4237.logAllStickyFaults();
+        DataLogManager.stop();
     }
 
     /**
