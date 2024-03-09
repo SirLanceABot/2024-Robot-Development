@@ -479,13 +479,13 @@ public final class Commands4237
                 robotContainer.drivetrain.rotateToRedSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithRedSpeaker())
-                .withTimeout(1.5)
+                .withTimeout(1.0)
                 .withName("Rotate to Red Speaker"),
 
                 robotContainer.drivetrain.rotateToBlueSpeakerCommand()
                 .until(
                     robotContainer.drivetrain.isAlignedWithBlueSpeaker())
-                .withTimeout(1.5)
+                .withTimeout(1.0)
                 .withName("Rotate to Blue Speaker"),
 
                 robotContainer.isRedAllianceSupplier());

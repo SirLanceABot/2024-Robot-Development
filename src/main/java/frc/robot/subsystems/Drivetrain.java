@@ -123,7 +123,7 @@ public class Drivetrain extends Subsystem4237
     private PIDController pidController = new PIDController(kP, kI, kD);
     private double targetYaw;
     private boolean isAligned = false;
-    private final double ALIGNMENT_TOLERANCE = 0.1;
+    private final double ALIGNMENT_TOLERANCE = 0.5;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
