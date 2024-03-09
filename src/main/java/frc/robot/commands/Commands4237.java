@@ -317,7 +317,9 @@ public final class Commands4237
             .andThen(
                 Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier()))
             .andThen(
-                Commands.waitSeconds(1.0))
+                Commands.parallel(
+                    Commands.waitSeconds(1.0),
+                    setCandleCommand(LEDColor.kWhite)))
             .andThen(
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),

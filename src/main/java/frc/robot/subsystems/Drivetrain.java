@@ -12,6 +12,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -176,6 +177,7 @@ public class Drivetrain extends Subsystem4237
         this.isRedAllianceSupplier = isRedAllianceSupplier;
 
         log = DataLogManager.getLog();
+        pidController.enableContinuousInput(-180, 180);
 
         if(useDataLog)
         {
@@ -489,7 +491,7 @@ public class Drivetrain extends Subsystem4237
     {
         targetYaw = getAngleToBlueSpeaker();
         System.out.println("targetYaw = " + targetYaw);
-        double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
+        double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
         // System.out.println(rotationSpeed);
         // if(rotationSpeed > 2)
         // {
@@ -501,7 +503,7 @@ public class Drivetrain extends Subsystem4237
     public void rotateToRedSpeaker()
     {
         targetYaw = getAngleToRedSpeaker();
-        double rotationSpeed = pidController.calculate(gyro.getYaw(), targetYaw);
+        double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
         drive(0.0, 0.0, rotationSpeed, false);
     }
 

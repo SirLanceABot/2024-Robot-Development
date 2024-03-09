@@ -167,7 +167,7 @@ public class PoseEstimator extends Subsystem4237
      * @return Angle nessecary for shooter to face the center of the red speaker (degrees)
      */
     public double getAngleToRedSpeaker()
-    {
+    {   
         double xPose = periodicData.estimatedPose.getX();
         double yPose = periodicData.estimatedPose.getY();
         double deltaX = Math.abs(redSpeakerCoords[0] - xPose);
