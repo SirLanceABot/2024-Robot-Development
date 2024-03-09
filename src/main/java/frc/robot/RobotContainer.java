@@ -352,6 +352,11 @@ public class RobotContainer
         {
             NamedCommands.registerCommand("Pivot To Default Angle", pivot.setAngleCommand(() -> pivot.classConstants.DEFAULT_ANGLE));
         }
+
+        if(ampAssist != null)
+        {
+            NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
+        }
     }
 }
 

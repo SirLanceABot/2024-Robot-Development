@@ -3,9 +3,16 @@ package frc.robot.commands;
 import java.lang.invoke.MethodHandles;
 import java.util.function.DoubleSupplier;
 import javax.lang.model.util.ElementScanner14;
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
@@ -762,7 +769,24 @@ public final class Commands4237
         {
             return Commands.none();
         }
-        
+    }
+
+    public static Command driveToAmpCommand()
+    {
+        PathPlannerPath pathToAmp = PathPlannerPath.fromPathFile("to Amp");
+        PathConstraints constraints = new PathConstraints(
+            2.0, 1.5,
+            Units.degreesToRadians(1080), Units.degreesToRadians(1728));
+
+        if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.ampAssist != null)
+        {
+            return
+            AutoBuilder.pathfindThenFollowPath(pathToAmp, constraints);
+        }
+        else
+        {
+            return Commands.none();
+        }
     }
 
     public static Command autonomousShootCommand()
