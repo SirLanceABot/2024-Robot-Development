@@ -348,6 +348,13 @@ class SwerveModule extends RobotDriveBase
         driveMotor.setupOpenLoopRampRate(seconds);
     }
 
+    public void resetSwerveConfig()
+    {
+        driveMotor.setupInverted(driveMotorInverted); 
+        driveMotor.setupPositionConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_POSITION_TO_METERS);
+        driveMotor.setupVelocityConversionFactor(Constants.DrivetrainConstants.DRIVE_ENCODER_RATE_TO_METERS_PER_SEC);
+    }
+
     /**
      * Returns the current state of the module.
      *

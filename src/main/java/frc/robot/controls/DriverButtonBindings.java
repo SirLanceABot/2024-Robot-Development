@@ -98,6 +98,7 @@ public class DriverButtonBindings
             configLeftStick();
             configRightStick();
             configDpadUp();
+            configDpadDown();
             configRumble();
             configDefaultCommands();
         }
@@ -191,6 +192,10 @@ public class DriverButtonBindings
         Trigger backButtonTrigger = new Trigger(backButton);
 
         // backButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+        if(robotContainer.drivetrain != null)
+        {
+            backButtonTrigger.onTrue(robotContainer.drivetrain.resetSwerveConfigCommand()).debounce(0.25);
+        }
     }
 
     private void configStartButton()
@@ -254,6 +259,16 @@ public class DriverButtonBindings
         BooleanSupplier dPadUp = robotContainer.driverController.getDpadSupplier(Xbox.Dpad.kUp);
         Trigger dPadUpTrigger = new Trigger(dPadUp);
 
+        // dPadUpTrigger.onTrue(Commands4237.rotateToSpeakerCommand());
+
+    }
+
+    private void configDpadDown()
+    {
+        BooleanSupplier dPadDown = robotContainer.driverController.getDpadSupplier(Xbox.Dpad.kDown);
+        Trigger dPadDownTrigger = new Trigger(dPadDown);
+
+        // dPadDownTrigger.onTrue(Commands4237.shootFromAnywhereCommand());
     }
 
     private void configRumble()

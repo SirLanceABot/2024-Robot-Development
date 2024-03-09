@@ -58,6 +58,7 @@ public class Camera extends Sensor4237
     public static final int ROTATION_PITCH_DEGREES_INDEX = 4;
     public static final int ROTATION_YAW_DEGREES_INDEX = 5;
     public static final int TOTAL_LATENCY_INDEX = 6;
+    public static final int TAG_COUNT_INDEX = 7;
     public static final int AVERAGE_TAG_DISTANCE_FROM_CAMERA_INDEX = 9;
     
 
@@ -159,6 +160,11 @@ public class Camera extends Sensor4237
     public double getTotalLatencyRed()
     {
         return periodicData.botPoseWPIRed[TOTAL_LATENCY_INDEX];
+    }
+
+    public int getTagCount()
+    {
+        return (int) periodicData.botPoseWPIBlue[TAG_COUNT_INDEX];
     }
 
     /** @return the camera pose in the cooridnate plane of the target */

@@ -150,32 +150,32 @@ public class Flywheel extends Subsystem4237
     {
         // first value is distance from speaker in feet, second value is the pivot angle in degrees
         // These are for the calculated (poseEstimator) distances
-        speedShotMap.put(4.0, 65.0);
-        speedShotMap.put(5.0, 65.0);
-        speedShotMap.put(6.0, 65.0);
-        speedShotMap.put(7.0, 65.0);
-        speedShotMap.put(8.0, 60.0);
-        speedShotMap.put(9.0, 60.0);
-        speedShotMap.put(10.0, 60.0);
-        speedShotMap.put(11.0, 60.0);
-        speedShotMap.put(12.0, 55.0);
-        speedShotMap.put(13.0, 55.0);
-        speedShotMap.put(14.0, 55.0);
-        speedShotMap.put(15.0, 55.0);
+        // speedShotMap.put(4.0, 65.0);
+        // speedShotMap.put(5.0, 65.0);
+        // speedShotMap.put(6.0, 65.0);
+        // speedShotMap.put(7.0, 65.0);
+        // speedShotMap.put(8.0, 60.0);
+        // speedShotMap.put(9.0, 60.0);
+        // speedShotMap.put(10.0, 60.0);
+        // speedShotMap.put(11.0, 60.0);
+        // speedShotMap.put(12.0, 55.0);
+        // speedShotMap.put(13.0, 55.0);
+        // speedShotMap.put(14.0, 55.0);
+        // speedShotMap.put(15.0, 55.0);
 
         // These are for the real world distance
-        // speedShotMap.put(4.5, 65.0);
-        // speedShotMap.put(5.5, 65.0);
-        // speedShotMap.put(6.5, 65.0);
-        // speedShotMap.put(7.5, 65.0);
-        // speedShotMap.put(8.5, 60.0);
-        // speedShotMap.put(9.5, 60.0);
-        // speedShotMap.put(10.5, 60.0);
-        // speedShotMap.put(11.5, 60.0);
-        // speedShotMap.put(12.5, 55.0);
-        // speedShotMap.put(13.5, 55.0);
-        // speedShotMap.put(14.5, 55.0);
-        // speedShotMap.put(15.5, 55.0);
+        speedShotMap.put(4.5, 65.0);
+        speedShotMap.put(5.5, 65.0);
+        speedShotMap.put(6.5, 65.0);
+        speedShotMap.put(7.5, 65.0);
+        speedShotMap.put(8.5, 60.0);
+        speedShotMap.put(9.5, 60.0);
+        speedShotMap.put(10.5, 60.0);
+        speedShotMap.put(11.5, 60.0);
+        speedShotMap.put(12.5, 55.0);
+        speedShotMap.put(13.5, 55.0);
+        speedShotMap.put(14.5, 55.0);
+        speedShotMap.put(15.5, 55.0);
     }
 
     public void resetEncoder()
@@ -247,6 +247,7 @@ public class Flywheel extends Subsystem4237
 
     public double calculateSpeedFromDistance(DoubleSupplier distance)
     {
+        System.out.println(speedShotMap.get(distance.getAsDouble()));
         return speedShotMap.get(distance.getAsDouble());
     }
 

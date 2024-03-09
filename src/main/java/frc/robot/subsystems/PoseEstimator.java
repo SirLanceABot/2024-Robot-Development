@@ -45,14 +45,16 @@ public class PoseEstimator extends Subsystem4237
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
-    private final double[] blueSpeakerCoords = {0.0, 5.55};
-    private final double[] redSpeakerCoords = {16.54, 5.55};
+    private final double[] blueSpeakerCoords = {0.076, 5.547868};
+    private final double[] redSpeakerCoords = {16.465042, 5.547868};
     private final double[] fieldDimensions = {16.542, 8.211};
 
     private Matrix<N3, N1> visionStdDevs;
     private Matrix<N3, N1> stateStdDevs;
 
-    private final double MAX_TARGET_DISTANCE = 2.5;
+    private final double MAX_TARGET_DISTANCE = 5.0;
+
+    private int totalTagCount = 0;
 
     private class PeriodicData
     {
@@ -173,11 +175,11 @@ public class PoseEstimator extends Subsystem4237
         double angleRads = Math.atan2(deltaY, deltaX);
         if(yPose > redSpeakerCoords[1])
         {
-            return Math.toDegrees(angleRads);
+            return -Math.toDegrees(angleRads);
         }
         else if(yPose < redSpeakerCoords[1])
         {
-            return -Math.toDegrees(angleRads);
+            return Math.toDegrees(angleRads);
         }
         else
         {
@@ -252,6 +254,7 @@ public class PoseEstimator extends Subsystem4237
     @Override
     public void readPeriodicInputs()
     {
+        totalTagCount = 0;
         if(drivetrain != null && gyro != null)
         {
             periodicData.gyroRotation = gyro.getRotation2d();
@@ -281,6 +284,7 @@ public class PoseEstimator extends Subsystem4237
 
                     if(isPoseValid(visionPose))
                     {
+                        totalTagCount += camera.getTagCount();
                         if(DriverStation.isAutonomousEnabled())
                         {
                             poseEstimator.addVisionMeasurement(
@@ -325,6 +329,11 @@ public class PoseEstimator extends Subsystem4237
             //         Timer.getFPGATimestamp() - (camera.getTotalLatencyBlue() / 1000),
             //         visionStdDevs.times(2 * camera.getAverageDistanceFromTarget()));
             // }
+        }
+
+        if(totalTagCount >= 3 && !DriverStation.isAutonomousEnabled())
+        {
+            drivetrain.resetOdometryOnly(poseEstimator.getEstimatedPosition());
         }
     }
 

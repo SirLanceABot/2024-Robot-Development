@@ -117,7 +117,7 @@ public class Drivetrain extends Subsystem4237
 
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
 
-    private double kP = 0.09;
+    private double kP = 0.07;
     private double kI = 0.0;
     private double kD = 0.0;
     private PIDController pidController = new PIDController(kP, kI, kD);
@@ -247,6 +247,8 @@ public class Drivetrain extends Subsystem4237
                 backLeft.getPosition(),
                 backRight.getPosition()
             });
+
+        periodicData.outputModuleStates = new SwerveModuleState[4];
 
         
         poseEstimator = (useFullRobot || usePoseEstimator) ? new PoseEstimator(this, gyro, cameraArray) : null;
@@ -610,6 +612,20 @@ public class Drivetrain extends Subsystem4237
                 newPose);
     }
 
+    public void resetOdometryOnly(Pose2d newPose)
+    {
+        periodicData.odometry.resetPosition(
+            gyro.getRotation2d(),
+            new SwerveModulePosition[]
+            {
+                frontLeft.getPosition(),
+                frontRight.getPosition(),
+                backLeft.getPosition(),
+                backRight.getPosition()
+            },
+            newPose);
+    }
+
     public void resetPoseEstimator(Pose2d newPose)
     {
         poseEstimator.resetPosition(gyro.getRotation2d(), getSwerveModulePositions(), newPose);
@@ -678,6 +694,17 @@ public class Drivetrain extends Subsystem4237
         
         //     isBlueAllianceSupplier);
     }
+
+    public Command resetSwerveConfigCommand()
+    {
+        return runOnce(() -> 
+                            {
+                                frontLeft.resetSwerveConfig();
+                                frontRight.resetSwerveConfig();
+                                backLeft.resetSwerveConfig();
+                                backRight.resetSwerveConfig();
+                            });
+    }                          
 
     @Override
     public void readPeriodicInputs()

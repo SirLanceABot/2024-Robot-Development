@@ -79,11 +79,11 @@ public class Pivot extends Subsystem4237
         private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
-        private final double MAGNET_OFFSET = -0.0010854444; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
+        private final double MAGNET_OFFSET = -0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
-        public final double SHOOT_TO_AMP_ANGLE = 63.0;
+        public final double SHOOT_TO_AMP_ANGLE = 60.5;
         public final double ANGLE_TOLERANCE = 0.3;
 
         //for manually moving Pivot
@@ -224,31 +224,31 @@ public class Pivot extends Subsystem4237
         // angleShotMap.put(15.0, 39.1);
         
         // These are for the real world distance
-        // angleShotMap.put(4.5, 64.0);
-        // angleShotMap.put(5.5, 62.8);
-        // angleShotMap.put(6.5, 56.7);
-        // angleShotMap.put(7.5, 52.5);
-        // angleShotMap.put(8.5, 49.9);
-        // angleShotMap.put(9.5, 47.6);
-        // angleShotMap.put(10.5, 44.0);
-        // angleShotMap.put(11.5, 42.2);
-        // angleShotMap.put(12.5, 41.3);
-        // angleShotMap.put(13.5, 40.65);
-        // angleShotMap.put(14.5, 39.64);
-        // angleShotMap.put(15.5, 39.1);
+        angleShotMap.put(4.5, 64.0);
+        angleShotMap.put(5.5, 62.8);
+        angleShotMap.put(6.5, 56.7);
+        angleShotMap.put(7.5, 52.5);
+        angleShotMap.put(8.5, 49.9);
+        angleShotMap.put(9.5, 47.6);
+        angleShotMap.put(10.5, 44.0);
+        angleShotMap.put(11.5, 42.2);
+        angleShotMap.put(12.5, 41.3);
+        angleShotMap.put(13.5, 40.65);
+        angleShotMap.put(14.5, 39.64);
+        angleShotMap.put(15.5, 39.1);
 
-        angleShotMap.put(5.0, 64.0);
-        angleShotMap.put(6.0, 62.8);
-        angleShotMap.put(7.0, 56.7);
-        angleShotMap.put(8.0, 52.5);
-        angleShotMap.put(9.0, 49.9);
-        angleShotMap.put(10.0, 47.6);
-        angleShotMap.put(11.0, 44.0);
-        angleShotMap.put(12.0, 42.2);
-        angleShotMap.put(13.0, 41.3);
-        angleShotMap.put(14.0, 40.65);
-        angleShotMap.put(15.0, 39.64);
-        angleShotMap.put(16.0, 39.1);
+        // angleShotMap.put(5.0, 64.0);
+        // angleShotMap.put(6.0, 62.8);
+        // angleShotMap.put(7.0, 56.7);
+        // angleShotMap.put(8.0, 52.5);
+        // angleShotMap.put(9.0, 49.9);
+        // angleShotMap.put(10.0, 47.6);
+        // angleShotMap.put(11.0, 44.0);
+        // angleShotMap.put(12.0, 42.2);
+        // angleShotMap.put(13.0, 41.3);
+        // angleShotMap.put(14.0, 40.65);
+        // angleShotMap.put(15.0, 39.64);
+        // angleShotMap.put(16.0, 39.1);
     }
 
     public void moveUp()
@@ -344,6 +344,7 @@ public class Pivot extends Subsystem4237
      */
     public double calculateAngleFromDistance(DoubleSupplier distance)
     {
+        System.out.println(angleShotMap.get(distance.getAsDouble()));
         return angleShotMap.get(distance.getAsDouble());
     }
 
