@@ -268,7 +268,7 @@ public class Drivetrain extends Subsystem4237
                 // poseEstimator::getEstimatedPose, // Robot pose supplier
                 this::getPose,
                 this::resetOdometryPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                this::getRobotRelativeSpeedsForPP, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
@@ -534,7 +534,7 @@ public class Drivetrain extends Subsystem4237
         return periodicData.odometry.getPoseMeters().getTranslation().getDistance(startingPosition);
     }
 
-    public ChassisSpeeds getRobotRelativeSpeedsForPP()
+    public ChassisSpeeds getRobotRelativeSpeeds()
     {
         SwerveModuleState[] moduleStates = new SwerveModuleState[] 
             {

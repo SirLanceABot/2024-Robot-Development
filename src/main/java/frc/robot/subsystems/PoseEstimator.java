@@ -52,7 +52,7 @@ public class PoseEstimator extends Subsystem4237
     private Matrix<N3, N1> visionStdDevs;
     private Matrix<N3, N1> stateStdDevs;
 
-    private final double MAX_TARGET_DISTANCE = 5.0;
+    private final double MAX_TARGET_DISTANCE = 5.0; // meters
 
     private int totalTagCount = 0;
 
@@ -212,7 +212,7 @@ public class PoseEstimator extends Subsystem4237
         poseEstimator.resetPosition(gyroAngle, modulePositions, newPose);
     }
 
-    public boolean isPoseCloseToPrevious(Pose2d pose)
+    public boolean isPoseCloseToCurrent(Pose2d pose)
     {
         // if pose is close to the current pose (within 3 meters)
         if(pose.getTranslation().getDistance(periodicData.estimatedPose.getTranslation()) < 3.0)
@@ -228,7 +228,7 @@ public class PoseEstimator extends Subsystem4237
     public boolean isPoseInsideField(Pose2d pose)
     {
         // if the x component of the pose is within the field, and the y component is in the field
-        // 1 meter of leniency given
+        // 1 meter buffer given
         if((pose.getX() > -1.0 && pose.getX() < fieldDimensions[0] + 1.0) && (pose.getY() > -1.0 && pose.getY() < fieldDimensions[1] + 1.0))
         {
             return true;
@@ -239,9 +239,14 @@ public class PoseEstimator extends Subsystem4237
         }
     }
 
+    /**
+     * Checks to see if the given pose is close enough to the current pose and if the given pose is actually inside the field
+     * @param pose
+     * @return true if pose is valid
+     */
     public boolean isPoseValid(Pose2d pose)
     {
-        if(isPoseCloseToPrevious(pose) && isPoseInsideField(pose))
+        if(isPoseCloseToCurrent(pose) && isPoseInsideField(pose))
         {
             return true;
         }

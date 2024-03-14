@@ -51,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Shoot"
+            "name": "Autonomous First Shoot"
           }
         },
         {
@@ -75,7 +75,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Shoot"
+            "name": "Autonomous First Shoot"
           }
         }
       ]
