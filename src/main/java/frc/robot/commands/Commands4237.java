@@ -709,6 +709,8 @@ public final class Commands4237
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                Commands.runOnce(() -> robotContainer.flywheel.removeDefaultCommand()))
+            .andThen(
                 Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(14.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 .deadlineWith(
@@ -737,17 +739,20 @@ public final class Commands4237
             return
             // setCandleCommand(LEDColor.kPurple)
             // .andThen(
-                robotContainer.ampAssist.retractCommand()
-                .alongWith(
-                    Commands.waitSeconds(0.5))
+            Commands.parallel(
+                robotContainer.ampAssist.retractCommand(),
+                Commands.waitSeconds(0.5))
             .andThen(
                 Commands.waitUntil(() -> robotContainer.pivot.isAtAngle(robotContainer.pivot.classConstants.DEFAULT_ANGLE).getAsBoolean())
                                         .withTimeout(1.0)
                 .deadlineWith(
                     Commands.parallel(
                         robotContainer.flywheel.stopCommand(),
-                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)),
-                    setCandleCommand(LEDColor.kRed)))
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))))
+            .andThen(
+                Commands.parallel(
+                    setCandleCommand(LEDColor.kRed),
+                    Commands.runOnce(() -> robotContainer.flywheel.setDefaultCommand(robotContainer.flywheel.stopCommand()))))
             .withName("Extend AmpAssist to Shoot Command");
         }
         else

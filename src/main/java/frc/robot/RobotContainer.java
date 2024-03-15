@@ -65,7 +65,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = true;
+    private boolean useFullRobot            = false;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -343,6 +343,8 @@ public class RobotContainer
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
         NamedCommands.registerCommand("Autonomous First Shoot", Commands4237.autonomousFirstShootCommand());
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
+        NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
+        
         if(intakePositioning != null)
         {
             NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
@@ -351,11 +353,6 @@ public class RobotContainer
         if(pivot != null)
         {
             NamedCommands.registerCommand("Pivot To Default Angle", pivot.setAngleCommand(() -> pivot.classConstants.DEFAULT_ANGLE));
-        }
-
-        if(ampAssist != null)
-        {
-            NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
         }
     }
 }
