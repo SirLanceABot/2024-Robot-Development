@@ -37,15 +37,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Autonomous Finish Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "N7 to Source Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Finish Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "N7 to Source Shoot"
+                }
+              }
+            ]
           }
         },
         {
