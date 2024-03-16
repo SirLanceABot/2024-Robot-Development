@@ -5,7 +5,6 @@ import java.lang.invoke.MethodHandles;
 import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.wpilibj.Joystick;

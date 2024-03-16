@@ -1,9 +1,8 @@
 package frc.robot.commands;
 
 import java.lang.invoke.MethodHandles;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-import javax.lang.model.util.ElementScanner14;
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
@@ -43,7 +42,11 @@ public final class Commands4237
     // Put all class variables and instance variables here
     private static RobotContainer robotContainer = null;
 
-    // Initialize pivotAngleMap
+    // private static double targetPivotAngle;
+    // private static double targetFlywheelSpeed;
+    // private static double targetDrivetrainRotation;
+
+    private static double distanceToSpeaker;
    
 
 
@@ -545,8 +548,10 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.5).getAsBoolean() && 
-                                        robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(63.5).getAsBoolean() && 
+                //                         robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                //                         .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(63.5, 65.0, 1.0, 3.0))
                                         .withTimeout(1.0)
                 // .alongWith(
                 //     Commands.waitUntil(robotContainer.flywheel.isAtSpeed(80.0)))
@@ -588,21 +593,33 @@ public final class Commands4237
             
             // .andThen(
             // robotContainer.candle.setPurpleCommand()
-            setCandleCommand(LEDColor.kPurple)
+            robotContainer.drivetrain.stopCommand()
+            .andThen(
+                Commands.waitUntil(robotContainer.drivetrain.isStopped()))
+                // .withTimeout(1.0)
             .andThen(
                 Commands.parallel(
-                    rotateToSpeakerCommand(),
+                    setCandleCommand(LEDColor.kPurple),
+                    Commands.runOnce(() -> setDistanceToSpeaker(() -> robotContainer.drivetrain.getDistanceToSpeaker()))))
+            .andThen(
+                Commands.parallel(
+                    // rotateToSpeakerCommand(),
 
-                    // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                    // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker())).getAsBoolean() && 
                     //                             robotContainer.flywheel.isAtSpeed(55.0).getAsBoolean()))
                     //                             .withTimeout(1.0)
-                    // .deadlineWith(
-                    setFlywheelToCorrectVelocityCommand().withTimeout(1.0),
-                    setAngleToCorrectSpeakerCommand().withTimeout(1.0)))
+                    // Commands.waitUntil(isReadyToShoot(robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker()), robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker())))
+                    //                             .withTimeout(1.0)
+                    Commands.waitUntil(isRotatedAndReadyToShoot(robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker()), robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker()), robotContainer.drivetrain.getAngleToSpeaker(), robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE, 1.0))
+                                                .withTimeout(1.0)
+                    .deadlineWith(
+                    // setFlywheelToCorrectVelocityCommand().withTimeout(1.0),
+                    // setAngleToCorrectSpeakerCommand().withTimeout(1.0)))
                         // Commands.waitSeconds(1.0)))//)
                     
-                    // robotContainer.flywheel.shootCommand(() -> 65.0),
-                    // robotContainer.pivot.setAngleCommand(() -> 48)))
+                        robotContainer.flywheel.shootCommand(() -> robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker())),
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker())),
+                        robotContainer.drivetrain.rotateToSpeakerCommand())))
             // .andThen(
             //     Commands.print("Past wait sam doesnt like it"))
                 
@@ -808,8 +825,10 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
-                                        robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                //                                 .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(48.0, 60.0))
                                                 .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
@@ -861,9 +880,11 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(46.0).getAsBoolean() && 
-                                        robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
-                                                .withTimeout(1.0)
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(46.0).getAsBoolean() && 
+                //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                //                                 .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(46.0, 60.0))
+                                        .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
                     robotContainer.pivot.setAngleCommand(() -> 46.0)))
@@ -909,8 +930,10 @@ public final class Commands4237
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
-                                            robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
+                //                             robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
+                //                         .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(63.5, 65.0, 1.0, 3.0))
                                         .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 65.0),
@@ -968,6 +991,69 @@ public final class Commands4237
         {
             return Commands.none();
         }
+    }
+
+    // private static void setTargetPivotAngle(double targetPivotAngle)
+    // {
+    //     Commands4237.targetPivotAngle = targetPivotAngle;
+    // }
+
+    // private static DoubleSupplier getTargetPivotAngle()
+    // {
+    //     return () -> Commands4237.targetPivotAngle;
+    // }
+
+    private static void setDistanceToSpeaker(DoubleSupplier distanceToSpeaker)
+    {
+        Commands4237.distanceToSpeaker = distanceToSpeaker.getAsDouble();
+        System.out.println("Distance: " + Commands4237.distanceToSpeaker);
+    }
+
+    private static DoubleSupplier getDistanceToSpeaker()
+    {
+        return () -> Commands4237.distanceToSpeaker;
+    }
+
+    private static BooleanSupplier isReadyToShoot(double targetAngle, double targetSpeed)
+    {
+        return isReadyToShoot(targetAngle, targetSpeed, robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE);   
+    }
+
+    private static BooleanSupplier isReadyToShoot(double targetAngle, double targetSpeed, double angleTolerance, double speedTolerance)
+    {
+        return () ->
+        {
+            boolean isAtAngle = false;
+            boolean isAtSpeed = false;
+
+            isAtAngle = robotContainer.pivot.isAtAngle(targetAngle, angleTolerance).getAsBoolean();
+            isAtSpeed = robotContainer.flywheel.isAtSpeed(targetSpeed, speedTolerance).getAsBoolean();
+
+            return (isAtAngle && isAtSpeed);
+        };
+        
+    }
+
+    private static BooleanSupplier isRotatedAndReadyToShoot(double targetAngle, double targetSpeed, double targetRotation)
+    {
+        return isRotatedAndReadyToShoot(targetAngle, targetSpeed, targetRotation, robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE, robotContainer.drivetrain.DEFAULT_ALIGNMENT_TOLERANCE);   
+    }
+
+    private static BooleanSupplier isRotatedAndReadyToShoot(double targetAngle, double targetSpeed, double targetRotation, double angleTolerance, double speedTolerance, double rotationTolerance)
+    {
+        return () ->
+        {
+            boolean isAtAngle = false;
+            boolean isAtSpeed = false;
+            boolean isAtRotation = false;
+
+            isAtAngle = robotContainer.pivot.isAtAngle(targetAngle, angleTolerance).getAsBoolean();
+            isAtSpeed = robotContainer.flywheel.isAtSpeed(targetSpeed, speedTolerance).getAsBoolean();
+            isAtRotation = robotContainer.drivetrain.isAtRotation(targetRotation, rotationTolerance).getAsBoolean();
+
+            return (isAtAngle && isAtSpeed && isAtRotation);
+        };
+        
     }
 
     public static Command resetGyroCommand()

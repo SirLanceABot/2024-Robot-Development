@@ -124,7 +124,7 @@ public class Drivetrain extends Subsystem4237
     private PIDController pidController = new PIDController(kP, kI, kD);
     private double targetYaw;
     private boolean isAligned = false;
-    private final double ALIGNMENT_TOLERANCE = 0.5;
+    public final double DEFAULT_ALIGNMENT_TOLERANCE = 0.5;
 
     private final AdaptiveSlewRateLimiter adaptiveXRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.X_ACCELERATION_RATE_LIMT, DrivetrainConstants.X_DECELERATION_RATE_LIMT);
     private final AdaptiveSlewRateLimiter adaptiveYRateLimiter = new AdaptiveSlewRateLimiter(DrivetrainConstants.Y_ACCELERATION_RATE_LIMT, DrivetrainConstants.Y_DECELERATION_RATE_LIMT);
@@ -297,6 +297,30 @@ public class Drivetrain extends Subsystem4237
         return poseEstimator.getAngleToRedSpeaker();
     }
 
+    public double getAngleToSpeaker()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return getAngleToRedSpeaker();
+        }
+        else
+        {
+            return getAngleToBlueSpeaker();
+        }
+    }
+
+    public double getDistanceToSpeaker()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return getDistanceToRedSpeaker();
+        }
+        else
+        {
+            return getDistanceToBlueSpeaker();
+        }
+    }
+
     /**
      * PoseEstimator wrapper method
      * @return Distance to red speaker in meters
@@ -333,7 +357,7 @@ public class Drivetrain extends Subsystem4237
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
     @SuppressWarnings("ParameterName")
-    public void drive(double xSpeed, double ySpeed, double turn, boolean fieldRelative)
+    public void drive(double xSpeed, double ySpeed, double turn, boolean fieldRelative, boolean useSlewRateLimiter)
     {
         driveMode = DriveMode.kDrive;
         // updateOdometry();
@@ -344,12 +368,18 @@ public class Drivetrain extends Subsystem4237
             ySpeed = 0.0;
         if(Math.abs(turn) < 0.04)
             turn = 0.0;    
-        // periodicData.xSpeed = xSpeed;
-        // periodicData.ySpeed = ySpeed;
-
+        
         // commented out for driver practice/tryouts
-        periodicData.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
-        periodicData.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
+        if(useSlewRateLimiter)
+        {
+            periodicData.xSpeed = adaptiveXRateLimiter.calculate(xSpeed);
+            periodicData.ySpeed = adaptiveYRateLimiter.calculate(ySpeed);
+        }
+        else
+        {
+            periodicData.xSpeed = xSpeed;
+            periodicData.ySpeed = ySpeed;
+        }
 
         periodicData.turn = turn;
         periodicData.fieldRelative = fieldRelative;
@@ -447,13 +477,37 @@ public class Drivetrain extends Subsystem4237
         return poseEstimator.getEstimatedPose();
     }
 
+    public BooleanSupplier isAtRotation(double targetRotation)
+    {
+        return isAtRotation(targetRotation, DEFAULT_ALIGNMENT_TOLERANCE);
+    }
+
+    public BooleanSupplier isAtRotation(double targetRotation, double rotationTolerance)
+    {
+        return () ->
+        {
+            double rotation = gyro.getYaw();
+            boolean isAtRotation;
+
+            if(rotation > targetRotation - rotationTolerance && rotation < targetRotation + rotationTolerance)
+            {
+                isAtRotation = true;
+            }
+            else
+            {
+                isAtRotation = false;
+            }
+            return isAtRotation;
+        };
+    }
+
     public BooleanSupplier isAlignedWithBlueSpeaker()
     {
         return () -> 
         {
             double targetYaw = getAngleToBlueSpeaker();
             isAligned = false;
-            if(gyro.getYaw() > targetYaw - ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + ALIGNMENT_TOLERANCE)
+            if(gyro.getYaw() > targetYaw - DEFAULT_ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + DEFAULT_ALIGNMENT_TOLERANCE)
             {
                 isAligned = true;
             }
@@ -473,7 +527,7 @@ public class Drivetrain extends Subsystem4237
         {
             double targetYaw = getAngleToRedSpeaker();
             isAligned = false;
-            if(gyro.getYaw() > targetYaw - ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + ALIGNMENT_TOLERANCE)
+            if(gyro.getYaw() > targetYaw - DEFAULT_ALIGNMENT_TOLERANCE && gyro.getYaw() < targetYaw + DEFAULT_ALIGNMENT_TOLERANCE)
             {
                 isAligned = true;
             }
@@ -487,25 +541,45 @@ public class Drivetrain extends Subsystem4237
         };
     }
 
+    public BooleanSupplier isStopped()
+    {
+        return () ->
+        {
+            boolean isStopped = false;
+            ChassisSpeeds chassisSpeeds = getRobotRelativeSpeeds();
+            if(Math.hypot(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond) < 1.0)
+            {
+                isStopped = true;
+            }
+            else
+            {
+                isStopped = false;
+            }
+
+            return isStopped;
+        };
+    }
+
     public void rotateToBlueSpeaker()
     {
         targetYaw = getAngleToBlueSpeaker();
-        System.out.println("targetYaw = " + targetYaw);
+        // System.out.println("targetYaw = " + targetYaw);
         double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
         // System.out.println(rotationSpeed);
         // if(rotationSpeed > 2)
         // {
         //     rotationSpeed = 2;
         // }
-        drive(0.0, 0.0, rotationSpeed, false);
+        drive(0.0, 0.0, rotationSpeed, false, false);
     }
 
     public void rotateToRedSpeaker()
     {
         targetYaw = getAngleToRedSpeaker();
         double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
-        drive(0.0, 0.0, rotationSpeed, false);
+        drive(0.0, 0.0, rotationSpeed, false, false);
     }
+
 
     public SwerveModulePosition[] getSwerveModulePositions()
     {
@@ -664,6 +738,15 @@ public class Drivetrain extends Subsystem4237
                        .withName("rotateToRedSpeakerCommand");
     }
 
+    public Command rotateToSpeakerCommand()
+    {
+        return
+        Commands.either(
+            rotateToRedSpeakerCommand(),
+            rotateToBlueSpeakerCommand(),
+            isRedAllianceSupplier);
+    }
+
     public Command driveCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, DoubleSupplier scale)
     {
         return
@@ -672,6 +755,7 @@ public class Drivetrain extends Subsystem4237
                     xSpeed.getAsDouble() * scale.getAsDouble(),
                     ySpeed.getAsDouble() * scale.getAsDouble(),
                     turn.getAsDouble() * scale.getAsDouble(), 
+                    true,
                     true)
                 )
                 .withName("driveCommand()");
@@ -695,6 +779,11 @@ public class Drivetrain extends Subsystem4237
         //         .withName("driveCommand()"),
         
         //     isBlueAllianceSupplier);
+    }
+
+    public Command stopCommand()
+    {
+        return Commands.runOnce(() -> stopMotors());
     }
 
     public Command resetSwerveConfigCommand()

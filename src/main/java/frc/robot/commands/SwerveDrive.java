@@ -27,14 +27,16 @@ public class SwerveDrive extends Command
     private DoubleSupplier ySpeed;
     private DoubleSupplier turn;
     private boolean fieldRelative;
+    private boolean useSlewRateLimiter;
     
-    public SwerveDrive(Drivetrain drivetrain, DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, boolean fieldRelative)
+    public SwerveDrive(Drivetrain drivetrain, DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier turn, boolean fieldRelative, boolean useSlewRateLimiter)
     {
         this.drivetrain = drivetrain;
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         this.turn = turn;
         this.fieldRelative = fieldRelative;
+        this.useSlewRateLimiter = useSlewRateLimiter;
 
         if(this.drivetrain != null)
             addRequirements(this.drivetrain);
@@ -48,7 +50,7 @@ public class SwerveDrive extends Command
     public void execute()
     {
         if(drivetrain != null)
-            drivetrain.drive(xSpeed.getAsDouble(), ySpeed.getAsDouble(), turn.getAsDouble(), fieldRelative);
+            drivetrain.drive(xSpeed.getAsDouble(), ySpeed.getAsDouble(), turn.getAsDouble(), fieldRelative, useSlewRateLimiter);
     }
 
     @Override

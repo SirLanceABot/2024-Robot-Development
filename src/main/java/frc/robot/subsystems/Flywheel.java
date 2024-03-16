@@ -81,7 +81,7 @@ public class Flywheel extends Subsystem4237
     private final double RPS_TO_FPS = GEAR_RATIO * ( 1.0 / Math.PI) * (1.0 / ROLLER_DIAMETER_FEET); // 1.432
     // private boolean tunePID = false;
 
-    private final double SPEED_TOLERANCE = 1.0;
+    public final double DEAULT_SPEED_TOLERANCE = 1.0;
 
     // -10 ft/s for intaking
     private final double kP = 0.45;
@@ -225,17 +225,43 @@ public class Flywheel extends Subsystem4237
 
     public BooleanSupplier isAtSpeed(double targetSpeed)
     {
+        // return () ->
+        // {
+        //     double speed = motor.getVelocity();
+
+        //     // System.out.println("Velocity: " + speed);
+        //     // System.out.println("Voltage: " + motor.getMotorVoltage());
+        //     // System.out.println("Supply Voltage" + motor.getMotorSupplyVoltage());
+        //     boolean isAtSpeed;
+        //     if(speed > targetSpeed - SPEED_TOLERANCE && speed < targetSpeed + SPEED_TOLERANCE)
+        //     {
+        //         isAtSpeed = true;
+        //         System.out.println("Flywheel Got To Speed");
+        //     }
+        //     else
+        //     {
+        //         isAtSpeed = false;
+        //     }
+        //     return isAtSpeed;
+        // };
+
+        return isAtSpeed(targetSpeed, DEAULT_SPEED_TOLERANCE);
+    }
+
+    public BooleanSupplier isAtSpeed(double targetSpeed, double speedTolerance)
+    {
         return () ->
         {
             double speed = motor.getVelocity();
 
-            System.out.println("Velocity: " + motor.getVelocity());
-            System.out.println("Voltage: " + motor.getMotorVoltage());
-            System.out.println("Supply Voltage" + motor.getMotorSupplyVoltage());
+            // System.out.println("Velocity: " + speed);
+            // System.out.println("Voltage: " + motor.getMotorVoltage());
+            // System.out.println("Supply Voltage" + motor.getMotorSupplyVoltage());
             boolean isAtSpeed;
-            if(speed > targetSpeed - SPEED_TOLERANCE && speed < targetSpeed + SPEED_TOLERANCE)
+            if(speed > targetSpeed - speedTolerance && speed < targetSpeed + speedTolerance)
             {
                 isAtSpeed = true;
+                // System.out.println("Flywheel Got To Speed");
             }
             else
             {
@@ -247,8 +273,8 @@ public class Flywheel extends Subsystem4237
 
     public double calculateSpeedFromDistance(DoubleSupplier distance)
     {
-        System.out.println(speedShotMap.get(distance.getAsDouble()));
-        return speedShotMap.get(distance.getAsDouble());
+        System.out.println(speedShotMap.get(distance.getAsDouble() * 3.2808));
+        return speedShotMap.get(distance.getAsDouble() * 3.2808);
     }
 
     public Command shootCommand(DoubleSupplier speed)

@@ -84,7 +84,7 @@ public class Pivot extends Subsystem4237
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
         public final double SHOOT_TO_AMP_ANGLE = 60.5;
-        public final double ANGLE_TOLERANCE = 0.3;
+        public final double DEFAULT_ANGLE_TOLERANCE = 0.3;
 
         //for manually moving Pivot
         private final double MOTOR_SPEED = 0.1;
@@ -284,9 +284,10 @@ public class Pivot extends Subsystem4237
     }
     
     public void setAngle(double degrees)
-    { 
+    {
         //setAngle using CANcoder
         degrees = MathUtil.clamp(degrees, classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
+        // System.out.println("Target Angle: " + degrees);
         motor.setControlPosition(degrees);
 
         //setAngle using FalconFX encoder
@@ -320,14 +321,39 @@ public class Pivot extends Subsystem4237
 
     public BooleanSupplier isAtAngle(double targetAngle)
     {
+        // return () ->
+        // {
+        //     double position = motor.getPosition();
+        //     System.out.println("Position: " + position);
+
+        //     boolean isAtAngle;
+        //     if(position > targetAngle - classConstants.ANGLE_TOLERANCE && position < targetAngle + classConstants.ANGLE_TOLERANCE)
+        //     {
+        //         isAtAngle = true;
+        //         System.out.println("Pivot Got To Angle");
+        //     }
+        //     else
+        //     {
+        //         isAtAngle = false;
+        //     }
+        //     return isAtAngle;
+        // };
+
+        return isAtAngle(targetAngle, classConstants.DEFAULT_ANGLE_TOLERANCE);
+    }
+
+    public BooleanSupplier isAtAngle(double targetAngle, double angleTolerance)
+    {
         return () ->
         {
             double position = motor.getPosition();
-            // System.out.println("Position: " + motor.getPosition());
+            // System.out.println("Position: " + position);
+
             boolean isAtAngle;
-            if(position > targetAngle - classConstants.ANGLE_TOLERANCE && position < targetAngle + classConstants.ANGLE_TOLERANCE)
+            if(position > targetAngle - angleTolerance && position < targetAngle + angleTolerance)
             {
                 isAtAngle = true;
+                // System.out.println("Pivot Got To Angle");
             }
             else
             {
@@ -339,13 +365,13 @@ public class Pivot extends Subsystem4237
 
     /**
      * 
-     * @param distance (ft)
+     * @param distance (m)
      * @return angle pivot should move to
      */
     public double calculateAngleFromDistance(DoubleSupplier distance)
     {
-        System.out.println(angleShotMap.get(distance.getAsDouble()));
-        return angleShotMap.get(distance.getAsDouble());
+        System.out.println(angleShotMap.get(distance.getAsDouble() * 3.2808));
+        return angleShotMap.get(distance.getAsDouble() * 3.2808);
     }
 
     public Command setAngleCommand(DoubleSupplier angle)

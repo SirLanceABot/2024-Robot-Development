@@ -45,8 +45,8 @@ public class PoseEstimator extends Subsystem4237
 
     // custom network table to make pose readable for AdvantageScope
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
-    private final double[] blueSpeakerCoords = {0.076, 5.547868};
-    private final double[] redSpeakerCoords = {16.465042, 5.547868};
+    private final double[] blueSpeakerCoords = {0.076, 5.45};   // bad y {0.076, 5.547868};
+    private final double[] redSpeakerCoords = {16.465042, 5.45};    // bad y {16.465042, 5.547868};
     private final double[] fieldDimensions = {16.542, 8.211};
 
     private Matrix<N3, N1> visionStdDevs;
