@@ -805,7 +805,8 @@ public final class Commands4237
         if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.ampAssist != null)
         {
             return
-            AutoBuilder.pathfindThenFollowPath(pathToAmp, constraints);
+            // AutoBuilder.pathfindThenFollowPath(pathToAmp, constraints);
+            AutoBuilder.followPath(pathToAmp);
         }
         else
         {

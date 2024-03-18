@@ -334,7 +334,7 @@ public class RobotContainer
     {
         NamedCommands.registerCommand("intake", Commands.print("IntakeCommand"));
         NamedCommands.registerCommand("transfer", Commands.print("TransferCommand"));
-        NamedCommands.registerCommand("shoot", Commands.print("ShootCommand"));
+        NamedCommands.registerCommand("shoot", Commands.print("TEST SHOOT COMMAND"));
 
         NamedCommands.registerCommand("Intake From Floor Front", Commands4237.intakeFromFloorFront());
         NamedCommands.registerCommand("Shoot From Subwoofer", Commands4237.shootFromSubWooferCommand());
