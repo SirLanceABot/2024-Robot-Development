@@ -265,8 +265,8 @@ public class Drivetrain extends Subsystem4237
     public void configureAutoBuilder()
     {
         AutoBuilder.configureHolonomic(
-                // poseEstimator::getEstimatedPose, // Robot pose supplier
-                this::getPose,
+                poseEstimator::getEstimatedPose, // Robot pose supplier
+                // this::getPose,
                 this::resetOdometryPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds

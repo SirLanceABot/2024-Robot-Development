@@ -47,9 +47,22 @@
                 }
               },
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "N7 to Source Shoot"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "N7 to Source Shoot"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -68,15 +81,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Autonomous Finish Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "N6 to Middle Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Finish Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "N6 to Source Shoot"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {

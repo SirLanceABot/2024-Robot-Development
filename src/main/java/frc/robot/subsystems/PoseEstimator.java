@@ -336,7 +336,7 @@ public class PoseEstimator extends Subsystem4237
             // }
         }
 
-        if(totalTagCount >= 3 && !DriverStation.isAutonomousEnabled())
+        if(totalTagCount >= 3 && DriverStation.isTeleopEnabled())
         {
             drivetrain.resetOdometryOnly(poseEstimator.getEstimatedPosition());
         }

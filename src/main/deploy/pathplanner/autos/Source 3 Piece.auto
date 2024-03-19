@@ -37,15 +37,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Autonomous Finish Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "N8 to Source Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Finish Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "N8 to Source Shoot"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -61,15 +81,35 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Autonomous Finish Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "N7 to Source Shoot"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Finish Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.1
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "N7 to Source Shoot"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
