@@ -177,6 +177,8 @@ public class RobotContainer
         // This statement must be after the subsystems have been instantiated
         //   and must be before the button bindings.
         Commands4237.setRobotContainer(this);
+        registerNamedCommands();
+
 
         mainShuffleboard        = (useFullRobot || useMainShuffleboard)     ? new MainShuffleboard(this)                                : null;
 
@@ -197,7 +199,6 @@ public class RobotContainer
         // the AutoBuilder gets configured in drivetrain
         if(drivetrain != null)
         {
-            registerNamedCommands();
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto Chooser", autoChooser);
         }
