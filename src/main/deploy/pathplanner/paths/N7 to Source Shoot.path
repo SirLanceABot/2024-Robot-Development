@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.28,
-        "y": 2.451387124996472
+        "x": 8.16,
+        "y": 2.39
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.063500126994152,
-        "y": 0.3278017667118796
+        "x": 4.943500126994153,
+        "y": 0.2664146417154079
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "N7"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Source Shoot"
     }
   ],
   "rotationTargets": [],

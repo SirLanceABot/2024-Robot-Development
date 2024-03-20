@@ -12,20 +12,20 @@
         "y": 6.4474970876287365
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "kAmp"
     },
     {
       "anchor": {
-        "x": 2.6829106039164463,
-        "y": 6.898321177594736
+        "x": 2.69,
+        "y": 6.9
       },
       "prevControl": {
-        "x": 1.6806181953656236,
-        "y": 6.3301992727012575
+        "x": 1.6877075914491773,
+        "y": 6.331878095106521
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "N1"
     }
   ],
   "rotationTargets": [

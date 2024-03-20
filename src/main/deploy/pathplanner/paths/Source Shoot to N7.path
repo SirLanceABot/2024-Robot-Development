@@ -8,45 +8,29 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1394174969653057,
-        "y": 2.9878902439580144
+        "x": 4.5373173277035885,
+        "y": 0.7387553207589886
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Source Shoot"
     },
     {
       "anchor": {
-        "x": 5.1152200510255605,
-        "y": 1.855513286097393
+        "x": 8.16,
+        "y": 2.39
       },
       "prevControl": {
-        "x": 4.11972457843161,
-        "y": 1.9503223787253876
-      },
-      "nextControl": {
-        "x": 6.263216001408395,
-        "y": 1.746180338441886
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.284508791239805,
-        "y": 2.45
-      },
-      "prevControl": {
-        "x": 6.677119303247105,
-        "y": 1.9882747225362256
+        "x": 6.067978594880702,
+        "y": 1.8789417748807162
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "N7"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.05,
+      "waypointRelativePos": 0.55,
       "rotationDegrees": 15.0,
       "rotateFast": false
     }
@@ -55,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.8,
       "command": {
         "type": "sequential",
         "data": {

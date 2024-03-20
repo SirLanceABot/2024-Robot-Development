@@ -12,20 +12,20 @@
         "y": 6.978542833384062
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "N1 Flat"
     },
     {
       "anchor": {
-        "x": 1.0464724989884353,
-        "y": 6.75
+        "x": 0.85,
+        "y": 6.7
       },
       "prevControl": {
-        "x": 1.5240868633767486,
-        "y": 7.13787578103957
+        "x": 1.3276143643883134,
+        "y": 7.08787578103957
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "kAmp"
     }
   ],
   "rotationTargets": [
