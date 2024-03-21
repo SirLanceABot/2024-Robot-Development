@@ -348,6 +348,8 @@ public class RobotContainer
         NamedCommands.registerCommand("Get Flywheel To Speed", Commands4237.getFlywheelToSpeedCommand(55.0));
         NamedCommands.registerCommand("Get Pivot To Source Shoot Angle", Commands4237.getPivotToSourceShootAngleCommand());
         NamedCommands.registerCommand("Get Pivot To Stage Shoot Angle", Commands4237.getPivotToStageShootAngleCommand());
+        NamedCommands.registerCommand("Autonomous Stage Shoot", Commands4237.autonomousStageShootCommand());
+
         
         if(intakePositioning != null)
         {
