@@ -9,7 +9,9 @@ import java.nio.file.Path;
 import java.sql.Driver;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -80,6 +82,8 @@ public class Robot extends TimedRobot
         DataLogManager.start();
         // addPeriodic(() -> robotContainer.setAlliance(DriverStation.getAlliance()), 1);
         // enableLiveWindowInTest(true);
+        FollowPathCommand.warmupCommand().schedule();
+        PathfindingCommand.warmupCommand().schedule();
     }
 
     /**

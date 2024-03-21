@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8508506138825311,
-        "y": 7.531045745755326
+        "x": 1.8430493800489387,
+        "y": 7.284168115192696
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 7.7
       },
       "prevControl": {
-        "x": 1.8352316213603153,
-        "y": 7.072256788517354
+        "x": 1.8430493800489387,
+        "y": 7.469193775872724
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "shoot"
+                "name": "Extend Amp Assist"
               }
             }
           ]
