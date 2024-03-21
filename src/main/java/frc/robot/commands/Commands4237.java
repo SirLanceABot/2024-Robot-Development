@@ -899,6 +899,63 @@ public final class Commands4237
         }
     }
 
+    public static Command autonomousStageShootCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            // Commands.waitSeconds(1.0)
+            // rotateToSpeakerCommand()
+            // .andThen(
+            Commands.either(
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
+            .andThen(
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                //                                 .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(39.5, 55.0))
+                                                .withTimeout(1.0)
+                .deadlineWith(
+                    robotContainer.flywheel.shootCommand(() -> 55.0),
+                    robotContainer.pivot.setAngleCommand(() -> 39.5)))
+            .andThen(
+                Commands.waitSeconds(0.5)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
+                    // .until(() -> !robotContainer.indexWheelsProximity.isDetectedSupplier().getAsBoolean())
+            // .andThen(
+            //     Commands.waitSeconds(1.0))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
+                    // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.index.stopCommand(),
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed))),
+                // robotContainer.flywheel.stopCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                //     robotContainer.index.stopCommand()))
+                
+                Commands.waitSeconds(0.1),
+                // Commands.none()
+                // .andThen(robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, () -> 0.0, () -> 1)),
+
+                robotContainer.indexWheelsProximity.isDetectedSupplier()
+            )
+            .withName("Autonomous Shoot");
+                    // robotContainer.pivot.setAngleCommand(32.0)));
+
+        }
+        else
+        {
+            // return Commands.none();
+            return Commands.waitSeconds(0.1);
+
+        }
+    }
+
     public static Command autonomousFirstShootCommand()
     {
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.indexWheelsProximity != null)
