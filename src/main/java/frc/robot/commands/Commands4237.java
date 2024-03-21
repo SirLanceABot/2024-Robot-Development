@@ -361,6 +361,34 @@ public final class Commands4237
         }
     }
 
+    public static Command getPivotToSourceShootAngleCommand()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return
+            robotContainer.pivot.setAngleCommand( () -> 48.0)
+            .withName("Get Pivot Angle to Source Shoot Angle");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command getPivotToStageShootAngleCommand()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return
+            robotContainer.pivot.setAngleCommand( () -> 39.5)
+            .withName("Get Pivot Angle to Stage Shoot Angle");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
     public static Command setAngleToCorrectSpeakerCommand()
     {
         double distance, angle = 0.0;

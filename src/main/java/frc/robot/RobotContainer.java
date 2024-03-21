@@ -346,6 +346,8 @@ public class RobotContainer
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
         NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
         NamedCommands.registerCommand("Get Flywheel To Speed", Commands4237.getFlywheelToSpeedCommand(55.0));
+        NamedCommands.registerCommand("Get Pivot To Source Shoot Angle", Commands4237.getPivotToSourceShootAngleCommand());
+        NamedCommands.registerCommand("Get Pivot To Stage Shoot Angle", Commands4237.getPivotToStageShootAngleCommand());
         
         if(intakePositioning != null)
         {

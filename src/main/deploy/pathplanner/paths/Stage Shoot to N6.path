@@ -3,37 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.16,
-        "y": 2.39
+        "x": 4.1308231769005905,
+        "y": 4.997467170075583
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.943500126994153,
-        "y": 0.2664146417154079
+        "x": 5.777320481194635,
+        "y": 3.9307224377160623
       },
       "isLocked": false,
-      "linkedName": "N7"
+      "linkedName": "Stage Shoot"
     },
     {
       "anchor": {
-        "x": 2.29,
-        "y": 3.68
+        "x": 8.15,
+        "y": 4.11
       },
       "prevControl": {
-        "x": 2.9285610979153973,
-        "y": 2.980080747696906
+        "x": 7.15,
+        "y": 4.11
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Source Shoot"
+      "linkedName": "N6"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Flywheel Marker",
-      "waypointRelativePos": 0.25,
+      "name": "Intake Marker",
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -41,24 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Get Flywheel To Speed"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Pivot Marker",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": null
+                "name": "Intake From Floor Front"
               }
             }
           ]
@@ -67,14 +50,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.75,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 1080.0,
     "maxAngularAcceleration": 1728.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
@@ -83,5 +66,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
