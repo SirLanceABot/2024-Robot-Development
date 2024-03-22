@@ -5,6 +5,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -52,14 +54,18 @@ public class AutonomousTab
     
 
     private GenericEntry successfulDownload;
+    private GenericEntry doesAutonomousExist;
     private GenericEntry errorMessageBox;
     private GenericEntry autonomousNameBox;
+    
 
     // Create the Button object
     private SendableChooser<Boolean> sendDataButton = new SendableChooser<>();
+
  
     private ButtonState previousButtonState = ButtonState.kStillReleased;
     private boolean isDataValid = true;
+    private boolean isAutoValid = false;
     private String errorMessage = "No Errors";
     public String autonomousName = AutoCommandList.pathPlannerString;
 
@@ -83,6 +89,9 @@ public class AutonomousTab
         createSendDataButton();
         successfulDownload = createSuccessfulDownloadBox();
         successfulDownload.setBoolean(false);
+
+        doesAutonomousExist = createDoesAutonomousExistBox();
+        doesAutonomousExist.setBoolean(false);
 
         errorMessageBox = createErrorMessageBox();
         autonomousNameBox = createAutonomousNameBox();
@@ -324,6 +333,21 @@ public class AutonomousTab
              .getEntry();
     }
 
+    private GenericEntry createDoesAutonomousExistBox()
+    {
+        Map<String, Object> booleanBoxProperties = new HashMap<>();
+    
+        booleanBoxProperties.put("Color when true", "Lime");
+        booleanBoxProperties.put("Color when false", "Red");
+        
+        return autonomousTab.add("Does Autonomous Exist", false)
+             .withWidget(BuiltInWidgets.kBooleanBox)
+             .withPosition(19, 10)
+             .withSize(4, 4)
+             .withProperties(booleanBoxProperties)
+             .getEntry();
+    }
+
     /**
     * <b>Error Message</b> Box
     * <p>Create an entry in the Network Table and add the Box to the Shuffleboard Tab
@@ -365,11 +389,13 @@ public class AutonomousTab
     public boolean isNewData()
     {
         boolean isNewData = false;
+        
         boolean isSendDataButtonPressed = sendDataButton.getSelected();
 
         switch(previousButtonState)
         {
             case kStillReleased:
+            successfulDownload.setBoolean(false);
                 if(isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kPressed;
@@ -383,15 +409,27 @@ public class AutonomousTab
                 {
                     successfulDownload.setBoolean(true);
                     updateAutonomousTabData();
+                    if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+                    {
+                        doesAutonomousExist.setBoolean(true);
+                    }
+
                     isNewData = true;
+                    
+                    
                     // errorMessageBox.setString(errorMessage);
                     //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                     
                 }
                 else
                 {
+                    if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+                    {
+                        doesAutonomousExist.setBoolean(true);
+                    }
                     successfulDownload.setBoolean(false);
                     DriverStation.reportWarning(errorMessage, false);
+                    
                     // errorMessageBox.setString(errorMessage);
                     //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 }
@@ -428,6 +466,7 @@ public class AutonomousTab
         errorMessage = "No Errors";
         String msg = "";
         boolean isValid = true;
+        boolean autoExists = false;
         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
         
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
@@ -509,6 +548,12 @@ public class AutonomousTab
             msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
         }
 
+        // if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+        // {
+        //     // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
+        //     autoExists = true;
+            
+        // }
         
 
         // Do NOT remove any of the remaining code
@@ -524,6 +569,7 @@ public class AutonomousTab
 
         // 
         isDataValid = isValid;
+        isAutoValid = autoExists;
 
     }   
 
