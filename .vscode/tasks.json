@@ -1,0 +1,25 @@
+{
+    // See https://code.visualstudio.com/docs/editor/tasks
+    // for the documentation about the tasks.json format
+    //
+    // put this "tasks.json" file in the "project" folder ".vscode" subfolder
+    //
+    // ctrl - shift - P  is the speed key for the command palette
+    //
+    // select the Command Palette and type Tasks:Run Tasks
+
+    "version": "2.0.0",
+    "tasks": [
+        // deploy the project to refresh the PathPlanner files after clearing the roboRIO with this task
+        {
+            "label": "Clear roboRIO Paths and Autos",
+            "type": "shell",
+            "windows": {
+                //"command": "\"c:\\Program Files\\PuTTY\\pscp.exe\" -v -pw raspberry pi@wpilibpi.local:/home/pi/logs/VisionErrors.txt .\\VisionErrors.txt"
+                "command": "ssh admin@10.42.37.2 cd /home/lvuser/deploy/pathplanner/autos/;rm *.auto;cd /home/lvuser/deploy/pathplanner/paths/;rm *.path"     
+            },
+            "presentation": {"focus": true},
+            "problemMatcher": []
+        }
+    ]
+}
