@@ -15,7 +15,6 @@
             "label": "Clear roboRIO Paths and Autos",
             "type": "shell",
             "windows": {
-                //"command": "\"c:\\Program Files\\PuTTY\\pscp.exe\" -v -pw raspberry pi@wpilibpi.local:/home/pi/logs/VisionErrors.txt .\\VisionErrors.txt"
                 "command": "ssh admin@10.42.37.2 cd /home/lvuser/deploy/pathplanner/autos/;rm *.auto;cd /home/lvuser/deploy/pathplanner/paths/;rm *.path"     
             },
             "presentation": {"focus": true},
