@@ -3,59 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.7
+        "x": 3.9310570049711533,
+        "y": 5.262745382633622
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.754635509271019,
-        "y": 6.156972313944628
+        "x": 5.577554309265198,
+        "y": 4.196000650274101
       },
       "isLocked": false,
-      "linkedName": "kAmp"
+      "linkedName": "Stage Shoot"
     },
     {
       "anchor": {
-        "x": 3.681031806508058,
-        "y": 6.171224564671352
+        "x": 8.15,
+        "y": 4.11
       },
       "prevControl": {
-        "x": 2.5984286364406066,
-        "y": 6.269118653515086
-      },
-      "nextControl": {
-        "x": 4.763634976575506,
-        "y": 6.073330475827619
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.29876104196653,
-        "y": 5.757909293596365
-      },
-      "prevControl": {
-        "x": 6.061157677870912,
-        "y": 7.382665876442864
+        "x": 7.15,
+        "y": 4.11
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "N5"
+      "linkedName": "N6"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.2,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -79,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -30.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 60.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

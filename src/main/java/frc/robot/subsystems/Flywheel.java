@@ -273,7 +273,7 @@ public class Flywheel extends Subsystem4237
 
     public double calculateSpeedFromDistance(DoubleSupplier distance)
     {
-        System.out.println(speedShotMap.get(distance.getAsDouble() * 3.2808));
+        // System.out.println(speedShotMap.get(distance.getAsDouble() * 3.2808));
         return speedShotMap.get(distance.getAsDouble() * 3.2808);
     }
 

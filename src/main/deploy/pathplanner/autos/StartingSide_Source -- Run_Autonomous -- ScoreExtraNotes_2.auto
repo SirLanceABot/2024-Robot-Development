@@ -53,7 +53,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.25
                       }
                     },
                     {
@@ -72,6 +72,12 @@
           "type": "named",
           "data": {
             "name": "Autonomous First Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot To Default Angle"
           }
         },
         {
@@ -97,7 +103,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.25
                       }
                     },
                     {

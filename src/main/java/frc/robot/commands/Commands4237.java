@@ -9,6 +9,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.util.Units;
@@ -354,6 +355,34 @@ public final class Commands4237
                 robotContainer.flywheel.shootCommand(() -> speed))
             .handleInterrupt( () -> setCandleDefaultRed())
             .withName("Get Flywheel To Speed");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command getPivotToSourceShootAngleCommand()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return
+            robotContainer.pivot.setAngleCommand( () -> 48.0)
+            .withName("Get Pivot Angle to Source Shoot Angle");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command getPivotToStageShootAngleCommand()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return
+            robotContainer.pivot.setAngleCommand( () -> 39.5)
+            .withName("Get Pivot Angle to Stage Shoot Angle");
         }
         else
         {
@@ -797,16 +826,22 @@ public final class Commands4237
 
     public static Command driveToAmpCommand()
     {
+        Pose2d ampPose = new Pose2d(1.83, 7.70, new Rotation2d(-90.0));
         PathPlannerPath pathToAmp = PathPlannerPath.fromPathFile("to Amp");
         PathConstraints constraints = new PathConstraints(
-            2.0, 1.5,
+            1.0, 1.5,
             Units.degreesToRadians(1080), Units.degreesToRadians(1728));
 
         if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.ampAssist != null)
         {
             return
+            AutoBuilder.pathfindToPoseFlipped(ampPose, constraints)
+            .alongWith(
+                Commands4237.extendAmpCommand());
+            // .andThen(
+            //     AutoBuilder.followPath(pathToAmp));
             // AutoBuilder.pathfindThenFollowPath(pathToAmp, constraints);
-            AutoBuilder.followPath(pathToAmp);
+            // AutoBuilder.followPath(pathToAmp);
         }
         else
         {
@@ -834,6 +869,63 @@ public final class Commands4237
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
                     robotContainer.pivot.setAngleCommand(() -> 48.0)))
+            .andThen(
+                Commands.waitSeconds(0.5)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
+                    // .until(() -> !robotContainer.indexWheelsProximity.isDetectedSupplier().getAsBoolean())
+            // .andThen(
+            //     Commands.waitSeconds(1.0))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
+                    // robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.index.stopCommand(),
+                    // robotContainer.candle.setRedCommand()))
+                    setCandleCommand(LEDColor.kRed))),
+                // robotContainer.flywheel.stopCommand()
+                // .alongWith(
+                //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                //     robotContainer.index.stopCommand()))
+                
+                Commands.waitSeconds(0.1),
+                // Commands.none()
+                // .andThen(robotContainer.drivetrain.driveCommand(() -> 0.0, () -> 0.0, () -> 0.0, () -> 1)),
+
+                robotContainer.indexWheelsProximity.isDetectedSupplier()
+            )
+            .withName("Autonomous Shoot");
+                    // robotContainer.pivot.setAngleCommand(32.0)));
+
+        }
+        else
+        {
+            // return Commands.none();
+            return Commands.waitSeconds(0.1);
+
+        }
+    }
+
+    public static Command autonomousStageShootCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null && robotContainer.indexWheelsProximity != null)
+        {
+            return
+            // Commands.waitSeconds(1.0)
+            // rotateToSpeakerCommand()
+            // .andThen(
+            Commands.either(
+            // robotContainer.candle.setPurpleCommand()
+            setCandleCommand(LEDColor.kPurple)
+            .andThen(
+                // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
+                //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
+                //                                 .withTimeout(1.0)
+                Commands.waitUntil(isReadyToShoot(39.5, 55.0))
+                                                .withTimeout(1.0)
+                .deadlineWith(
+                    robotContainer.flywheel.shootCommand(() -> 55.0),
+                    robotContainer.pivot.setAngleCommand(() -> 39.5)))
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(

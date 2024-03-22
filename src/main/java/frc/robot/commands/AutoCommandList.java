@@ -119,7 +119,19 @@ public class AutoCommandList extends SequentialCommandGroup
             // pathPlannerString += autonomousTabData.scoreExtraNotes;
         
         System.out.println(pathPlannerString);
-        add(AutoBuilder.buildAuto(pathPlannerString));
+
+        //if (pathPlannerString == "StartingSide Amp --")
+        // add(AutoBuilder.buildAuto(pathPlannerString));
+
+        // if(AutoBuilder.getAllAutoNames().contains(pathPlannerString))
+        // {
+        //     add(AutoBuilder.buildAuto(pathPlannerString));
+        // }
+
+        // if(pathPlannerString == "Source 3 Piece" || pathPlannerString == "StartingSide_Source -- Do_Nothing" || pathPlannerString == "StartingSide_Source -- Run_Autonomous -- ScoreExtraNotes_0" || pathPlannerString == "StartingSide_Source -- Run_Autonomous -- ScoreExtraNotes_1" || pathPlannerString == "StartingSide_Source -- Run_Autonomous -- ScoreExtraNotes_2" || pathPlannerString == "StartingSide_Sub -- Do_Nothing" || pathPlannerString == "StartingSide_Sub -- Run_Autonomous -- ScoreExtraNotes_0" || pathPlannerString == "StartingSide_Sub -- Run_Autonomous -- ScoreExtraNotes_1" || pathPlannerString == "StartingSide_Sub -- Run_Autonomous -- ScoreExtraNotes_2" || pathPlannerString == "OLD StartingSide_Amp -- Run_Autonomous -- ScoreExtraNotes_1" || pathPlannerString == "OLD StartingSide_Source -- Run_Autonomous -- ScoreExtraNotes_1" || pathPlannerString == "StartingSide_Amp -- Do_Nothing" || pathPlannerString == "StartingSide_Amp -- Run_Autonomous -- ScoreExtraNotes_0" || pathPlannerString == "StartingSide_Amp -- Run_Autonomous -- ScoreExtraNotes_1" || pathPlannerString == "StartingSide_Sub -- Run_Autonomous -- ScoreExtraNotes_3")
+        // {
+        //     add(AutoBuilder.buildAuto(pathPlannerString));
+        // }
     
 
     }

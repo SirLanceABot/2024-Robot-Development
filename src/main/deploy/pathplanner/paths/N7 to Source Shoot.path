@@ -47,6 +47,23 @@
           ]
         }
       }
+    },
+    {
+      "name": "Pivot Marker",
+      "waypointRelativePos": 0.3,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Get Pivot To Source Shoot Angle"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {

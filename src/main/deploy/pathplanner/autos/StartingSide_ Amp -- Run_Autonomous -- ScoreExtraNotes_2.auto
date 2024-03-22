@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.85,
+      "y": 6.7
+    },
+    "rotation": 60.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Positioning Up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Shoot From Subwoofer"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kAmp to N5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N5 to Stage Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Stage Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot To Default Angle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Stage Shoot to N6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N6 to Stage Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Stage Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

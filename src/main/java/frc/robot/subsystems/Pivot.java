@@ -370,7 +370,7 @@ public class Pivot extends Subsystem4237
      */
     public double calculateAngleFromDistance(DoubleSupplier distance)
     {
-        System.out.println(angleShotMap.get(distance.getAsDouble() * 3.2808));
+        // System.out.println(angleShotMap.get(distance.getAsDouble() * 3.2808));
         return angleShotMap.get(distance.getAsDouble() * 3.2808);
     }
 
