@@ -9,6 +9,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.util.Units;
@@ -825,16 +826,22 @@ public final class Commands4237
 
     public static Command driveToAmpCommand()
     {
+        Pose2d ampPose = new Pose2d(1.83, 7.70, new Rotation2d(-90.0));
         PathPlannerPath pathToAmp = PathPlannerPath.fromPathFile("to Amp");
         PathConstraints constraints = new PathConstraints(
-            2.0, 1.5,
+            1.0, 1.5,
             Units.degreesToRadians(1080), Units.degreesToRadians(1728));
 
         if(robotContainer.drivetrain != null && robotContainer.pivot != null && robotContainer.ampAssist != null)
         {
             return
+            AutoBuilder.pathfindToPoseFlipped(ampPose, constraints)
+            .alongWith(
+                Commands4237.extendAmpCommand());
+            // .andThen(
+            //     AutoBuilder.followPath(pathToAmp));
             // AutoBuilder.pathfindThenFollowPath(pathToAmp, constraints);
-            AutoBuilder.followPath(pathToAmp);
+            // AutoBuilder.followPath(pathToAmp);
         }
         else
         {
