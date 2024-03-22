@@ -51,7 +51,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Shoot"
+            "name": "Autonomous Stage Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot To Default Angle"
           }
         },
         {
@@ -75,7 +81,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Shoot"
+            "name": "Autonomous Stage Shoot"
           }
         }
       ]

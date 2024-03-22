@@ -50,7 +50,7 @@
     },
     {
       "name": "Pivot Marker",
-      "waypointRelativePos": 0.25,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "parallel",
         "data": {
@@ -58,7 +58,7 @@
             {
               "type": "named",
               "data": {
-                "name": null
+                "name": "Get Pivot To Source Shoot Angle"
               }
             }
           ]

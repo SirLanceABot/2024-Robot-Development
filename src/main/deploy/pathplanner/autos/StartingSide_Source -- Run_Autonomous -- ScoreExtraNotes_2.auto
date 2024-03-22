@@ -75,6 +75,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Pivot To Default Angle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Source Shoot to N6"
