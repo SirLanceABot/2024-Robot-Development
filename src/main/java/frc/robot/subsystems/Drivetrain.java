@@ -309,6 +309,18 @@ public class Drivetrain extends Subsystem4237
         }
     }
 
+    public double getAngleToAmpZone()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return poseEstimator.getAngleToRedAmpZone();
+        }
+        else
+        {
+            return poseEstimator.getAngleToBlueAmpZone();
+        }
+    }
+
     public double getDistanceToSpeaker()
     {
         if(isRedAllianceSupplier.getAsBoolean())
@@ -320,6 +332,19 @@ public class Drivetrain extends Subsystem4237
             return getDistanceToBlueSpeaker();
         }
     }
+
+    public double getDistanceToAmpZone()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return poseEstimator.getDistanceToRedAmpZone();
+        }
+        else
+        {
+            return poseEstimator.getDistanceToRedAmpZone();
+        }
+    }
+
 
     /**
      * PoseEstimator wrapper method

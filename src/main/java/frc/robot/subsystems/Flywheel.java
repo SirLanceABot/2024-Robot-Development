@@ -70,7 +70,8 @@ public class Flywheel extends Subsystem4237
     private final TalonFX4237 motor = new TalonFX4237(Constants.Flywheel.MOTOR_PORT, Constants.Flywheel.MOTOR_CAN_BUS, "flywheelMotor");
     // private RelativeEncoder encoder;
     // BangBangController controller = new BangBangController();
-    private final InterpolatingDoubleTreeMap speedShotMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap speakerVelocityShotMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap ampVelocityPassMap = new InterpolatingDoubleTreeMap();
 
     private ResetState resetState = ResetState.kDone;
 
@@ -114,6 +115,7 @@ public class Flywheel extends Subsystem4237
         System.out.println("  Constructor Started:  " + fullClassName);
         configTalonFX();
         configShotMap();
+        configPassMap();
 
         // if(tunePID)
         // {
@@ -164,19 +166,28 @@ public class Flywheel extends Subsystem4237
         // speedShotMap.put(15.0, 55.0);
 
         // These are for the real world distance
-        speedShotMap.put(4.5, 65.0);
-        speedShotMap.put(5.5, 65.0);
-        speedShotMap.put(6.5, 65.0);
-        speedShotMap.put(7.5, 65.0);
-        speedShotMap.put(8.5, 60.0);
-        speedShotMap.put(9.5, 60.0);
-        speedShotMap.put(10.5, 60.0);
-        speedShotMap.put(11.5, 60.0);
-        speedShotMap.put(12.5, 55.0);
-        speedShotMap.put(13.5, 55.0);
-        speedShotMap.put(14.5, 55.0);
-        speedShotMap.put(15.5, 55.0);
+        speakerVelocityShotMap.put(4.5, 65.0);
+        speakerVelocityShotMap.put(5.5, 65.0);
+        speakerVelocityShotMap.put(6.5, 65.0);
+        speakerVelocityShotMap.put(7.5, 65.0);
+        speakerVelocityShotMap.put(8.5, 60.0);
+        speakerVelocityShotMap.put(9.5, 60.0);
+        speakerVelocityShotMap.put(10.5, 60.0);
+        speakerVelocityShotMap.put(11.5, 60.0);
+        speakerVelocityShotMap.put(12.5, 55.0);
+        speakerVelocityShotMap.put(13.5, 55.0);
+        speakerVelocityShotMap.put(14.5, 55.0);
+        speakerVelocityShotMap.put(15.5, 55.0);
     }
+
+    private void configPassMap()
+    {
+        ampVelocityPassMap.put(27.0, 47.0);
+        ampVelocityPassMap.put(32.0, 50.0);
+        ampVelocityPassMap.put(37.0, 53.0);
+    }
+
+
 
     public void resetEncoder()
     {
@@ -271,11 +282,19 @@ public class Flywheel extends Subsystem4237
         };
     }
 
-    public double calculateSpeedFromDistance(DoubleSupplier distance)
+    public double calculateShootVelocityFromDistance(DoubleSupplier distance)
     {
         // System.out.println(speedShotMap.get(distance.getAsDouble() * 3.2808));
-        return speedShotMap.get(distance.getAsDouble() * 3.2808);
+        return speakerVelocityShotMap.get(distance.getAsDouble() * 3.2808);
     }
+
+    public double calculatePassVelocityFromDistance(DoubleSupplier distance)
+    {
+        // System.out.println(speedShotMap.get(distance.getAsDouble() * 3.2808));
+        return ampVelocityPassMap.get(distance.getAsDouble() * 3.2808);
+    }
+
+    
 
     public Command shootCommand(DoubleSupplier speed)
     {

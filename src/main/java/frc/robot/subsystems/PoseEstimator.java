@@ -47,6 +47,8 @@ public class PoseEstimator extends Subsystem4237
     private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
     private final double[] blueSpeakerCoords = {0.076, 5.45};   // bad y {0.076, 5.547868};
     private final double[] redSpeakerCoords = {16.465042, 5.45};    // bad y {16.465042, 5.547868};
+    private final double[] blueAmpZoneCoords = {1.0, 7.5};
+    private final double[] redAmpZoneCoords = {15.5, 7.5};
     private final double[] fieldDimensions = {16.542, 8.211};
 
     private Matrix<N3, N1> visionStdDevs;
@@ -187,6 +189,48 @@ public class PoseEstimator extends Subsystem4237
         }
     }
 
+    public double getAngleToBlueAmpZone()
+    {
+        double xPose = periodicData.estimatedPose.getX();
+        double yPose = periodicData.estimatedPose.getY();
+        double deltaX = Math.abs(blueAmpZoneCoords[0] - xPose);
+        double deltaY = Math.abs(blueAmpZoneCoords[1] - yPose);
+        double angleRads = Math.atan2(deltaY, deltaX);
+        if(yPose > blueAmpZoneCoords[1])
+        {
+            return -Math.toDegrees(angleRads);
+        }
+        else if(yPose < blueAmpZoneCoords[1])
+        {
+            return Math.toDegrees(angleRads);
+        }
+        else
+        {
+            return 0.0;
+        }
+    }
+
+    public double getAngleToRedAmpZone()
+    {
+        double xPose = periodicData.estimatedPose.getX();
+        double yPose = periodicData.estimatedPose.getY();
+        double deltaX = Math.abs(redAmpZoneCoords[0] - xPose);
+        double deltaY = Math.abs(redAmpZoneCoords[1] - yPose);
+        double angleRads = Math.atan2(deltaY, deltaX);
+        if(yPose > redAmpZoneCoords[1])
+        {
+            return -Math.toDegrees(angleRads);
+        }
+        else if(yPose < redAmpZoneCoords[1])
+        {
+            return Math.toDegrees(angleRads);
+        }
+        else
+        {
+            return 0.0;
+        }
+    }
+
     /**
      * @return Distance to blue speaker in meters
      */
@@ -205,6 +249,26 @@ public class PoseEstimator extends Subsystem4237
         Translation2d speakerTranslation = new Translation2d(redSpeakerCoords[0], redSpeakerCoords[1]);
         Translation2d robotTranslation = periodicData.estimatedPose.getTranslation();
         return robotTranslation.getDistance(speakerTranslation);
+    }
+
+    /**
+     * @return Distance to blue amp zone in meters
+     */
+    public double getDistanceToBlueAmpZone()
+    {
+        Translation2d ampZoneTranslation = new Translation2d(blueAmpZoneCoords[0], blueAmpZoneCoords[1]);
+        Translation2d robotTranslation = periodicData.estimatedPose.getTranslation();
+        return robotTranslation.getDistance(ampZoneTranslation);
+    }
+
+    /**
+     * @return Distance to blue amp zone in meters
+     */
+    public double getDistanceToRedAmpZone()
+    {
+        Translation2d ampZoneTranslation = new Translation2d(redAmpZoneCoords[0], redAmpZoneCoords[1]);
+        Translation2d robotTranslation = periodicData.estimatedPose.getTranslation();
+        return robotTranslation.getDistance(ampZoneTranslation);
     }
 
     public void resetPosition(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions, Pose2d newPose)
