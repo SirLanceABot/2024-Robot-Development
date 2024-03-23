@@ -108,7 +108,8 @@ public class Pivot extends Subsystem4237
     private final PeriodicData periodicData = new PeriodicData();
     public final ClassConstants classConstants = new ClassConstants();
     private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
-    private final InterpolatingDoubleTreeMap angleShotMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap speakerAngleShotMap = new InterpolatingDoubleTreeMap();
+    private final InterpolatingDoubleTreeMap ampAnglePassMap = new InterpolatingDoubleTreeMap();
 
     // private AnalogEncoder rotaryEncoder = new AnalogEncoder(3);
     
@@ -130,6 +131,7 @@ public class Pivot extends Subsystem4237
         configCANcoder();
         configPivotMotor();
         configShotMap();
+        configPassMap();
 
         // setDefaultCommand(setAngleCommand(() -> classConstants.DEFAULT_ANGLE));
         // periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
@@ -224,18 +226,18 @@ public class Pivot extends Subsystem4237
         // angleShotMap.put(15.0, 39.1);
         
         // These are for the real world distance
-        angleShotMap.put(4.5, 64.0);
-        angleShotMap.put(5.5, 62.8);
-        angleShotMap.put(6.5, 56.7);
-        angleShotMap.put(7.5, 52.5);
-        angleShotMap.put(8.5, 49.9);
-        angleShotMap.put(9.5, 47.6);
-        angleShotMap.put(10.5, 44.0);
-        angleShotMap.put(11.5, 42.2);
-        angleShotMap.put(12.5, 41.3);
-        angleShotMap.put(13.5, 40.65);
-        angleShotMap.put(14.5, 39.64);
-        angleShotMap.put(15.5, 39.1);
+        speakerAngleShotMap.put(4.5, 64.0);
+        speakerAngleShotMap.put(5.5, 62.8);
+        speakerAngleShotMap.put(6.5, 56.7);
+        speakerAngleShotMap.put(7.5, 52.5);
+        speakerAngleShotMap.put(8.5, 49.9);
+        speakerAngleShotMap.put(9.5, 47.6);
+        speakerAngleShotMap.put(10.5, 44.0);
+        speakerAngleShotMap.put(11.5, 42.2);
+        speakerAngleShotMap.put(12.5, 41.3);
+        speakerAngleShotMap.put(13.5, 40.65);
+        speakerAngleShotMap.put(14.5, 39.64);
+        speakerAngleShotMap.put(15.5, 39.1);
 
         // angleShotMap.put(5.0, 64.0);
         // angleShotMap.put(6.0, 62.8);
@@ -250,6 +252,15 @@ public class Pivot extends Subsystem4237
         // angleShotMap.put(15.0, 39.64);
         // angleShotMap.put(16.0, 39.1);
     }
+
+    private void configPassMap()
+    {
+        ampAnglePassMap.put(27.0, 58.1);
+        ampAnglePassMap.put(32.0, 50.3);
+        ampAnglePassMap.put(37.0, 47.7);
+    }
+
+
 
     public void moveUp()
     {
@@ -368,11 +379,24 @@ public class Pivot extends Subsystem4237
      * @param distance (m)
      * @return angle pivot should move to
      */
-    public double calculateAngleFromDistance(DoubleSupplier distance)
+    public double calculateShootAngleFromDistance(DoubleSupplier distance)
     {
         // System.out.println(angleShotMap.get(distance.getAsDouble() * 3.2808));
-        return angleShotMap.get(distance.getAsDouble() * 3.2808);
+        return speakerAngleShotMap.get(distance.getAsDouble() * 3.2808);
     }
+
+    /**
+     * 
+     * @param distance (m)
+     * @return angle pivot should move to
+     */
+    public double calculatePassAngleFromDistance(DoubleSupplier distance)
+    {
+        // System.out.println(angleShotMap.get(distance.getAsDouble() * 3.2808));
+        return ampAnglePassMap.get(distance.getAsDouble() * 3.2808);
+    }
+
+    
 
     public Command setAngleCommand(DoubleSupplier angle)
     {

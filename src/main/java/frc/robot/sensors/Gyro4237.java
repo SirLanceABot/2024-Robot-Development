@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.Pigeon2FeaturesConfigs;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
@@ -44,6 +45,7 @@ public class Gyro4237 extends Sensor4237
         private Rotation2d rotation2d;
 
         // Outputs
+        private DoubleEntry yawEntry;
     }
 
     public static final double RESET_DELAY = 0.1;
@@ -60,7 +62,7 @@ public class Gyro4237 extends Sensor4237
     private ResetState resetState = ResetState.kDone;
     private Timer timer = new Timer();
 
-    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
+    private NetworkTable ASTable;// = NetworkTableInstance.getDefault().getTable("ASTable");
 
     private final PeriodicData periodicData = new PeriodicData();
 
@@ -68,6 +70,9 @@ public class Gyro4237 extends Sensor4237
     {
         super("Gyro4237");
         System.out.println("  Constructor Started:  " + fullClassName);
+
+        ASTable = NetworkTableInstance.getDefault().getTable(Constants.ADVANTAGE_SCOPE_TABLE_NAME);
+        periodicData.yawEntry = ASTable.getDoubleTopic("GyroYaw").getEntry(0.0);
 
         configGyro();
         periodicData.rotation2d = gyro.getRotation2d();
@@ -188,6 +193,9 @@ public class Gyro4237 extends Sensor4237
     public void writePeriodicOutputs()
     {
         SmartDashboard.putNumber("Current Yaw:", getYaw());
+        
+        periodicData.yawEntry.set(periodicData.yaw);
+        // ASTable.getEntry("gyro yaw").setDouble(periodicData.yaw);
     }
 
     @Override
@@ -209,8 +217,6 @@ public class Gyro4237 extends Sensor4237
             case kDone:
                 break;
         }
-
-        ASTable.getEntry("gyro yaw").setDouble(periodicData.yaw);
     }
 
     @Override

@@ -1,13 +1,10 @@
 package frc.robot.subsystems;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -22,13 +19,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.DoubleArrayEntry;
+import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive.WheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.SwerveModuleSetup;
-import frc.robot.RobotContainer;
 import frc.robot.controls.AdaptiveSlewRateLimiter;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
@@ -73,14 +66,26 @@ public class Drivetrain extends Subsystem4237
         private SwerveModulePosition backRightPosition;
 
 
-        private DoubleLogEntry fltLogEntry;
-        private DoubleLogEntry frtLogEntry;
-        private DoubleLogEntry bltLogEntry;
-        private DoubleLogEntry brtLogEntry;
-        private DoubleLogEntry fldLogEntry;
-        private DoubleLogEntry frdLogEntry;
-        private DoubleLogEntry bldLogEntry;
-        private DoubleLogEntry brdLogEntry;
+        private DoubleEntry fltEntry;
+        private DoubleEntry frtEntry;
+        private DoubleEntry bltEntry;
+        private DoubleEntry brtEntry;
+        private DoubleEntry fldEntry;
+        private DoubleEntry frdEntry;
+        private DoubleEntry bldEntry;
+        private DoubleEntry brdEntry;
+        private DoubleArrayEntry odometryEntry;
+        private DoubleArrayEntry inputModuleStatesEntry;
+        private DoubleArrayEntry outputModuleStatesEntry;
+
+        // private DoubleLogEntry fltLogEntry;
+        // private DoubleLogEntry frtLogEntry;
+        // private DoubleLogEntry bltLogEntry;
+        // private DoubleLogEntry brtLogEntry;
+        // private DoubleLogEntry fldLogEntry;
+        // private DoubleLogEntry frdLogEntry;
+        // private DoubleLogEntry bldLogEntry;
+        // private DoubleLogEntry brdLogEntry;
         
         // OUTPUTS
         private ChassisSpeeds chassisSpeeds;
@@ -112,11 +117,12 @@ public class Drivetrain extends Subsystem4237
     private final Gyro4237 gyro; //Pigeon2
     private BooleanSupplier isRedAllianceSupplier;
     private boolean useDataLog = true;
-    private final DataLog log;
+    // private final DataLog log;
     private final SwerveDriveKinematics kinematics;
     private final PoseEstimator poseEstimator;
 
-    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
+    private NetworkTable ASTable;// = NetworkTableInstance.getDefault().getTable("ASTable");
+    private final String networkTableName = Constants.ADVANTAGE_SCOPE_TABLE_NAME;
 
     private double kP = 0.07;
     private double kI = 0.0;
@@ -160,7 +166,8 @@ public class Drivetrain extends Subsystem4237
 
     private double shootingAngle = 0.0;
 
-    private PeriodicData periodicData = new PeriodicData();;
+    private PeriodicData periodicData = new PeriodicData();
+    private final double[] defaultValues = {0.0, 0.0, 0.0, 0.0};
     
     // *** CLASS CONSTRUCTOR ***
     public Drivetrain(Gyro4237 gyro, Camera[] cameraArray, boolean useFullRobot, boolean usePoseEstimator, BooleanSupplier isRedAllianceSupplier)//, DriverController driverController)
@@ -176,7 +183,12 @@ public class Drivetrain extends Subsystem4237
 
         this.isRedAllianceSupplier = isRedAllianceSupplier;
 
-        log = DataLogManager.getLog();
+        ASTable = NetworkTableInstance.getDefault().getTable(networkTableName);//getTable(Constants.NETWORK_TABLE_NAME);
+        periodicData.odometryEntry = ASTable.getDoubleArrayTopic("Odometry").getEntry(defaultValues);
+        periodicData.inputModuleStatesEntry = ASTable.getDoubleArrayTopic("InputModuleStates").getEntry(defaultValues);
+        periodicData.outputModuleStatesEntry = ASTable.getDoubleArrayTopic("OutputModuleStates").getEntry(defaultValues);
+        // log = DataLogManager.getLog();
+
         pidController.enableContinuousInput(-180, 180);
 
         if(useDataLog)
@@ -309,6 +321,18 @@ public class Drivetrain extends Subsystem4237
         }
     }
 
+    public double getAngleToAmpZone()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return poseEstimator.getAngleToRedAmpZone();
+        }
+        else
+        {
+            return poseEstimator.getAngleToBlueAmpZone();
+        }
+    }
+
     public double getDistanceToSpeaker()
     {
         if(isRedAllianceSupplier.getAsBoolean())
@@ -320,6 +344,19 @@ public class Drivetrain extends Subsystem4237
             return getDistanceToBlueSpeaker();
         }
     }
+
+    public double getDistanceToAmpZone()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return poseEstimator.getDistanceToRedAmpZone();
+        }
+        else
+        {
+            return poseEstimator.getDistanceToRedAmpZone();
+        }
+    }
+
 
     /**
      * PoseEstimator wrapper method
@@ -580,6 +617,16 @@ public class Drivetrain extends Subsystem4237
         drive(0.0, 0.0, rotationSpeed, false, false);
     }
 
+    public DoubleSupplier getTurnPowerToRotateToAmpZone()
+    {
+        return () ->
+        {
+            targetYaw = getAngleToAmpZone();
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
 
     public SwerveModulePosition[] getSwerveModulePositions()
     {
@@ -781,6 +828,20 @@ public class Drivetrain extends Subsystem4237
         //     isBlueAllianceSupplier);
     }
 
+    public Command lockRotationToAmpZoneCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale)
+    {
+        return
+        this.run(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    getTurnPowerToRotateToAmpZone().getAsDouble(), 
+                    true,
+                    true)
+                )
+                .withName("Lock Rotation To Amp Zone Command");
+    }
+
     public Command stopCommand()
     {
         return Commands.runOnce(() -> stopMotors());
@@ -956,7 +1017,8 @@ public class Drivetrain extends Subsystem4237
         double[] pose = {
             periodicData.odometry.getPoseMeters().getX(), periodicData.odometry.getPoseMeters().getY(), periodicData.odometry.getPoseMeters().getRotation().getDegrees()
         };
-        ASTable.getEntry("drivetrain odometry").setDoubleArray(pose);
+        periodicData.odometryEntry.set(pose);
+        // ASTable.getEntry("drivetrain odometry").setDoubleArray(pose);
 
 
         double[] inputModuleStates = {
@@ -964,7 +1026,8 @@ public class Drivetrain extends Subsystem4237
         periodicData.inputSwerveModuleStates[1].angle.getDegrees(), periodicData.inputSwerveModuleStates[1].speedMetersPerSecond,
         periodicData.inputSwerveModuleStates[2].angle.getDegrees(), periodicData.inputSwerveModuleStates[2].speedMetersPerSecond,
         periodicData.inputSwerveModuleStates[3].angle.getDegrees(), periodicData.inputSwerveModuleStates[3].speedMetersPerSecond};
-        ASTable.getEntry("input module states").setDoubleArray(inputModuleStates);
+        periodicData.inputModuleStatesEntry.set(inputModuleStates);
+        // ASTable.getEntry("input module states").setDoubleArray(inputModuleStates);
 
 
         double[] outputModuleStates = {
@@ -972,7 +1035,8 @@ public class Drivetrain extends Subsystem4237
         periodicData.outputModuleStates[1].angle.getDegrees(), periodicData.outputModuleStates[1].speedMetersPerSecond,
         periodicData.outputModuleStates[2].angle.getDegrees(), periodicData.outputModuleStates[2].speedMetersPerSecond,
         periodicData.outputModuleStates[3].angle.getDegrees(), periodicData.outputModuleStates[3].speedMetersPerSecond};
-        ASTable.getEntry("output module states").setDoubleArray(outputModuleStates);
+        periodicData.outputModuleStatesEntry.set(outputModuleStates);
+        // ASTable.getEntry("output module states").setDoubleArray(outputModuleStates);
     }
 
     public void feedWatchdog() 
@@ -988,31 +1052,57 @@ public class Drivetrain extends Subsystem4237
    * datalog
    */
 
-   void logEncodersInit()
+   private void logEncodersInit()
    {
+        periodicData.fltEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.fltEntry.setDefault(0.0);
+        periodicData.frtEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.frtEntry.setDefault(0.0);
+        periodicData.bltEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.bltEntry.setDefault(0.0);
+        periodicData.brtEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.brtEntry.setDefault(0.0);
 
-    String EncoderName = new String("/SwerveEncoders/"); // make a prefix tree structure for the ultrasonic data
-    // f front; b back; r right; l left; s steer; d drive
-    periodicData.fltLogEntry = new DoubleLogEntry(log, EncoderName+"flt", "RawCounts");
-    periodicData.frtLogEntry = new DoubleLogEntry(log, EncoderName+"frt", "RawCounts");
-    periodicData.bltLogEntry = new DoubleLogEntry(log, EncoderName+"blt", "RawCounts");
-    periodicData.brtLogEntry = new DoubleLogEntry(log, EncoderName+"brt", "RawCounts");
-    periodicData.fldLogEntry = new DoubleLogEntry(log, EncoderName+"fld", "RawCounts");
-    periodicData.frdLogEntry = new DoubleLogEntry(log, EncoderName+"frd", "RawCounts");
-    periodicData.bldLogEntry = new DoubleLogEntry(log, EncoderName+"bld", "RawCounts");
-    periodicData.brdLogEntry = new DoubleLogEntry(log, EncoderName+"brd", "RawCounts");
+        periodicData.fldEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.fldEntry.setDefault(0.0);
+        periodicData.frdEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.frdEntry.setDefault(0.0);
+        periodicData.bldEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.bldEntry.setDefault(0.0);
+        periodicData.brdEntry = ASTable.getDoubleTopic(networkTableName).getEntry(0.0);
+        // periodicData.brdEntry.setDefault(0.0);
+
+        // String EncoderName = new String("/SwerveEncoders/"); // make a prefix tree structure for the ultrasonic data
+        // // f front; b back; r right; l left; s steer; d drive
+        // periodicData.fltLogEntry = new DoubleLogEntry(log, EncoderName+"flt", "RawCounts");
+        // periodicData.frtLogEntry = new DoubleLogEntry(log, EncoderName+"frt", "RawCounts");
+        // periodicData.bltLogEntry = new DoubleLogEntry(log, EncoderName+"blt", "RawCounts");
+        // periodicData.brtLogEntry = new DoubleLogEntry(log, EncoderName+"brt", "RawCounts");
+        // periodicData.fldLogEntry = new DoubleLogEntry(log, EncoderName+"fld", "RawCounts");
+        // periodicData.frdLogEntry = new DoubleLogEntry(log, EncoderName+"frd", "RawCounts");
+        // periodicData.bldLogEntry = new DoubleLogEntry(log, EncoderName+"bld", "RawCounts");
+        // periodicData.brdLogEntry = new DoubleLogEntry(log, EncoderName+"brd", "RawCounts");
    }
 
-  void logEncoders()
+  private void logEncoders()
   {
-    periodicData.fltLogEntry.append(frontLeft.getTurningEncoderPosition());
-    periodicData.frtLogEntry.append(frontRight.getTurningEncoderPosition());
-    periodicData.bltLogEntry.append(backLeft.getTurningEncoderPosition());
-    periodicData.brtLogEntry.append(backRight.getTurningEncoderPosition());
-    periodicData.fldLogEntry.append(frontLeft.getDrivingEncoderRate());
-    periodicData.frdLogEntry.append(frontRight.getDrivingEncoderRate());
-    periodicData.bldLogEntry.append(backLeft.getDrivingEncoderRate());
-    periodicData.brdLogEntry.append(backRight.getDrivingEncoderRate());
+    periodicData.fltEntry.set(frontLeft.getTurningEncoderPosition());
+    periodicData.frtEntry.set(frontRight.getTurningEncoderPosition());
+    periodicData.bltEntry.set(backLeft.getTurningEncoderPosition());
+    periodicData.brtEntry.set(backRight.getTurningEncoderPosition());
+    periodicData.fldEntry.set(frontLeft.getDrivingEncoderRate());
+    periodicData.frdEntry.set(frontRight.getDrivingEncoderRate());
+    periodicData.bldEntry.set(backLeft.getDrivingEncoderRate());
+    periodicData.brdEntry.set(backRight.getDrivingEncoderRate());
+
+    // periodicData.fltLogEntry.append(frontLeft.getTurningEncoderPosition());
+    // periodicData.frtLogEntry.append(frontRight.getTurningEncoderPosition());
+    // periodicData.bltLogEntry.append(backLeft.getTurningEncoderPosition());
+    // periodicData.brtLogEntry.append(backRight.getTurningEncoderPosition());
+    // periodicData.fldLogEntry.append(frontLeft.getDrivingEncoderRate());
+    // periodicData.frdLogEntry.append(frontRight.getDrivingEncoderRate());
+    // periodicData.bldLogEntry.append(backLeft.getDrivingEncoderRate());
+    // periodicData.brdLogEntry.append(backRight.getDrivingEncoderRate());
   }
 
   public double flt()

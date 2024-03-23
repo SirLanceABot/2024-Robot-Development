@@ -119,14 +119,28 @@ public class OwenTest implements Test
         if(joystick.getRawButton(1))
         {
             // Commands4237.intakeFromFloorFront().schedule();
-            robotContainer.flywheel.shootCommand(() -> 55.0).schedule();
+            robotContainer.flywheel.shootCommand(() -> 57.0).schedule();
+            // robotContainer.flywheel
+        }
+        else if(joystick.getRawButton(2))
+        {
+            // Commands4237.intakeFromFloorFront().schedule();
+            robotContainer.flywheel.shootCommand(() -> 53.0).schedule();
+            // robotContainer.flywheel
+        }
+    
+        else if(joystick.getRawButton(6))
+        {
+            // Commands4237.intakeFromFloorFront().schedule();
+            robotContainer.flywheel.shootCommand(() -> 50.0).schedule();
             // robotContainer.flywheel
         }
         else
         {
             robotContainer.flywheel.stopCommand().schedule();
         }
-        if(joystick.getRawButton(2))
+        // left bumper
+        if(joystick.getRawButton(5))
         {
             // index.feedNoteToFlywheel(17.0);
             // intake.pickupBack();

@@ -60,6 +60,23 @@
           ]
         }
       }
+    },
+    {
+      "name": "Pivot Down Marker",
+      "waypointRelativePos": 0.15,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Pivot To Default Angle"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {

@@ -26,6 +26,9 @@ public final class Constants
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
     
+    public static final String NETWORK_TABLE_NAME = "Team4237";
+    public static final String ADVANTAGE_SCOPE_TABLE_NAME = "ASTable";
+
     // These are the names of the CAN bus set on the roboRIO and CANivore
     public static final String CANIVORE = "CANivore";
     public static final String ROBORIO  = "rio";

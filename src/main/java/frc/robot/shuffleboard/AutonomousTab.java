@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+//import frc.robot.RobotContainer;
 import frc.robot.commands.AutoCommandList;
 import edu.wpi.first.util.sendable.SendableRegistry;
 
@@ -38,7 +39,9 @@ public class AutonomousTab
     // Create a Shuffleboard Tab
     private ShuffleboardTab autonomousTab = Shuffleboard.getTab("Autonomous");
 
-    private final AutonomousTabData autonomousTabData = new AutonomousTabData();
+     private final AutonomousTabData autonomousTabData = new AutonomousTabData();
+    // private final RobotContainer robotContainer = new RobotContainer();
+    // private final AutoCommandList autoCommandList = new AutoCommandList(robotContainer, autonomousTabData);
   
     // Create the Box objects
     private SendableChooser<AutonomousTabData.StartingSide> startingSideBox = new SendableChooser<>();
@@ -65,7 +68,7 @@ public class AutonomousTab
  
     private ButtonState previousButtonState = ButtonState.kStillReleased;
     private boolean isDataValid = true;
-    private boolean isAutoValid = false;
+    private boolean isAutoValid = true;
     private String errorMessage = "No Errors";
     public String autonomousName = AutoCommandList.pathPlannerString;
 
@@ -146,6 +149,7 @@ public class AutonomousTab
     //         .withPosition(6, 1)
     //         .withSize(4, 3);
     // }
+
 
     /**
     * <b>Containing Preload</b> Box
@@ -382,8 +386,18 @@ public class AutonomousTab
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
         autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
         autonomousTabData.sitPretty = sitPrettyBox.getSelected();
-        
     }
+
+    // private void createPathPlannerString()
+    // {
+    //     AutoCommandList.pathPlannerString = "";
+    //     AutoCommandList.pathPlannerString += autonomousTabData.startingSide;
+    //     AutoCommandList.pathPlannerString += autonomousTabData.sitPretty;
+    //     if (!doNothing())
+    //     {
+    //         AutoCommandList.pathPlannerString += autonomousTabData.scoreExtraNotes;
+    //     }
+    // }
 
     // FIXME check this again
     public boolean isNewData()
@@ -395,7 +409,7 @@ public class AutonomousTab
         switch(previousButtonState)
         {
             case kStillReleased:
-            successfulDownload.setBoolean(false);
+                successfulDownload.setBoolean(false);
                 if(isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kPressed;
@@ -404,16 +418,21 @@ public class AutonomousTab
                 break;
 
             case kPressed:
+                
                 updateIsDataValidAndErrorMessage();
                 if(isDataValid)
                 {
                     successfulDownload.setBoolean(true);
-                    updateAutonomousTabData();
-                    if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+                    if(isAutoValid)
                     {
                         doesAutonomousExist.setBoolean(true);
                     }
-
+                    else
+                    {
+                        doesAutonomousExist.setBoolean(false);
+                    }
+                    updateAutonomousTabData();
+                    
                     isNewData = true;
                     
                     
@@ -423,10 +442,7 @@ public class AutonomousTab
                 }
                 else
                 {
-                    if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
-                    {
-                        doesAutonomousExist.setBoolean(true);
-                    }
+                    doesAutonomousExist.setBoolean(false);
                     successfulDownload.setBoolean(false);
                     DriverStation.reportWarning(errorMessage, false);
                     
@@ -437,7 +453,7 @@ public class AutonomousTab
                 break;
 
             case kStillPressed:
-                autonomousNameBox.setString(AutoCommandList.pathPlannerString);
+            autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 if(!isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kReleased;
@@ -460,13 +476,19 @@ public class AutonomousTab
         return autonomousTabData;
     }
 
+    // public AutoCommandList getAutoCommandList()
+    // {
+    //     return autoCommandList;
+    // }
+
 
     public void updateIsDataValidAndErrorMessage()
     {
-        errorMessage = "No Errors";
-        String msg = "";
+        errorMessage = "";
+        String msgValid = "";
+        String msgAuto = "";
         boolean isValid = true;
-        boolean autoExists = false;
+        boolean autoExists = true;
         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
         
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
@@ -545,21 +567,27 @@ public class AutonomousTab
         {
             isValid = false;
 
-            msg += " [Backup Option Selected] - Cannot complete any other tasks \n";
+            msgValid = " [Backup Option Selected] - Cannot complete any other tasks \n";
         }
 
-        // if(AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
-        // {
-        //     // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
-        //     autoExists = true;
+        if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+        {
+            // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
+            autoExists = false;
+            //doesAutonomousExist.setBoolean(false);
+
+            msgAuto = " [Selected Autonomous Path does NOT exist ]\n";
             
-        // }
+        }
         
 
         // Do NOT remove any of the remaining code
         // Check if the selections are valid
         if(!isValid)
-            errorMessage = msg;
+            errorMessage += msgValid;
+
+        if(!autoExists)
+            errorMessage += msgAuto;
         
         // Displays either "No Errors" or the error messages
         errorMessageBox.setString(errorMessage);

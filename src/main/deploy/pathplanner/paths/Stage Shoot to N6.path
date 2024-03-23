@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.577554309265198,
-        "y": 4.196000650274101
+        "x": 5.397002794005589,
+        "y": 3.694183388366777
       },
       "isLocked": false,
       "linkedName": "Stage Shoot"
@@ -20,15 +20,21 @@
         "y": 4.11
       },
       "prevControl": {
-        "x": 7.15,
-        "y": 4.11
+        "x": 6.305889183206938,
+        "y": 4.148626582967452
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "N6"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -42,6 +48,23 @@
               "type": "named",
               "data": {
                 "name": "Intake From Floor Front"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pivot Down Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Pivot To Default Angle"
               }
             }
           ]

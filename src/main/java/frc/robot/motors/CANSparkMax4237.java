@@ -2,19 +2,22 @@ package frc.robot.motors;
 
 import java.lang.invoke.MethodHandles;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import com.revrobotics.SparkPIDController;
 
-import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Constants;
 
 public class CANSparkMax4237 extends MotorController4237
 {
@@ -42,9 +45,14 @@ public class CANSparkMax4237 extends MotorController4237
     private SparkPIDController sparkPIDController = null;
     private final String motorControllerName;
 
-    private StringLogEntry motorLogEntry;
+    private final NetworkTable canSparkMaxTable;    
+    private StringEntry strEntry;
+    // private StringLogEntry motorLogEntry;
+
     private final int SETUP_ATTEMPT_LIMIT = 5;
     private int setupErrorCount = 0;
+
+
 
     /**
      * Creates a CANSparkMax on the CANbus with a brushless motor (Neo550 or Neo1650).
@@ -60,7 +68,12 @@ public class CANSparkMax4237 extends MotorController4237
         System.out.println("  Constructor Started:  " + fullClassName + " >> " + motorControllerName);
 
         this.motorControllerName = motorControllerName;
-        motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
+
+        canSparkMaxTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
+        strEntry = canSparkMaxTable.getStringTopic("Motors/Setup").getEntry("");
+        // strEntry.setDefault("");
+        // motorLogEntry = new StringLogEntry(log, "/motors/setup", "Setup");
+
         motor = new CANSparkMax(deviceId, CANSparkLowLevel.MotorType.kBrushless);
         encoder = motor.getEncoder();
         sparkPIDController = motor.getPIDController();
@@ -89,7 +102,9 @@ public class CANSparkMax4237 extends MotorController4237
                 System.out.println(">> >> " + logMessage);
             else
                 DriverStation.reportWarning(logMessage, false);
-            motorLogEntry.append(logMessage);
+            
+            strEntry.set(logMessage);
+            // motorLogEntry.append(logMessage);
             attemptCount++;
         }
         while(errorCode != REVLibError.kOk && attemptCount < SETUP_ATTEMPT_LIMIT);
@@ -352,18 +367,21 @@ public class CANSparkMax4237 extends MotorController4237
     public void logStickyFaults()
     {
         int faults = motor.getStickyFaults();
-        motorLogEntry = new StringLogEntry(log, "/motors/faults", "Faults");
+        strEntry = canSparkMaxTable.getStringTopic("Motors/Faults").getEntry("");
+        // motorLogEntry = new StringLogEntry(log, "/motors/faults", "Faults");
 
         if(faults > 0)
         {
             for(int i = 0; i < 16; i++)
             {
                 if((faults & (1 << i)) > 0)
-                    motorLogEntry.append(motorControllerName + " : " + CANSparkBase.FaultID.fromId(i));
+                    strEntry.set(motorControllerName + " : " + CANSparkBase.FaultID.fromId(i));
+                    // motorLogEntry.append(motorControllerName + " : " + CANSparkBase.FaultID.fromId(i));
             }
         }
         else
-            motorLogEntry.append(motorControllerName + " : No Sticky Faults");
+            strEntry.set(motorControllerName + " : No Sticky Faults");
+            // motorLogEntry.append(motorControllerName + " : No Sticky Faults");
 
         clearStickyFaults();
     }

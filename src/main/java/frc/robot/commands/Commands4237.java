@@ -48,6 +48,7 @@ public final class Commands4237
     // private static double targetDrivetrainRotation;
 
     private static double distanceToSpeaker;
+    private static double distanceToAmpZone;
    
 
 
@@ -416,11 +417,11 @@ public final class Commands4237
             return
             Commands.either(
                 robotContainer.pivot.setAngleCommand(() -> (
-                    robotContainer.pivot.calculateAngleFromDistance(() -> (
+                    robotContainer.pivot.calculateShootAngleFromDistance(() -> (
                         robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
 
                 robotContainer.pivot.setAngleCommand(() -> (
-                    robotContainer.pivot.calculateAngleFromDistance(() -> (
+                    robotContainer.pivot.calculateShootAngleFromDistance(() -> (
                         robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
 
                 robotContainer.isRedAllianceSupplier());
@@ -476,11 +477,11 @@ public final class Commands4237
             return
             Commands.either(
                 robotContainer.flywheel.shootCommand( () -> (
-                    robotContainer.flywheel.calculateSpeedFromDistance(() -> (
+                    robotContainer.flywheel.calculateShootVelocityFromDistance(() -> (
                         robotContainer.drivetrain.getDistanceToRedSpeaker() * 3.2808)))),
 
                 robotContainer.flywheel.shootCommand( () -> (
-                    robotContainer.flywheel.calculateSpeedFromDistance(() -> (
+                    robotContainer.flywheel.calculateShootVelocityFromDistance(() -> (
                         robotContainer.drivetrain.getDistanceToBlueSpeaker() * 3.2808)))),
 
                 robotContainer.isRedAllianceSupplier());
@@ -622,7 +623,9 @@ public final class Commands4237
             
             // .andThen(
             // robotContainer.candle.setPurpleCommand()
-            robotContainer.drivetrain.stopCommand()
+            Commands.parallel(
+                robotContainer.drivetrain.stopCommand(),
+                getFlywheelToSpeedCommand(55.0))
             .andThen(
                 Commands.waitUntil(robotContainer.drivetrain.isStopped()))
                 // .withTimeout(1.0)
@@ -639,15 +642,15 @@ public final class Commands4237
                     //                             .withTimeout(1.0)
                     // Commands.waitUntil(isReadyToShoot(robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker()), robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker())))
                     //                             .withTimeout(1.0)
-                    Commands.waitUntil(isRotatedAndReadyToShoot(robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker()), robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker()), robotContainer.drivetrain.getAngleToSpeaker(), robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE, 1.0))
+                    Commands.waitUntil(isRotatedAndReadyToShoot(robotContainer.pivot.calculateShootAngleFromDistance(getDistanceToSpeaker()), robotContainer.flywheel.calculateShootVelocityFromDistance(getDistanceToSpeaker()), robotContainer.drivetrain.getAngleToSpeaker(), robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE, 1.0))
                                                 .withTimeout(1.0)
                     .deadlineWith(
                     // setFlywheelToCorrectVelocityCommand().withTimeout(1.0),
                     // setAngleToCorrectSpeakerCommand().withTimeout(1.0)))
                         // Commands.waitSeconds(1.0)))//)
                     
-                        robotContainer.flywheel.shootCommand(() -> robotContainer.flywheel.calculateSpeedFromDistance(getDistanceToSpeaker())),
-                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.calculateAngleFromDistance(getDistanceToSpeaker())),
+                        robotContainer.flywheel.shootCommand(() -> robotContainer.flywheel.calculateShootVelocityFromDistance(getDistanceToSpeaker())),
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.calculateShootAngleFromDistance(getDistanceToSpeaker())),
                         robotContainer.drivetrain.rotateToSpeakerCommand())))
             // .andThen(
             //     Commands.print("Past wait sam doesnt like it"))
@@ -670,8 +673,41 @@ public final class Commands4237
                 // .alongWith(
                 //     robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE),
                 //     robotContainer.index.stopCommand()))
-            .withName("Podium Shoot");
+            .withName("Shoot From Anywhere");
                     // robotContainer.pivot.setAngleCommand(32.0)));
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command passToAmpZoneCommand()
+    {
+        if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null)
+        {
+            return
+            Commands.parallel(
+                setCandleCommand(LEDColor.kPurple),
+                Commands.runOnce(() -> setDistanceToAmpZone(() -> robotContainer.drivetrain.getDistanceToAmpZone())))
+            .andThen(
+                Commands.parallel(
+                    Commands.waitUntil(isReadyToShoot(robotContainer.pivot.calculatePassAngleFromDistance(getDistanceToAmpZone()), robotContainer.flywheel.calculatePassVelocityFromDistance(getDistanceToAmpZone()), robotContainer.pivot.classConstants.DEFAULT_ANGLE_TOLERANCE, robotContainer.flywheel.DEAULT_SPEED_TOLERANCE))
+                                                .withTimeout(1.0)
+                    .deadlineWith(
+                        robotContainer.flywheel.shootCommand(() -> robotContainer.flywheel.calculatePassVelocityFromDistance(getDistanceToAmpZone())),
+                        robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.calculatePassAngleFromDistance(getDistanceToAmpZone())))))
+            .andThen(
+                Commands.waitSeconds(0.5)
+                .deadlineWith(
+                    robotContainer.index.feedNoteToFlywheelCommand()))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.flywheel.stopCommand(),
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE),
+                    robotContainer.index.stopCommand(),
+                    setCandleCommand(LEDColor.kRed)))
+            .withName("Pass To Amp");
         }
         else
         {
@@ -1102,12 +1138,23 @@ public final class Commands4237
     private static void setDistanceToSpeaker(DoubleSupplier distanceToSpeaker)
     {
         Commands4237.distanceToSpeaker = distanceToSpeaker.getAsDouble();
-        System.out.println("Distance: " + Commands4237.distanceToSpeaker);
+        // System.out.println("Distance: " + Commands4237.distanceToSpeaker);
+    }
+
+    private static void setDistanceToAmpZone(DoubleSupplier distanceToAmpZone)
+    {
+        Commands4237.distanceToAmpZone = distanceToAmpZone.getAsDouble();
+        // System.out.println("Distance: " + Commands4237.distanceToAmpZone);
     }
 
     private static DoubleSupplier getDistanceToSpeaker()
     {
         return () -> Commands4237.distanceToSpeaker;
+    }
+
+    private static DoubleSupplier getDistanceToAmpZone()
+    {
+        return () -> Commands4237.distanceToAmpZone;
     }
 
     private static BooleanSupplier isReadyToShoot(double targetAngle, double targetSpeed)

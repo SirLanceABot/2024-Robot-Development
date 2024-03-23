@@ -45,12 +45,13 @@ public class JWoodTest implements Test
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final RobotContainer robotContainer;
-    private final ExampleSubsystem exampleSubsystem;
+    // private final ExampleSubsystem exampleSubsystem;
     // private final TalonFX4237 mc;
     private final Joystick joystick;
     // private TalonFX talon;
     // private TalonFX4237 motor1 = new TalonFX4237(4, "rio", "motor4");
     // private TalonFX4237 motor2 = new TalonFX4237(12, "rio", "motor12");
+    private CANSparkMax4237 sparkMotor = new CANSparkMax4237(3, "rio", "Spark Motor");
 
     // private boolean isInverted = false;
     // private boolean isBrake = true;
@@ -68,9 +69,10 @@ public class JWoodTest implements Test
         System.out.println("  Constructor Started:  " + fullClassName);
 
         this.robotContainer = robotContainer;
-        this.exampleSubsystem = robotContainer.exampleSubsystem;
+        // this.exampleSubsystem = robotContainer.exampleSubsystem;
 
         joystick = new Joystick(0);
+        
         // configMotor(motor1);
         // configMotor(motor2);
 
@@ -129,21 +131,24 @@ public class JWoodTest implements Test
     {
         if(joystick.getRawButton(1))
         {
+            sparkMotor.set(0.1);
             // motor1.set(0.1);
             // motor2.set(0.1);
-            exampleSubsystem.set(0.1);
+            // exampleSubsystem.set(0.1);
         }
         else if(joystick.getRawButton(2))
         {
+            sparkMotor.set(-0.1);
             // motor1.set(-0.1);
             // motor2.set(-0.1);
-            exampleSubsystem.set(-0.1);
+            // exampleSubsystem.set(-0.1);
         }
         else
         {
+            sparkMotor.set(0.0);
             // motor1.set(0.0);
             // motor2.set(0.0);
-            exampleSubsystem.stop();
+            // exampleSubsystem.stop();
         }
 
         // if(joystick.getRawButtonPressed(3))
