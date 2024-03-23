@@ -32,12 +32,53 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "name": "Pivot Down Marker",
+      "waypointRelativePos": 0.15,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Pivot To Default Angle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Flywheel Marker",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Get Flywheel To Speed"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pivot Up Marker",
+      "waypointRelativePos": 0.95,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Get Pivot To Stage Shoot Angle"
+              }
+            }
+          ]
         }
       }
     }

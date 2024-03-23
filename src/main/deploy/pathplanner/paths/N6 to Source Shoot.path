@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6782727389817387,
-        "y": 4.096838713035311
+        "x": 3.696505678725644,
+        "y": 4.64704815123916
       },
       "isLocked": false,
       "linkedName": "N6"
@@ -20,8 +20,8 @@
         "y": 3.68
       },
       "prevControl": {
-        "x": 4.342079921175896,
-        "y": 2.2850355804583184
+        "x": 3.88707863130012,
+        "y": 1.5245836205958134
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.45,
-      "rotationDegrees": 0.0,
+      "rotationDegrees": -40.0,
       "rotateFast": false
     }
   ],
@@ -55,7 +55,7 @@
       }
     },
     {
-      "name": "Pivot Marker",
+      "name": "Pivot Up Marker",
       "waypointRelativePos": 0.75,
       "command": {
         "type": "sequential",
@@ -65,6 +65,23 @@
               "type": "named",
               "data": {
                 "name": "Get Pivot To Source Shoot Angle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pivot Down Angle",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Pivot To Default Angle"
               }
             }
           ]

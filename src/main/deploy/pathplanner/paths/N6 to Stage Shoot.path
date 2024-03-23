@@ -20,8 +20,8 @@
         "y": 5.262745382633622
       },
       "prevControl": {
-        "x": 4.7311155542407946,
-        "y": 4.6829928106990995
+        "x": 4.8985812257338806,
+        "y": 4.3245400776515845
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,59 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Pivot Down Marker",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Pivot To Default Angle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Flywheel Marker",
+      "waypointRelativePos": 0.45,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Get Flywheel To Speed"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pivot Up Marker",
+      "waypointRelativePos": 0.95,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Get Pivot To Stage Shoot Angle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 1.5,
@@ -39,7 +91,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -4.970000000000027,
+    "rotation": -3.0,
     "rotateFast": false
   },
   "reversed": false,
