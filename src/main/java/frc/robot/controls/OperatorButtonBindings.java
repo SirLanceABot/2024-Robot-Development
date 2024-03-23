@@ -125,11 +125,12 @@ public class OperatorButtonBindings
         BooleanSupplier bButton = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        if(robotContainer.intakePositioning != null)
-        {
-            bButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
-        }
-        
+        // if(robotContainer.intakePositioning != null)
+        // {
+        //     bButtonTrigger.onTrue(robotContainer.intakePositioning.moveUpCommand());
+        // }
+
+        bButtonTrigger.onTrue(Commands4237.passToAmpZoneCommand());
     }
 
     private void configXButton()

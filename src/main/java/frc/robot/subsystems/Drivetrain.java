@@ -623,7 +623,7 @@ public class Drivetrain extends Subsystem4237
         {
             targetYaw = getAngleToAmpZone();
             double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
-            System.out.println("Rotation Speed: " + rotationSpeed);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
             return rotationSpeed;
         };
     }

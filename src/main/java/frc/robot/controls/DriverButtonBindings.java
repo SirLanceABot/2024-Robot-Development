@@ -112,7 +112,7 @@ public class DriverButtonBindings
         BooleanSupplier aButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        aButtonTrigger.onTrue(Commands4237.driveToAmpCommand());
+        // aButtonTrigger.onTrue(Commands4237.driveToAmpCommand());
 
         // Shooting after flywheel up to speed
         // aButtonTrigger.onTrue(Commands4237.shootCommand( () -> 0.0));

@@ -65,7 +65,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = true;
+    private boolean useFullRobot            = false;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -77,7 +77,7 @@ public class RobotContainer
     private boolean useIntakePositioning    = false;
     private boolean usePivot                = false;
     private boolean usePoseEstimator        = false;
-    private boolean useShuttle              = true;
+    private boolean useShuttle              = false;
 
     private boolean useCameraOne            = false;
     private boolean useCameraTwo            = false;
