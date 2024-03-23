@@ -622,7 +622,9 @@ public final class Commands4237
             
             // .andThen(
             // robotContainer.candle.setPurpleCommand()
-            robotContainer.drivetrain.stopCommand()
+            Commands.parallel(
+                robotContainer.drivetrain.stopCommand(),
+                getFlywheelToSpeedCommand(55.0))
             .andThen(
                 Commands.waitUntil(robotContainer.drivetrain.isStopped()))
                 // .withTimeout(1.0)
