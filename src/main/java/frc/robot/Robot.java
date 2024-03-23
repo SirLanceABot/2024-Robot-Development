@@ -5,23 +5,17 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
-import java.nio.file.Path;
-import java.sql.Driver;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AutoCommandList;
 import frc.robot.motors.MotorController4237;
 import frc.robot.shuffleboard.AutonomousTabData;
@@ -37,16 +31,36 @@ public class Robot extends TimedRobot
     // This string gets the full name of the class, including the package name
     private static final String fullClassName = MethodHandles.lookup().lookupClass().getCanonicalName();
 
+    private static final NetworkTableInstance nti;
+    private static final DataLog log;  
+
     // *** STATIC INITIALIZATION BLOCK ***
     // This block of code is run first when the class is loaded
     static
     {
         System.out.println("Loading: " + fullClassName);
-        try {
+        try 
+        {
             Class.forName("frc.robot.Constants"); // load and static initializers
-        } catch (ClassNotFoundException e) {
+        } 
+        catch (ClassNotFoundException e) 
+        {
             e.printStackTrace();
         } 
+
+        // DataLogManager.start();
+        DataLogManager.logNetworkTables(false);
+        log = DataLogManager.getLog();
+        
+        nti = NetworkTableInstance.getDefault();
+        nti.startEntryDataLog(log, "/" + Constants.NETWORK_TABLE_NAME, "NT/" + Constants.NETWORK_TABLE_NAME);
+        nti.startEntryDataLog(log, "/FMSInfo", "NT:/FMSInfo");
+        nti.startEntryDataLog(log, "/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME, "NT/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME);
+        // nti.startEntryDataLog(log, "/SmartDashboard", "NT:SmartDashboard");
+        // nti.startEntryDataLog(log, "/Shuffleboard", "NT:Shuffleboard");
+        // nti.startEntryDataLog(log, "/LiveWindow", "NT:LiveWindow");
+        // nti.startConnectionDataLog(log, "NTConnection");
+        // DriverStation.startDataLog(log, isReal());
     }
 
     
@@ -73,13 +87,13 @@ public class Robot extends TimedRobot
 
     /**
      * This method runs when the robot first starts up.
-     */
+     *
     @Override
     public void robotInit()
     {
         System.out.println("Robot Init");
 
-        DataLogManager.start();
+        // DataLogManager.start();
         // addPeriodic(() -> robotContainer.setAlliance(DriverStation.getAlliance()), 1);
         // enableLiveWindowInTest(true);
         FollowPathCommand.warmupCommand().schedule();

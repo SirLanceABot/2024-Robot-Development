@@ -3,6 +3,9 @@ package frc.robot;
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -23,11 +26,18 @@ public class CommandSchedulerLog
     }
 
     private final HashMap<String, Integer> currentCommands = new HashMap<String, Integer>();
-    private final DataLog log;
-    private final StringLogEntry initializeCommandLogEntry;
-    private final StringLogEntry interruptCommandLogEntry;
-    private final StringLogEntry finishCommandLogEntry;
-    private final StringLogEntry executeCommandLogEntry;
+    // private final DataLog log;
+    private final NetworkTable nt;    
+    private final StringEntry initializeCommandLogEntry;
+    private final StringEntry interruptCommandLogEntry;
+    private final StringEntry finishCommandLogEntry;
+    private final StringEntry executeCommandLogEntry;
+
+    // private final StringLogEntry initializeCommandLogEntry;
+    // private final StringLogEntry interruptCommandLogEntry;
+    // private final StringLogEntry finishCommandLogEntry;
+    // private final StringLogEntry executeCommandLogEntry;
+
     private boolean useConsole = false;
     private boolean useDataLog = false;
     private boolean useShuffleBoardLog = false;
@@ -46,11 +56,22 @@ public class CommandSchedulerLog
         this.useDataLog = useDataLog;
         this.useShuffleBoardLog = useShuffleBoardLog;
 
-        log = DataLogManager.getLog();
-        initializeCommandLogEntry = new StringLogEntry(log, "/Commands/initialize", "Event");
-        interruptCommandLogEntry = new StringLogEntry(log, "/Commands/interrupt", "Event");
-        finishCommandLogEntry = new StringLogEntry(log, "/Commands/finish", "Event");
-        executeCommandLogEntry = new StringLogEntry(log, "/Commands/execute", "Event");
+        // log = DataLogManager.getLog();
+        nt = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
+        // strEntry = nt.getStringTopic("Motors/Setup").getEntry("");
+        // strEntry.setDefault("");
+        initializeCommandLogEntry = nt.getStringTopic("Commands/initialize").getEntry("");
+        // initializeCommandLogEntry.setDefault("");
+        interruptCommandLogEntry = nt.getStringTopic("Commands/interrupt").getEntry("");
+        // interruptCommandLogEntry.setDefault("");
+        finishCommandLogEntry = nt.getStringTopic("Commands/finish").getEntry("");
+        // finishCommandLogEntry.setDefault("");
+        executeCommandLogEntry = nt.getStringTopic("Commands/execute").getEntry("");
+        // executeCommandLogEntry.setDefault("");
+        // initializeCommandLogEntry = new StringLogEntry(log, "/Commands/initialize", "Event");
+        // interruptCommandLogEntry = new StringLogEntry(log, "/Commands/interrupt", "Event");
+        // finishCommandLogEntry = new StringLogEntry(log, "/Commands/finish", "Event");
+        // executeCommandLogEntry = new StringLogEntry(log, "/Commands/execute", "Event");
     }
 
     /**
@@ -66,7 +87,8 @@ public class CommandSchedulerLog
                 if(useConsole)
                     System.out.println("Command initialized : " + key);
                 if(useDataLog)
-                    initializeCommandLogEntry.append(key);  
+                    initializeCommandLogEntry.set(key);
+                    // initializeCommandLogEntry.append(key);  
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command initialized", key, EventImportance.kNormal);
 
@@ -89,7 +111,8 @@ public class CommandSchedulerLog
                 if(useConsole)
                     System.out.println("Command interrupted : " + key + runs);
                 if(useDataLog) 
-                    interruptCommandLogEntry.append(key + runs);
+                    interruptCommandLogEntry.set(key + runs);
+                    // interruptCommandLogEntry.append(key + runs);
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command interrupted", key, EventImportance.kNormal);
 
@@ -112,7 +135,8 @@ public class CommandSchedulerLog
                 if(useConsole)
                     System.out.println("Command finished : " + key + runs);
                 if(useDataLog) 
-                    finishCommandLogEntry.append(key + runs);
+                    finishCommandLogEntry.set(key + runs);
+                    // finishCommandLogEntry.append(key + runs);
                 if(useShuffleBoardLog)
                     Shuffleboard.addEventMarker("Command finished", key, EventImportance.kNormal);
 
@@ -136,7 +160,8 @@ public class CommandSchedulerLog
                     if(useConsole)
                         System.out.println("Command executed : " + key);
                     if(useDataLog) 
-                        executeCommandLogEntry.append(key);
+                        executeCommandLogEntry.set(key);
+                        // executeCommandLogEntry.append(key); 
                     if(useShuffleBoardLog)
                         Shuffleboard.addEventMarker("Command executed", key, EventImportance.kNormal);
 

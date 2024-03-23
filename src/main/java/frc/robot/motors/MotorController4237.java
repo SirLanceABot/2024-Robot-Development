@@ -28,7 +28,7 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
 
     // *** CLASS and INSTANCE VARAIBLES ***
     // These varaibles are class and instance variables
-    final static DataLog log = DataLogManager.getLog();
+    // final static DataLog log = DataLogManager.getLog();
     private final static ArrayList<MotorController4237> allMotorControllers4237 = new ArrayList<MotorController4237>();
 
 

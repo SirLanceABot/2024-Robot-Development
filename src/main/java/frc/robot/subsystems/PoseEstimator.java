@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import java.lang.invoke.MethodHandles;
 import java.sql.Driver;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -13,12 +15,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 
@@ -44,7 +48,7 @@ public class PoseEstimator extends Subsystem4237
     //private final Field2d field = new Field2d();
 
     // custom network table to make pose readable for AdvantageScope
-    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable");
+    private NetworkTable ASTable;// = NetworkTableInstance.getDefault().getTable("ASTable");
     private final double[] blueSpeakerCoords = {0.076, 5.45};   // bad y {0.076, 5.547868};
     private final double[] redSpeakerCoords = {16.465042, 5.45};    // bad y {16.465042, 5.547868};
     private final double[] blueAmpZoneCoords = {1.0, 7.5};
@@ -68,9 +72,12 @@ public class PoseEstimator extends Subsystem4237
         private Pose2d estimatedPose = new Pose2d();
         private Pose2d poseForAS;
 
+        private DoubleArrayEntry poseEstimaterEntry;
+
     }
 
     private final PeriodicData periodicData = new PeriodicData();
+    private final double[] defaultValues = {0.0, 0.0, 0.0};
 
     /** 
      * Creates a new PoseEstimator. 
@@ -83,6 +90,9 @@ public class PoseEstimator extends Subsystem4237
         this.gyro = gyro;
         this.drivetrain = drivetrain;
         this.cameraArray = cameraArray;
+
+        ASTable = NetworkTableInstance.getDefault().getTable(Constants.ADVANTAGE_SCOPE_TABLE_NAME);
+        periodicData.poseEstimaterEntry = ASTable.getDoubleArrayTopic("PoseEstimator").getEntry(defaultValues);
 
         double[] doubleArray = {0, 0, 0};
         visionStdDevs = new Matrix<N3, N1>(Nat.N3(), Nat.N1(), doubleArray);
@@ -419,7 +429,8 @@ public class PoseEstimator extends Subsystem4237
             double[] pose = {
                 periodicData.poseForAS.getX(), periodicData.poseForAS.getY(), periodicData.poseForAS.getRotation().getDegrees()
             };
-            ASTable.getEntry("poseEstimator").setDoubleArray(pose);
+            periodicData.poseEstimaterEntry.set(pose);
+            // ASTable.getEntry("poseEstimator").setDoubleArray(pose);
 
             //field.setRobotPose(getEstimatedPose());
         }
