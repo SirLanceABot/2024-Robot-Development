@@ -153,11 +153,11 @@ public class DriverButtonBindings
         BooleanSupplier yButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kY);
         Trigger yButtonTrigger = new Trigger(yButton);
 
-        if(true)
+        // yButtonTrigger.onTrue(Commands4237.resetGyroCommand());
+        if(robotContainer.drivetrain != null)
         {
-            yButtonTrigger.onTrue(Commands4237.resetGyroCommand());
+           yButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpZoneCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
         }
-
     }
 
     private void configLeftBumper()

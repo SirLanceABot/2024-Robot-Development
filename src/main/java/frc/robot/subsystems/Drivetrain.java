@@ -617,6 +617,16 @@ public class Drivetrain extends Subsystem4237
         drive(0.0, 0.0, rotationSpeed, false, false);
     }
 
+    public DoubleSupplier getTurnPowerToRotateToAmpZone()
+    {
+        return () ->
+        {
+            targetYaw = getAngleToAmpZone();
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
 
     public SwerveModulePosition[] getSwerveModulePositions()
     {
@@ -816,6 +826,20 @@ public class Drivetrain extends Subsystem4237
         //         .withName("driveCommand()"),
         
         //     isBlueAllianceSupplier);
+    }
+
+    public Command lockRotationToAmpZoneCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale)
+    {
+        return
+        this.run(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    getTurnPowerToRotateToAmpZone().getAsDouble(), 
+                    true,
+                    true)
+                )
+                .withName("Lock Rotation To Amp Zone Command");
     }
 
     public Command stopCommand()
