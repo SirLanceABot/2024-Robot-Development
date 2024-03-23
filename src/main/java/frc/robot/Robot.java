@@ -53,14 +53,19 @@ public class Robot extends TimedRobot
         log = DataLogManager.getLog();
         
         nti = NetworkTableInstance.getDefault();
-        nti.startEntryDataLog(log, "/" + Constants.NETWORK_TABLE_NAME, "NT/" + Constants.NETWORK_TABLE_NAME);
+        DriverStation.startDataLog(log, true);
         nti.startEntryDataLog(log, "/FMSInfo", "NT:/FMSInfo");
-        nti.startEntryDataLog(log, "/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME, "NT/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME);
-        // nti.startEntryDataLog(log, "/SmartDashboard", "NT:SmartDashboard");
-        // nti.startEntryDataLog(log, "/Shuffleboard", "NT:Shuffleboard");
-        // nti.startEntryDataLog(log, "/LiveWindow", "NT:LiveWindow");
-        // nti.startConnectionDataLog(log, "NTConnection");
-        // DriverStation.startDataLog(log, isReal());
+        nti.startEntryDataLog(log, "/" + Constants.NETWORK_TABLE_NAME, "NT:/" + Constants.NETWORK_TABLE_NAME);
+        nti.startEntryDataLog(log, "/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME, "NT:/" + Constants.ADVANTAGE_SCOPE_TABLE_NAME);
+        nti.startEntryDataLog(log, "/" + Constants.Camera.CAMERA_1_BOT_POSE, "NT:/" + Constants.Camera.CAMERA_1_BOT_POSE);
+        nti.startEntryDataLog(log, "/" + Constants.Camera.CAMERA_2_BOT_POSE, "NT:/" + Constants.Camera.CAMERA_2_BOT_POSE);
+        nti.startEntryDataLog(log, "/" + Constants.Camera.CAMERA_3_BOT_POSE, "NT:/" + Constants.Camera.CAMERA_3_BOT_POSE);
+        nti.startEntryDataLog(log, "/" + Constants.Camera.CAMERA_4_BOT_POSE, "NT:/" + Constants.Camera.CAMERA_4_BOT_POSE);
+        // nti.startEntryDataLog(log, "/SmartDashboard", "NT:/SmartDashboard");
+        // nti.startEntryDataLog(log, "/Shuffleboard", "NT:/Shuffleboard");
+        // nti.startEntryDataLog(log, "/LiveWindow", "NT:/LiveWindow");
+        nti.startConnectionDataLog(log, "NTConnection");
+
     }
 
     

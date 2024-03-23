@@ -107,6 +107,21 @@ public final class Constants
         // public static final int IN_SOFT_LIMIT       = 0;
     }
 
+    public static class Camera
+    {
+        public static final String CAMERA_1 = "limelight-one";
+        public static final String CAMERA_2 = "limelight-two";
+        public static final String CAMERA_3 = "limelight-three";
+        public static final String CAMERA_4 = "limelight-four";
+
+        public static final String BOT_POSE = "botpose_wpiblue";
+
+        public static final String CAMERA_1_BOT_POSE = CAMERA_1 + "/" + BOT_POSE;
+        public static final String CAMERA_2_BOT_POSE = CAMERA_2 + "/" + BOT_POSE;
+        public static final String CAMERA_3_BOT_POSE = CAMERA_3 + "/" + BOT_POSE;
+        public static final String CAMERA_4_BOT_POSE = CAMERA_4 + "/" + BOT_POSE;
+    }
+
     public static class Candle
     {
         public static final int PORT            = 1;
