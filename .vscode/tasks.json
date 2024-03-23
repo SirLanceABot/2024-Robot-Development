@@ -15,7 +15,7 @@
             "label": "Clear roboRIO Paths and Autos",
             "type": "shell",
             "windows": {
-                "command": "ssh -o StrictHostKeyChecking=no admin@10.42.37.2 \"cd /home/lvuser/deploy/pathplanner/autos/;rm *.auto;cd /home/lvuser/deploy/pathplanner/paths/;rm *.path\""     
+                "command": "ssh -o StrictHostKeyChecking=no admin@roboRIO-4237-FRC \"cd /home/lvuser/deploy/pathplanner/autos/;rm *.auto;cd /home/lvuser/deploy/pathplanner/paths/;rm *.path\""     
             },
             "presentation": {"focus": true},
             "problemMatcher": []
