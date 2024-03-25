@@ -112,6 +112,11 @@ public class CANSparkMax4237 extends MotorController4237
         setupErrorCount += (attemptCount - 1);
     }
 
+    public void burnFlash()
+    {
+        motor.burnFlash();
+    }
+
     /**
      * Clear all sticky faults.
      */

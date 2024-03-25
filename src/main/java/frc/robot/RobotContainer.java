@@ -40,6 +40,7 @@ import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
 import frc.robot.controls.OperatorButtonBindings;
 import frc.robot.controls.OperatorController;
+import frc.robot.motors.MotorController4237;
 import frc.robot.sensors.Camera;
 import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
@@ -178,6 +179,8 @@ public class RobotContainer
         //   and must be before the button bindings.
         Commands4237.setRobotContainer(this);
         registerNamedCommands();
+
+        MotorController4237.burnConfigurationsToFlash();
 
 
         mainShuffleboard        = (useFullRobot || useMainShuffleboard)     ? new MainShuffleboard(this)                                : null;

@@ -126,6 +126,11 @@ public class TalonFX4237 extends MotorController4237
         setupErrorCount += (attemptCount - 1);
     }
 
+    public void burnFlash()
+    {
+        
+    }
+
     /**
      * Clear all sticky faults.
      */

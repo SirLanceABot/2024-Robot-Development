@@ -3,8 +3,6 @@ package frc.robot.motors;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
@@ -75,9 +73,16 @@ public abstract class MotorController4237 extends MotorSafety implements MotorCo
             motorController4237.logStickyFaults();
     }
 
+    public static void burnConfigurationsToFlash()
+    {
+        for(MotorController4237 motorController4237 : allMotorControllers4237)
+            motorController4237.burnFlash();
+    }
+
 
     // *** ABSTRACT METHODS ***
     // These methods must be defined in any subclass that extends this class
+    public abstract void burnFlash();
     public abstract void clearStickyFaults();
     public abstract void setupFactoryDefaults();
     public abstract void setupRemoteCANCoder(int remoteSensorId);
