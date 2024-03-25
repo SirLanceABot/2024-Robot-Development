@@ -12,6 +12,9 @@ import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,6 +56,9 @@ public class Flywheel extends Subsystem4237
         private double currentVelocity;
         private double RPMSpeed = 0.0;
 
+        private DoubleEntry velocityEntry;
+
+
         // private double kP = SmartDashboard.getNumber("kP", 0.1);
         // private double kI = SmartDashboard.getNumber("kI", 0.0);
         // private double kD = SmartDashboard.getNumber("kD", 0.0);
@@ -91,6 +97,8 @@ public class Flywheel extends Subsystem4237
     private final double kS = 0.13;
     private final double kV = 0.15;
 
+    private final NetworkTable velocityNetworkTable;    
+
     // private PIDController PIDcontroller = new PIDController(kP, kI, kD);
 
     // kS is equal to 0.013 in dutycycles(* 12 for volts)
@@ -117,6 +125,9 @@ public class Flywheel extends Subsystem4237
         configShotMap();
         configPassMap();
 
+
+        velocityNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
+        periodicData.velocityEntry = velocityNetworkTable.getDoubleTopic("FlywheelVelocity").getEntry(0.0);
         // if(tunePID)
         // {
         //     SmartDashboard.putNumber("kP", periodicData.kP);
@@ -364,7 +375,7 @@ public class Flywheel extends Subsystem4237
         //     motor.set(controller.calculate(periodicData.currentVelocity, periodicData.RPMSpeed));
         // }
 
-
+        periodicData.velocityEntry.set(getVelocity());
 
         // motor.setControlVelocity(periodicData.flywheelSpeed);
         SmartDashboard.putNumber("Velocity", periodicData.currentVelocity);

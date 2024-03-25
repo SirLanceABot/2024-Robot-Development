@@ -14,6 +14,10 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.networktables.DoubleEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
@@ -59,6 +63,9 @@ public class Pivot extends Subsystem4237
         private double canCoderAbsolutePosition;
         private double canCoderRotationalPosition;
         private double motorEncoderRotationalPosition;
+
+        private DoubleEntry angleEntry;
+        
         // private boolean isToggleSwitchActive;
         // private boolean isPIDSet;
 
@@ -92,13 +99,17 @@ public class Pivot extends Subsystem4237
     
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
 
-    final static DataLog log = DataLogManager.getLog();
-    private StringLogEntry cancoderLogEntry;
-    private DoubleLogEntry doubleLogEntry;
+    //final static DataLog log = DataLogManager.getLog();
+    // private StringLogEntry cancoderLogEntry;
+    // private DoubleLogEntry doubleLogEntry;
+    private StringEntry setupEntry;
 
     private String canCoderName = "pivotCANcoder";
     private final int SETUP_ATTEMPT_LIMIT = 5;
     private int setupErrorCount = 0;
+
+    private final NetworkTable angleNetworkTable;    
+    
 
     private boolean logPeriodicData = false;
 
@@ -125,8 +136,13 @@ public class Pivot extends Subsystem4237
         super("Pivot");
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        cancoderLogEntry = new StringLogEntry(log, "/cancoders/setup", "Setup");
-        doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + canCoderName, "Degrees");
+        // cancoderLogEntry = new StringLogEntry(log, "/cancoders/setup", "Setup");
+        // doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + canCoderName, "Degrees");
+
+        angleNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
+        periodicData.angleEntry = angleNetworkTable.getDoubleTopic("PivotAngle").getEntry(classConstants.DEFAULT_ANGLE);
+
+        setupEntry = angleNetworkTable.getStringTopic("CANcoderSetup").getEntry("");
 
         configCANcoder();
         configPivotMotor();
@@ -200,7 +216,8 @@ public class Pivot extends Subsystem4237
                 System.out.println(">> >> " + logMessage);
             else
                 DriverStation.reportWarning(logMessage, true);
-            cancoderLogEntry.append(logMessage);
+            //cancoderLogEntry.append(logMessage);
+            setupEntry.set(logMessage);
             attemptCount++;
         }
         while(errorCode != StatusCode.OK && attemptCount < SETUP_ATTEMPT_LIMIT);
@@ -460,11 +477,11 @@ public class Pivot extends Subsystem4237
     public void writePeriodicOutputs()
     {
         //Stops the pivot if the angle for setAngle is out of range
-        if(logPeriodicData)
-        {
-            doubleLogEntry.append(periodicData.canCoderAbsolutePosition);
-            doubleLogEntry.append(periodicData.motorEncoderRotationalPosition);
-        }
+        // if(logPeriodicData)
+        // {
+        //     doubleLogEntry.append(periodicData.canCoderAbsolutePosition);
+        //     doubleLogEntry.append(periodicData.motorEncoderRotationalPosition);
+        // }
 
         if(periodicData.isBadAngle)
         {
@@ -473,7 +490,9 @@ public class Pivot extends Subsystem4237
             periodicData.isBadAngle = false;
         }
 
-        //All included in tunePID() command
+
+        periodicData.angleEntry.set(getMotorEncoderPosition() * 360.0);
+
 
         //Displays the pivot's current angle
         SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());
