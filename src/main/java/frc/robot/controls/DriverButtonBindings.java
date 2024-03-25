@@ -112,6 +112,8 @@ public class DriverButtonBindings
         BooleanSupplier aButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
+        aButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+
         // aButtonTrigger.onTrue(Commands4237.driveToAmpCommand());
 
         // Shooting after flywheel up to speed
@@ -262,6 +264,7 @@ public class DriverButtonBindings
         Trigger dPadUpTrigger = new Trigger(dPadUp);
 
         // dPadUpTrigger.onTrue(Commands4237.rotateToSpeakerCommand());
+        dPadUpTrigger.whileTrue(robotContainer.drivetrain.lockRotationToSourceCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
 
     }
 

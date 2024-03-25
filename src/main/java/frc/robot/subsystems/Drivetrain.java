@@ -333,6 +333,30 @@ public class Drivetrain extends Subsystem4237
         }
     }
 
+    public double getAngleToAmp()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return 90.0;
+        }
+        else
+        {
+            return -90.0;
+        }
+    }
+
+    public double getAngleToSource()
+    {
+        if(isRedAllianceSupplier.getAsBoolean())
+        {
+            return -140.0;
+        }
+        else
+        {
+            return 140.0;
+        }
+    }
+
     public double getDistanceToSpeaker()
     {
         if(isRedAllianceSupplier.getAsBoolean())
@@ -628,6 +652,28 @@ public class Drivetrain extends Subsystem4237
         };
     }
 
+    public DoubleSupplier getTurnPowerToRotateToAmp()
+    {
+        return () ->
+        {
+            targetYaw = getAngleToAmp();
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
+
+    public DoubleSupplier getTurnPowerToRotateToSource()
+    {
+        return () ->
+        {
+            targetYaw = getAngleToSource();
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
+
     public SwerveModulePosition[] getSwerveModulePositions()
     {
         return new SwerveModulePosition[] 
@@ -840,6 +886,34 @@ public class Drivetrain extends Subsystem4237
                     true)
                 )
                 .withName("Lock Rotation To Amp Zone Command");
+    }
+
+    public Command lockRotationToAmpCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale)
+    {
+        return
+        this.run(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    getTurnPowerToRotateToAmp().getAsDouble(), 
+                    true,
+                    true)
+                )
+                .withName("Lock Rotation To Amp Command");
+    }
+
+    public Command lockRotationToSourceCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale)
+    {
+        return
+        this.run(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    getTurnPowerToRotateToSource().getAsDouble(), 
+                    true,
+                    true)
+                )
+                .withName("Lock Rotation To Source Command");
     }
 
     public Command stopCommand()
