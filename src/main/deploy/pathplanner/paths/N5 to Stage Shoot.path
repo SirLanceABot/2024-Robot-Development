@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Pivot Down Marker",
-      "waypointRelativePos": 0.15,
+      "waypointRelativePos": 0.3,
       "command": {
         "type": "sequential",
         "data": {
@@ -50,7 +50,7 @@
     },
     {
       "name": "Flywheel Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -91,7 +91,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -4.0,
+    "rotation": -3.0,
     "rotateFast": false
   },
   "reversed": false,

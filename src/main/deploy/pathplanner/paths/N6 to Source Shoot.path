@@ -72,8 +72,8 @@
       }
     },
     {
-      "name": "Pivot Down Angle",
-      "waypointRelativePos": 0.1,
+      "name": "Pivot Down Marker",
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.295222943609249,
-        "y": 2.222559610369458
+        "x": 4.517435320584927,
+        "y": 1.7298160310606336
       },
       "isLocked": false,
       "linkedName": "Source Shoot"
@@ -20,8 +20,8 @@
         "y": 4.11
       },
       "prevControl": {
-        "x": 3.6157967688928774,
-        "y": 4.089029216774203
+        "x": 3.652527305054611,
+        "y": 4.441815740774339
       },
       "nextControl": null,
       "isLocked": false,
