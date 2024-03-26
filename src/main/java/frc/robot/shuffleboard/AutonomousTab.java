@@ -52,7 +52,9 @@ public class AutonomousTab
     // private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScoreExtraNotes> scoreExtraNotesBox = new SendableChooser<>();
+    private SendableChooser<AutonomousTabData.Stage> stageBox = new SendableChooser<>();
     private static SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
+
 
     
 
@@ -86,6 +88,7 @@ public class AutonomousTab
         // createPickupNotesBox();
         createScoreMoreNotesBox();
         createSitPrettyBox();
+        createStageBox();
 
     
         
@@ -98,6 +101,7 @@ public class AutonomousTab
 
         errorMessageBox = createErrorMessageBox();
         autonomousNameBox = createAutonomousNameBox();
+    
         
 
         System.out.println("  Constructor Finished: " + fullClassName);
@@ -297,7 +301,25 @@ public class AutonomousTab
         autonomousTab.add(sitPrettyBox)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(11, 1)
-            .withSize(5, 3);
+            .withSize(3, 3);
+    }
+
+    private void createStageBox()
+    {
+        //create and name the box
+        SendableRegistry.add(stageBox,"Stage Positioning");
+        SendableRegistry.setName(stageBox,"Stage  Positioning");
+
+        //add options to Box
+        stageBox.setDefaultOption("None", AutonomousTabData.Stage.kNone);
+        stageBox.addOption("Around Stage", AutonomousTabData.Stage.kAroundStage);
+        stageBox.addOption("Through Stage", AutonomousTabData.Stage.kThroughStage);
+
+        //put the widget on the shuffleboard
+        autonomousTab.add(stageBox)
+            .withWidget(BuiltInWidgets.kSplitButtonChooser)
+            .withPosition(1,4)
+            .withSize(8, 3);
     }
 
     /**
@@ -360,7 +382,7 @@ public class AutonomousTab
     {
          return autonomousTab.add("Error Messages", "No Errors")
              .withWidget(BuiltInWidgets.kTextView)
-             .withPosition(1, 6)
+             .withPosition(1, 7)
              .withSize(18, 3)
              .getEntry();
     }
@@ -375,6 +397,7 @@ public class AutonomousTab
 
     }
 
+    
     private void updateAutonomousTabData()
     {
         autonomousTabData.startingSide = startingSideBox.getSelected();
@@ -529,6 +552,17 @@ public class AutonomousTab
         (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
 
+        boolean isStage = 
+        (stageBox.getSelected() == AutonomousTabData.Stage.kThroughStage || 
+        stageBox.getSelected() == AutonomousTabData.Stage.kAroundStage );
+
+        boolean isNoStage = 
+        (stageBox.getSelected() == AutonomousTabData.Stage.kNone);
+
+        boolean isNotSource = 
+        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSub ||
+        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp);
+
         // if(!isContainingPreload && isScorePreload) :)
         // {
         //     isValid = false;
@@ -568,6 +602,13 @@ public class AutonomousTab
             isValid = false;
 
             msgValid = " [Backup Option Selected] - Cannot complete any other tasks \n";
+        }
+
+        if(isNotSource && isStage)
+        {
+            isValid = false;
+//:)
+            msgValid = " [Stage Not Available] - Non-Source Start selected \n";
         }
 
         if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))

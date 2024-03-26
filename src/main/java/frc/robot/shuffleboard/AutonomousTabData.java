@@ -36,6 +36,7 @@ public class AutonomousTabData
         }
     }
 
+
     // public static enum ContainingPreload
     // {
     //     kYes, kNo;
@@ -139,6 +140,27 @@ public class AutonomousTabData
         private final String name;
 
         private SitPretty(String name)
+        {
+            this.name = name;
+        }
+
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+    }
+
+    public static enum Stage
+    {
+        kNone("None"),
+        kAroundStage("Around_Stage"),
+        kThroughStage("Through_Stage");
+        
+
+        private final String name;
+
+        private Stage(String name)
         {
             this.name = name;
         }
