@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -49,6 +50,9 @@ public class Camera extends Sensor4237
         private double[] cameraPoseInTargetSpace;
 
         // private Matrix<N3, N1> measurementStdDevs;
+
+        private DoubleArrayEntry dblArrayEntry;
+
     }
 
     public static final int TRANSLATION_X_METERS_INDEX = 0;
@@ -63,11 +67,11 @@ public class Camera extends Sensor4237
     
 
     private final PeriodicData periodicData = new PeriodicData();
-    // private Pose3d poseForAS;
+    private double[] poseForAS = {0.0, 0.0, 0.0};
     private NetworkTable cameraTable;
 
-    // private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable("ASTable"); // custom table for AdvantageScope testing
-
+    private NetworkTable ASTable = NetworkTableInstance.getDefault().getTable(Constants.ADVANTAGE_SCOPE_TABLE_NAME); // custom table for AdvantageScope testing
+    private double[] defaultArray = {0.0, 0.0, 0.0};
 
     public Camera(String cameraName)
     {   
@@ -76,6 +80,8 @@ public class Camera extends Sensor4237
 
         // Assign the Network Table variable in the constructor so the camName parameter can be used
         cameraTable = NetworkTableInstance.getDefault().getTable(cameraName);   // official limelight table
+
+        periodicData.dblArrayEntry = ASTable.getDoubleArrayTopic(cameraName).getEntry(defaultArray);
 
         periodicData.ta = cameraTable.getEntry("ta");
         periodicData.tv = cameraTable.getEntry("tv");
@@ -231,10 +237,15 @@ public class Camera extends Sensor4237
     @Override
     public void writePeriodicOutputs() 
     {
-        // poseForAS = toPose3d(periodicData.botPoseWPIBlue);    // variable for testing in AdvantageScope
+        // LL publishes a 3D pose in a weird format, so to make it readable
+        // in AS we need to create our own double array and publish that
+        poseForAS[0] = periodicData.botPoseWPIBlue[0];
+        poseForAS[1] = periodicData.botPoseWPIBlue[1];
+        poseForAS[2] = periodicData.botPoseWPIBlue[5];
         // SmartDashboard.putNumber("Distance", getDistanceFromTarget());
         // put the pose from LL onto the Network Table so AdvantageScope can read it
-        // ASTable.getEntry("robotpose").setDoubleArray(Camera.toQuaternions(poseForAS));
+        // ASTable.getEntry(cameraName).setDoubleArray(poseForAS);
+        periodicData.dblArrayEntry.set(poseForAS);
     }
 
     @Override
