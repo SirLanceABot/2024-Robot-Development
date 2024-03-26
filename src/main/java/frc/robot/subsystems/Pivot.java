@@ -491,7 +491,7 @@ public class Pivot extends Subsystem4237
         }
 
 
-        periodicData.angleEntry.set(getMotorEncoderPosition() * 360.0);
+        periodicData.angleEntry.set(getMotorEncoderPosition());
 
 
         //Displays the pivot's current angle

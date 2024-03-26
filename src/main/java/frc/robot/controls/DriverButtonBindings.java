@@ -126,7 +126,8 @@ public class DriverButtonBindings
         BooleanSupplier bButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kB);
         Trigger bButtonTrigger = new Trigger(bButton);
 
-        bButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+        // bButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
+        bButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToSourceCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
 
         // Picking up from the front
         // if(bButton.getAsBoolean())
