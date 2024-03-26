@@ -118,7 +118,7 @@ public final class Commands4237
                 Commands.none(),
 
                 // robotContainer.candle.setYellowCommand()
-                setCandleCommand(LEDColor.kYellow)
+                setCandleCommand(LEDColor.kBlue)
                 .andThen(
                     robotContainer.intakePositioning.moveDownCommand())
                 .andThen(
@@ -195,7 +195,7 @@ public final class Commands4237
         {
             return
             // robotContainer.candle.setYellowCommand()
-            setCandleCommand(LEDColor.kYellow)
+            setCandleCommand(LEDColor.kBlue)
             .andThen(
                 robotContainer.intakePositioning.moveDownCommand())
             .andThen(
