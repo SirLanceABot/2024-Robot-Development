@@ -3,6 +3,7 @@ area_min:0.0017850625000000004
 area_similarity:0
 aspect_max:20.000000
 aspect_min:0.000000
+barcode_type:qrzx
 black_level:0
 blue_balance:1950
 botfloorsnap:1
@@ -39,7 +40,7 @@ exposure:200
 fiducial_backend:umich
 fiducial_decoder_strictness:strict
 fiducial_denoise:0.000000
-fiducial_idfilters:
+fiducial_idfilters:1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
 fiducial_locfilters:
 fiducial_method:sqpnp
 fiducial_qualitythreshold:2
@@ -79,6 +80,7 @@ rsyaw:180
 sat_max:255
 sat_min:70
 send_corners:0
+send_json:0
 send_raw_contours:0
 solve3d:0
 solve3d_algo:0
