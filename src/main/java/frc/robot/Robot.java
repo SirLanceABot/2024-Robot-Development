@@ -7,6 +7,7 @@ package frc.robot;
 import java.lang.invoke.MethodHandles;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.commands.PathfindingCommand;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -204,12 +205,12 @@ public class Robot extends TimedRobot
         //     .withName("Follow Path Command")
         //     .schedule();
          
-        // new PathPlannerAuto("Source 3 Piece").schedule();
+        new PathPlannerAuto("Source 3 Piece").schedule();
 
-        if(autonomousCommand != null)
-        {
-            autonomousCommand.schedule();
-        }
+        // if(autonomousCommand != null)
+        // {
+        //     autonomousCommand.schedule();
+        // }
     }
 
     /**

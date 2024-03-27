@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.5373173277035885,
-        "y": 0.7387553207589886
+        "x": 4.3122029101201065,
+        "y": 0.23455132624551084
       },
       "isLocked": false,
       "linkedName": "Source Shoot"
@@ -20,8 +20,8 @@
         "y": 2.39
       },
       "prevControl": {
-        "x": 6.067978594880702,
-        "y": 1.8789417748807162
+        "x": 6.1153162306324615,
+        "y": 1.2020755470082378
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.55,
-      "rotationDegrees": 15.0,
+      "rotationDegrees": 25.0,
       "rotateFast": false
     }
   ],
@@ -63,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 15.0,
+    "rotation": 25.0,
     "rotateFast": false
   },
   "reversed": false,
