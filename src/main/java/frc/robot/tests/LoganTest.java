@@ -3,6 +3,8 @@ package frc.robot.tests;
 import java.lang.invoke.MethodHandles;
 import java.util.function.BooleanSupplier;
 
+import javax.lang.model.util.ElementScanner14;
+
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.AmpAssist;
 import frc.robot.subsystems.IntakePositioning;
@@ -15,6 +17,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -40,7 +43,7 @@ public class LoganTest implements Test
     private final RobotContainer robotContainer;
     // private final CANSparkMax intakeMotor = new CANSparkMax(3, MotorType.kBrushless);
     // private RelativeEncoder intakeEncoder;
-    private final Joystick joystick = new Joystick(1);
+    private final Joystick joystick = new Joystick(3);
     // private double topEncoderPosition;
     // private double bottomEncoderPosition;
     // private Intake intake;
@@ -93,15 +96,24 @@ public class LoganTest implements Test
             // System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
             // ampAssist.extendCommand().schedule();
             // System.out.println("Extend");
-            robotContainer.climb.extend(0.05);
+            robotContainer.climb.extend(0.25);
         }
         else if(joystick.getRawButton(2))
         {
             // Commands4237.shootFromSubWooferCommand().schedule();
             // ampAssist.retractCommand().schedule();
             // System.out.println("Retract");
-            robotContainer.climb.retract(-0.05);
+            robotContainer.climb.retract(-0.25);
         }
+        else if(joystick.getRawButton(3))
+        {
+            robotContainer.climb.resetEncoders();
+        }
+        else
+        {
+            robotContainer.climb.stop();
+        }
+        SmartDashboard.putNumber("Climb Encoder Position:", robotContainer.climb.getLeftPosition());
         // else if(joystick.getRawButton(2))
         // {
         //     climb.retract(0.4);

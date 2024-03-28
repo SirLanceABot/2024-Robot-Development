@@ -69,7 +69,7 @@ public class Climb extends Subsystem4237
     // private RelativeEncoder leftMotorEncoder;
     // private RelativeEncoder rightMotorEncoder;
 
-    private final double FORWARD_SOFT_LIMIT       = 195.0;
+    private final double FORWARD_SOFT_LIMIT       = 47.0;
     private final double REVERSE_SOFT_LIMIT       = 0.0;
     // private final double RIGHT_MOTOR_FORWARD_SOFT_LIMIT      = 40.0;
     // private final double RIGHT_MOTOR_REVERSE_SOFT_LIMIT      = 0.0;
@@ -104,7 +104,7 @@ public class Climb extends Subsystem4237
         super("Climb");
         System.out.println("  Constructor Started:  " + fullClassName);
         configMotors();
-        setDefaultCommand(stopCommand());
+        // setDefaultCommand(stopCommand());
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }
@@ -149,7 +149,7 @@ public class Climb extends Subsystem4237
         
         // targetPosition = TargetPosition.kOverride;
         // periodicData.motorSpeed = speed;
-        setVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        setVoltage(Math.abs(speed) * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void extend()
@@ -171,7 +171,7 @@ public class Climb extends Subsystem4237
     {
         // targetPosition = TargetPosition.kOverride;
         // periodicData.motorSpeed = -Math.abs(speed);
-        setVoltage(speed * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        setVoltage(-Math.abs(speed) * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
     }
 
     public void retract()
@@ -179,6 +179,12 @@ public class Climb extends Subsystem4237
         // targetPosition = TargetPosition.kOverride;
         // periodicData.motorSpeed = -DEFAULT_SPEED;
         setVoltage(-DEFAULT_SPEED * Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+    }
+
+    public void resetEncoders()
+    {
+        leadMotor.setPosition(0.0);
+        followMotor.setPosition(0.0);
     }
 
     // public void retractRight(double speed)
