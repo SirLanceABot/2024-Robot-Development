@@ -1133,6 +1133,44 @@ public final class Commands4237
         }
     }
 
+    public static Command autonomousFinishBackIntakeCommand()
+    {
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.firstShuttleProximity != null)
+        {
+            return
+            Commands.either(
+                Commands.none(),
+
+            // robotContainer.candle.setYellowCommand()
+            setCandleCommand(LEDColor.kYellow)
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                .deadlineWith(
+                    robotContainer.intake.pickupBackCommand(),
+                    robotContainer.shuttle.moveUpwardCommand(),
+                    robotContainer.index.acceptNoteFromShuttleCommand(),
+                    // robotContainer.candle.setGreenCommand()
+                    setCandleCommand(LEDColor.kGreen)
+                        .onlyIf(
+                        robotContainer.firstShuttleProximity.isDetectedSupplier())
+                        .repeatedly()
+                    ))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.index.stopCommand(),
+                    robotContainer.shuttle.stopCommand()))
+                    // robotContainer.candle.setGreenCommand()))
+            .withTimeout(1.5)
+            .withName("Autonomous Finish Intake"),
+
+            robotContainer.indexWheelsProximity.isDetectedSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
     // private static void setTargetPivotAngle(double targetPivotAngle)
     // {
     //     Commands4237.targetPivotAngle = targetPivotAngle;

@@ -1,0 +1,98 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Positioning Up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Autonomous Shoot From Subwoofer"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kSub to N1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous First Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N1 to N5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N5 to kSub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Shoot From Subwoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "kSub to N3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous First Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

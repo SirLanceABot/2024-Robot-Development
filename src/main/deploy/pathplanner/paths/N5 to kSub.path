@@ -64,7 +64,31 @@
             {
               "type": "sequential",
               "data": {
-                "commands": []
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Intake From Floor Back"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Finish Intake Marker",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Autonomous Finish Intake"
               }
             }
           ]

@@ -348,6 +348,7 @@ public class RobotContainer
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
         NamedCommands.registerCommand("Autonomous First Shoot", Commands4237.autonomousFirstShootCommand());
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
+        NamedCommands.registerCommand("Autonomous Finish Back Intake", Commands4237.autonomousFinishBackIntakeCommand());
         NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
         NamedCommands.registerCommand("Get Flywheel To Speed", Commands4237.getFlywheelToSpeedCommand(55.0));
         NamedCommands.registerCommand("Get Pivot To Source Shoot Angle", Commands4237.getPivotToSourceShootAngleCommand());
