@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Commands4237;
+import frc.robot.subsystems.Drivetrain.LockTarget;
 
 
 // ------------------------------------------------------------------------------------------
@@ -112,7 +113,7 @@ public class DriverButtonBindings
         BooleanSupplier aButton = robotContainer.driverController.getButtonSupplier(Xbox.Button.kA);
         Trigger aButtonTrigger = new Trigger(aButton);
 
-        aButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+        aButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpZoneCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
 
         // aButtonTrigger.onTrue(Commands4237.driveToAmpCommand());
 
@@ -127,7 +128,8 @@ public class DriverButtonBindings
         Trigger bButtonTrigger = new Trigger(bButton);
 
         // bButtonTrigger.toggleOnTrue(Commands4237.intakeFromFloorBack());
-        bButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToSourceCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+        // bButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToSourceCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+         bButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToPositionCommand(leftYAxis, leftXAxis, scaleFactorSupplier, LockTarget.kRightChain));
 
         // Picking up from the front
         // if(bButton.getAsBoolean())
@@ -146,7 +148,8 @@ public class DriverButtonBindings
         // Picking up from the back
         if(robotContainer.drivetrain != null)
         {
-            xButtonTrigger.onTrue(Commands.runOnce( () -> robotContainer.drivetrain.lockWheels()));
+            // xButtonTrigger.onTrue(Commands.runOnce( () -> robotContainer.drivetrain.lockWheels()));
+             xButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToPositionCommand(leftYAxis, leftXAxis, scaleFactorSupplier, LockTarget.kLeftChain));
         }
     }
 
@@ -159,7 +162,8 @@ public class DriverButtonBindings
         // yButtonTrigger.onTrue(Commands4237.resetGyroCommand());
         if(robotContainer.drivetrain != null)
         {
-           yButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpZoneCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+        //    yButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToAmpZoneCommand(leftYAxis, leftXAxis, scaleFactorSupplier));
+             yButtonTrigger.whileTrue(robotContainer.drivetrain.lockRotationToPositionCommand(leftYAxis, leftXAxis, scaleFactorSupplier, LockTarget.kBackChain));
         }
     }
 

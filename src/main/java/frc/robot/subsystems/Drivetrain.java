@@ -100,6 +100,11 @@ public class Drivetrain extends Subsystem4237
         kDrive, kLockwheels, kStop, kArcadeDrive;
     }
 
+    public enum LockTarget
+    {
+        kAmp, kAmpZone, kSource, kLeftChain, kRightChain, kBackChain;
+    }
+
     public enum ArcadeDriveDirection
     {
         kStraight(0.0), kStrafe(90.0);
@@ -165,6 +170,11 @@ public class Drivetrain extends Subsystem4237
     private boolean resetOdometry = false;
 
     private double shootingAngle = 0.0;
+    private DoubleSupplier turn;
+
+    private final double LEFT_CHAIN_ANGLE = -30.0;
+    private final double RIGHT_CHAIN_ANGLE = 30.0;
+    private final double BACK_CHAIN_ANGLE = 180.0;
 
     private PeriodicData periodicData = new PeriodicData();
     private final double[] defaultValues = {0.0, 0.0, 0.0, 0.0};
@@ -674,6 +684,40 @@ public class Drivetrain extends Subsystem4237
         };
     }
 
+    //These three methods done differently due to the angle being the same on both sides
+    public DoubleSupplier getTurnPowerToRotateToLeftChain()
+    {
+        return () ->
+        {
+            targetYaw = LEFT_CHAIN_ANGLE;
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
+
+    public DoubleSupplier getTurnPowerToRotateToRightChain()
+    {
+        return () ->
+        {
+            targetYaw = RIGHT_CHAIN_ANGLE;
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
+
+    public DoubleSupplier getTurnPowerToRotateToBackChain()
+    {
+        return () ->
+        {
+            targetYaw = BACK_CHAIN_ANGLE;
+            double rotationSpeed = pidController.calculate(MathUtil.inputModulus(gyro.getYaw(), -180, 180), targetYaw);
+            // System.out.println("Rotation Speed: " + rotationSpeed);
+            return rotationSpeed;
+        };
+    }
+
     public SwerveModulePosition[] getSwerveModulePositions()
     {
         return new SwerveModulePosition[] 
@@ -872,6 +916,48 @@ public class Drivetrain extends Subsystem4237
         //         .withName("driveCommand()"),
         
         //     isBlueAllianceSupplier);
+    }
+
+    public DoubleSupplier lockRotationTurnPower(LockTarget lockTarget)
+    {
+            switch(lockTarget)
+            {
+                case kAmp:
+                    turn = getTurnPowerToRotateToAmp();
+                    break;
+                case kAmpZone:
+                    turn = getTurnPowerToRotateToAmpZone();
+                    break;
+                case kSource:
+                    turn = getTurnPowerToRotateToSource();
+                    break;
+                case kLeftChain:
+                    turn = getTurnPowerToRotateToLeftChain();
+                    break;
+                case kRightChain:
+                    turn = getTurnPowerToRotateToRightChain();
+                    break;
+                case kBackChain:
+                    turn = getTurnPowerToRotateToBackChain();
+                    break;
+            }
+
+            return turn;
+    }
+
+    public Command lockRotationToPositionCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale, LockTarget lockTarget)
+    {
+
+            return
+            this.run(
+                () -> drive(
+                    xSpeed.getAsDouble() * scale.getAsDouble(),
+                    ySpeed.getAsDouble() * scale.getAsDouble(),
+                    lockRotationTurnPower(lockTarget).getAsDouble(), 
+                    true,
+                    true)
+                )
+                .withName("Lock Rotation To Amp Zone Command");
     }
 
     public Command lockRotationToAmpZoneCommand(DoubleSupplier xSpeed, DoubleSupplier ySpeed, DoubleSupplier scale)
