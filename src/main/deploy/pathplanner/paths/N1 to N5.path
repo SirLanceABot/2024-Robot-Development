@@ -20,15 +20,21 @@
         "y": 5.757909293596365
       },
       "prevControl": {
-        "x": 7.301103491095872,
-        "y": 6.427765077752379
+        "x": 6.1466711822312545,
+        "y": 6.641548838653233
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "N5"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": -22.0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -57,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -25.0,
+    "rotation": -22.0,
     "rotateFast": false
   },
   "reversed": false,
