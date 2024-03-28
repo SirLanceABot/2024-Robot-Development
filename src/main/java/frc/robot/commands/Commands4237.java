@@ -194,32 +194,40 @@ public final class Commands4237
         if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null)
         {
             return
+
+            Commands.either(
+                Commands.none(),
+
             // robotContainer.candle.setYellowCommand()
-            setCandleCommand(LEDColor.kBlue)
-            .andThen(
-                robotContainer.intakePositioning.moveDownCommand())
-            .andThen(
-                Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
-            .andThen(
-                robotContainer.intakePositioning.floatingCommand())
-            .andThen(
-                robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
-            .andThen(
-                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
-                .deadlineWith(
-                    robotContainer.intake.pickupBackCommand(),
-                    robotContainer.shuttle.moveUpwardCommand(),
-                    robotContainer.index.acceptNoteFromShuttleCommand()))
-            .andThen(
-                Commands.parallel(
-                    robotContainer.index.stopCommand(),
-                    robotContainer.intakePositioning.moveUpCommand(),
-                    robotContainer.intake.stopCommand(),
-                    robotContainer.shuttle.stopCommand(),
-                    // robotContainer.candle.setGreenCommand()))
-                    setCandleCommand(LEDColor.kGreen)))
-            .handleInterrupt( () -> setCandleDefaultRed())
-            .withName("Intake From Floor Back");
+                setCandleCommand(LEDColor.kBlue)
+                .andThen(
+                    robotContainer.intakePositioning.moveDownCommand())
+                .andThen(
+                    Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
+                .andThen(
+                    robotContainer.intakePositioning.floatingCommand())
+                .andThen(
+                    robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
+                .andThen(
+                    Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                    .deadlineWith(
+                        robotContainer.intake.pickupBackCommand(),
+                        robotContainer.shuttle.moveUpwardCommand(),
+                        robotContainer.index.acceptNoteFromShuttleCommand()))
+                .andThen(
+                    Commands.parallel(
+                        robotContainer.index.stopCommand(),
+                        robotContainer.intakePositioning.moveUpCommand(),
+                        robotContainer.intake.stopCommand(),
+                        robotContainer.shuttle.stopCommand()))
+                        // robotContainer.candle.setGreenCommand()))
+                        // setCandleCommand(LEDColor.kGreen)))
+                .handleInterrupt( () -> setCandleDefaultRed())
+                .withName("Intake From Floor Back"),
+
+                robotContainer.indexWheelsProximity.isDetectedSupplier());
+
+
 
             // robotContainer.candle.setYellowCommand()
             // robotContainer.pivot.setAngleCommand(robotContainer.pivot.classConstants.DEFAULT_ANGLE)

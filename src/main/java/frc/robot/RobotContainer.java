@@ -341,6 +341,7 @@ public class RobotContainer
         NamedCommands.registerCommand("shoot", Commands.print("TEST SHOOT COMMAND"));
 
         NamedCommands.registerCommand("Intake From Floor Front", Commands4237.intakeFromFloorFront());
+        NamedCommands.registerCommand("Intake From Floor Back", Commands4237.intakeFromFloorBack());
         NamedCommands.registerCommand("Shoot From Subwoofer", Commands4237.shootFromSubWooferCommand());
         NamedCommands.registerCommand("Autonomous Shoot From Subwoofer", Commands4237.autonomousShootFromSubWooferCommand());
         NamedCommands.registerCommand("Shoot From Anywhere", Commands4237.shootFromAnywhereCommand());
