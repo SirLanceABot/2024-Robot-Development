@@ -447,12 +447,13 @@ public class AutonomousTab
                 break;
 
             case kPressed:
-                
+                errorMessage = "";
                 updateIsDataValidAndErrorMessage();
                 if(isDataValid)
                 {
                     successfulDownload.setBoolean(true);
-                    
+                    updateAutonomousTabData();
+                    updateIsAutoValid();
                     if(isAutoValid)
                     {
                         doesAutonomousExist.setBoolean(true);
@@ -461,7 +462,7 @@ public class AutonomousTab
                     {
                         doesAutonomousExist.setBoolean(false);
                     }
-                    updateAutonomousTabData();
+                    
                     
                     isNewData = true;
                     
@@ -479,6 +480,7 @@ public class AutonomousTab
                     // errorMessageBox.setString(errorMessage);
                     //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 }
+                errorMessageBox.setString(errorMessage);
                 previousButtonState = ButtonState.kStillPressed;
                 break;
 
@@ -511,14 +513,34 @@ public class AutonomousTab
     //     return autoCommandList;
     // }
 
+    public void updateIsAutoValid()
+    {
+        String msgAuto = "";
+        boolean autoExists = true;
+
+        autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+
+        if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+        {
+            // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
+            autoExists = false;
+            //doesAutonomousExist.setBoolean(false);
+
+            msgAuto = " [Selected Autonomous Path does NOT exist ]\n";
+            
+        }
+
+        if(!autoExists)
+            errorMessage += msgAuto;
+
+        isAutoValid = autoExists;
+    }
 
     public void updateIsDataValidAndErrorMessage()
     {
         errorMessage = "";
         String msgValid = "";
-        String msgAuto = "";
         boolean isValid = true;
-        boolean autoExists = true;
         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
         
         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
@@ -619,16 +641,7 @@ public class AutonomousTab
             msgValid = " [Stage Not Available] - Non-Source Start selected \n";
         }
 
-        autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
-        if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
-        {
-            // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
-            autoExists = false;
-            //doesAutonomousExist.setBoolean(false);
-
-            msgAuto = " [Selected Autonomous Path does NOT exist ]\n";
-            
-        }
+        
         
 
         // Do NOT remove any of the remaining code
@@ -636,18 +649,17 @@ public class AutonomousTab
         if(!isValid)
             errorMessage += msgValid;
 
-        if(!autoExists)
-            errorMessage += msgAuto;
+        
         
         // Displays either "No Errors" or the error messages
-        errorMessageBox.setString(errorMessage);
+        
         //autonomousNameBox.setString(" ");
 
         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
 
         // 
         isDataValid = isValid;
-        isAutoValid = autoExists;
+        
 
     }   
 
