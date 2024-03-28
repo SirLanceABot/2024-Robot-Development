@@ -144,7 +144,7 @@ public class Climb extends Subsystem4237
         return periodicData.currentRightPosition;
     }
 
-    private void extend(double speed)
+    public void extend(double speed)
     {
         
         // targetPosition = TargetPosition.kOverride;
@@ -167,7 +167,7 @@ public class Climb extends Subsystem4237
     //     periodicData.rightMotorSpeed = speed;
     // }
 
-    private void retract(double speed)
+    public void retract(double speed)
     {
         // targetPosition = TargetPosition.kOverride;
         // periodicData.motorSpeed = -Math.abs(speed);

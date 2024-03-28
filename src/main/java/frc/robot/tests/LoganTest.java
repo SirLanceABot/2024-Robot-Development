@@ -91,14 +91,16 @@ public class LoganTest implements Test
         //     // configAButton();
             // intakePositioning.moveUp();
             // System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
-            ampAssist.extendCommand().schedule();
+            // ampAssist.extendCommand().schedule();
             // System.out.println("Extend");
+            robotContainer.climb.extend(0.05);
         }
         else if(joystick.getRawButton(2))
         {
             // Commands4237.shootFromSubWooferCommand().schedule();
-            ampAssist.retractCommand().schedule();
+            // ampAssist.retractCommand().schedule();
             // System.out.println("Retract");
+            robotContainer.climb.retract(-0.05);
         }
         // else if(joystick.getRawButton(2))
         // {
