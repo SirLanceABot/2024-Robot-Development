@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.7
+        "x": 4.137103829763216,
+        "y": 6.627296587926509
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8116445121779137,
-        "y": 7.368413625716141
+        "x": 5.590833403889031,
+        "y": 6.883837101007535
       },
       "isLocked": false,
-      "linkedName": "kAmp"
+      "linkedName": "Amp Shoot"
     },
     {
       "anchor": {
-        "x": 8.284508791239805,
-        "y": 7.453927130076483
+        "x": 8.29876104196653,
+        "y": 5.757909293596365
       },
       "prevControl": {
-        "x": 5.43405864589507,
-        "y": 7.411170377896312
+        "x": 7.044562978014846,
+        "y": 6.299494821211866
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "N4"
+      "linkedName": "N5"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.65,
-      "rotationDegrees": 0.0,
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -25.0,
       "rotateFast": false
     }
   ],
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 0.75,
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "sequential",
         "data": {
@@ -63,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -25.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 60.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4,
-      "y": 5.55
+      "x": 0.85,
+      "y": 6.7
     },
-    "rotation": 0.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -33,7 +33,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "kSub to N3"
+            "pathName": "kAmp to N1 Flat"
           }
         },
         {
@@ -45,31 +45,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Shoot"
+            "name": "Shoot From Anywhere"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "N3 to N2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Autonomous Finish Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Autonomous Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "N2 to N6"
+            "pathName": "N1 Flat to N4"
           }
         },
         {
@@ -81,13 +63,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "N6 to Stage Shoot"
+            "pathName": "N4 to Amp Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Autonomous Stage Shoot"
+            "name": "Shoot From Anywhere"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Shoot to N5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Autonomous Finish Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "N5 to Amp Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot From Anywhere"
           }
         }
       ]
