@@ -115,7 +115,8 @@ public class AutonomousTabData
         k0(" -- ScoreExtraNotes_0"), 
         k1(" -- ScoreExtraNotes_1"), 
         k2(" -- ScoreExtraNotes_2"), 
-        k3(" -- ScoreExtraNotes_3");
+        k3(" -- ScoreExtraNotes_3"),
+        k4(" -- ScoreExtraNotes_4");
 
         private final String name;
 

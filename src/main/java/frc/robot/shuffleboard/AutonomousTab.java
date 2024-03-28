@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-//import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AutoCommandList;
+import frc.robot.RobotContainer;
+
 import edu.wpi.first.util.sendable.SendableRegistry;
 
 
@@ -38,10 +40,12 @@ public class AutonomousTab
     // *** CLASS & INSTANCE VARIABLES ***
     // Create a Shuffleboard Tab
     private ShuffleboardTab autonomousTab = Shuffleboard.getTab("Autonomous");
-
-     private final AutonomousTabData autonomousTabData = new AutonomousTabData();
-    // private final RobotContainer robotContainer = new RobotContainer();
-    // private final AutoCommandList autoCommandList = new AutoCommandList(robotContainer, autonomousTabData);
+    private final AutonomousTabData autonomousTabData = new AutonomousTabData();
+    // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
+    private Command autonomousCommand = null;
+    private RobotContainer robotContainer;
+    
+    
   
     // Create the Box objects
     private SendableChooser<AutonomousTabData.StartingSide> startingSideBox = new SendableChooser<>();
@@ -75,10 +79,11 @@ public class AutonomousTab
     public String autonomousName = AutoCommandList.pathPlannerString;
 
     // *** CLASS CONSTRUCTOR ***
-    AutonomousTab()
+    AutonomousTab(RobotContainer robotContainer)
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
+        this.robotContainer = robotContainer;
         createStartingSideBox();
         // createScorePreloadBox();
         // createContainingPreloadBox();
@@ -278,6 +283,7 @@ public class AutonomousTab
         scoreExtraNotesBox.setDefaultOption("1", AutonomousTabData.ScoreExtraNotes.k1);
         scoreExtraNotesBox.addOption("2", AutonomousTabData.ScoreExtraNotes.k2);
         scoreExtraNotesBox.addOption("3", AutonomousTabData.ScoreExtraNotes.k3);
+        scoreExtraNotesBox.addOption("4", AutonomousTabData.ScoreExtraNotes.k4);
         
 
         //put the widget on the shuffleboard
@@ -446,6 +452,7 @@ public class AutonomousTab
                 if(isDataValid)
                 {
                     successfulDownload.setBoolean(true);
+                    
                     if(isAutoValid)
                     {
                         doesAutonomousExist.setBoolean(true);
@@ -528,7 +535,8 @@ public class AutonomousTab
         (//scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
-         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3);
+         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3)||
+         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k4;
         // boolean isDriveDelay = 
         //  (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
         // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
@@ -611,6 +619,7 @@ public class AutonomousTab
             msgValid = " [Stage Not Available] - Non-Source Start selected \n";
         }
 
+        autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
         if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
         {
             // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));

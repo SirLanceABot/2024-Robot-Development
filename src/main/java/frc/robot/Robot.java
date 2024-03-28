@@ -164,7 +164,7 @@ public class Robot extends TimedRobot
                 System.out.println(autonomousTabData);
                 
                 // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
-                autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+                // autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
 
                 // Reset the gyro, encoders, and any other sensors
                 robotContainer.resetRobot(autonomousTabData.startingSide);
