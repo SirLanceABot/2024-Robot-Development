@@ -67,7 +67,7 @@ public class Flywheel extends Subsystem4237
        
         // private double flywheelSpeed;
         // private DoubleLogEntry currentDistanceEntry;
-        private DoubleLogEntry currentVelocityEntry;
+        // private DoubleLogEntry currentVelocityEntry;
 
     }
 

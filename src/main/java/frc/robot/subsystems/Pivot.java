@@ -111,11 +111,11 @@ public class Pivot extends Subsystem4237
     private final NetworkTable angleNetworkTable;    
     
 
-    private boolean logPeriodicData = false;
+    private boolean logPeriodicData = true;
 
     // Put all class variables and instance variables here
     private final TalonFX4237 motor = new TalonFX4237(Constants.Pivot.MOTOR_PORT, Constants.Pivot.MOTOR_CAN_BUS, "pivotMotor");
-    private final CANcoder pivotAngle = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
+    private final CANcoder cancoder = new CANcoder(Constants.Pivot.CANCODER_PORT, Constants.Pivot.CANCODER_CAN_BUS);
     private final PeriodicData periodicData = new PeriodicData();
     public final ClassConstants classConstants = new ClassConstants();
     private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
@@ -140,15 +140,15 @@ public class Pivot extends Subsystem4237
         // doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + canCoderName, "Degrees");
 
         angleNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
-        periodicData.angleEntry = angleNetworkTable.getDoubleTopic("PivotAngle").getEntry(classConstants.DEFAULT_ANGLE);
-
-        setupEntry = angleNetworkTable.getStringTopic("CANcoderSetup").getEntry("");
+        setupEntry = angleNetworkTable.getStringTopic("PivotCANcoderSetup").getEntry("");
+        periodicData.angleEntry = angleNetworkTable.getDoubleTopic("pivotAngle").getEntry(classConstants.DEFAULT_ANGLE);
 
         configCANcoder();
         configPivotMotor();
         configShotMap();
         configPassMap();
 
+        
         // setDefaultCommand(setAngleCommand(() -> classConstants.DEFAULT_ANGLE));
         // periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
@@ -165,11 +165,11 @@ public class Pivot extends Subsystem4237
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
 
         // setup(() -> pivotAngle.getConfigurator().apply(canCoderConfig), "Setup Factory Defaults");
-        setup(() -> pivotAngle.getConfigurator().refresh(canCoderConfig), "Refresh CANcoder");
+        setup(() -> cancoder.getConfigurator().refresh(canCoderConfig), "Refresh CANcoder");
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         // canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
-        setup(() -> pivotAngle.getConfigurator().apply(canCoderConfig), "Setup CANcoder");
+        setup(() -> cancoder.getConfigurator().apply(canCoderConfig), "Setup CANcoder");
     }
 
     private void configPivotMotor()
@@ -183,7 +183,7 @@ public class Pivot extends Subsystem4237
         motor.setSafetyEnabled(false);
         // motor.setPosition(fPart(pivotAngle.getPosition().getValueAsDouble()) * 200);
         // motor.setPosition(21.0);
-        motor.setPosition((pivotAngle.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0);
+        motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0);
 
 
         motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
@@ -453,8 +453,8 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.canCoderAbsolutePosition = pivotAngle.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
-        periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        periodicData.canCoderAbsolutePosition = cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        periodicData.canCoderRotationalPosition = cancoder.getPosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
 
         //All included in tunePID() command
@@ -490,14 +490,13 @@ public class Pivot extends Subsystem4237
             periodicData.isBadAngle = false;
         }
 
-
         periodicData.angleEntry.set(getMotorEncoderPosition());
-
 
         //Displays the pivot's current angle
         SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());
         SmartDashboard.putNumber("Pivot Cancoder Rotational Position:", getCANCoderPosition());
         SmartDashboard.putNumber("Pivot Motor Position:", getMotorEncoderPosition());
+
 
 
 

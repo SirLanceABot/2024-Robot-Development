@@ -723,7 +723,7 @@ public final class Commands4237
         }
     }
 
-    public static Command extendClimbToChainCommand()
+    public static Command raiseClimbToChainCommand()
     {
         if(robotContainer.climb != null && robotContainer.intakePositioning != null && robotContainer.pivot != null)
         {
@@ -731,7 +731,7 @@ public final class Commands4237
             Commands.parallel(
                 // robotContainer.candle.setRainbowCommand(),
                 setCandleCommand(LEDColor.kRainbow),
-                robotContainer.climb.extendCommand(),
+                robotContainer.climb.moveToChainCommand(),
                 robotContainer.intakePositioning.moveUpCommand(),
                 robotContainer.pivot.setAngleCommand( () -> 25.0));
                 // Commands.run(() -> robotContainer.candle.setRainbow()));
