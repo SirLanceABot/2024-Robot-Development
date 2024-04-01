@@ -103,6 +103,7 @@ public class AutoCommandList extends SequentialCommandGroup
         //     add(new StopDrive(drivetrain));
         pathPlannerString += autonomousTabData.startingSide;
         pathPlannerString += autonomousTabData.sitPretty;
+        pathPlannerString += autonomousTabData.stagePositioning;
        
         
         //compare += autonomousTabData.sitPretty;

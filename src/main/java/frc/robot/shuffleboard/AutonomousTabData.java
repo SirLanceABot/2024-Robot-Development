@@ -152,16 +152,16 @@ public class AutonomousTabData
         }
     }
 
-    public static enum Stage
+    public static enum StagePositioning
     {
-        kNone("None"),
-        kAroundStage("Around_Stage"),
-        kThroughStage("Through_Stage");
+        kNone(""),
+        // kAroundStage(" -- Around_Stage"),
+        kThroughStage(" -- Through_Stage");
         
 
         private final String name;
 
-        private Stage(String name)
+        private StagePositioning(String name)
         {
             this.name = name;
         }
@@ -185,6 +185,7 @@ public class AutonomousTabData
     // public DriveDelay driveDelay = DriveDelay.k0;
     // public PickupSecondNote pickupSecondNote = PickupSecondNote.kYes;
     public ScoreExtraNotes scoreExtraNotes = ScoreExtraNotes.k0;
+    public StagePositioning stagePositioning = StagePositioning.kNone;
     public SitPretty sitPretty = SitPretty.kNo;
   
 
@@ -204,6 +205,7 @@ public class AutonomousTabData
         // pickupSecondNote = atd.pickupSecondNote;
         scoreExtraNotes = atd.scoreExtraNotes;
         sitPretty = atd.sitPretty;
+        stagePositioning = atd.stagePositioning;
 
     }
 
@@ -222,6 +224,7 @@ public class AutonomousTabData
         // str += "Drive Delay                    : " + driveDelay + "\n";  
         // str += "Pickup Second Note          : " + pickupSecondNote + "\n";
         str += "Score Extra Notes               : " + scoreExtraNotes + "\n";
+        str += "Stage Positioning               : " + stagePositioning + "\n";
 //FIXME IF STATEMENT
         str += "Sit Pretty                     : " + sitPretty + "\n";
 

@@ -56,7 +56,7 @@ public class AutonomousTab
     // private SendableChooser<AutonomousTabData.DriveDelay> driveDelayBox = new SendableChooser<>();
     // private SendableChooser<AutonomousTabData.PickupSecondNote> pickupNotesBox = new SendableChooser<>();
     private SendableChooser<AutonomousTabData.ScoreExtraNotes> scoreExtraNotesBox = new SendableChooser<>();
-    private SendableChooser<AutonomousTabData.Stage> stageBox = new SendableChooser<>();
+    private static SendableChooser<AutonomousTabData.StagePositioning> stageBox = new SendableChooser<>();
     private static SendableChooser<AutonomousTabData.SitPretty> sitPrettyBox = new SendableChooser<>();
 
 
@@ -317,9 +317,9 @@ public class AutonomousTab
         SendableRegistry.setName(stageBox,"Stage  Positioning");
 
         //add options to Box
-        stageBox.setDefaultOption("None", AutonomousTabData.Stage.kNone);
-        stageBox.addOption("Around Stage", AutonomousTabData.Stage.kAroundStage);
-        stageBox.addOption("Through Stage", AutonomousTabData.Stage.kThroughStage);
+        stageBox.setDefaultOption("None", AutonomousTabData.StagePositioning.kNone);
+        // stageBox.addOption("Around Stage", AutonomousTabData.StagePositioning.kAroundStage);
+        stageBox.addOption("Through Stage", AutonomousTabData.StagePositioning.kThroughStage);
 
         //put the widget on the shuffleboard
         autonomousTab.add(stageBox)
@@ -415,6 +415,7 @@ public class AutonomousTab
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
         autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
         autonomousTabData.sitPretty = sitPrettyBox.getSelected();
+        autonomousTabData.stagePositioning = stageBox.getSelected();
     }
 
     // private void createPathPlannerString()
@@ -538,7 +539,7 @@ public class AutonomousTab
 
     public void updateIsDataValidAndErrorMessage()
     {
-        errorMessage = "";
+        //errorMessage = "";
         String msgValid = "";
         boolean isValid = true;
         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
@@ -582,15 +583,15 @@ public class AutonomousTab
         (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
 
-        boolean isStage = 
-        (stageBox.getSelected() == AutonomousTabData.Stage.kThroughStage || 
-        stageBox.getSelected() == AutonomousTabData.Stage.kAroundStage );
+        // boolean isStage = 
+        // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage || 
+        // stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage );
 
         boolean isNoStage = 
-        (stageBox.getSelected() == AutonomousTabData.Stage.kNone);
+        (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
 
-        boolean isNotSource = 
-        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSub ||
+        boolean isNotSub = 
+        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource ||
         startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp);
 
         // if(!isContainingPreload && isScorePreload) :)
@@ -634,12 +635,12 @@ public class AutonomousTab
             msgValid = " [Backup Option Selected] - Cannot complete any other tasks \n";
         }
 
-        if(isNotSource && isStage)
-        {
-            isValid = false;
-//:)
-            msgValid = " [Stage Not Available] - Non-Source Start selected \n";
-        }
+//         if(isNotSub && isStage)
+//         {
+//             isValid = false;
+// //:)
+//             msgValid = " [Stage Not Available] - Non-Sub Start selected \n";
+//         }
 
         
         
@@ -669,6 +670,16 @@ public class AutonomousTab
         (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
         
         return doNothing;
+    }
+
+    public static boolean useStage()
+    {
+        boolean useStage =
+         (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
+            //stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage) ||
+        // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage ;
+        
+        return useStage;
     }
     
 }
