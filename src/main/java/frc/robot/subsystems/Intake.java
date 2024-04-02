@@ -119,6 +119,8 @@ public class Intake extends Subsystem4237
         topMotor.setupVelocityConversionFactor(RPM_TO_FPS);
 
         topMotor.setupCurrentLimit(30.0, 35.0, 0.5);
+        topMotor.setSafetyEnabled(false);
+        bottomMotor.setSafetyEnabled(false);
 
         // topMotor.setPosition(0.0);
         // bottomMotor.setPosition(0.0);

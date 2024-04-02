@@ -136,7 +136,7 @@ public class Flywheel extends Subsystem4237
 
         //     SmartDashboard.putNumber("Velocity", 0.0);
         // }
-        setDefaultCommand(stopCommand());
+        // setDefaultCommand(stopCommand());
         
         System.out.println("  Constructor Finished: " + fullClassName);
     }

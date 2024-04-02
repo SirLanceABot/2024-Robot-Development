@@ -88,6 +88,8 @@ public class Shuttle extends Subsystem4237
         motor.setupReverseHardLimitSwitch(false, true);
 
         motor.setupPositionConversionFactor(ROLLER_CIRCUMFERENCE_INCHES * GEAR_RATIO);
+
+        motor.setSafetyEnabled(false);
     }
 
 

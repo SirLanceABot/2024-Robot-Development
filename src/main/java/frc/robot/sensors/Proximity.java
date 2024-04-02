@@ -64,6 +64,11 @@ public class Proximity extends Sensor4237
         return () -> isDetected();
     }
 
+    public BooleanSupplier isNotDetectedSupplier()
+    {
+        return () -> !isDetected();
+    }
+
     @Override
     public void readPeriodicInputs() 
     {

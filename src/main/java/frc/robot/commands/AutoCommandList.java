@@ -118,11 +118,11 @@ public class AutoCommandList extends SequentialCommandGroup
             // pathPlannerString += autonomousTabData.shootDelay;
             // pathPlannerString += autonomousTabData.driveDelay;
             // pathPlannerString += autonomousTabData.scoreExtraNotes;
-        
+        System.out.println("Test string");
         System.out.println(pathPlannerString);
 
         //if (pathPlannerString == "StartingSide Amp --")
-        // add(AutoBuilder.buildAuto(pathPlannerString));
+        add(AutoBuilder.buildAuto(pathPlannerString));
 
         // if(AutoBuilder.getAllAutoNames().contains(pathPlannerString))
         // {

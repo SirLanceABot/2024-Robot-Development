@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.AutoCommandList;
 import frc.robot.motors.MotorController4237;
+import frc.robot.shuffleboard.AutonomousTab;
 import frc.robot.shuffleboard.AutonomousTabData;
+import frc.robot.shuffleboard.MainShuffleboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -165,7 +167,8 @@ public class Robot extends TimedRobot
                 
                 // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
                 // autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
-                //autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+                autonomousCommand = robotContainer.mainShuffleboard.autonomousTab.getAutonomousCommand();
+                
 
                 // Reset the gyro, encoders, and any other sensors
                 robotContainer.resetRobot(autonomousTabData.startingSide);
@@ -206,12 +209,12 @@ public class Robot extends TimedRobot
         //     .withName("Follow Path Command")
         //     .schedule();
          
-        new PathPlannerAuto("Source 3 Piece").schedule();
+        // new PathPlannerAuto("StartingSide_Sub -- Run_Autonomous -- ScoreExtraNotes_3").schedule();
 
-        // if(autonomousCommand != null)
-        // {
-        //     autonomousCommand.schedule();
-        // }
+        if(autonomousCommand != null)
+        {
+            autonomousCommand.schedule();
+        }
     }
 
     /**

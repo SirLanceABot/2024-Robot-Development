@@ -535,7 +535,13 @@ public class AutonomousTab
             errorMessage += msgAuto;
 
         isAutoValid = autoExists;
+
     }
+
+    public Command getAutonomousCommand()
+    {
+        return autonomousCommand;
+    }   
 
     public void updateIsDataValidAndErrorMessage()
     {
@@ -682,4 +688,5 @@ public class AutonomousTab
         return useStage;
     }
     
+
 }
