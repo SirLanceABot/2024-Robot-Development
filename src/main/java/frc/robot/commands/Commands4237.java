@@ -452,6 +452,8 @@ public final class Commands4237
                 robotContainer.pivot.stopCommand())
             .andThen(
                 robotContainer.pivot.resetMotorEncoderCommand());
+            // return
+            // robotContainer.
         }
         else
         {
@@ -631,9 +633,11 @@ public final class Commands4237
             
             // .andThen(
             // robotContainer.candle.setPurpleCommand()
-            Commands.race(
-                robotContainer.drivetrain.stopCommand(),
-                getFlywheelToSpeedCommand(55.0))
+            // Commands.race(
+            //     robotContainer.drivetrain.stopCommand(),
+            // getFlywheelToSpeedCommand(55.0)
+            // .andThen(
+            robotContainer.drivetrain.stopCommand()
             .andThen(
                 Commands.waitUntil(robotContainer.drivetrain.isStopped()))
                 // .withTimeout(1.0)
@@ -801,10 +805,10 @@ public final class Commands4237
             .andThen(
                 Commands.runOnce(() -> robotContainer.flywheel.removeDefaultCommand()))
             .andThen(
-                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(14.0).getAsBoolean()))
+                Commands.waitUntil(() -> (robotContainer.flywheel.isAtSpeed(13.0).getAsBoolean()))
                                         .withTimeout(1.0)
                 .deadlineWith(
-                    robotContainer.flywheel.shootCommand(() -> 14.0)))
+                    robotContainer.flywheel.shootCommand(() -> 13.0)))
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(
@@ -1396,4 +1400,22 @@ public final class Commands4237
             // do nothing
         }
     } 
+
+    public static Command resetPivotToCANCoderAngleCommand()
+    {
+        if(robotContainer.pivot != null)
+        {
+            return 
+            robotContainer.pivot.stopCommand()
+            .andThen(
+                robotContainer.pivot.resetToCANCoderCommand())
+            .andThen(
+                Commands.waitSeconds(0.5))
+            .withName("Reset Pivot Angle");
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
 }

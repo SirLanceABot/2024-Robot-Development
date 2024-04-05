@@ -65,6 +65,7 @@ public class Pivot extends Subsystem4237
         private double motorEncoderRotationalPosition;
 
         private DoubleEntry angleEntry;
+        private DoubleEntry canCoderAngleEntry;
         
         // private boolean isToggleSwitchActive;
         // private boolean isPIDSet;
@@ -86,11 +87,11 @@ public class Pivot extends Subsystem4237
         private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
-        private final double MAGNET_OFFSET = -0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
+        private final double MAGNET_OFFSET = -0.2124948; //-0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
-        public final double SHOOT_TO_AMP_ANGLE = 60.5;
+        public final double SHOOT_TO_AMP_ANGLE = 64.0;
         public final double DEFAULT_ANGLE_TOLERANCE = 0.3;
 
         //for manually moving Pivot
@@ -141,7 +142,9 @@ public class Pivot extends Subsystem4237
 
         angleNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
         setupEntry = angleNetworkTable.getStringTopic("PivotCANcoderSetup").getEntry("");
-        periodicData.angleEntry = angleNetworkTable.getDoubleTopic("pivotAngle").getEntry(classConstants.DEFAULT_ANGLE);
+        periodicData.angleEntry = angleNetworkTable.getDoubleTopic("motorAngle").getEntry(classConstants.DEFAULT_ANGLE);
+        periodicData.canCoderAngleEntry = angleNetworkTable.getDoubleTopic("canCoderAngle").getEntry(classConstants.DEFAULT_ANGLE);
+
 
         configCANcoder();
         configPivotMotor();
@@ -430,6 +433,11 @@ public class Pivot extends Subsystem4237
         return Commands.runOnce(() -> motor.setPosition(classConstants.REVERSE_SOFT_LIMIT), this).withName("Reset Pivot Position");
     }
 
+    public Command resetToCANCoderCommand()
+    {
+        return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0), this).withName("Reset Pivot Position");
+    }
+
     public Command stopCommand()
     {
         return Commands.runOnce(() -> stop());
@@ -491,6 +499,7 @@ public class Pivot extends Subsystem4237
         }
 
         periodicData.angleEntry.set(getMotorEncoderPosition());
+        periodicData.canCoderAngleEntry.set(getCANCoderAngle());
 
         //Displays the pivot's current angle
         SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());

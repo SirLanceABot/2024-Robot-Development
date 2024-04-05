@@ -66,7 +66,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = false;
+    private boolean useFullRobot            = true;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
