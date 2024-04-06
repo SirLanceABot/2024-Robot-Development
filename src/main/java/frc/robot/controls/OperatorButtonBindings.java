@@ -216,7 +216,7 @@ public class OperatorButtonBindings
         BooleanSupplier leftTrigger = robotContainer.operatorController.getButtonSupplier(Xbox.Button.kLeftTrigger);
         Trigger leftTriggerTrigger = new Trigger(leftTrigger);
 
-        // leftTriggerTrigger.onTrue(Commands4237.retractAmpCommand());
+        // leftTriggerTrigger.onTrue(Commands4237.cancelCommands()); 
     }
 
     private void configRightTrigger()

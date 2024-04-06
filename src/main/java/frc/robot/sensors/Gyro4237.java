@@ -46,6 +46,8 @@ public class Gyro4237 extends Sensor4237
 
         // Outputs
         private DoubleEntry yawEntry;
+        private DoubleEntry xAxisEntry;
+        private DoubleEntry yAxisEntry;
     }
 
     public static final double RESET_DELAY = 0.1;
@@ -73,6 +75,8 @@ public class Gyro4237 extends Sensor4237
 
         ASTable = NetworkTableInstance.getDefault().getTable(Constants.ADVANTAGE_SCOPE_TABLE_NAME);
         periodicData.yawEntry = ASTable.getDoubleTopic("GyroYaw").getEntry(0.0);
+        periodicData.xAxisEntry = ASTable.getDoubleTopic("accelXAxis").getEntry(0.0);
+        periodicData.yAxisEntry = ASTable.getDoubleTopic("accelYAxis").getEntry(0.0);
 
         configGyro();
         periodicData.rotation2d = gyro.getRotation2d();
@@ -195,6 +199,8 @@ public class Gyro4237 extends Sensor4237
         SmartDashboard.putNumber("Current Yaw:", getYaw());
         
         periodicData.yawEntry.set(periodicData.yaw);
+        periodicData.xAxisEntry.set(gyro.getAccelerationX().getValueAsDouble());
+        periodicData.yAxisEntry.set(gyro.getAccelerationY().getValueAsDouble());
         // ASTable.getEntry("gyro yaw").setDouble(periodicData.yaw);
     }
 

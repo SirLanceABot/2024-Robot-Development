@@ -146,6 +146,8 @@ public class AutoCommandList extends SequentialCommandGroup
     {
         addCommands(command);
         commandString += command + "\n";
+        // System.out.println("Command String");
+        // System.out.println(commandString);
     }
 
     @Override

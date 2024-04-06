@@ -14,6 +14,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -281,6 +282,14 @@ public final class Commands4237
     //     {
     //         return Commands.none();
     //     }
+    // }
+
+    // public static Command cancelCommands()
+    // {
+    //     return
+    //     robotContainer.flywheel.stopCommand()
+    //     .andThen(robotContainer.pivot.stopCommand())
+    //     .andThen(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
     // }
 
     public static Command burpNoteCommand()
@@ -624,6 +633,7 @@ public final class Commands4237
         }
     }
 
+    // Timeout might need tobe increased to 3 seconds
     public static Command shootFromAnywhereCommand()
     {
         if(robotContainer.pivot != null && robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.drivetrain != null)
@@ -913,7 +923,7 @@ public final class Commands4237
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
                 Commands.waitUntil(isReadyToShoot(48.0, 60.0))
-                                                .withTimeout(0.5)
+                                                .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
                     robotContainer.pivot.setAngleCommand(() -> 48.0)))
@@ -973,7 +983,7 @@ public final class Commands4237
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
                 Commands.waitUntil(isReadyToShoot(44.0, 55.0))
-                                                .withTimeout(0.5)
+                                                .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 55.0),
                     robotContainer.pivot.setAngleCommand(() -> 44.0)))
@@ -1089,7 +1099,7 @@ public final class Commands4237
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
                 Commands.waitUntil(isReadyToShoot(46.0, 60.0))
-                                        .withTimeout(0.5)
+                                        .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
                     robotContainer.pivot.setAngleCommand(() -> 46.0)))
@@ -1133,7 +1143,7 @@ public final class Commands4237
 
     public static Command autonomousShootFromSubWooferCommand()
     {
-        if(robotContainer.index  != null && robotContainer.flywheel != null)
+        if(robotContainer.index  != null && robotContainer.flywheel != null && robotContainer.pivot != null)
         {
             return
             setCandleCommand(LEDColor.kPurple)
@@ -1141,8 +1151,8 @@ public final class Commands4237
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
                 //                             robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
                 //                         .withTimeout(1.0)
-                Commands.waitUntil(isReadyToShoot(63.5, 65.0, 1.0, 3.0))
-                                        .withTimeout(0.5)
+                Commands.waitUntil(isReadyToShoot(64.0, 65.0, 1.0, 3.0))
+                                        .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 65.0),
                     robotContainer.pivot.setAngleCommand(() -> 64.0)))    

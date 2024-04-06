@@ -53,7 +53,7 @@ public class Candle4237 extends Subsystem4237
     private double blinkSpeed = 0.4;
     public static final int LED_COUNT = 308;
     public static final int INITIAL_LED = 0;
-    public static final double LED_BRIGHTNESS_VALUE = 0.3;
+    public static final double LED_BRIGHTNESS_VALUE = 0.1;
 
     /** 
      * Creates a new Candle4237. 
