@@ -124,8 +124,8 @@ public final class Commands4237
                     robotContainer.intakePositioning.moveDownCommand())
                 .andThen(
                     Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
-                .andThen(
-                    robotContainer.intakePositioning.floatingCommand())
+                // .andThen(
+                    // robotContainer.intakePositioning.floatingCommand())
                 .andThen(
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
                 .andThen(
@@ -205,8 +205,8 @@ public final class Commands4237
                     robotContainer.intakePositioning.moveDownCommand())
                 .andThen(
                     Commands.waitUntil(robotContainer.intakePositioning.isIntakeDownSupplier()).withTimeout(0.5))
-                .andThen(
-                    robotContainer.intakePositioning.floatingCommand())
+                // .andThen(
+                //     robotContainer.intakePositioning.floatingCommand())
                 .andThen(
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE))
                 .andThen(

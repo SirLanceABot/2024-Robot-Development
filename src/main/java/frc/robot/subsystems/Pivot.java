@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.networktables.NetworkTable;
@@ -120,6 +121,7 @@ public class Pivot extends Subsystem4237
     private final PeriodicData periodicData = new PeriodicData();
     public final ClassConstants classConstants = new ClassConstants();
     private PIDController PIDcontroller = new PIDController(classConstants.kP, classConstants.kI, classConstants.kD);
+    // private final SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(ks, kv, ka);
     private final InterpolatingDoubleTreeMap speakerAngleShotMap = new InterpolatingDoubleTreeMap();
     private final InterpolatingDoubleTreeMap ampAnglePassMap = new InterpolatingDoubleTreeMap();
 
@@ -156,6 +158,8 @@ public class Pivot extends Subsystem4237
         // periodicData.canCoderRotationalPosition = pivotAngle.getPosition().getValueAsDouble();
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
         // motor.setPosition(periodicData.canCoderRotationalPosition);
+
+        PIDcontroller.enableContinuousInput(classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -350,6 +354,16 @@ public class Pivot extends Subsystem4237
         // }
     }
 
+    public void setAngleV2(double degrees)
+    {
+        double positionDegrees = 360.0 * cancoder.getAbsolutePosition().getValueAsDouble();
+        double pivotOutput = PIDcontroller.calculate(positionDegrees, degrees);
+        double PIDOutput = MathUtil.clamp(pivotOutput + Math.copySign(.01, pivotOutput), -1.0, 1.0);
+        motor.set(PIDOutput);
+    }
+
+
+
     public BooleanSupplier isAtAngle(double targetAngle)
     {
         // return () ->
@@ -420,7 +434,7 @@ public class Pivot extends Subsystem4237
 
     public Command setAngleCommand(DoubleSupplier angle)
     {
-        return Commands.runOnce(() -> setAngle(angle.getAsDouble()), this).withName("Set Angle");
+        return Commands.runOnce(() -> setAngleV2(angle.getAsDouble()), this).withName("Set Angle");
     }
 
     public Command moveDownCommand()
