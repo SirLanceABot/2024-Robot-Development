@@ -1198,6 +1198,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.index.stopCommand(),
+                    robotContainer.intake.stopCommand(),
                     robotContainer.shuttle.stopCommand()))
                     // robotContainer.candle.setGreenCommand()))
             .withTimeout(1.5)
@@ -1236,6 +1237,7 @@ public final class Commands4237
             .andThen(
                 Commands.parallel(
                     robotContainer.index.stopCommand(),
+                    robotContainer.intake.stopCommand(),
                     robotContainer.shuttle.stopCommand()))
                     // robotContainer.candle.setGreenCommand()))
             .withTimeout(1.5)

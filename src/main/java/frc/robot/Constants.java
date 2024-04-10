@@ -109,10 +109,10 @@ public final class Constants
 
     public static class Camera
     {
-        public static final String CAMERA_1 = "limelight-one";
-        public static final String CAMERA_2 = "limelight-two";
-        public static final String CAMERA_3 = "limelight-three";
-        public static final String CAMERA_4 = "limelight-four";
+        public static final String CAMERA_1 = "limelight-one"; // Inside robot, on the right
+        public static final String CAMERA_2 = "limelight-two";  // Inside robot, on the left
+        public static final String CAMERA_3 = "limelight-three";    // Inside robot, on shooter side (back)
+        public static final String CAMERA_4 = "limelight-four";     // Inside robot, on intake side (front)
 
         public static final String BOT_POSE = "botpose_wpiblue";
 

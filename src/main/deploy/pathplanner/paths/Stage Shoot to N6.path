@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 3.9310570049711533,
-        "y": 5.262745382633622
+        "y": 5.26
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.397002794005589,
-        "y": 3.694183388366777
+        "y": 3.6914380057331546
       },
       "isLocked": false,
       "linkedName": "Stage Shoot"
