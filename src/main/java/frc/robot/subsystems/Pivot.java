@@ -88,7 +88,7 @@ public class Pivot extends Subsystem4237
         private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
-        private final double MAGNET_OFFSET = -0.2124948; //-0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
+        private final double MAGNET_OFFSET = -0.2173014322916667; //-0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
@@ -172,10 +172,10 @@ public class Pivot extends Subsystem4237
         CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
 
         // setup(() -> pivotAngle.getConfigurator().apply(canCoderConfig), "Setup Factory Defaults");
-        setup(() -> cancoder.getConfigurator().refresh(canCoderConfig), "Refresh CANcoder");
+        // setup(() -> cancoder.getConfigurator().refresh(canCoderConfig), "Refresh CANcoder");
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        // canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
+        canCoderConfig.MagnetSensor.MagnetOffset = classConstants.MAGNET_OFFSET;
         setup(() -> cancoder.getConfigurator().apply(canCoderConfig), "Setup CANcoder");
     }
 

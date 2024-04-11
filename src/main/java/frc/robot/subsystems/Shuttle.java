@@ -147,7 +147,7 @@ public class Shuttle extends Subsystem4237
      * Private method which calls motor.set()
      * @param speed The speed to set. Value should be between -1.0 and 1.0.
      */
-    private void set(double speed)
+    public void set(double speed)
     {
         motor.set(speed);
     }

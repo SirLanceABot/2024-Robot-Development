@@ -62,7 +62,7 @@ public class Intake extends Subsystem4237
 
     private PeriodicData periodicData = new PeriodicData();
 
-    private final double GEAR_RATIO = 1.0 / 25.0;
+    private final double GEAR_RATIO = 1.0 / 5.0; // previously 1.0 / 25.0
     private final double WHEEL_DIAMETER_FEET = 2.25 / 12.0;
     private final double MINUTES_TO_SECONDS = 1.0 / 60.0;
     private final double RPM_TO_FPS = GEAR_RATIO * MINUTES_TO_SECONDS * Math.PI * WHEEL_DIAMETER_FEET;

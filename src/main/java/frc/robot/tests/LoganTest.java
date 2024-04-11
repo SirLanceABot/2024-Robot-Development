@@ -96,24 +96,35 @@ public class LoganTest implements Test
             // System.out.println("Intake is Up: " + intakePositioning.isIntakeUp());
             // ampAssist.extendCommand().schedule();
             // System.out.println("Extend");
-            robotContainer.climb.raise(0.25);
+            // robotContainer.climb.raise(0.25);
+            robotContainer.intake.pickupFrontCommand().schedule();
+            robotContainer.shuttle.moveUpwardCommand().schedule();
+            // robotContainer.intakePositioning.moveDownCommand().schedule();
         }
-        else if(joystick.getRawButton(2))
+        else if(joystick.getRawButton(2)) // B
         {
             // Commands4237.shootFromSubWooferCommand().schedule();
             // ampAssist.retractCommand().schedule();
             // System.out.println("Retract");
-            robotContainer.climb.lower(-0.25);
+            // robotContainer.climb.lower(-0.25);
+            robotContainer.intake.pickupBackCommand().schedule();
+            robotContainer.shuttle.moveUpwardCommand().schedule();
         }
         else if(joystick.getRawButton(3))
         {
-            robotContainer.climb.resetEncoders();
+            robotContainer.intakePositioning.moveDownCommand().schedule();
         }
+        // else if(joystick.getRawButton(3))
+        // {
+        //     // robotContainer.climb.resetEncoders();
+        // }
         else
         {
-            robotContainer.climb.stop();
+            // robotContainer.climb.stop();
+            robotContainer.intake.stopCommand().schedule();
+            robotContainer.shuttle.stopCommand().schedule();
         }
-        SmartDashboard.putNumber("Climb Encoder Position:", robotContainer.climb.getLeftPosition());
+        // SmartDashboard.putNumber("Climb Encoder Position:", robotContainer.climb.getLeftPosition());
         // else if(joystick.getRawButton(2))
         // {
         //     climb.retract(0.4);
