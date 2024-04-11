@@ -96,6 +96,16 @@ public class OwenTest implements Test
      */
     public void periodic()
     {
+        double leftYAxis = -joystick.getRawAxis(1);
+        if(Math.abs(leftYAxis) < 0.25)
+            leftYAxis = 0.0;
+
+        if(leftYAxis > 0.25)
+            pivot.moveUp();
+        else if(leftYAxis < 0.25)
+            pivot.moveDown();
+        else
+            pivot.stop();
         // System.out.println("Angle:" + pivot.get);   
         // motor.follow(motor1);
         // System.out.println("Velocity: " + climb.getLeftPosition());
