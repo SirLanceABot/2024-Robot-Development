@@ -88,7 +88,7 @@ public class Pivot extends Subsystem4237
         private final double FORWARD_SOFT_LIMIT = 64.0; //66 degrees is the top
         private final double REVERSE_SOFT_LIMIT = 27.0; //22 degrees is the bottom *add 2 to the limit for correct value
         //TODONT don't use this
-        private final double MAGNET_OFFSET = -0.2173014322916667; //-0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
+        private final double MAGNET_OFFSET = -0.218994140625;//-0.2173014322916667; //-0.21624856; // updated 3/5/24   -0.54925655555; // updated 3/4/24   -0.71478456;
 
         public final double DEFAULT_ANGLE = 32.0;
         public final double INTAKE_FROM_SOURCE_ANGLE = 60.0;   //TODO: Check angle
@@ -141,6 +141,7 @@ public class Pivot extends Subsystem4237
 
         // cancoderLogEntry = new StringLogEntry(log, "/cancoders/setup", "Setup");
         // doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + canCoderName, "Degrees");
+        SmartDashboard.putNumber("kP", 0.0);
 
         angleNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
         setupEntry = angleNetworkTable.getStringTopic("PivotCANcoderSetup").getEntry("");
@@ -190,14 +191,14 @@ public class Pivot extends Subsystem4237
         motor.setSafetyEnabled(false);
         // motor.setPosition(fPart(pivotAngle.getPosition().getValueAsDouble()) * 200);
         // motor.setPosition(21.0);
-        motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0);
-
+        // motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0);
+         motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble()) * 360.0);
 
         motor.setupPIDController(classConstants.slotId, classConstants.kP, classConstants.kI, classConstants.kD);
         
         // Soft Limits
-        motor.setupForwardSoftLimit(classConstants.FORWARD_SOFT_LIMIT, true);
-        motor.setupReverseSoftLimit(classConstants.REVERSE_SOFT_LIMIT, true);
+        motor.setupForwardSoftLimit(classConstants.FORWARD_SOFT_LIMIT, false);
+        motor.setupReverseSoftLimit(classConstants.REVERSE_SOFT_LIMIT, false);
 
         //Hard Limits
         motor.setupForwardHardLimitSwitch(true, true);
@@ -356,6 +357,7 @@ public class Pivot extends Subsystem4237
 
     public void setAngleV2(double degrees)
     {
+        PIDcontroller.setP(classConstants.kP);
         double positionDegrees = 360.0 * cancoder.getAbsolutePosition().getValueAsDouble();
         double pivotOutput = PIDcontroller.calculate(positionDegrees, degrees);
         double PIDOutput = MathUtil.clamp(pivotOutput + Math.copySign(.01, pivotOutput), -1.0, 1.0);
@@ -439,7 +441,7 @@ public class Pivot extends Subsystem4237
 
     public Command setAngleV2Command(DoubleSupplier angle)
     {
-        return Commands.runOnce(() -> setAngleV2(angle.getAsDouble()), this).withName("Set Angle");
+        return Commands.run(() -> setAngleV2(angle.getAsDouble()), this).withName("Set Angle");
     }
 
     public Command moveDownCommand()
@@ -454,7 +456,9 @@ public class Pivot extends Subsystem4237
 
     public Command resetToCANCoderCommand()
     {
-        return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0), this).withName("Reset Pivot Position");
+        // return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0), this).withName("Reset Pivot Position");
+        return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble()) * 360.0), this).withName("Reset Pivot Position");
+
     }
 
     public Command stopCommand()
@@ -480,9 +484,13 @@ public class Pivot extends Subsystem4237
     public void readPeriodicInputs()
     {
         //Using CANcoder
-        periodicData.canCoderAbsolutePosition = cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
-        periodicData.canCoderRotationalPosition = cancoder.getPosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        // periodicData.canCoderAbsolutePosition = cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        // periodicData.canCoderRotationalPosition = cancoder.getPosition().getValueAsDouble() + classConstants.MAGNET_OFFSET;
+        periodicData.canCoderAbsolutePosition = cancoder.getAbsolutePosition().getValueAsDouble();
+        periodicData.canCoderRotationalPosition = cancoder.getPosition().getValueAsDouble();
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
+        classConstants.kP = SmartDashboard.getNumber("kP", 0.0);
+
 
         //All included in tunePID() command
 
