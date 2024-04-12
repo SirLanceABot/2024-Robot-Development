@@ -78,7 +78,7 @@ public class Pivot extends Subsystem4237
     public class ClassConstants
     {
         //for PID
-        private double kP = 0.5; //140.0;
+        private double kP = 0.75; //140.0;
         private double kI = 0.0;
         private double kD = 0.0;
         // private double setPoint = 0.0;
@@ -160,7 +160,7 @@ public class Pivot extends Subsystem4237
         // periodicData.motorEncoderRotationalPosition = motor.getPosition();
         // motor.setPosition(periodicData.canCoderRotationalPosition);
 
-        PIDcontroller.enableContinuousInput(classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
+        // PIDcontroller.enableContinuousInput(classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
        
         System.out.println(" Construction Finished: " + fullClassName);
     }
@@ -357,11 +357,17 @@ public class Pivot extends Subsystem4237
 
     public void setAngleV2(double degrees)
     {
-        PIDcontroller.setP(classConstants.kP);
-        double positionDegrees = 360.0 * cancoder.getAbsolutePosition().getValueAsDouble();
-        double pivotOutput = PIDcontroller.calculate(positionDegrees, degrees);
-        double PIDOutput = MathUtil.clamp(pivotOutput + Math.copySign(.01, pivotOutput), -1.0, 1.0);
-        motor.set(PIDOutput);
+        // PIDcontroller.setP(classConstants.kP);
+        double positionDegrees = getCANCoderAngle();
+        double pidOutput = PIDcontroller.calculate(positionDegrees, degrees);
+        double pivotOutput = MathUtil.clamp(pidOutput + Math.copySign(0.1, pidOutput), -Constants.END_OF_MATCH_BATTERY_VOLTAGE, Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        motor.setVoltage(pivotOutput);
+        // SmartDashboard.putNumber("Pivot Output Motor Power", pivotOutput);
+        // SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());
+        SmartDashboard.putNumber("Passed Degrees", degrees);
+        SmartDashboard.putNumber("positionDegrees", positionDegrees);
+        SmartDashboard.putNumber("pidOutput", pidOutput);
+        SmartDashboard.putNumber("pivotOutput", pivotOutput);
     }
 
 
@@ -489,7 +495,7 @@ public class Pivot extends Subsystem4237
         periodicData.canCoderAbsolutePosition = cancoder.getAbsolutePosition().getValueAsDouble();
         periodicData.canCoderRotationalPosition = cancoder.getPosition().getValueAsDouble();
         periodicData.motorEncoderRotationalPosition = motor.getPosition();
-        classConstants.kP = SmartDashboard.getNumber("kP", 0.0);
+        // classConstants.kP = SmartDashboard.getNumber("kP", 0.0);
 
 
         //All included in tunePID() command
@@ -529,9 +535,10 @@ public class Pivot extends Subsystem4237
         periodicData.canCoderAngleEntry.set(getCANCoderAngle());
 
         //Displays the pivot's current angle
-        SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());
-        SmartDashboard.putNumber("Pivot Cancoder Rotational Position:", getCANCoderPosition());
-        SmartDashboard.putNumber("Pivot Motor Position:", getMotorEncoderPosition());
+        
+
+        // SmartDashboard.putNumber("Pivot Cancoder Rotational Position:", getCANCoderPosition());
+        // SmartDashboard.putNumber("Pivot Motor Position:", getMotorEncoderPosition());
 
 
 
