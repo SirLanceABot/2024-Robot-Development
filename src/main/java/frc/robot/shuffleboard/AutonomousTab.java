@@ -5,7 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.AutoCommandList;
-import frc.robot.RobotContainer;
+// import frc.robot.commands.AutoCommandList;
+// import frc.robot.RobotContainer;
 
 import edu.wpi.first.util.sendable.SendableRegistry;
 
@@ -42,8 +42,8 @@ public class AutonomousTab
     private ShuffleboardTab autonomousTab = Shuffleboard.getTab("Autonomous");
     private final AutonomousTabData autonomousTabData = new AutonomousTabData();
     // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
-    private Command autonomousCommand = null;
-    private RobotContainer robotContainer;
+    // private Command autonomousCommand = null;
+    // private RobotContainer robotContainer;
     
     
   
@@ -73,27 +73,27 @@ public class AutonomousTab
 
  
     private ButtonState previousButtonState = ButtonState.kStillReleased;
-    private boolean isDataValid = true;
-    private boolean isAutoValid = true;
-    private String errorMessage = "No Errors";
-    public String autonomousName = AutoCommandList.pathPlannerString;
+    // private boolean isDataValid = true;
+    // private boolean isAutoValid = true;
+    // private String errorMessage = "No Errors";
+    public String autonomousName = "";
 
     // *** CLASS CONSTRUCTOR ***
-    AutonomousTab(RobotContainer robotContainer)
+    AutonomousTab()
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        this.robotContainer = robotContainer;
+        // this.robotContainer = robotContainer;
         createStartingSideBox();
+        createSitPrettyBox();
+        createStageBox();
+        createScoreMoreNotesBox();
         // createScorePreloadBox();
         // createContainingPreloadBox();
         // createDriveOutOfStartZoneBox();
         // createShootDelayBox();
         // createDriveDelayBox();
         // createPickupNotesBox();
-        createScoreMoreNotesBox();
-        createSitPrettyBox();
-        createStageBox();
 
     
         
@@ -407,15 +407,19 @@ public class AutonomousTab
     private void updateAutonomousTabData()
     {
         autonomousTabData.startingSide = startingSideBox.getSelected();
+        autonomousTabData.sitPretty = sitPrettyBox.getSelected();
+        autonomousTabData.stagePositioning = stageBox.getSelected();
+        autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
         // autonomousTabData.driveOutOfStartZone = driveOutOfStartZoneBox.getSelected();
         // autonomousTabData.containingPreload = containingPreloadBox.getSelected();
         //autonomousTabData.scorePreload = scorePreloadBox.getSelected();
         // autonomousTabData.driveDelay = driveDelayBox.getSelected();
         // autonomousTabData.shootDelay = shootDelayBox.getSelected();
         // autonomousTabData.pickupSecondNote = pickupNotesBox.getSelected();
-        autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
-        autonomousTabData.sitPretty = sitPrettyBox.getSelected();
-        autonomousTabData.stagePositioning = stageBox.getSelected();
+        // autonomousTabData.scoreExtraNotes = scoreExtraNotesBox.getSelected();
+        // autonomousTabData.sitPretty = sitPrettyBox.getSelected();
+        // autonomousTabData.stagePositioning = stageBox.getSelected();
+        autonomousTabData.createPathPlannerStringAndCommand();
     }
 
     // private void createPathPlannerString()
@@ -439,7 +443,6 @@ public class AutonomousTab
         switch(previousButtonState)
         {
             case kStillReleased:
-                successfulDownload.setBoolean(false);
                 if(isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kPressed;
@@ -448,14 +451,15 @@ public class AutonomousTab
                 break;
 
             case kPressed:
-                errorMessage = "";
-                updateIsDataValidAndErrorMessage();
-                if(isDataValid)
+                // errorMessage = "";
+                updateAutonomousTabData();
+                // updateIsDataValidAndErrorMessage();
+                if(autonomousTabData.isDataValid())
                 {
                     successfulDownload.setBoolean(true);
-                    updateAutonomousTabData();
-                    updateIsAutoValid();
-                    if(isAutoValid)
+                    // updateAutonomousTabData();
+                    // updateIsAutoValid();
+                    if(autonomousTabData.isAutoValid())
                     {
                         doesAutonomousExist.setBoolean(true);
                     }
@@ -463,7 +467,6 @@ public class AutonomousTab
                     {
                         doesAutonomousExist.setBoolean(false);
                     }
-                    
                     
                     isNewData = true;
                     
@@ -476,217 +479,223 @@ public class AutonomousTab
                 {
                     doesAutonomousExist.setBoolean(false);
                     successfulDownload.setBoolean(false);
-                    DriverStation.reportWarning(errorMessage, false);
                     
                     // errorMessageBox.setString(errorMessage);
                     //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 }
-                errorMessageBox.setString(errorMessage);
+                errorMessageBox.setString(autonomousTabData.getErrorMessage());
+                DriverStation.reportWarning(autonomousTabData.getErrorMessage(), false);
+                autonomousNameBox.setString(autonomousTabData.getPathPlannerString());
                 previousButtonState = ButtonState.kStillPressed;
                 break;
 
             case kStillPressed:
-            autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 if(!isSendDataButtonPressed)
                 {
                     previousButtonState = ButtonState.kReleased;
-                    
                 }
                 break;
 
             case kReleased:
+                successfulDownload.setBoolean(false);
                 previousButtonState = ButtonState.kStillReleased;
-                //autonomousNameBox = createAutonomousNameBox();
-                //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
                 break;
         }
 
         return isNewData;
     }
 
-    public AutonomousTabData getAutonomousTabData()
-    {
-        return autonomousTabData;
-    }
+    // public AutonomousTabData getAutonomousTabData()
+    // {
+    //     return autonomousTabData;
+    // }
 
     // public AutoCommandList getAutoCommandList()
     // {
     //     return autoCommandList;
     // }
 
-    public void updateIsAutoValid()
-    {
-        String msgAuto = "";
-        boolean autoExists = true;
+    // public void updateIsAutoValid()
+    // {
+    //     String msgAuto = "";
+    //     boolean autoExists = true;
 
-        autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+    //     // autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+    //     autonomousTabData.createPathPlannerStringAndCommand();
+    //     autonomousCommand = autonomousTabData.getPathPlannerCommand();
 
-        if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
-        {
-            // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
-            autoExists = false;
-            //doesAutonomousExist.setBoolean(false);
+    //     // if(!AutoBuilder.getAllAutoNames().contains(AutoCommandList.pathPlannerString))
+    //     if(!AutoBuilder.getAllAutoNames().contains(autonomousTabData.getPathPlannerString()))
+    //     {
+    //         // add(AutoBuilder.buildAuto(AutoCommandList.pathPlannerString));
+    //         autoExists = false;
+    //         //doesAutonomousExist.setBoolean(false);
 
-            msgAuto = " [Selected Autonomous Path does NOT exist ]\n";
+    //         msgAuto = " [Selected Autonomous Path does NOT exist ]\n";
             
-        }
+    //     }
 
-        if(!autoExists)
-            errorMessage += msgAuto;
+    //     if(!autoExists)
+    //         errorMessage += msgAuto;
 
-        isAutoValid = autoExists;
+    //     isAutoValid = autoExists;
 
-    }
+    // }
 
     public Command getAutonomousCommand()
     {
-        return autonomousCommand;
+        return autonomousTabData.getPathPlannerCommand();
     }   
 
-    public void updateIsDataValidAndErrorMessage()
+    public AutonomousTabData.StartingSide getStartingSide()
     {
-        //errorMessage = "";
-        String msgValid = "";
-        boolean isValid = true;
-        //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
+        return autonomousTabData.startingSide;
+    }
+
+//     public void updateIsDataValidAndErrorMessage()
+//     {
+//         //errorMessage = "";
+//         String msgValid = "";
+//         boolean isValid = true;
+//         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
         
-        // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
-        // boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
-        // boolean isShootDelay = 
-        // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
-        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
-        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
-        // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
-        boolean isScoreMoreNotes = 
-        (//scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
-         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
-         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
-         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3)||
-         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k4;
-        // boolean isDriveDelay = 
-        //  (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
-        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
-        // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
-        //  driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
-        //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
-        boolean isStartingLocation =
-        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp ||
-        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSub ||
-        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource);
+//         // boolean isContainingPreload = (containingPreloadBox.getSelected() == AutonomousTabData.ContainingPreload.kYes);
+//         // boolean isScorePreload = (scorePreloadBox.getSelected() == AutonomousTabData.ScorePreload.kYes);
+//         // boolean isShootDelay = 
+//         // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k0 ||
+//         // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+//         // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+//         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 );
+//         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
+//         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
+//         // boolean isPickupSecondNote = (pickupNotesBox.getSelected() == AutonomousTabData.PickupSecondNote.kYes);
+//         boolean isScoreMoreNotes = 
+//         (//scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k0 ||
+//          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k1 ||
+//          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 ||
+//          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3)||
+//          scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k4;
+//         // boolean isDriveDelay = 
+//         //  (driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k0 ||
+//         // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k1 ||
+//         // //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k2 ||
+//         //  driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3 );
+//         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k4 ||
+//         //  shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k5 )
+//         boolean isStartingLocation =
+//         (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp ||
+//         startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSub ||
+//         startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource);
 
-        boolean isSitPretty =
-        (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
+//         boolean isSitPretty =
+//         (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
         
-        // boolean isOverDelay = 
-        // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 && 
-        // driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
+//         // boolean isOverDelay = 
+//         // (shootDelayBox.getSelected() == AutonomousTabData.ShootDelay.k3 && 
+//         // driveDelayBox.getSelected() == AutonomousTabData.DriveDelay.k3);
 
-        boolean isScoreManyMoreNotes = 
-        (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
-        scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
+//         boolean isScoreManyMoreNotes = 
+//         (scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k3 || 
+//         scoreExtraNotesBox.getSelected() == AutonomousTabData.ScoreExtraNotes.k2 );
 
-        // boolean isStage = 
-        // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage || 
-        // stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage );
+//         // boolean isStage = 
+//         // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage || 
+//         // stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage );
 
-        boolean isNoStage = 
-        (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
+//         boolean isNoStage = 
+//         (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
 
-        boolean isNotSub = 
-        (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource ||
-        startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp);
+//         boolean isNotSub = 
+//         (startingSideBox.getSelected() == AutonomousTabData.StartingSide.kSource ||
+//         startingSideBox.getSelected() == AutonomousTabData.StartingSide.kAmp);
 
-        // if(!isContainingPreload && isScorePreload) :)
-        // {
-        //     isValid = false;
+//         // if(!isContainingPreload && isScorePreload) :)
+//         // {
+//         //     isValid = false;
             
-        //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
+//         //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
 
-        // }
+//         // }
 
-        // if(!isPickupSecondNote && isScoreSecondNote)
-        // {
-        //     isValid = false;
+//         // if(!isPickupSecondNote && isScoreSecondNote)
+//         // {
+//         //     isValid = false;
             
-        //     msg += "[ Not Possible ] - Cannot Score Second Note without Picking It up \n";
+//         //     msg += "[ Not Possible ] - Cannot Score Second Note without Picking It up \n";
 
-        // }
+//         // }
 
         
-        // if(isShootDelay && isScorePreload) :)
-        // {
-        //     isValid = false;
+//         // if(isShootDelay && isScorePreload) :)
+//         // {
+//         //     isValid = false;
             
-        //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
+//         //     msg += "[ Not Possible ] - Cannot Score without containing Preload \n";
 
-        // }
+//         // }
 
 
-        // if(isScoreManyMoreNotes && isOverDelay) 
-        // {
-        //     isValid = false;
+//         // if(isScoreManyMoreNotes && isOverDelay) 
+//         // {
+//         //     isValid = false;
             
-        //     msg += "[Not Possible] - Cannot score 2+ extra Notes with double 3 second delays \n";
+//         //     msg += "[Not Possible] - Cannot score 2+ extra Notes with double 3 second delays \n";
 
-        // }
+//         // }
 
-        if(isSitPretty && isScoreMoreNotes)
-        {
-            isValid = false;
-
-            msgValid = " [Backup Option Selected] - Cannot complete any other tasks \n";
-        }
-
-//         if(isNotSub && isStage)
+//         if(isSitPretty && isScoreMoreNotes)
 //         {
 //             isValid = false;
-// //:)
-//             msgValid = " [Stage Not Available] - Non-Sub Start selected \n";
+
+//             msgValid = " [Backup Option Selected] - Cannot complete any other tasks \n";
 //         }
 
+// //         if(isNotSub && isStage)
+// //         {
+// //             isValid = false;
+// // //:)
+// //             msgValid = " [Stage Not Available] - Non-Sub Start selected \n";
+// //         }
+
         
         
 
-        // Do NOT remove any of the remaining code
-        // Check if the selections are valid
-        if(!isValid)
-            errorMessage += msgValid;
+//         // Do NOT remove any of the remaining code
+//         // Check if the selections are valid
+//         if(!isValid)
+//             errorMessage += msgValid;
 
         
         
-        // Displays either "No Errors" or the error messages
+//         // Displays either "No Errors" or the error messages
         
-        //autonomousNameBox.setString(" ");
+//         //autonomousNameBox.setString(" ");
 
-        //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
+//         //autonomousNameBox.setString(AutoCommandList.pathPlannerString);
 
-        // 
-        isDataValid = isValid;
+//         // 
+//         isDataValid = isValid;
         
 
-    }   
+//     }   
 
-    public static boolean doNothing()
-    {
-        boolean doNothing =
-        (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
+    // public static boolean doNothing()
+    // {
+    //     boolean doNothing =
+    //     (sitPrettyBox.getSelected() == AutonomousTabData.SitPretty.kYes);
         
-        return doNothing;
-    }
+    //     return doNothing;
+    // }
 
-    public static boolean useStage()
-    {
-        boolean useStage =
-         (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
-            //stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage) ||
-        // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage ;
+    // public static boolean useStage()
+    // {
+    //     boolean useStage =
+    //      (stageBox.getSelected() == AutonomousTabData.StagePositioning.kNone);
+    //         //stageBox.getSelected() == AutonomousTabData.StagePositioning.kThroughStage) ||
+    //     // (stageBox.getSelected() == AutonomousTabData.StagePositioning.kAroundStage ;
         
-        return useStage;
-    }
+    //     return useStage;
+    // }
     
 
 }

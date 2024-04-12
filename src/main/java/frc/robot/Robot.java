@@ -75,7 +75,7 @@ public class Robot extends TimedRobot
     // *** CLASS VARIABLES & INSTANCE VARIABLES ***
     // Put all class variables and instance variables here
     private final RobotContainer robotContainer = new RobotContainer();
-    private AutonomousTabData autonomousTabData = null;
+    // private AutonomousTabData autonomousTabData = null;
     private Command autonomousCommand = null;
     private TestMode testMode = null;
     
@@ -162,16 +162,16 @@ public class Robot extends TimedRobot
             if (isNewData)
             {
                 // Create a copy of the Autonomous Tab Data that is on the Autonomous Tab
-                autonomousTabData = new AutonomousTabData(robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData());
-                System.out.println(autonomousTabData);
+                // autonomousTabData = new AutonomousTabData(robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData());
+                // System.out.println(autonomousTabData);
                 
                 // Create the Autonomous Command List that will be scheduled to run during autonomousInit()
                 // autonomousCommand = new AutoCommandList(robotContainer, autonomousTabData);
+                // autonomousCommand = robotContainer.mainShuffleboard.autonomousTab.getAutonomousCommand();
                 autonomousCommand = robotContainer.mainShuffleboard.autonomousTab.getAutonomousCommand();
-                
 
                 // Reset the gyro, encoders, and any other sensors
-                robotContainer.resetRobot(autonomousTabData.startingSide);
+                robotContainer.resetRobot(robotContainer.mainShuffleboard.autonomousTab.getStartingSide());
             }
         }
 
@@ -253,7 +253,7 @@ public class Robot extends TimedRobot
         {
             autonomousCommand.cancel();
             autonomousCommand = null;
-            autonomousTabData = null;
+            // autonomousTabData = null;
         }
 
         // if(robotContainer.pivot != null)

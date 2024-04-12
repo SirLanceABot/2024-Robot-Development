@@ -66,7 +66,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = true;
+    private boolean useFullRobot            = false;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -361,10 +361,18 @@ public class RobotContainer
         {
             NamedCommands.registerCommand("Intake Positioning Up", intakePositioning.moveUpCommand());
         }
+        else
+        {
+            NamedCommands.registerCommand("Intake Positioning Up", Commands.print("IntakePositioning is null"));
+        }
 
         if(pivot != null)
         {
             NamedCommands.registerCommand("Pivot To Default Angle", pivot.setAngleCommand(() -> pivot.classConstants.DEFAULT_ANGLE));
+        }
+        else
+        {
+            NamedCommands.registerCommand("Pivot To Default Angle", Commands.print("Pivot is null"));
         }
     }
 }

@@ -45,20 +45,20 @@ public class AutoCommandList extends SequentialCommandGroup
 
     // *** CLASS & INSTANCE VARIABLES ***
     private AutonomousTabData autonomousTabData;
-    private final Drivetrain drivetrain;
-    private final Gyro4237 gyro;
-    private final Intake intake;
-    private final Climb climb;
-    private final AmpAssist ampAssist;
-    private final Flywheel flywheel;
-    private final Index index;
-    private final Pivot pivot;
-    private final Candle4237 candle;
-    private final Shuttle shuttle;
+    // private final Drivetrain drivetrain;
+    // private final Gyro4237 gyro;
+    // private final Intake intake;
+    // private final Climb climb;
+    // private final AmpAssist ampAssist;
+    // private final Flywheel flywheel;
+    // private final Index index;
+    // private final Pivot pivot;
+    // private final Candle4237 candle;
+    // private final Shuttle shuttle;
 
     private String commandString = "\n***** AUTONOMOUS COMMAND LIST *****\n";
     
-    private String compare = "";
+    // private String compare = "";
     public static String pathPlannerString = "";
     
     // *** CLASS CONSTRUCTOR ***
@@ -66,17 +66,17 @@ public class AutoCommandList extends SequentialCommandGroup
     {
         System.out.println("  Constructor Started:  " + fullClassName);
 
-        this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
-        this.gyro = robotContainer.gyro;
-        this.drivetrain = robotContainer.drivetrain;
-        this.intake = robotContainer.intake;
-        this.climb = robotContainer.climb;
-        this.ampAssist = robotContainer.ampAssist;
-        this.flywheel = robotContainer.flywheel;
-        this.index = robotContainer.index;
-        this.pivot = robotContainer.pivot;
-        this.candle = robotContainer.candle;
-        this.shuttle = robotContainer.shuttle;
+        // this.autonomousTabData = robotContainer.mainShuffleboard.autonomousTab.getAutonomousTabData();
+        // this.gyro = robotContainer.gyro;
+        // this.drivetrain = robotContainer.drivetrain;
+        // this.intake = robotContainer.intake;
+        // this.climb = robotContainer.climb;
+        // this.ampAssist = robotContainer.ampAssist;
+        // this.flywheel = robotContainer.flywheel;
+        // this.index = robotContainer.index;
+        // this.pivot = robotContainer.pivot;
+        // this.candle = robotContainer.candle;
+        // this.shuttle = robotContainer.shuttle;
 
 
         // this.autonomousTabData = autonomousTabData;
@@ -108,10 +108,10 @@ public class AutoCommandList extends SequentialCommandGroup
         
         //compare += autonomousTabData.sitPretty;
 
-        if (!AutonomousTab.doNothing())
-        {
-            pathPlannerString += autonomousTabData.scoreExtraNotes;
-        }
+        // if (!AutonomousTab.doNothing())
+        // {
+        //     pathPlannerString += autonomousTabData.scoreExtraNotes;
+        // }
           
             
             //pathPlannerString += autonomousTabData.scorePreload;
