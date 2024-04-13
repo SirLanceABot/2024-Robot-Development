@@ -78,9 +78,10 @@ public class Pivot extends Subsystem4237
     public class ClassConstants
     {
         //for PID
-        private double kP = 0.75; //140.0;
-        private double kI = 0.0;
-        private double kD = 0.0;
+        private final double kP = 0.75; //0.75; //140.0;
+        private final double kI = 0.0;
+        private final double kD = 0.0;
+        private final double kS = 0.1;
         // private double setPoint = 0.0;
         private int slotId = 0;
 
@@ -141,7 +142,7 @@ public class Pivot extends Subsystem4237
 
         // cancoderLogEntry = new StringLogEntry(log, "/cancoders/setup", "Setup");
         // doubleLogEntry = new DoubleLogEntry(log, "cancoders/" + canCoderName, "Degrees");
-        SmartDashboard.putNumber("kP", 0.0);
+        // SmartDashboard.putNumber("kP", 0.0);
 
         angleNetworkTable = NetworkTableInstance.getDefault().getTable(Constants.NETWORK_TABLE_NAME);
         setupEntry = angleNetworkTable.getStringTopic("PivotCANcoderSetup").getEntry("");
@@ -153,6 +154,8 @@ public class Pivot extends Subsystem4237
         configPivotMotor();
         configShotMap();
         configPassMap();
+
+        PIDcontroller.setTolerance(classConstants.DEFAULT_ANGLE_TOLERANCE);
 
         
         // setDefaultCommand(setAngleCommand(() -> classConstants.DEFAULT_ANGLE));
@@ -319,7 +322,7 @@ public class Pivot extends Subsystem4237
         return periodicData.motorEncoderRotationalPosition;
     }
     
-    public void setAngle(double degrees)
+    public void setAngleOLD(double degrees)
     {
         //setAngle using CANcoder
         degrees = MathUtil.clamp(degrees, classConstants.REVERSE_SOFT_LIMIT, classConstants.FORWARD_SOFT_LIMIT);
@@ -355,19 +358,19 @@ public class Pivot extends Subsystem4237
         // }
     }
 
-    public void setAngleV2(double degrees)
+    public void setAngle(double degrees)
     {
         // PIDcontroller.setP(classConstants.kP);
         double positionDegrees = getCANCoderAngle();
         double pidOutput = PIDcontroller.calculate(positionDegrees, degrees);
-        double pivotOutput = MathUtil.clamp(pidOutput + Math.copySign(0.1, pidOutput), -Constants.END_OF_MATCH_BATTERY_VOLTAGE, Constants.END_OF_MATCH_BATTERY_VOLTAGE);
+        double pivotOutput = MathUtil.clamp(pidOutput + Math.copySign(classConstants.kS, pidOutput), -Constants.END_OF_MATCH_BATTERY_VOLTAGE, Constants.END_OF_MATCH_BATTERY_VOLTAGE);
         motor.setVoltage(pivotOutput);
         // SmartDashboard.putNumber("Pivot Output Motor Power", pivotOutput);
         // SmartDashboard.putNumber("Pivot Angle:", getCANCoderAngle());
-        SmartDashboard.putNumber("Passed Degrees", degrees);
-        SmartDashboard.putNumber("positionDegrees", positionDegrees);
-        SmartDashboard.putNumber("pidOutput", pidOutput);
-        SmartDashboard.putNumber("pivotOutput", pivotOutput);
+        // SmartDashboard.putNumber("Passed Degrees", degrees);
+        // SmartDashboard.putNumber("positionDegrees", positionDegrees);
+        // SmartDashboard.putNumber("pidOutput", pidOutput);
+        // SmartDashboard.putNumber("pivotOutput", pivotOutput);
     }
 
 
@@ -392,10 +395,10 @@ public class Pivot extends Subsystem4237
         //     return isAtAngle;
         // };
 
-        return isAtAngle(targetAngle, classConstants.DEFAULT_ANGLE_TOLERANCE);
+        return isAtAngleOLD(targetAngle, classConstants.DEFAULT_ANGLE_TOLERANCE);
     }
 
-    public BooleanSupplier isAtAngle(double targetAngle, double angleTolerance)
+    public BooleanSupplier isAtAngleOLD(double targetAngle, double angleTolerance)
     {
         return () ->
         {
@@ -414,6 +417,28 @@ public class Pivot extends Subsystem4237
             }
             return isAtAngle;
         };
+    }
+
+    public BooleanSupplier isAtAngle()
+    {
+        // return () ->
+        // {
+        //     double position = getCANCoderAngle();
+        //     // System.out.println("Position: " + position);
+
+        //     boolean isAtAngle;
+        //     if(position > targetAngle - angleTolerance && position < targetAngle + angleTolerance)
+        //     {
+        //         isAtAngle = true;
+        //         // System.out.println("Pivot Got To Angle");
+        //     }
+        //     else
+        //     {
+        //         isAtAngle = false;
+        //     }
+        //     return isAtAngle;
+        // };
+        return () -> PIDcontroller.atSetpoint();
     }
 
     /**
@@ -440,14 +465,14 @@ public class Pivot extends Subsystem4237
 
     
 
-    public Command setAngleCommand(DoubleSupplier angle)
+    public Command setAngleOLDCommand(DoubleSupplier angle)
     {
-        return Commands.runOnce(() -> setAngle(angle.getAsDouble()), this).withName("Set Angle");
+        return Commands.runOnce(() -> setAngleOLD(angle.getAsDouble()), this).withName("Set Angle");
     }
 
-    public Command setAngleV2Command(DoubleSupplier angle)
+    public Command setAngleCommand(DoubleSupplier angle)
     {
-        return Commands.run(() -> setAngleV2(angle.getAsDouble()), this).withName("Set Angle");
+        return Commands.run(() -> setAngle(angle.getAsDouble()), this).withName("Set Angle");
     }
 
     public Command moveDownCommand()
@@ -465,6 +490,11 @@ public class Pivot extends Subsystem4237
         // return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble() + classConstants.MAGNET_OFFSET) * 360.0), this).withName("Reset Pivot Position");
         return Commands.runOnce(() -> motor.setPosition((cancoder.getAbsolutePosition().getValueAsDouble()) * 360.0), this).withName("Reset Pivot Position");
 
+    }
+
+    public Command resetPIDCommand()
+    {
+        return Commands.runOnce(PIDcontroller::reset);
     }
 
     public Command stopCommand()
@@ -533,6 +563,7 @@ public class Pivot extends Subsystem4237
 
         periodicData.angleEntry.set(getMotorEncoderPosition());
         periodicData.canCoderAngleEntry.set(getCANCoderAngle());
+        SmartDashboard.putNumber("Pivot CANCODER current Angle", getCANCoderAngle());
 
         //Displays the pivot's current angle
         
