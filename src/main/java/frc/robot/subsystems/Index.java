@@ -142,7 +142,7 @@ public class Index extends Subsystem4237
     public void acceptNoteFromShuttleSlowly()
     {
         //periodicData.motorSpeed = 10.0;
-        setControlVelocity(1.5);
+        setControlVelocity(1.0);
     }
 
     public void feedNoteToFlywheel()
