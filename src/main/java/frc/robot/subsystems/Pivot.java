@@ -240,32 +240,46 @@ public class Pivot extends Subsystem4237
     {
         // first value is distance from speaker in feet, second value is the pivot angle in degrees
         // These are for the calculated (poseEstimator) distances
-        // angleShotMap.put(4.0, 64.0);
-        // angleShotMap.put(5.0, 62.8);
-        // angleShotMap.put(6.0, 56.7);
-        // angleShotMap.put(7.0, 52.5);
-        // angleShotMap.put(8.0, 49.9);
-        // angleShotMap.put(9.0, 47.6);
-        // angleShotMap.put(10.0, 44.0);
-        // angleShotMap.put(11.0, 42.2);
-        // angleShotMap.put(12.0, 41.3);
-        // angleShotMap.put(13.0, 40.65);
-        // angleShotMap.put(14.0, 39.64);
-        // angleShotMap.put(15.0, 39.1);
+        // speakerAngleShotMap.put(4.0, 64.0);
+        // speakerAngleShotMap.put(5.0, 62.8);
+        // speakerAngleShotMap.put(6.0, 56.7);
+        // speakerAngleShotMap.put(7.0, 52.5);
+        // speakerAngleShotMap.put(8.0, 49.9);
+        // speakerAngleShotMap.put(9.0, 47.6);
+        // speakerAngleShotMap.put(10.0, 44.0);
+        // speakerAngleShotMap.put(11.0, 42.2);
+        // speakerAngleShotMap.put(12.0, 41.3);
+        // speakerAngleShotMap.put(13.0, 40.65);
+        // speakerAngleShotMap.put(14.0, 39.64);
+        // speakerAngleShotMap.put(15.0, 39.1);
         
         // These are for the real world distance
-        speakerAngleShotMap.put(4.5, 64.0);
-        speakerAngleShotMap.put(5.5, 62.8);
-        speakerAngleShotMap.put(6.5, 56.7);
-        speakerAngleShotMap.put(7.5, 52.5);
-        speakerAngleShotMap.put(8.5, 49.9);
-        speakerAngleShotMap.put(9.5, 47.6);
-        speakerAngleShotMap.put(10.5, 44.0);
-        speakerAngleShotMap.put(11.5, 42.2);
-        speakerAngleShotMap.put(12.5, 41.3);
-        speakerAngleShotMap.put(13.5, 40.65);
-        speakerAngleShotMap.put(14.5, 39.64);
-        speakerAngleShotMap.put(15.5, 39.1);
+        // speakerAngleShotMap.put(4.5, 64.0);
+        // speakerAngleShotMap.put(5.5, 62.8);
+        // speakerAngleShotMap.put(6.5, 56.7);
+        // speakerAngleShotMap.put(7.5, 52.5);
+        // speakerAngleShotMap.put(8.5, 49.9);
+        // speakerAngleShotMap.put(9.5, 47.6);
+        // speakerAngleShotMap.put(10.5, 44.0);
+        // speakerAngleShotMap.put(11.5, 42.2);
+        // speakerAngleShotMap.put(12.5, 41.3);
+        // speakerAngleShotMap.put(13.5, 40.65);
+        // speakerAngleShotMap.put(14.5, 39.64);
+        // speakerAngleShotMap.put(15.5, 39.1);
+
+        // EXTRA FUDGE EDITION
+        speakerAngleShotMap.put(3.5, 64.0);
+        speakerAngleShotMap.put(4.5, 62.8);
+        speakerAngleShotMap.put(5.5, 56.7);
+        speakerAngleShotMap.put(6.5, 52.5);
+        speakerAngleShotMap.put(7.5, 49.9);
+        speakerAngleShotMap.put(8.5, 47.6);
+        speakerAngleShotMap.put(9.5, 44.0);
+        speakerAngleShotMap.put(10.5, 42.2);
+        speakerAngleShotMap.put(11.5, 41.3);
+        speakerAngleShotMap.put(12.5, 40.65);
+        speakerAngleShotMap.put(13.5, 39.64);
+        speakerAngleShotMap.put(14.5, 39.1);
 
         // angleShotMap.put(5.0, 64.0);
         // angleShotMap.put(6.0, 62.8);

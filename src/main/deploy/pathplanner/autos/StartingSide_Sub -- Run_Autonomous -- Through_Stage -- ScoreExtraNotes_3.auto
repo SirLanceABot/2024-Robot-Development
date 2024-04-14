@@ -73,9 +73,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Autonomous Finish Intake"
+            "name": "Autonomous Finish Intake Slowly"
           }
         },
         {

@@ -66,7 +66,7 @@ public class RobotContainer
         System.out.println("Loading: " + fullClassName);
     }
 
-    private boolean useFullRobot            = false;
+    private boolean useFullRobot            = true;
 
     private boolean useAmpAssist            = false;
     private boolean useCandle               = false;
@@ -348,6 +348,7 @@ public class RobotContainer
         NamedCommands.registerCommand("Autonomous Shoot", Commands4237.autonomousShootCommand());
         NamedCommands.registerCommand("Autonomous First Shoot", Commands4237.autonomousFirstShootCommand());
         NamedCommands.registerCommand("Autonomous Finish Intake", Commands4237.autonomousFinishIntakeCommand());
+        NamedCommands.registerCommand("Autonomous Finish Intake Slowly", Commands4237.autonomousFinishIntakeSlowlyCommand());
         NamedCommands.registerCommand("Autonomous Finish Back Intake", Commands4237.autonomousFinishBackIntakeCommand());
         NamedCommands.registerCommand("Extend Amp Assist", Commands4237.extendAmpCommand());
         NamedCommands.registerCommand("Get Flywheel To Speed", Commands4237.getFlywheelToSpeedCommand(55.0));
@@ -355,7 +356,16 @@ public class RobotContainer
         NamedCommands.registerCommand("Get Pivot To Stage Shoot Angle", Commands4237.getPivotToStageShootAngleCommand());
         NamedCommands.registerCommand("Autonomous Stage Shoot", Commands4237.autonomousStageShootCommand());
         NamedCommands.registerCommand("Autonomous Amp Shoot", Commands4237.autonomousAmpShootCommand());
+        NamedCommands.registerCommand("Stop Flywheel", Commands4237.getFlywheelToSpeedCommand(0.0));
 
+        // if(flywheel != null)
+        // {
+        //     NamedCommands.registerCommand("Stop Flywheel", flywheel.stopCommand());
+        // }
+        // else
+        // {
+        //      NamedCommands.registerCommand("Stop Flywheel", Commands.print("Flywheel is null"));
+        // }
         
         if(intakePositioning != null)
         {

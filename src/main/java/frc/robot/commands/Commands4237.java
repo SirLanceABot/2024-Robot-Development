@@ -358,7 +358,7 @@ public final class Commands4237
             .andThen(
                 robotContainer.pivot.resetPIDCommand())
             .andThen(
-                Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                 .deadlineWith(
                     robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)
                         .finallyDo(robotContainer.pivot::stop)))   
@@ -410,7 +410,7 @@ public final class Commands4237
             return
             robotContainer.pivot.resetPIDCommand()
             .andThen(
-                Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                 .deadlineWith(
                     robotContainer.pivot.setAngleCommand( () -> 48.0)
                         .finallyDo(robotContainer.pivot::stop)))
@@ -429,7 +429,7 @@ public final class Commands4237
             return
             robotContainer.pivot.resetPIDCommand()
             .andThen(
-                Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                 .deadlineWith(
                     robotContainer.pivot.setAngleCommand( () -> 44.0)
                         .finallyDo(robotContainer.pivot::stop)))
@@ -468,7 +468,7 @@ public final class Commands4237
             Commands.either(
                 robotContainer.pivot.resetPIDCommand()
                 .andThen(
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                     robotContainer.pivot.setAngleCommand(() -> (
                         robotContainer.pivot.calculateShootAngleFromDistance(() -> (
@@ -477,7 +477,7 @@ public final class Commands4237
 
                 robotContainer.pivot.resetPIDCommand()
                 .andThen(
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                     robotContainer.pivot.setAngleCommand(() -> (
                         robotContainer.pivot.calculateShootAngleFromDistance(() -> (
@@ -665,7 +665,7 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
 
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                         robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)
                             .finallyDo(robotContainer.pivot::stop)),
@@ -753,7 +753,7 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
 
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                         robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)
                             .finallyDo(robotContainer.pivot::stop)),
@@ -791,7 +791,7 @@ public final class Commands4237
                     .deadlineWith(
                         robotContainer.flywheel.shootCommand(() -> robotContainer.flywheel.calculatePassVelocityFromDistance(getDistanceToAmpZone())),
 
-                        Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                        Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                         .deadlineWith(
                             robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.calculatePassAngleFromDistance(getDistanceToAmpZone()))
                                 .finallyDo(robotContainer.pivot::stop)))))
@@ -805,7 +805,7 @@ public final class Commands4237
                 Commands.parallel(
                     robotContainer.flywheel.stopCommand(),
 
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                         robotContainer.pivot.setAngleCommand(() -> robotContainer.pivot.classConstants.DEFAULT_ANGLE)
                             .finallyDo(robotContainer.pivot::stop)),
@@ -833,7 +833,7 @@ public final class Commands4237
                     robotContainer.climb.moveToChainCommand(),
                     robotContainer.intakePositioning.moveUpCommand(),
 
-                    Commands.waitUntil(robotContainer.pivot.isAtAngle())
+                    Commands.waitUntil(robotContainer.pivot.isAtAngle()).withTimeout(0.5)
                     .deadlineWith(
                         robotContainer.pivot.setAngleCommand( () -> 25.0)
                             .finallyDo(robotContainer.pivot::stop))));
@@ -1020,6 +1020,8 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                robotContainer.pivot.resetPIDCommand())
+            .andThen(
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
@@ -1027,7 +1029,8 @@ public final class Commands4237
                                                 .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
-                    robotContainer.pivot.setAngleCommand(() -> 48.0)))
+                    robotContainer.pivot.setAngleCommand(() -> 48.0)
+                        .finallyDo(robotContainer.pivot::stop)))
             .andThen(
                 Commands.waitSeconds(0.2)
                 // Commands.
@@ -1080,6 +1083,8 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                robotContainer.pivot.resetPIDCommand())
+            .andThen(
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
@@ -1087,7 +1092,8 @@ public final class Commands4237
                                                 .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 55.0),
-                    robotContainer.pivot.setAngleCommand(() -> 44.0)))
+                    robotContainer.pivot.setAngleCommand(() -> 42.0)
+                        .finallyDo(robotContainer.pivot::stop)))
             .andThen(
                 Commands.waitSeconds(0.2)
                 // Commands.waitUntil(robotContainer.indexWheelsProximity.isNotDetectedSupplier())
@@ -1139,6 +1145,8 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                robotContainer.pivot.resetPIDCommand())
+            .andThen(
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(48.0).getAsBoolean() && 
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
@@ -1146,7 +1154,8 @@ public final class Commands4237
                                                 .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 55.0),
-                    robotContainer.pivot.setAngleCommand(() -> 44.0)))
+                    robotContainer.pivot.setAngleCommand(() -> 44.0)
+                        .finallyDo(robotContainer.pivot::stop)))
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(
@@ -1196,6 +1205,8 @@ public final class Commands4237
             // robotContainer.candle.setPurpleCommand()
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                robotContainer.pivot.resetPIDCommand())
+            .andThen(
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(46.0).getAsBoolean() && 
                 //                         robotContainer.flywheel.isAtSpeed(60.0).getAsBoolean()))
                 //                                 .withTimeout(1.0)
@@ -1203,7 +1214,8 @@ public final class Commands4237
                                         .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 60.0),
-                    robotContainer.pivot.setAngleCommand(() -> 46.0)))
+                    robotContainer.pivot.setAngleCommand(() -> 46.0)
+                        .finallyDo(robotContainer.pivot::stop)))
             .andThen(
                 Commands.waitSeconds(0.2)
                 // Commands.waitUntil(robotContainer.indexWheelsProximity.isNotDetectedSupplier())
@@ -1249,6 +1261,8 @@ public final class Commands4237
             return
             setCandleCommand(LEDColor.kPurple)
             .andThen(
+                robotContainer.pivot.resetPIDCommand())
+            .andThen(
                 // Commands.waitUntil(() -> (robotContainer.pivot.isAtAngle(64.0).getAsBoolean() && 
                 //                             robotContainer.flywheel.isAtSpeed(65.0).getAsBoolean()))
                 //                         .withTimeout(1.0)
@@ -1256,7 +1270,8 @@ public final class Commands4237
                                         .withTimeout(1.0)
                 .deadlineWith(
                     robotContainer.flywheel.shootCommand(() -> 65.0),
-                    robotContainer.pivot.setAngleCommand(() -> 64.0)))    
+                    robotContainer.pivot.setAngleCommand(() -> 64.0)
+                        .finallyDo(robotContainer.pivot::stop)))    
             .andThen(
                 Commands.waitSeconds(0.5)
                 .deadlineWith(
@@ -1303,6 +1318,49 @@ public final class Commands4237
                     robotContainer.shuttle.stopCommand()))
                     // robotContainer.candle.setGreenCommand()))
             .withTimeout(1.5)
+            // .andThen(
+            //     Commands.waitSeconds(0.25))
+            .withName("Autonomous Finish Intake"),
+
+            robotContainer.indexWheelsProximity.isDetectedSupplier());
+        }
+        else
+        {
+            return Commands.none();
+        }
+    }
+
+    public static Command autonomousFinishIntakeSlowlyCommand()
+    {
+        if(robotContainer.intake != null && robotContainer.shuttle != null && robotContainer.index != null && robotContainer.indexWheelsProximity != null && robotContainer.firstShuttleProximity != null)
+        {
+            return
+            Commands.either(
+                Commands.none(),
+
+            // robotContainer.candle.setYellowCommand()
+            setCandleCommand(LEDColor.kBlue)
+            .andThen(
+                Commands.waitUntil(robotContainer.indexWheelsProximity.isDetectedSupplier())
+                .deadlineWith(
+                    robotContainer.intake.pickupFrontCommand(),
+                    robotContainer.shuttle.moveUpwardCommand(),
+                    robotContainer.index.acceptNoteFromShuttleSlowlyCommand(),
+                    // robotContainer.candle.setGreenCommand()
+                    setCandleCommand(LEDColor.kGreen)
+                        .onlyIf(
+                        robotContainer.firstShuttleProximity.isDetectedSupplier())
+                        .repeatedly()
+                    ))
+            .andThen(
+                Commands.parallel(
+                    robotContainer.index.stopCommand(),
+                    robotContainer.intake.stopCommand(),
+                    robotContainer.shuttle.stopCommand()))
+                    // robotContainer.candle.setGreenCommand()))
+            .withTimeout(1.5)
+            // .andThen(
+            //     Commands.waitSeconds(0.25))
             .withName("Autonomous Finish Intake"),
 
             robotContainer.indexWheelsProximity.isDetectedSupplier());

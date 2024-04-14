@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.548786240429624,
-        "y": 4.089988751406074
+        "x": 8.3,
+        "y": 3.9433941725026314
       },
       "prevControl": {
-        "x": 5.706129601386412,
-        "y": 4.019703285056105
+        "x": 5.457343360956788,
+        "y": 3.873108706152662
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,7 +50,7 @@
     },
     {
       "name": "Intake Marker",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -59,6 +59,23 @@
               "type": "named",
               "data": {
                 "name": "Intake From Floor Front"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Flywheel Marker",
+      "waypointRelativePos": 0.15,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Stop Flywheel"
               }
             }
           ]

@@ -139,6 +139,12 @@ public class Index extends Subsystem4237
         setControlVelocity(5.0);
     }
 
+    public void acceptNoteFromShuttleSlowly()
+    {
+        //periodicData.motorSpeed = 10.0;
+        setControlVelocity(1.5);
+    }
+
     public void feedNoteToFlywheel()
     {
         // System.out.println("Feeding note");
@@ -184,6 +190,13 @@ public class Index extends Subsystem4237
         // return Commands.runOnce(() -> motor.setVoltage(0.2 * Constants.END_OF_MATCH_BATTERY_VOLTAGE), this).withName("Accept Note From Shuttle");
         // return Commands.runOnce(() -> motor.set(0.9), this).withName("Accept Note From Shuttle");
         return Commands.run(() -> acceptNoteFromShuttle(), this).withName("Accept Note From Shuttle");
+    }
+
+    public Command acceptNoteFromShuttleSlowlyCommand()
+    {
+        // return Commands.runOnce(() -> motor.setVoltage(0.2 * Constants.END_OF_MATCH_BATTERY_VOLTAGE), this).withName("Accept Note From Shuttle");
+        // return Commands.runOnce(() -> motor.set(0.9), this).withName("Accept Note From Shuttle");
+        return Commands.run(() -> acceptNoteFromShuttleSlowly(), this).withName("Accept Note From Shuttle Slowly");
     }
 
     public Command feedNoteToFlywheelCommand()
