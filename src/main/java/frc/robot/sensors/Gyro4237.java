@@ -202,6 +202,9 @@ public class Gyro4237 extends Sensor4237
         periodicData.xAxisEntry.set(gyro.getAccelerationX().getValueAsDouble());
         periodicData.yAxisEntry.set(gyro.getAccelerationY().getValueAsDouble());
         // ASTable.getEntry("gyro yaw").setDouble(periodicData.yaw);
+
+        // System.out.println("Z Axis Anuglar Velocity: " + gyro.getAngularVelocityZDevice().getValueAsDouble());
+        // System.out.println("Acceleration: " + Math.sqrt(Math.pow(gyro.getAccelerationX().getValueAsDouble(), 2) + Math.pow(gyro.getAccelerationY().getValueAsDouble(), 2)));
     }
 
     @Override
