@@ -5,36 +5,21 @@
 package frc.robot;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Shuttle;
-import frc.robot.subsystems.AmpAssist;
-import frc.robot.subsystems.Candle4237;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.Index;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.IntakePositioning;
-import frc.robot.subsystems.Pivot;
 import frc.robot.commands.Commands4237;
 import frc.robot.controls.DriverButtonBindings;
 import frc.robot.controls.DriverController;
@@ -46,6 +31,17 @@ import frc.robot.sensors.Gyro4237;
 import frc.robot.sensors.Proximity;
 import frc.robot.shuffleboard.AutonomousTabData;
 import frc.robot.shuffleboard.MainShuffleboard;
+import frc.robot.subsystems.AmpAssist;
+import frc.robot.subsystems.Candle4237;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePositioning;
+import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Shuttle;
 
 
 /**
